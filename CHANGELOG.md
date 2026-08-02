@@ -29,6 +29,10 @@ El formato se inspira en Keep a Changelog y el proyecto utiliza versionado semá
   Mode.
 - Especificación previa de M1-01 con contrato, autoridad del host, riesgos de
   red y estrategia de guardado versionado; no incluye implementación.
+- Repositorio público `descambiado/ultimo-barrio` con `main`,
+  `feat/m0-bootstrap` y el tag histórico `bootstrap-v0.0.0` publicados.
+- Draft PR `#7` para el bootstrap y seis issues iniciales para M0-03, M0-04,
+  M1-01 y los spikes de mapa, armas y guardado.
 
 ### Changed
 

@@ -4,30 +4,31 @@
 
 - [x] M0-00 Instalar starter, crear baseline Git local y preflight agentic.
 - [x] M0-01 Crear proyecto Empty.
-- [ ] M0-02 Inicializar repositorio y remoto.
-- [ ] M0-03 Crear `main.scene`.
-- [ ] M0-04 Jugador, movimiento y cámara.
-- [ ] M0-05 Segunda instancia local.
-- [ ] M0-06 Smoke test documentado.
+- [x] M0-02 Publicar repositorio, ramas, tag, issues y draft PR.
+- [ ] [M0-03](https://github.com/descambiado/ultimo-barrio/issues/1) Crear `main.scene` y validar el primer boot jugable.
+- [ ] [M0-04](https://github.com/descambiado/ultimo-barrio/issues/2) Validar sesión local con dos clientes.
+- [ ] M0-05 Completar el smoke test reproducible de M0.
 
 ### Progreso comprobado — 2026-08-02
 
-- M0-02 sigue pendiente: no existe `origin` porque la autenticación de GitHub
-  CLI está expirada.
+- M0-02 está completado: el repositorio público, `origin`, `main`,
+  `feat/m0-bootstrap`, `bootstrap-v0.0.0`, los seis issues iniciales y la draft
+  PR están publicados.
 - M0-03 tiene una implementación parcial verificable: `Assets/scenes/main.scene`
   contiene `World`, `Systems`, `SpawnPoints` y `Debug`, además de suelo, luz,
   cielo, punto de aparición, el prefab oficial `Player Controller` y cámara.
 - El primer Play Mode local inició y se detuvo sin errores de consola. El
   jugador fue visible y el render de cámara quedó registrado en
   `docs/media/first-boot.png`.
-- M0-03 y M0-04 permanecen abiertos porque el movimiento no se ha probado con
-  input real; el MCP disponible no puede inyectarlo.
-- M0-05 permanece abierto: no se ejecutó una segunda instancia porque el MCP
-  disponible no ofrece control de un segundo cliente.
+- M0-03 permanece abierto porque el movimiento y el control de cámara no se han
+  probado con input real; el MCP disponible no puede inyectarlo.
+- M0-04 permanece abierto: no se ejecutó una segunda instancia. El camino
+  oficial está identificado, pero falta configurar el spawn de red y validar
+  ambos clientes.
 
 ## Epic M1 — Apartamento
 
-- [ ] M1-01 Definición de apartamento.
+- [ ] [M1-01](https://github.com/descambiado/ultimo-barrio/issues/3) Crear apartamento reclamable.
 - Especificación previa de M1-01: `docs/planning/m1-01-apartment-claim.md`.
   No existe implementación todavía.
 - [ ] M1-02 Claim host-authoritative.
@@ -78,7 +79,7 @@
 
 ## Spikes
 
-- [ ] SPIKE-WEAPONS-001 Comparar armas oficiales y OmniParadigm.
-- [ ] SPIKE-MAP-001 Seleccionar manzana.
-- [ ] SPIKE-SAVE-001 Guardado local.
+- [ ] [SPIKE-WEAPONS-001](https://github.com/descambiado/ultimo-barrio/issues/5) Comparar armas oficiales y OmniParadigm.
+- [ ] [SPIKE-MAP-001](https://github.com/descambiado/ultimo-barrio/issues/4) Seleccionar la primera manzana.
+- [ ] [SPIKE-SAVE-001](https://github.com/descambiado/ultimo-barrio/issues/6) Validar guardado local versionado.
 - [ ] SPIKE-AI-001 Saqueador vertical.
