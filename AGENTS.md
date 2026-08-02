@@ -57,6 +57,16 @@ Cada agente posee un área:
 
 Dos agentes no deben editar el mismo archivo simultáneamente.
 
+Antes de delegar, el integrador asigna propietarios de escritura por archivo o
+carpeta. Durante trabajo paralelo:
+
+- `STATE.md` y `CHANGELOG.md` pertenecen al integrador.
+- Cada subagente escribe su resultado en un handoff único bajo
+  `docs/handoffs/` si necesita persistir contexto.
+- Un subagente solo modifica archivos compartidos cuando el integrador se los
+  asigna explícitamente.
+- El integrador revisa los diffs y consolida estado y changelog al final.
+
 ## Diseño de código
 
 - Composición sobre herencia profunda.
@@ -79,6 +89,6 @@ Responde con:
 4. Resultado de compilación.
 5. Riesgos.
 6. Trabajo pendiente.
-7. Actualización de `STATE.md`.
+7. Handoff de la tarea o actualización de `STATE.md` si eres el integrador.
 
 Si no pudiste verificar algo, dilo claramente.

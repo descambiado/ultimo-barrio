@@ -2,16 +2,37 @@
 
 ## Epic M0 — Bootstrap
 
-- [ ] M0-01 Crear proyecto Empty.
-- [ ] M0-02 Inicializar repositorio y remoto.
-- [ ] M0-03 Crear `main.scene`.
-- [ ] M0-04 Jugador, movimiento y cámara.
-- [ ] M0-05 Segunda instancia local.
-- [ ] M0-06 Smoke test documentado.
+- [x] M0-00 Instalar starter, crear baseline Git local y preflight agentic.
+- [x] M0-01 Crear proyecto Empty.
+- [x] M0-02 Publicar repositorio, ramas, tag, issues y draft PR.
+- [x] [M0-03](https://github.com/descambiado/ultimo-barrio/issues/1) Crear `main.scene` y validar el primer boot jugable.
+- [x] [M0-04](https://github.com/descambiado/ultimo-barrio/issues/2) Validar sesión local con dos clientes.
+- [ ] M0-05 Completar el smoke test reproducible de M0.
+
+### Progreso comprobado — 2026-08-03
+
+- M0-02 está completado: el repositorio público, `origin`, `main`,
+  `feat/m0-bootstrap`, `bootstrap-v0.0.0`, los seis issues iniciales y la draft
+  PR están publicados.
+- M0-03 está completado: `Assets/scenes/main.scene`
+  contiene `World`, `Systems`, `SpawnPoints` y `Debug`, además de suelo, luz,
+  cielo, punto de aparición, el prefab oficial `Player Controller` y cámara.
+- Play Mode local inició y se detuvo sin errores del proyecto. El jugador fue
+  visible, el render quedó registrado en `docs/media/first-boot.png` y el
+  2026-08-03 se comprobaron manualmente WASD, salto, ratón y cambio entre
+  tercera y primera persona.
+- M0-04 está completado: el camino oficial se ejecutó el 2026-08-03; host y
+  cliente tuvieron jugadores,
+  movimiento/cámara independientes y desconexión correcta. El issue puede
+  cerrarse.
+- M0-05 debe corregir o clasificar dos incidencias: posible solapamiento en el
+  único spawn y errores de recursos observados en el log del cliente dev.
 
 ## Epic M1 — Apartamento
 
-- [ ] M1-01 Definición de apartamento.
+- [ ] [M1-01](https://github.com/descambiado/ultimo-barrio/issues/3) Crear apartamento reclamable.
+- Especificación previa de M1-01: `docs/planning/m1-01-apartment-claim.md`.
+  No existe implementación todavía.
 - [ ] M1-02 Claim host-authoritative.
 - [ ] M1-03 Puerta interactiva.
 - [ ] M1-04 Contenedor de alijo.
@@ -60,7 +81,7 @@
 
 ## Spikes
 
-- [ ] SPIKE-WEAPONS-001 Comparar armas oficiales y OmniParadigm.
-- [ ] SPIKE-MAP-001 Seleccionar manzana.
-- [ ] SPIKE-SAVE-001 Guardado local.
+- [ ] [SPIKE-WEAPONS-001](https://github.com/descambiado/ultimo-barrio/issues/5) Comparar armas oficiales y OmniParadigm. Investigación terminada; falta prueba aislada.
+- [x] [SPIKE-MAP-001](https://github.com/descambiado/ultimo-barrio/issues/4) Seleccionar la primera manzana. Resultado publicado: blockout propio y pequeño mediante Scene Mapping.
+- [ ] [SPIKE-SAVE-001](https://github.com/descambiado/ultimo-barrio/issues/6) Validar guardado local versionado. Investigación terminada; falta implementación y matriz de recuperación.
 - [ ] SPIKE-AI-001 Saqueador vertical.

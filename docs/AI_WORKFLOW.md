@@ -71,6 +71,11 @@ git worktree add ../ub-qa -b test/m0
 
 Cada worktree abre su propia rama. Evitar abrir dos copias del editor sobre el mismo directorio.
 
+El integrador conserva la propiedad de escritura de `STATE.md` y
+`CHANGELOG.md`. Los agentes paralelos dejan handoffs con nombres únicos bajo
+`docs/handoffs/`; el integrador consolida esos resultados después de revisar
+los diffs. No se usan archivos compartidos como canal de coordinación en vivo.
+
 ## Unidad de trabajo
 
 Una tarea ideal:
@@ -92,7 +97,8 @@ Cada sesión deja:
 - Captura o logs.
 - Riesgos.
 - Próxima acción.
-- `STATE.md` actualizado.
+- Handoff único de la tarea.
+- `STATE.md` y `CHANGELOG.md` consolidados por el integrador.
 
 ## Prompts
 
@@ -102,7 +108,7 @@ No usar:
 
 Usar:
 
-> Implementa el issue M0-03. Lee los archivos indicados. Inspecciona la escena con MCP. No edites fuera de X. La prueba termina cuando Y. Actualiza STATE.md.
+> Implementa el issue M0-03. Lee los archivos indicados. Inspecciona la escena con MCP. No edites fuera de X. La prueba termina cuando Y. Deja un handoff; el integrador actualizará STATE.md.
 
 ## Herramientas MCP propias futuras
 

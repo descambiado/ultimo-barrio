@@ -21,9 +21,12 @@ Después inspecciona el proyecto real mediante el MCP de s&box.
 
 ## Objetivo actual
 
-Completa exclusivamente el hito activo de `STATE.md`.
+Completa exclusivamente una tarea verificable del hito activo de `STATE.md`.
+Si no se proporciona un issue, elige la primera tarea no bloqueada de
+`BACKLOG.md` y documenta el criterio antes de editar. No cierres más de una
+tarea en la misma ejecución.
 
-Para el bootstrap, el objetivo es:
+Para el bootstrap, M0 se descompone en estas tareas; ejecuta solo la asignada:
 
 - Confirmar que el proyecto Empty abre.
 - Crear o validar `Assets/scenes/main.scene`.
@@ -44,21 +47,23 @@ Para el bootstrap, el objetivo es:
 - No inventes APIs.
 - Usa MCP para inspeccionar antes de mutar.
 - Mantén cambios pequeños.
-- Corrige compilación antes de avanzar.
+- Corrige compilación antes de avanzar cuando la tarea afecte al proyecto
+  ejecutable.
 - No introduzcas assets sin registro.
 - Host autoritativo.
-- Actualiza `STATE.md`, `CHANGELOG.md` y el handoff.
+- Si eres el integrador, consolida `STATE.md` y `CHANGELOG.md`; si eres un
+  subagente paralelo, actualiza únicamente tu handoff.
 
 ## Proceso
 
 1. Resume lo que has encontrado.
 2. Propón un plan de 3–6 pasos.
 3. Ejecuta el primer paso.
-4. Compila/hotload.
-5. Lee consola.
-6. Repite hasta cerrar el criterio.
-7. Prueba Play Mode.
-8. Prueba dos clientes si el entorno lo permite.
+4. Compila/hotload si existe proyecto ejecutable y la tarea puede afectarlo.
+5. Lee consola cuando el editor esté disponible.
+6. Repite hasta cerrar el criterio de la tarea asignada.
+7. Prueba Play Mode cuando forme parte del criterio.
+8. Prueba dos clientes solo en tareas que afecten al networking.
 9. Revisa el diff.
 10. Actualiza documentación.
 
