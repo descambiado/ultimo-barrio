@@ -5,23 +5,22 @@
 - [x] M0-00 Instalar starter, crear baseline Git local y preflight agentic.
 - [x] M0-01 Crear proyecto Empty.
 - [x] M0-02 Publicar repositorio, ramas, tag, issues y draft PR.
-- [ ] [M0-03](https://github.com/descambiado/ultimo-barrio/issues/1) Crear `main.scene` y validar el primer boot jugable.
+- [x] [M0-03](https://github.com/descambiado/ultimo-barrio/issues/1) Crear `main.scene` y validar el primer boot jugable.
 - [ ] [M0-04](https://github.com/descambiado/ultimo-barrio/issues/2) Validar sesión local con dos clientes.
 - [ ] M0-05 Completar el smoke test reproducible de M0.
 
-### Progreso comprobado — 2026-08-02
+### Progreso comprobado — 2026-08-03
 
 - M0-02 está completado: el repositorio público, `origin`, `main`,
   `feat/m0-bootstrap`, `bootstrap-v0.0.0`, los seis issues iniciales y la draft
   PR están publicados.
-- M0-03 tiene una implementación parcial verificable: `Assets/scenes/main.scene`
+- M0-03 está completado: `Assets/scenes/main.scene`
   contiene `World`, `Systems`, `SpawnPoints` y `Debug`, además de suelo, luz,
   cielo, punto de aparición, el prefab oficial `Player Controller` y cámara.
-- El primer Play Mode local inició y se detuvo sin errores de consola. El
-  jugador fue visible y el render de cámara quedó registrado en
-  `docs/media/first-boot.png`.
-- M0-03 permanece abierto porque el movimiento y el control de cámara no se han
-  probado con input real; el MCP disponible no puede inyectarlo.
+- Play Mode local inició y se detuvo sin errores del proyecto. El jugador fue
+  visible, el render quedó registrado en `docs/media/first-boot.png` y el
+  2026-08-03 se comprobaron manualmente WASD, salto, ratón y cambio entre
+  tercera y primera persona.
 - M0-04 permanece abierto: no se ejecutó una segunda instancia. El camino
   oficial está identificado, pero falta configurar el spawn de red y validar
   ambos clientes.
@@ -79,7 +78,7 @@
 
 ## Spikes
 
-- [ ] [SPIKE-WEAPONS-001](https://github.com/descambiado/ultimo-barrio/issues/5) Comparar armas oficiales y OmniParadigm.
-- [ ] [SPIKE-MAP-001](https://github.com/descambiado/ultimo-barrio/issues/4) Seleccionar la primera manzana.
-- [ ] [SPIKE-SAVE-001](https://github.com/descambiado/ultimo-barrio/issues/6) Validar guardado local versionado.
+- [ ] [SPIKE-WEAPONS-001](https://github.com/descambiado/ultimo-barrio/issues/5) Comparar armas oficiales y OmniParadigm. Investigación terminada; falta prueba aislada.
+- [x] [SPIKE-MAP-001](https://github.com/descambiado/ultimo-barrio/issues/4) Seleccionar la primera manzana. Resultado publicado: blockout propio y pequeño mediante Scene Mapping.
+- [ ] [SPIKE-SAVE-001](https://github.com/descambiado/ultimo-barrio/issues/6) Validar guardado local versionado. Investigación terminada; falta implementación y matriz de recuperación.
 - [ ] SPIKE-AI-001 Saqueador vertical.

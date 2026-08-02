@@ -10,6 +10,7 @@
 - Rama activa: `feat/m0-bootstrap`
 - Rama estable: `main`
 - Último commit de implementación estable: `2ba1925` (`feat(scene): add first boot scene`)
+- Último commit operativo publicado: `9417320` (`docs: record M0-02 publication`)
 - Baseline etiquetado: `0298207` (`bootstrap-v0.0.0`, publicado sin reescribir)
 - Licencia: Mozilla Public License 2.0 (`SPDX-License-Identifier: MPL-2.0`)
 - Build de s&box: `26.07.22`, Steam BuildID `24338653`
@@ -27,12 +28,16 @@
 - Releases: ninguna.
 - Draft PR: [#7 — chore: bootstrap real del proyecto s&box](https://github.com/descambiado/ultimo-barrio/pull/7).
 - Issues:
-  - [#1 — M0-03: crear `main.scene` y validar el primer boot jugable](https://github.com/descambiado/ultimo-barrio/issues/1)
+  - [#1 — M0-03: crear `main.scene` y validar el primer boot jugable](https://github.com/descambiado/ultimo-barrio/issues/1) — cerrado.
   - [#2 — M0-04: validar sesión local con dos clientes](https://github.com/descambiado/ultimo-barrio/issues/2)
   - [#3 — M1-01: crear apartamento reclamable](https://github.com/descambiado/ultimo-barrio/issues/3)
-  - [#4 — SPIKE-MAP-001](https://github.com/descambiado/ultimo-barrio/issues/4)
+  - [#4 — SPIKE-MAP-001](https://github.com/descambiado/ultimo-barrio/issues/4) — cerrado.
   - [#5 — SPIKE-WEAPONS-001](https://github.com/descambiado/ultimo-barrio/issues/5)
   - [#6 — SPIKE-SAVE-001](https://github.com/descambiado/ultimo-barrio/issues/6)
+- Resultados de spikes publicados:
+  - [Mapa](https://github.com/descambiado/ultimo-barrio/issues/4#issuecomment-5160604969): blockout propio y pequeño mediante Scene Mapping.
+  - [Armas](https://github.com/descambiado/ultimo-barrio/issues/5#issuecomment-5160641939): `BaseCombatWeapon`, validación host y assets CC0 individuales; prueba pendiente.
+  - [Guardado](https://github.com/descambiado/ultimo-barrio/issues/6#issuecomment-5160609553): `FileSystem.Data`, generaciones inmutables y escritor único host; implementación pendiente.
 
 ## Hitos completados
 
@@ -47,25 +52,35 @@
 - [x] Issues iniciales creados.
 - [x] README humano y medios reales publicados en la rama de trabajo.
 
-## Hito activo
-
 ### M0-03 — `main.scene` y primer boot jugable
 
-**Objetivo:** guardar la primera escena real, mostrar un jugador provisional y verificar movimiento, cámara y Play Mode sin excepciones.
+- [x] `Assets/scenes/main.scene` creada con los cuatro roots acordados.
+- [x] Suelo, iluminación, spawn, jugador provisional y cámara presentes.
+- [x] Play Mode inicia y termina sin excepciones del proyecto.
+- [x] Movimiento, salto, ratón y cambio entre tercera y primera persona
+  comprobados manualmente el 2026-08-03.
+- [x] Compilación y consola del proyecto limpias tras la prueba.
+
+## Hito activo
+
+### M0-04 — sesión local con dos clientes
+
+**Objetivo:** sustituir el Player directo por spawn de red autoritativo y validar
+host y segundo cliente en una sesión local.
 
 ### Criterios de aceptación
 
-- [x] Existe `Assets/scenes/main.scene`.
-- [x] La escena contiene los roots `World`, `Systems`, `SpawnPoints` y `Debug`.
-- [x] Existe un suelo provisional.
-- [x] Existe un punto de aparición.
-- [x] El jugador provisional aparece en Play Mode.
-- [ ] Movimiento y cámara funcionan. La cámara en tercera persona renderiza, pero todavía no se ha inyectado ni observado input de movimiento.
-- [x] Play Mode inicia y se detiene sin excepciones de proyecto.
-- [x] La consola no contiene entradas de nivel `Error` durante la prueba.
-- [x] La prueba parcial queda documentada en `docs/testing/m0-03-first-boot.md`.
+- [ ] El host crea una sesión local.
+- [ ] Una segunda instancia se conecta.
+- [ ] Existen dos jugadores distintos.
+- [ ] Ownership y movimiento independiente funcionan.
+- [ ] Ambas cámaras funcionan.
+- [ ] La desconexión del segundo cliente es limpia.
+- [ ] Consolas de host y cliente sin errores del proyecto.
+- [ ] Procedimiento y evidencia documentados.
 
-M0-03 permanece **EN PROGRESO** porque el movimiento todavía no está probado.
+M0-04 está **EN PROGRESO**. La ruta oficial de lanzamiento está verificada,
+pero la escena todavía no contiene `NetworkHelper` ni spawn por conexión.
 
 ## Estado técnico comprobado
 
@@ -74,11 +89,19 @@ M0-03 permanece **EN PROGRESO** porque el movimiento todavía no está probado.
 - Jerarquía serializada: exactamente cuatro roots, `World`, `Systems`, `SpawnPoints` y `Debug`. El quinto objeto que expone el MCP es `editor_camera`, transitorio y no guardado en `main.scene`.
 - Mundo provisional: plano con collider estático, luz direccional y skybox 2D.
 - Jugador: instancia del prefab oficial `templates/gameobject/player controller.prefab`.
-- Cámara: `CameraComponent` principal y cámara en tercera persona del prefab; el render se comprobó visualmente.
+- Cámara: `CameraComponent` principal y controles oficiales del prefab; se
+  comprobaron tercera persona, primera persona y control con ratón.
 - Compilación: 10 compiladores correctos; `local.ultimo_barrio` y `local.ultimo_barrio.editor` con 0 errores y 0 avisos.
-- Consola: 0 entradas de nivel `Error` en 47 entradas almacenadas en la lectura posterior. Hay 11 avisos globales del engine/templates; ninguno menciona `ultimo_barrio` ni `main.scene`.
-- Play Mode: **PROBADO PARCIALMENTE**; arrancó en `main.scene`, mostró al jugador y se detuvo correctamente.
-- Movimiento: **NO VERIFICADO**; el MCP disponible no expone teclado o ratón.
+- Consola posterior a la prueba: ninguna entrada `Error` y ninguna entrada
+  `Warn` filtrada por `ultimo_barrio` entre 53 entradas almacenadas. Los avisos
+  globales del engine/editor no pertenecen al proyecto.
+- Play Mode local: **PROBADO**; arrancó en `main.scene`, mostró al jugador,
+  recibió input real y se detuvo correctamente.
+- Movimiento: **VERIFICADO MANUALMENTE** el 2026-08-03 con WASD, salto y ratón.
+  También se comprobó el cambio entre tercera y primera persona. El MCP solo
+  expone el transform serializado, por lo que la evidencia de input es la
+  observación directa del operador, acompañada de la lectura posterior de
+  compilación y consola.
 - Prueba multijugador: **NO REALIZADA**; no se inició una segunda instancia.
 - Red en la escena: no existe `NetworkHelper`; el `Player` actual es una instancia directa y no un spawn por conexión.
 - Camino oficial de dos clientes: verificado en la instalación local como `sbox.exe -joinlocal +instanceid <N>` después de iniciar hosting. No se ejecutó.
@@ -100,14 +123,17 @@ El flujo será autoritativo en host y la persistencia se aislará tras una inter
 
 ## Bloqueadores reales
 
-1. El MCP de s&box no inyecta entrada de teclado o ratón. La aparición y el render de cámara están probados, pero el movimiento necesita una interacción real en la ventana de Play Mode.
-2. El MCP no expone el menú `Start Hosting`, input independiente ni la consola del segundo proceso. El lanzamiento oficial de otra instancia está identificado, pero M0-04 aún requiere configurar `NetworkHelper`, evitar duplicar el Player directo y validar ambos clientes.
+- Ninguno para M0-03; el hito está completado.
+- Para M0-04, el MCP no expone el menú `Start Hosting`, input independiente ni
+  la consola del segundo proceso. Esto no bloquea todavía la implementación:
+  falta configurar `NetworkHelper`, evitar duplicar el Player directo e
+  intentar el lanzamiento oficial de la segunda instancia.
 
 ## Siguientes tres acciones
 
-1. Entrar en Play Mode y comprobar físicamente movimiento con WASD y control de cámara; registrar el resultado y cualquier entrada de consola en el issue #1.
-2. Tras cerrar M0-03, sustituir el Player directo por spawn autoritativo mediante `NetworkHelper`, iniciar hosting y lanzar el segundo cliente con el comando oficial verificado.
-3. Cuando M0-04 tenga evidencia de dos clientes, comenzar los anchors del apartamento definidos en el issue #3.
+1. Sustituir el Player directo por spawn autoritativo mediante `NetworkHelper`.
+2. Iniciar hosting y lanzar el segundo cliente con `sbox.exe -joinlocal +instanceid <N>`.
+3. Verificar ownership, movimiento/cámara independientes, desconexión y las dos consolas; después cerrar M0-04.
 
 ## Decisiones vigentes
 
@@ -138,3 +164,4 @@ El flujo será autoritativo en host y la persistencia se aislará tras una inter
 | 2026-08-02 | Codex + subagentes | `feat/m0-bootstrap` | Proyecto Empty integrado; compilación y escena mínima validadas | `a3084b0` |
 | 2026-08-02 | Codex + subagentes | `feat/m0-bootstrap` | README y medios reales preparados; `main.scene` creada y primer boot parcial validado | `2ba1925` |
 | 2026-08-02 | Codex + subagentes | `feat/m0-bootstrap` | M0-02 publicado: repositorio público, refs, draft PR e issues iniciales | `a8fbd90` |
+| 2026-08-03 | Codex + prueba manual | `feat/m0-bootstrap` | M0-03 validado: WASD, salto, ratón, primera/tercera persona y consola del proyecto limpia | `test(player): verify movement and camera input` |

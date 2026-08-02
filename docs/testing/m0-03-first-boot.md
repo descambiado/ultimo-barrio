@@ -1,12 +1,15 @@
 # M0-03 — Validación del primer boot
 
-- Fecha: 2026-08-02
+- Escena inicial: 2026-08-02
+- Validación de input: 2026-08-03
 - Rama: `feat/m0-bootstrap`
 - Build de s&box: `26.07.22` (Steam BuildID `24338653`)
 
 ## Alcance de esta prueba
 
-Esta prueba valida la escena principal, el arranque de Play Mode, la aparición visual del jugador provisional y el render de cámara. No valida todavía movimiento ni una sesión con dos clientes.
+Esta prueba valida la escena principal, el arranque de Play Mode, la aparición
+visual del jugador provisional, movimiento, salto y control de cámara. La
+sesión con dos clientes pertenece a M0-04 y todavía no se ha ejecutado.
 
 ## Escena probada
 
@@ -40,16 +43,21 @@ Debug
 | Inicio de Play Mode | PASS | El MCP informó `IsPlaying=true` sobre `main.scene`. |
 | Jugador visible | PASS | Captura real `docs/media/first-boot.png`. |
 | Render de cámara | PASS | La captura procede de la cámara de juego en tercera persona. |
-| Movimiento | NO VERIFICADO | El MCP disponible no expone entrada de teclado o ratón. |
+| Movimiento y salto | PASS | El 2026-08-03 el operador comprobó WASD y `Espacio` con input real en el viewport. |
+| Control de cámara | PASS | Se comprobó ratón y cambio entre tercera y primera persona. |
 | Fin de Play Mode | PASS | El MCP informó `IsPlaying=false` al detener la prueba. |
-| Excepciones | PASS | No hubo entradas de consola de nivel `Error` entre 44 entradas almacenadas. |
+| Excepciones | PASS | Tras la prueba no hubo entradas de nivel `Error` entre 53 entradas almacenadas ni avisos filtrados por `ultimo_barrio`. |
 | Segundo cliente | NO EJECUTADO | No existe una herramienta MCP para lanzar, unir o controlar otra instancia. |
 
 ## Captura real
 
 ![Primer boot real de Último Barrio](../media/first-boot.png)
 
-La imagen muestra el jugador provisional renderizado sobre el suelo de prueba. No es concept art ni una captura de gameplay terminado, y no demuestra que el personaje se haya movido.
+La imagen muestra el jugador provisional renderizado sobre el suelo de prueba.
+No es concept art ni una captura de gameplay terminado. La captura por sí sola
+no prueba movimiento; la evidencia de input es la observación manual registrada
+el 2026-08-03 y la comprobación automatizada posterior de compilación, consola
+y cierre de Play Mode.
 
 ## Repetir la prueba local
 
@@ -58,13 +66,15 @@ La imagen muestra el jugador provisional renderizado sobre el suelo de prueba. N
 3. Esperar a que `local.ultimo_barrio` y `local.ultimo_barrio.editor` terminen de compilar.
 4. Limpiar o anotar la consola y entrar en Play Mode.
 5. Confirmar que el ciudadano provisional aparece sobre el plano y que la cámara en tercera persona renderiza.
-6. Para completar el criterio pendiente, usar WASD y el ratón en la ventana de juego, observar desplazamiento y rotación de cámara y anotar el resultado.
+6. Hacer clic en el viewport, usar WASD, pulsar `Espacio`, mover el ratón y
+   alternar primera/tercera persona; observar desplazamiento, salto y cámara.
 7. Salir de Play Mode y revisar la consola con filtro `Error`.
 8. Ejecutar `scripts/check-m0-preflight.ps1` desde la raíz del repositorio.
 
-## Criterios pendientes
+## Resultado del hito
 
-- Observar y registrar movimiento real del jugador.
-- Observar y registrar control real de cámara mediante input.
+M0-03 está **COMPLETADO**. La siguiente prueba es M0-04:
+
 - Ejecutar una sesión local con host y segundo cliente.
-- Verificar ownership, movimiento independiente, cámara, desconexión y ambas consolas en la prueba multijugador.
+- Verificar ownership, movimiento independiente, cámara, desconexión y ambas
+  consolas.

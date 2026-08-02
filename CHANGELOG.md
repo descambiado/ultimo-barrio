@@ -44,9 +44,12 @@ El formato se inspira en Keep a Changelog y el proyecto utiliza versionado semá
   compilados.
 - El proyecto usa `scenes/main.scene` como escena de inicio.
 - El primer Play Mode de `main.scene` inició y se detuvo con compilación limpia
-  (0 errores y 0 avisos) y sin errores de consola. La prueba valida la
-  aparición del jugador y el render de cámara, pero todavía no el movimiento
-  mediante input ni una sesión con dos clientes.
+  (0 errores y 0 avisos) y sin errores de consola. La prueba manual del
+  2026-08-03 valida aparición, WASD, salto, ratón y cambio entre tercera y
+  primera persona. La sesión con dos clientes sigue pendiente.
+- Los spikes de mapa y guardado tienen resultados de investigación publicados:
+  blockout propio y pequeño para la primera manzana, y persistencia local
+  host-only mediante generaciones inmutables sobre `FileSystem.Data`.
 
 ## [0.0.0] - 2026-08-02
 
