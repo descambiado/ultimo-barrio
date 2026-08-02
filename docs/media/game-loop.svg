@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 650" role="img" aria-labelledby="title description">
+  <title id="title">Ciclo principal de Último Barrio</title>
+  <desc id="description">Cinco fases conectadas: amanecer, día, atardecer, noche y consecuencias.</desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#778493"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="650" rx="28" fill="#11161c"/>
+
+  <g fill="none" stroke="#778493" stroke-width="4" marker-end="url(#arrow)">
+    <path d="M 370 135 H 450"/>
+    <path d="M 750 135 H 830"/>
+    <path d="M 980 200 V 390"/>
+    <path d="M 830 455 H 750"/>
+    <path d="M 450 455 H 220 V 200"/>
+  </g>
+
+  <g font-family="Inter, 'Segoe UI', Arial, sans-serif">
+    <g transform="translate(70 70)">
+      <rect width="300" height="130" rx="14" fill="#192128" stroke="#d9b97e" stroke-width="3"/>
+      <text x="24" y="40" fill="#d9b97e" font-size="22" font-weight="700" letter-spacing="1.5">AMANECER</text>
+      <text x="24" y="76" fill="#edf1f4" font-size="18">
+        <tspan x="24" dy="0">Revisar daños y</tspan>
+        <tspan x="24" dy="26">necesidades</tspan>
+      </text>
+    </g>
+
+    <g transform="translate(450 70)">
+      <rect width="300" height="130" rx="14" fill="#192128" stroke="#8fb3c7" stroke-width="3"/>
+      <text x="24" y="40" fill="#8fb3c7" font-size="22" font-weight="700" letter-spacing="1.5">DÍA</text>
+      <text x="24" y="76" fill="#edf1f4" font-size="18">
+        <tspan x="24" dy="0">Trabajar, comerciar y</tspan>
+        <tspan x="24" dy="26">observar</tspan>
+      </text>
+    </g>
+
+    <g transform="translate(830 70)">
+      <rect width="300" height="130" rx="14" fill="#192128" stroke="#c58f72" stroke-width="3"/>
+      <text x="24" y="40" fill="#c58f72" font-size="22" font-weight="700" letter-spacing="1.5">ATARDECER</text>
+      <text x="24" y="76" fill="#edf1f4" font-size="18">
+        <tspan x="24" dy="0">Preparar la vivienda</tspan>
+        <tspan x="24" dy="26">y el barrio</tspan>
+      </text>
+    </g>
+
+    <g transform="translate(830 390)">
+      <rect width="300" height="130" rx="14" fill="#192128" stroke="#8589a6" stroke-width="3"/>
+      <text x="24" y="40" fill="#8589a6" font-size="22" font-weight="700" letter-spacing="1.5">NOCHE</text>
+      <text x="24" y="76" fill="#edf1f4" font-size="18">
+        <tspan x="24" dy="0">Defender, ocultarse o</tspan>
+        <tspan x="24" dy="26">ayudar</tspan>
+      </text>
+    </g>
+
+    <g transform="translate(450 390)">
+      <rect width="300" height="130" rx="14" fill="#192128" stroke="#8fa68a" stroke-width="3"/>
+      <text x="24" y="40" fill="#8fa68a" font-size="22" font-weight="700" letter-spacing="1.5">CONSECUENCIAS</text>
+      <text x="24" y="76" fill="#edf1f4" font-size="18">
+        <tspan x="24" dy="0">Guardar daños, pérdidas</tspan>
+        <tspan x="24" dy="26">y relaciones</tspan>
+      </text>
+    </g>
+  </g>
+</svg>
