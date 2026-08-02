@@ -3,7 +3,7 @@
 ## Epic M0 — Bootstrap
 
 - [x] M0-00 Instalar starter, crear baseline Git local y preflight agentic.
-- [ ] M0-01 Crear proyecto Empty.
+- [x] M0-01 Crear proyecto Empty.
 - [ ] M0-02 Inicializar repositorio y remoto.
 - [ ] M0-03 Crear `main.scene`.
 - [ ] M0-04 Jugador, movimiento y cámara.

@@ -21,7 +21,7 @@
 
 ### Criterios de aceptación
 
-- [ ] Proyecto creado mediante plantilla `Game → Empty`.
+- [x] Proyecto creado mediante plantilla `Game → Empty`.
 - [x] Starter pack copiado.
 - [ ] Repositorio Git público creado.
 - [ ] `main.scene` guardada.
@@ -33,21 +33,18 @@
 
 ## Bloqueadores
 
-- Proyecto real todavía no creado: faltan el `.sbproj`, `Code/` y
-  `Assets/scenes/main.scene` generados o guardados desde el editor. s&box está
-  instalado y abierto, pero el MCP `127.0.0.1:7269` no escucha sin un proyecto.
+- `Assets/scenes/main.scene` todavía no existe; la escena `minimal.scene` de la
+  plantilla abre y compila, pero M0-03 sigue pendiente.
 - Repositorio público, remoto `origin`, organización mantenedora, `CODEOWNERS`
   y canal privado de seguridad pendientes de configurar.
 
 ## Siguientes tres acciones
 
-1. Crear `ultimo_barrio` mediante `Game → Empty` en una carpeta vacía temporal,
-   con la organización real, y fusionar después los archivos generados sin
-   sobrescribir el starter ni escribir el `.sbproj` a mano.
-2. Configurar el remoto público y sustituir los placeholders de ownership y
+1. Configurar el remoto público y sustituir los placeholders de ownership y
    seguridad con datos reales del mantenedor.
-3. Activar el MCP, ejecutar `scripts/check-m0-preflight.ps1` y abordar solo la
-   primera tarea M0 no bloqueada.
+2. Abordar solo M0-03: crear y guardar `Assets/scenes/main.scene` mediante el
+   editor/MCP con la jerarquía base definida en la arquitectura.
+3. Tras validar M0-03, abordar M0-04: jugador, movimiento y cámara.
 
 ## Decisiones vigentes
 
@@ -66,6 +63,8 @@
 - Mezclar persistencia local y multijugador sin una interfaz.
 - Hacer IA compleja antes de tener objetivos físicos sencillos.
 - Varias IAs modificando los mismos archivos.
+- El manifiesto conserva valores de la plantilla (`Org: local`, 64 jugadores y
+  `facepunch.flatgrass`) que deben revisarse antes de publicar o probar red.
 
 ## Registro de sesiones
 
@@ -73,3 +72,4 @@
 |---|---|---|---|---|
 | 2026-08-02 | Bootstrap documental | — | Starter pack generado | — |
 | 2026-08-02 | Codex + subagentes | `feat/m0-bootstrap` | Starter instalado, baseline Git local y preflight creados; s&box 24338653 instalado, pendiente crear el proyecto vía GUI | — |
+| 2026-08-02 | Codex + subagentes | `feat/m0-bootstrap` | Proyecto Empty integrado; compilación de runtime y editor limpia; MCP y escena mínima validados | — |
