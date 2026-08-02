@@ -30,7 +30,8 @@ El primer objetivo no es una ciudad completa. Es una manzana pequeña e inolvida
 5. **Sistemas antes que contenido.** Pocas piezas que interactúan producen más historias que cien objetos aislados.
 6. **Autoridad del host.** Dinero, daño, botín, guardado, IA y construcción se validan en servidor.
 7. **Dependencias controladas.** Todo asset o librería queda registrado con autor, origen, versión y licencia.
-8. **Proyecto reanudable.** Cada sesión termina actualizando `STATE.md`.
+8. **Proyecto reanudable.** Cada agente deja un handoff y el integrador
+   consolida `STATE.md` al cerrar la sesión.
 
 ## Primera versión jugable
 
@@ -69,7 +70,7 @@ Consulta:
 5. Abre el proyecto en el editor.
 6. Activa o verifica el MCP del editor.
 7. Entrega a Claude Code, ChatGPT/Codex o Cursor el archivo `prompts/PROJECT_BOOTSTRAP_PROMPT.md`.
-8. Implementa únicamente el hito activo de `STATE.md`.
+8. Implementa una única tarea verificable del hito activo de `STATE.md`.
 
 ## Dependencias de armas
 

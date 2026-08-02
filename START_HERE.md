@@ -38,7 +38,7 @@ ultimo_barrio/
 ├── ultimo_barrio.sbproj
 ├── Assets/
 ├── Code/
-├── Libraries/
+├── Libraries/              # aparece al instalar o crear una librería
 ├── docs/
 ├── prompts/
 ├── .github/
@@ -48,7 +48,9 @@ ultimo_barrio/
 └── STATE.md
 ```
 
-`Libraries/` debe permanecer versionado. Las librerías de s&box se almacenan como código fuente dentro del proyecto.
+La plantilla `Game - Empty` no crea `Libraries/` por adelantado. Cuando se
+instale o cree la primera librería, ese directorio debe permanecer versionado:
+s&box almacena allí su código fuente junto al proyecto.
 
 ## 3. Inicializar Git
 
@@ -158,11 +160,12 @@ Nunca digas simplemente “haz el juego”. Cada agente recibe una tarea cerrada
 Antes de parar:
 
 1. Compila y prueba.
-2. Actualiza `STATE.md`.
-3. Añade decisiones nuevas a un ADR.
-4. Actualiza `CHANGELOG.md`.
+2. Deja un handoff único si trabajas como agente paralelo.
+3. Consolida `STATE.md` y `CHANGELOG.md` si eres el integrador.
+4. Añade decisiones nuevas a un ADR.
 5. Deja tres siguientes acciones concretas.
 6. Haz commit.
-7. Anota el último commit estable.
+7. Anota como estable únicamente un commit cuya prueba aplicable se haya
+   ejecutado con éxito.
 
 Esto permite retomar el proyecto semanas después sin reconstruir el contexto.

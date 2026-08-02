@@ -8,8 +8,10 @@
 - Fase: Bootstrap
 - Versión objetivo: `0.1.0-alpha`
 - Rama estable: `main`
-- Último commit estable: `PENDIENTE`
+- Último commit estable: `PENDIENTE` (no existe todavía una build verificable)
+- Baseline documental: `0298207` (`bootstrap-v0.0.0`, local)
 - Última prueba multijugador: `NO REALIZADA`
+- Build de s&box instalada: `24338653` (Steam, verificada el 2026-08-02)
 
 ## Hito activo
 
@@ -20,7 +22,7 @@
 ### Criterios de aceptación
 
 - [ ] Proyecto creado mediante plantilla `Game → Empty`.
-- [ ] Starter pack copiado.
+- [x] Starter pack copiado.
 - [ ] Repositorio Git público creado.
 - [ ] `main.scene` guardada.
 - [ ] Jugador local aparece correctamente.
@@ -31,15 +33,21 @@
 
 ## Bloqueadores
 
-- Proyecto real de s&box todavía no creado.
-- Página/paquete `omniparadigm/weapons` pendiente de evaluación dentro del editor.
-- Mapa inicial pendiente de selección.
+- Proyecto real todavía no creado: faltan el `.sbproj`, `Code/` y
+  `Assets/scenes/main.scene` generados o guardados desde el editor. s&box está
+  instalado y abierto, pero el MCP `127.0.0.1:7269` no escucha sin un proyecto.
+- Repositorio público, remoto `origin`, organización mantenedora, `CODEOWNERS`
+  y canal privado de seguridad pendientes de configurar.
 
 ## Siguientes tres acciones
 
-1. Crear el proyecto vacío y copiar el starter pack.
-2. Verificar MCP y escena principal.
-3. Implementar el jugador mínimo y prueba de dos clientes.
+1. Crear `ultimo_barrio` mediante `Game → Empty` en una carpeta vacía temporal,
+   con la organización real, y fusionar después los archivos generados sin
+   sobrescribir el starter ni escribir el `.sbproj` a mano.
+2. Configurar el remoto público y sustituir los placeholders de ownership y
+   seguridad con datos reales del mantenedor.
+3. Activar el MCP, ejecutar `scripts/check-m0-preflight.ps1` y abordar solo la
+   primera tarea M0 no bloqueada.
 
 ## Decisiones vigentes
 
@@ -64,3 +72,4 @@
 | Fecha | Autor/agente | Rama | Resultado | Último commit estable |
 |---|---|---|---|---|
 | 2026-08-02 | Bootstrap documental | — | Starter pack generado | — |
+| 2026-08-02 | Codex + subagentes | `feat/m0-bootstrap` | Starter instalado, baseline Git local y preflight creados; s&box 24338653 instalado, pendiente crear el proyecto vía GUI | — |

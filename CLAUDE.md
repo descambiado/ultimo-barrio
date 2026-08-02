@@ -34,7 +34,8 @@ La ambientación es una ciudad mediterránea ficticia. No uses nacionalidades, e
 - No armas antes de completar el spike de integración.
 - Mantén el juego jugable en solitario.
 - Mantén el proyecto compilando después de cada paso.
-- Actualiza `STATE.md` al finalizar.
+- Actualiza `STATE.md` al finalizar si eres el integrador; en trabajo paralelo,
+  entrega un handoff único para que el integrador lo consolide.
 
 ## MCP de s&box
 

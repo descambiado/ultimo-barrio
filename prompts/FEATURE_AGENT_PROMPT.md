@@ -39,7 +39,9 @@ Inspecciona escena y assets con MCP.
 - No dependencias sin registrar.
 - Proyecto compilando.
 - Consola limpia.
-- Actualiza docs y `STATE.md`.
+- Actualiza los documentos que tengas asignados.
+- En trabajo paralelo, deja un handoff único y no edites `STATE.md` ni
+  `CHANGELOG.md`; los consolida el integrador.
 
 ## Salida
 
