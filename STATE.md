@@ -8,7 +8,7 @@
 - Fase: Bootstrap
 - Versión objetivo: `0.1.0-alpha`
 - Rama estable: `main`
-- Último commit estable: `PENDIENTE` (no existe todavía una build verificable)
+- Último commit estable: `a3084b0` (`chore: integrate sbox empty project`)
 - Baseline documental: `0298207` (`bootstrap-v0.0.0`, local)
 - Última prueba multijugador: `NO REALIZADA`
 - Build de s&box instalada: `24338653` (Steam, verificada el 2026-08-02)
@@ -72,4 +72,4 @@
 |---|---|---|---|---|
 | 2026-08-02 | Bootstrap documental | — | Starter pack generado | — |
 | 2026-08-02 | Codex + subagentes | `feat/m0-bootstrap` | Starter instalado, baseline Git local y preflight creados; s&box 24338653 instalado, pendiente crear el proyecto vía GUI | — |
-| 2026-08-02 | Codex + subagentes | `feat/m0-bootstrap` | Proyecto Empty integrado; compilación de runtime y editor limpia; MCP y escena mínima validados | — |
+| 2026-08-02 | Codex + subagentes | `feat/m0-bootstrap` | Proyecto Empty integrado; compilación de runtime y editor limpia; MCP y escena mínima validados | `a3084b0` |
