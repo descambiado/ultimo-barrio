@@ -1,0 +1,36 @@
+schema_version: 1
+
+assets:
+  - id: facepunch/sboxweapons
+    name: s&box Weapons
+    author: Facepunch
+    source_url: https://sbox.game/facepunch/sboxweapons
+    package_type: collection
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: reference
+    version_or_checked_at: "2026-08-02"
+    used_by:
+      - planned:weapon-viewmodels
+      - planned:weapon-worldmodels
+      - planned:attachments
+    fallback: project-owned placeholder models
+    notes: >
+      Official collection. Use alongside official weapon components.
+      Verify terms and source availability inside the editor before release.
+
+  - id: omniparadigm/weapons
+    name: Weapons
+    author: OmniParadigm
+    source_url: https://sbox.game/omniparadigm/weapons
+    package_type: unknown
+    license: unknown
+    license_verified: false
+    integration_mode: temporary-prototype
+    version_or_checked_at: "2026-08-02"
+    used_by:
+      - spike:SPIKE-WEAPONS-001
+    fallback: official BaseCombatWeapon path
+    notes: >
+      Do not make this a release dependency until source, license,
+      networking authority, dependencies and maintenance are verified.

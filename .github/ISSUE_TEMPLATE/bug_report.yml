@@ -1,0 +1,52 @@
+name: Bug
+description: Reportar un fallo reproducible
+title: "[BUG] "
+labels: ["bug", "needs-triage"]
+body:
+  - type: input
+    id: commit
+    attributes:
+      label: Commit o versión
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Descripción
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Pasos para reproducir
+      placeholder: "1. ...\n2. ...\n3. ..."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Resultado esperado
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Resultado actual
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs, captura o vídeo
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Modo
+      options:
+        - Solo
+        - Host
+        - Cliente
+        - Servidor dedicado
+        - Editor
+    validations:
+      required: true

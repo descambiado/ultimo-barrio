@@ -1,0 +1,7 @@
+# Sustituye @OWNER por el usuario u organización real.
+* @OWNER
+
+/docs/ @OWNER
+/Assets/asset-registry.yml @OWNER
+/SECURITY.md @OWNER
+/LICENSE @OWNER

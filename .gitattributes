@@ -1,0 +1,8 @@
+* text=auto eol=lf
+
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Configure Git LFS intentionally before adding large binary sources.
+# See docs/GIT_LFS.md.

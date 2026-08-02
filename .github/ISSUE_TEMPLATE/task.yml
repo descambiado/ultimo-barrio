@@ -1,0 +1,31 @@
+name: Tarea técnica
+description: Trabajo cerrado y verificable
+title: "[TASK] "
+labels: ["task"]
+body:
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objetivo
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Criterios de aceptación
+    validations:
+      required: true
+  - type: textarea
+    id: files
+    attributes:
+      label: Área o archivos previstos
+  - type: textarea
+    id: test
+    attributes:
+      label: Prueba reproducible
+    validations:
+      required: true
+  - type: textarea
+    id: exclusions
+    attributes:
+      label: Fuera de alcance

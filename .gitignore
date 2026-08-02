@@ -1,0 +1,48 @@
+# IDE
+.vs/
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.user
+*.suo
+*.userprefs
+
+# .NET generated
+**/bin/
+**/obj/
+*.dll
+*.pdb
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and temporary output
+Logs/
+Temp/
+Cache/
+*.log
+crash_*/
+
+# Local secrets/configuration
+.env
+.env.*
+!.env.example
+secrets.json
+appsettings.Local.json
+
+# Test/output artifacts
+artifacts/
+coverage/
+TestResults/
+
+# Local agent state
+.claude/settings.local.json
+.cursor/
+.codex/
+
+# IMPORTANT:
+# Do NOT ignore Libraries/. s&box libraries are vendored source and should be committed.
+# Do NOT ignore Assets/ or Code/.

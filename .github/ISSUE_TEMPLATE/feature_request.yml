@@ -1,0 +1,45 @@
+name: Feature
+description: Proponer una mejora compatible con los pilares
+title: "[FEATURE] "
+labels: ["enhancement", "needs-design"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema que resuelve
+    validations:
+      required: true
+  - type: textarea
+    id: player_story
+    attributes:
+      label: Historia del jugador
+      placeholder: "Como jugador quiero... para..."
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Criterios de aceptación
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Fuera de alcance
+    validations:
+      required: true
+  - type: dropdown
+    id: pillar
+    attributes:
+      label: Pilar
+      options:
+        - Apartamento
+        - Economía
+        - IA civil
+        - Raid
+        - Persistencia
+        - Solo/cooperativo
+        - Presentación
+        - Infraestructura
+    validations:
+      required: true
