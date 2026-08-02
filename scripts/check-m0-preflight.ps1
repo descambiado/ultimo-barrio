@@ -140,18 +140,95 @@ if ($isExpectedGitRoot) {
     Add-CheckResult -Status "PASS" -Name "Rama Git" -Detail "Rama de trabajo: $($branchResult.Output)."
   }
 
+  $worktreeResult = Invoke-GitReadOnly -ArgumentList @("status", "--porcelain")
+
+  if ($worktreeResult.ExitCode -ne 0) {
+    Add-CheckResult -Status "FAIL" -Name "Arbol de trabajo" -Detail "No se pudo leer el estado del repositorio." -Action "Corrige Git antes de continuar."
+  }
+  elseif ([string]::IsNullOrWhiteSpace($worktreeResult.Output)) {
+    Add-CheckResult -Status "PASS" -Name "Arbol de trabajo" -Detail "El arbol Git esta limpio."
+  }
+  else {
+    Add-CheckResult -Status "PENDING" -Name "Arbol de trabajo" -Detail "Hay cambios locales sin consolidar." -Action "Revisa, valida y agrupa los cambios reales en un commit antes del handoff."
+  }
+
+  $bootstrapTagResult = Invoke-GitReadOnly -ArgumentList @("show-ref", "--verify", "--quiet", "refs/tags/bootstrap-v0.0.0")
+
+  if ($bootstrapTagResult.ExitCode -eq 0) {
+    Add-CheckResult -Status "PASS" -Name "Tag bootstrap local" -Detail "bootstrap-v0.0.0 existe localmente."
+  }
+  else {
+    Add-CheckResult -Status "FAIL" -Name "Tag bootstrap local" -Detail "bootstrap-v0.0.0 no existe localmente." -Action "Recupera el tag original sin reescribirlo."
+  }
+
   $originResult = Invoke-GitReadOnly -ArgumentList @("remote", "get-url", "origin")
 
   if ($originResult.ExitCode -eq 0 -and -not [string]::IsNullOrWhiteSpace($originResult.Output)) {
     Add-CheckResult -Status "PASS" -Name "Remoto origin" -Detail "El remoto origin esta configurado."
+
+    $requiredRemoteRefs = @(
+      [pscustomobject]@{ Name = "Rama remota main"; Ref = "refs/heads/main" },
+      [pscustomobject]@{ Name = "Rama remota feat/m0-bootstrap"; Ref = "refs/heads/feat/m0-bootstrap" },
+      [pscustomobject]@{ Name = "Tag bootstrap remoto"; Ref = "refs/tags/bootstrap-v0.0.0" }
+    )
+
+    foreach ($requiredRemoteRef in $requiredRemoteRefs) {
+      $remoteRefResult = Invoke-GitReadOnly -ArgumentList @("ls-remote", "--exit-code", "origin", $requiredRemoteRef.Ref)
+
+      if ($remoteRefResult.ExitCode -eq 0 -and -not [string]::IsNullOrWhiteSpace($remoteRefResult.Output)) {
+        Add-CheckResult -Status "PASS" -Name $requiredRemoteRef.Name -Detail "$($requiredRemoteRef.Ref) existe en origin."
+      }
+      else {
+        Add-CheckResult -Status "PENDING" -Name $requiredRemoteRef.Name -Detail "$($requiredRemoteRef.Ref) no se pudo verificar en origin." -Action "Publica la referencia sin force-push y repite el preflight."
+      }
+    }
   }
   else {
     Add-CheckResult -Status "PENDING" -Name "Remoto origin" -Detail "No hay un remoto origin configurado." -Action "Configura origin con la URL del repositorio del proyecto."
+
+    foreach ($pendingRemoteRef in @("refs/heads/main", "refs/heads/feat/m0-bootstrap", "refs/tags/bootstrap-v0.0.0")) {
+      Add-CheckResult -Status "PENDING" -Name "Referencia remota $pendingRemoteRef" -Detail "No se puede verificar sin origin." -Action "Crea el repositorio, configura origin y publica las referencias."
+    }
   }
 }
 else {
   Add-CheckResult -Status "PENDING" -Name "Rama Git" -Detail "No se puede validar la rama hasta corregir la raiz Git." -Action "Corrige primero el chequeo Repositorio Git."
+  Add-CheckResult -Status "PENDING" -Name "Arbol de trabajo" -Detail "No se puede validar el arbol hasta corregir la raiz Git." -Action "Corrige primero el chequeo Repositorio Git."
+  Add-CheckResult -Status "PENDING" -Name "Tag bootstrap local" -Detail "No se puede validar el tag hasta corregir la raiz Git." -Action "Corrige primero el chequeo Repositorio Git."
   Add-CheckResult -Status "PENDING" -Name "Remoto origin" -Detail "No se puede validar origin hasta corregir la raiz Git." -Action "Corrige primero el chequeo Repositorio Git."
+}
+
+$licensePath = Join-Path -Path $repoRoot -ChildPath "LICENSE"
+
+if (-not (Test-Path -LiteralPath $licensePath -PathType Leaf)) {
+  Add-CheckResult -Status "FAIL" -Name "Licencia MPL-2.0" -Detail "LICENSE no existe." -Action "Recupera el archivo MPL-2.0 versionado sin alterar el historial."
+}
+else {
+  $licenseText = Get-Content -LiteralPath $licensePath -Raw -ErrorAction Stop
+
+  if ($licenseText -match "Mozilla Public License Version 2\.0") {
+    Add-CheckResult -Status "PASS" -Name "Licencia MPL-2.0" -Detail "LICENSE contiene Mozilla Public License Version 2.0."
+  }
+  else {
+    Add-CheckResult -Status "FAIL" -Name "Licencia MPL-2.0" -Detail "LICENSE no contiene el texto esperado de MPL-2.0." -Action "Restaura la licencia acordada sin reescribir tags ni commits."
+  }
+}
+
+if ($isExpectedGitRoot) {
+  $agplReferenceResult = Invoke-GitReadOnly -ArgumentList @(
+    "grep", "-n", "-i", "-E", "AGPL|GNU Affero", "--",
+    "*.md", "*.yml", "*.yaml", "*.json", "*.cs", "*.csproj", "*.props", "*.targets", "*.sbproj", "*.txt"
+  )
+
+  if ($agplReferenceResult.ExitCode -eq 1) {
+    Add-CheckResult -Status "PASS" -Name "Referencias de licencia" -Detail "No hay referencias AGPL en documentacion, manifiestos o codigo versionados."
+  }
+  elseif ($agplReferenceResult.ExitCode -eq 0) {
+    Add-CheckResult -Status "FAIL" -Name "Referencias de licencia" -Detail "Hay referencias AGPL en documentacion, manifiestos o codigo versionados." -Action "Corrige esas referencias a Mozilla Public License 2.0 y SPDX MPL-2.0."
+  }
+  else {
+    Add-CheckResult -Status "FAIL" -Name "Referencias de licencia" -Detail "No se pudo buscar referencias AGPL con git grep." -Action "Revisa Git y repite el preflight."
+  }
 }
 
 try {
@@ -159,6 +236,20 @@ try {
 
   if ($projectFiles.Count -eq 1) {
     Add-CheckResult -Status "PASS" -Name "Proyecto s&box" -Detail "Proyecto raiz: $($projectFiles[0].Name)."
+
+    try {
+      $projectManifest = Get-Content -LiteralPath $projectFiles[0].FullName -Raw -ErrorAction Stop | ConvertFrom-Json -ErrorAction Stop
+
+      if ($projectManifest.Metadata.StartupScene -eq "scenes/main.scene") {
+        Add-CheckResult -Status "PASS" -Name "Escena de inicio" -Detail "StartupScene apunta a scenes/main.scene."
+      }
+      else {
+        Add-CheckResult -Status "PENDING" -Name "Escena de inicio" -Detail "StartupScene apunta a '$($projectManifest.Metadata.StartupScene)'." -Action "Configura scenes/main.scene como escena de inicio y valida el boot."
+      }
+    }
+    catch {
+      Add-CheckResult -Status "FAIL" -Name "Escena de inicio" -Detail "No se pudo leer el manifiesto del proyecto: $($_.Exception.Message)" -Action "Corrige el JSON del .sbproj antes de continuar."
+    }
   }
   elseif ($projectFiles.Count -eq 0) {
     Add-CheckResult -Status "PENDING" -Name "Proyecto s&box" -Detail "No existe ningun .sbproj en la raiz." -Action "Crea Game - Empty en una carpeta vacia y fusiona los archivos generados aqui sin sobrescribir el starter."

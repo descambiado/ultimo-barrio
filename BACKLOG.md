@@ -10,9 +10,26 @@
 - [ ] M0-05 Segunda instancia local.
 - [ ] M0-06 Smoke test documentado.
 
+### Progreso comprobado — 2026-08-02
+
+- M0-02 sigue pendiente: no existe `origin` porque la autenticación de GitHub
+  CLI está expirada.
+- M0-03 tiene una implementación parcial verificable: `Assets/scenes/main.scene`
+  contiene `World`, `Systems`, `SpawnPoints` y `Debug`, además de suelo, luz,
+  cielo, punto de aparición, el prefab oficial `Player Controller` y cámara.
+- El primer Play Mode local inició y se detuvo sin errores de consola. El
+  jugador fue visible y el render de cámara quedó registrado en
+  `docs/media/first-boot.png`.
+- M0-03 y M0-04 permanecen abiertos porque el movimiento no se ha probado con
+  input real; el MCP disponible no puede inyectarlo.
+- M0-05 permanece abierto: no se ejecutó una segunda instancia porque el MCP
+  disponible no ofrece control de un segundo cliente.
+
 ## Epic M1 — Apartamento
 
 - [ ] M1-01 Definición de apartamento.
+- Especificación previa de M1-01: `docs/planning/m1-01-apartment-claim.md`.
+  No existe implementación todavía.
 - [ ] M1-02 Claim host-authoritative.
 - [ ] M1-03 Puerta interactiva.
 - [ ] M1-04 Contenedor de alijo.
