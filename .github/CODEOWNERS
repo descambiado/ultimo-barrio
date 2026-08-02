@@ -1,7 +1,7 @@
-# Sustituye @OWNER por el usuario u organización real.
-* @OWNER
+# Owner verificado mediante la conexión autenticada de GitHub el 2026-08-02.
+* @descambiado
 
-/docs/ @OWNER
-/Assets/asset-registry.yml @OWNER
-/SECURITY.md @OWNER
-/LICENSE @OWNER
+/docs/ @descambiado
+/Assets/asset-registry.yml @descambiado
+/SECURITY.md @descambiado
+/LICENSE @descambiado

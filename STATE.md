@@ -16,6 +16,8 @@
 
 ## GitHub
 
+- Owner autenticado verificado: `descambiado` (conexión de GitHub disponible en Codex).
+- Comprobación remota: `descambiado/ultimo-barrio` devolvió 404 antes de la publicación; el repositorio todavía no existe.
 - Repositorio público: **PENDIENTE**; GitHub CLI conserva una sesión expirada y todavía no hay autorización válida.
 - URL: **PENDIENTE**; no se inventa hasta obtener el owner mediante `gh api user --jq .login`.
 - Remoto `origin`: **NO CONFIGURADO**.
@@ -57,6 +59,8 @@ M0-03 permanece **EN PROGRESO** porque el movimiento todavía no está probado.
 - Play Mode: **PROBADO PARCIALMENTE**; arrancó en `main.scene`, mostró al jugador y se detuvo correctamente.
 - Movimiento: **NO VERIFICADO**; el MCP disponible no expone teclado o ratón.
 - Prueba multijugador: **NO REALIZADA**; no se inició una segunda instancia.
+- Red en la escena: no existe `NetworkHelper`; el `Player` actual es una instancia directa y no un spawn por conexión.
+- Camino oficial de dos clientes: verificado en la instalación local como `sbox.exe -joinlocal +instanceid <N>` después de iniciar hosting. No se ejecutó.
 - Captura de evidencia: `docs/media/first-boot.png`, 1280×720, captura real de Play Mode; no demuestra movimiento.
 
 ## M1-01 preparado, no implementado
@@ -77,13 +81,13 @@ El flujo será autoritativo en host y la persistencia se aislará tras una inter
 
 1. GitHub CLI no tiene una autorización válida. Crear el repositorio, publicar refs, abrir el PR y crear issues requiere completar `gh auth login` en el navegador.
 2. El MCP de s&box no inyecta entrada de teclado o ratón. La aparición y el render de cámara están probados, pero el movimiento necesita una interacción real en la ventana de Play Mode.
-3. El MCP no expone lanzamiento/unión/control de una segunda instancia. M0-04 requiere una prueba manual o una capacidad adicional del editor.
+3. El MCP no expone el menú `Start Hosting`, input independiente ni la consola del segundo proceso. El lanzamiento oficial de otra instancia está identificado, pero M0-04 aún requiere configurar `NetworkHelper`, evitar duplicar el Player directo y validar ambos clientes.
 
 ## Siguientes tres acciones
 
 1. Completar la autorización web de GitHub CLI, obtener el owner real y publicar `main`, `feat/m0-bootstrap` y `bootstrap-v0.0.0` sin force-push.
 2. Entrar en Play Mode y comprobar físicamente movimiento con WASD y control de cámara; registrar el resultado y cualquier entrada de consola.
-3. Tras cerrar M0-03, configurar una sesión host y una segunda instancia para M0-04; solo después comenzar los anchors del primer apartamento.
+3. Tras cerrar M0-03, sustituir el Player directo por spawn autoritativo mediante `NetworkHelper`, iniciar hosting y lanzar el segundo cliente con el comando oficial verificado; solo después comenzar los anchors del primer apartamento.
 
 ## Decisiones vigentes
 
