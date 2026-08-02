@@ -33,6 +33,10 @@ El formato se inspira en Keep a Changelog y el proyecto utiliza versionado semá
   `feat/m0-bootstrap` y el tag histórico `bootstrap-v0.0.0` publicados.
 - Draft PR `#7` para el bootstrap y seis issues iniciales para M0-03, M0-04,
   M1-01 y los spikes de mapa, armas y guardado.
+- Spawn de jugador por conexión mediante el componente oficial
+  `Sandbox.NetworkHelper`, sin Player directo duplicado en la escena.
+- Prueba local real con editor host y segundo `sbox.exe`: dos jugadores,
+  movimiento/cámara independientes y desconexión verificada.
 
 ### Changed
 
@@ -50,6 +54,8 @@ El formato se inspira en Keep a Changelog y el proyecto utiliza versionado semá
 - Los spikes de mapa y guardado tienen resultados de investigación publicados:
   blockout propio y pequeño para la primera manzana, y persistencia local
   host-only mediante generaciones inmutables sobre `FileSystem.Data`.
+- M0-04 queda funcionalmente validado. El smoke test conserva como seguimientos
+  el spawn solapado observado y los errores de recursos del cliente dev.
 
 ## [0.0.0] - 2026-08-02
 

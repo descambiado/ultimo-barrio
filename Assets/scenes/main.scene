@@ -236,46 +236,41 @@
           "Children": []
         },
         {
-          "__guid": "7b35d0fd-b733-486b-aba5-fcf288cb2fd1",
+          "__guid": "0a50f33f-4387-4d6b-9455-febdc50d4b27",
           "__version": 2,
-          "__Prefab": "templates/gameobject/player controller.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [
-              {
-                "Target": {
-                  "Type": "GameObject",
-                  "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
-                },
-                "Property": "Name",
-                "Value": "Player"
+          "Flags": 0,
+          "Name": "Network",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.NetworkHelper",
+              "__guid": "e2bba65e-ebfa-4ad6-93a2-d58e10548227",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "PlayerPrefab": {
+                "_type": "gameobject",
+                "prefab": "templates/gameobject/player controller.prefab"
               },
-              {
-                "Target": {
-                  "Type": "Component",
-                  "IdValue": "f2b49a45-d5d0-4868-8e56-f85f9a989be6"
-                },
-                "Property": "MaterialGroup",
-                "Value": "default"
-              }
-            ],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba": "7b35d0fd-b733-486b-aba5-fcf288cb2fd1",
-            "3ae1b3c4-14c5-4d68-be0a-1096ec3e2c8d": "f2b00621-ff2d-4f4d-a4c5-b79e7d7efb48",
-            "b3091a87-5492-4ba9-8aa8-6daa61c8ab13": "9aec04bb-9859-429f-a5ee-ff12865fd9d5",
-            "c818a718-51a0-4f30-b561-3719718d81d4": "80a1b923-02a0-4e04-a3a8-a71b678cb7cf",
-            "2f565d25-cbfa-4244-890f-d82931c0bdc1": "40fba538-a9a4-42a5-8f58-ce97e9de0894",
-            "20be986f-7510-4bf5-ae9a-2935f448faff": "4fa6673f-556a-44ab-a84e-3c0c41f950a3",
-            "50c8624c-ca50-48e3-951d-a189ae9f2de5": "53228ad8-c1c1-4ead-a50e-7077bef5a37b",
-            "6b5cbc3e-e37c-4eb9-afa6-577469114047": "4f1cbc6f-6435-4820-94a4-1d687941c03d",
-            "f2b49a45-d5d0-4868-8e56-f85f9a989be6": "b60737e6-af8e-4edc-813d-cfa01f1b00ca",
-            "14c32c81-db65-4764-b235-8d1469a40438": "b4a87ddb-383c-4dc4-b2a2-099cc13ecdcb",
-            "996337b2-679a-4b95-bced-979f20df922a": "97e08f6f-eea7-4cf6-bedd-c9c3e648ac08",
-            "ee640c43-fd61-4d0f-826e-5530c1cc9b27": "f37e6141-2ccc-4582-a252-19a150cef079"
-          }
+              "SpawnPoints": null,
+              "StartServer": true
+            }
+          ],
+          "Children": []
         }
       ]
     },

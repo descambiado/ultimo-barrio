@@ -29,7 +29,7 @@
 - Draft PR: [#7 — chore: bootstrap real del proyecto s&box](https://github.com/descambiado/ultimo-barrio/pull/7).
 - Issues:
   - [#1 — M0-03: crear `main.scene` y validar el primer boot jugable](https://github.com/descambiado/ultimo-barrio/issues/1) — cerrado.
-  - [#2 — M0-04: validar sesión local con dos clientes](https://github.com/descambiado/ultimo-barrio/issues/2)
+  - [#2 — M0-04: validar sesión local con dos clientes](https://github.com/descambiado/ultimo-barrio/issues/2) — cerrado.
   - [#3 — M1-01: crear apartamento reclamable](https://github.com/descambiado/ultimo-barrio/issues/3)
   - [#4 — SPIKE-MAP-001](https://github.com/descambiado/ultimo-barrio/issues/4) — cerrado.
   - [#5 — SPIKE-WEAPONS-001](https://github.com/descambiado/ultimo-barrio/issues/5)
@@ -61,26 +61,32 @@
   comprobados manualmente el 2026-08-03.
 - [x] Compilación y consola del proyecto limpias tras la prueba.
 
-## Hito activo
-
 ### M0-04 — sesión local con dos clientes
 
-**Objetivo:** sustituir el Player directo por spawn de red autoritativo y validar
-host y segundo cliente en una sesión local.
+- [x] `NetworkHelper` sustituye al Player directo.
+- [x] El host crea un único jugador local.
+- [x] Una segunda instancia conecta y crea un segundo jugador.
+- [x] Ownership práctico, movimiento y cámara independientes comprobados.
+- [x] Desconexión limpia: el host elimina solo el jugador remoto.
+- [x] Consolas revisadas y prueba reproducible documentada.
+
+## Hito activo
+
+### Cierre M0 — integrar el bootstrap
+
+**Objetivo:** publicar el bloque estable, comprobar la PR #7 y fusionarla en
+`main` antes de abrir una rama limpia de M1.
 
 ### Criterios de aceptación
 
-- [ ] El host crea una sesión local.
-- [ ] Una segunda instancia se conecta.
-- [ ] Existen dos jugadores distintos.
-- [ ] Ownership y movimiento independiente funcionan.
-- [ ] Ambas cámaras funcionan.
-- [ ] La desconexión del segundo cliente es limpia.
-- [ ] Consolas de host y cliente sin errores del proyecto.
-- [ ] Procedimiento y evidencia documentados.
+- [ ] Commit de M0-04 publicado en `feat/m0-bootstrap`.
+- [ ] Check de la PR #7 correcto.
+- [ ] PR #7 fusionada sin force-push.
+- [ ] `main` local actualizada y árbol limpio.
+- [ ] Rama M1 creada desde `main`.
 
-M0-04 está **EN PROGRESO**. La ruta oficial de lanzamiento está verificada,
-pero la escena todavía no contiene `NetworkHelper` ni spawn por conexión.
+M0-03 y M0-04 están completados. La integración de la PR todavía no se ha
+ejecutado.
 
 ## Estado técnico comprobado
 
@@ -88,7 +94,9 @@ pero la escena todavía no contiene `NetworkHelper` ni spawn por conexión.
 - Cambios sin guardar en la escena: no.
 - Jerarquía serializada: exactamente cuatro roots, `World`, `Systems`, `SpawnPoints` y `Debug`. El quinto objeto que expone el MCP es `editor_camera`, transitorio y no guardado en `main.scene`.
 - Mundo provisional: plano con collider estático, luz direccional y skybox 2D.
-- Jugador: instancia del prefab oficial `templates/gameobject/player controller.prefab`.
+- Jugador: `NetworkHelper` clona el prefab oficial
+  `templates/gameobject/player controller.prefab` por conexión; no existe un
+  Player directo en la escena fuente.
 - Cámara: `CameraComponent` principal y controles oficiales del prefab; se
   comprobaron tercera persona, primera persona y control con ratón.
 - Compilación: 10 compiladores correctos; `local.ultimo_barrio` y `local.ultimo_barrio.editor` con 0 errores y 0 avisos.
@@ -102,9 +110,13 @@ pero la escena todavía no contiene `NetworkHelper` ni spawn por conexión.
   expone el transform serializado, por lo que la evidencia de input es la
   observación directa del operador, acompañada de la lectura posterior de
   compilación y consola.
-- Prueba multijugador: **NO REALIZADA**; no se inició una segunda instancia.
-- Red en la escena: no existe `NetworkHelper`; el `Player` actual es una instancia directa y no un spawn por conexión.
-- Camino oficial de dos clientes: verificado en la instalación local como `sbox.exe -joinlocal +instanceid <N>` después de iniciar hosting. No se ejecutó.
+- Prueba multijugador: **PROBADA** con editor host y un `sbox.exe` independiente.
+  Hubo exactamente dos Players, input/cámara independientes y desconexión.
+- Red en la escena: `Systems/Network` usa `NetworkHelper` con `StartServer=true`
+  y el prefab oficial; el `SpawnPoint` de la escena actúa como fallback.
+- Consola host: 0 entradas `Error` entre 64 almacenadas.
+- Log cliente: revisado, con errores de recursos del entorno dev; la sesión fue
+  funcional, pero la consola del cliente no se declara limpia.
 - Captura de evidencia: `docs/media/first-boot.png`, 1280×720, captura real de Play Mode; no demuestra movimiento.
 
 ## M1-01 preparado, no implementado
@@ -123,17 +135,17 @@ El flujo será autoritativo en host y la persistencia se aislará tras una inter
 
 ## Bloqueadores reales
 
-- Ninguno para M0-03; el hito está completado.
-- Para M0-04, el MCP no expone el menú `Start Hosting`, input independiente ni
-  la consola del segundo proceso. Esto no bloquea todavía la implementación:
-  falta configurar `NetworkHelper`, evitar duplicar el Player directo e
-  intentar el lanzamiento oficial de la segunda instancia.
+- Ninguno para publicar y fusionar el bootstrap.
+- Incidencia no bloqueante: el segundo jugador apareció inicialmente en el
+  aire, probablemente por solapamiento en el único spawn.
+- Incidencia no bloqueante: el cliente dev registró errores de recursos que
+  deben clasificarse antes de una build pública.
 
 ## Siguientes tres acciones
 
-1. Sustituir el Player directo por spawn autoritativo mediante `NetworkHelper`.
-2. Iniciar hosting y lanzar el segundo cliente con `sbox.exe -joinlocal +instanceid <N>`.
-3. Verificar ownership, movimiento/cámara independientes, desconexión y las dos consolas; después cerrar M0-04.
+1. Publicar el commit de M0-04 y cerrar el issue #2 con evidencia.
+2. Comprobar y fusionar la PR #7 en `main`.
+3. Crear la rama M1 desde `main` y empezar los anchors del apartamento.
 
 ## Decisiones vigentes
 
@@ -165,3 +177,4 @@ El flujo será autoritativo en host y la persistencia se aislará tras una inter
 | 2026-08-02 | Codex + subagentes | `feat/m0-bootstrap` | README y medios reales preparados; `main.scene` creada y primer boot parcial validado | `2ba1925` |
 | 2026-08-02 | Codex + subagentes | `feat/m0-bootstrap` | M0-02 publicado: repositorio público, refs, draft PR e issues iniciales | `a8fbd90` |
 | 2026-08-03 | Codex + prueba manual | `feat/m0-bootstrap` | M0-03 validado: WASD, salto, ratón, primera/tercera persona y consola del proyecto limpia | `test(player): verify movement and camera input` |
+| 2026-08-03 | Codex + prueba de red | `feat/m0-bootstrap` | M0-04 validado con host, segundo cliente, input independiente y desconexión | `test(network): validate local two-client session` |

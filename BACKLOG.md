@@ -6,7 +6,7 @@
 - [x] M0-01 Crear proyecto Empty.
 - [x] M0-02 Publicar repositorio, ramas, tag, issues y draft PR.
 - [x] [M0-03](https://github.com/descambiado/ultimo-barrio/issues/1) Crear `main.scene` y validar el primer boot jugable.
-- [ ] [M0-04](https://github.com/descambiado/ultimo-barrio/issues/2) Validar sesión local con dos clientes.
+- [x] [M0-04](https://github.com/descambiado/ultimo-barrio/issues/2) Validar sesión local con dos clientes.
 - [ ] M0-05 Completar el smoke test reproducible de M0.
 
 ### Progreso comprobado — 2026-08-03
@@ -21,9 +21,12 @@
   visible, el render quedó registrado en `docs/media/first-boot.png` y el
   2026-08-03 se comprobaron manualmente WASD, salto, ratón y cambio entre
   tercera y primera persona.
-- M0-04 permanece abierto: no se ejecutó una segunda instancia. El camino
-  oficial está identificado, pero falta configurar el spawn de red y validar
-  ambos clientes.
+- M0-04 está completado: el camino oficial se ejecutó el 2026-08-03; host y
+  cliente tuvieron jugadores,
+  movimiento/cámara independientes y desconexión correcta. El issue puede
+  cerrarse.
+- M0-05 debe corregir o clasificar dos incidencias: posible solapamiento en el
+  único spawn y errores de recursos observados en el log del cliente dev.
 
 ## Epic M1 — Apartamento
 
