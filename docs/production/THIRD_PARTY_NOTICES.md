@@ -1,10 +1,19 @@
 # Third Party Notices — Último Barrio
 
-Este proyecto adapta y hace referencia a código de los siguientes proyectos de código abierto bajo sus respectivas licencias:
+Este proyecto adapta y hace referencia a código y paquetes de los siguientes proyectos de código abierto y dependencias externas bajo sus respectivas licencias:
 
 ---
 
-## 1. Facepunch Sandbox
+## 1. Map Package: `thieves.rpdowntown3t`
+- **Nombre**: RP Downtown 3t
+- **Package Ident**: `thieves.rpdowntown3t`
+- **Autor / Creador**: thieves
+- **Uso**: Entorno urbano montado dinámicamente en `ultimo_barrio_alpha.scene` mediante `Sandbox.MapInstance`.
+- **Condición de Uso**: Se consume exclusivamente como dependencia cargada dinámicamente desde s&box cloud. No se redistribuyen ni modifican los binarios `.vmap` o assets fuente del autor.
+
+---
+
+## 2. Facepunch Sandbox
 - **Proyecto**: Sandbox (s&box)
 - **Autor**: Facepunch Studios
 - **Licencia**: MIT License
@@ -27,7 +36,7 @@ copies or substantial portions of the Software.
 
 ---
 
-## 2. Simple Weapon Base
+## 3. Simple Weapon Base
 - **Proyecto**: simple-weapon-base
 - **Autor**: timmybo5
 - **Licencia**: MIT License
@@ -50,7 +59,7 @@ copies or substantial portions of the Software.
 
 ---
 
-## 3. Sandbox Plus
+## 4. Sandbox Plus
 - **Proyecto**: sandbox-plus
 - **Autor**: Nebual
 - **Licencia**: MIT License
