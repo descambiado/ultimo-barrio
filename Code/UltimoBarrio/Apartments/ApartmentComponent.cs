@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
+using Sandbox;
+using System.Linq;
 using UltimoBarrio.Persistence;
 
 namespace UltimoBarrio.Apartments;
@@ -23,6 +25,8 @@ public sealed class ApartmentComponent : Component
 
 	[Property] public GameObject SpawnReference { get; set; }
 
+	[Property] public GameObject RaidTargetReference { get; set; }
+
 	[Property] public int SaveVersion { get; set; } = SaveSnapshot.CurrentVersion;
 
 	internal bool TryValidateConfiguration( out string error )
@@ -33,12 +37,20 @@ public sealed class ApartmentComponent : Component
 			return false;
 		}
 
+		// Fallback resolution for references across descendants
 		if ( !DoorReference.IsValid() )
-			DoorReference = GameObject.Children.FirstOrDefault(c => c.Name == "Claim Portal");
+			DoorReference = GameObject.Components.GetAll<ApartmentClaimInteractable>( FindMode.EverythingInSelfAndDescendants ).FirstOrDefault()?.GameObject
+			                ?? GameObject.Children.FirstOrDefault( c => c.Name.Contains( "Claim" ) || c.Name.Contains( "Door" ) );
+
 		if ( !StashReference.IsValid() )
-			StashReference = GameObject.Children.SelectMany(c => c.Children).FirstOrDefault(c => c.Name == "Stash Anchor");
+			StashReference = GameObject.Components.GetAll<StashComponent>( FindMode.EverythingInSelfAndDescendants ).FirstOrDefault()?.GameObject
+			                 ?? GameObject.Children.FirstOrDefault( c => c.Name.Contains( "Stash" ) );
+
 		if ( !SpawnReference.IsValid() )
-			SpawnReference = GameObject.Children.SelectMany(c => c.Children).FirstOrDefault(c => c.Name == "Owner Spawn Anchor");
+			SpawnReference = GameObject.Children.FirstOrDefault( c => c.Name.Contains( "Spawn" ) ) ?? GameObject;
+
+		if ( !RaidTargetReference.IsValid() )
+			RaidTargetReference = DoorReference ?? StashReference ?? GameObject;
 
 		if ( !DoorReference.IsValid() )
 		{

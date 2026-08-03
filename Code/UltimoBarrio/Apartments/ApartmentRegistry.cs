@@ -67,6 +67,11 @@ public sealed class ApartmentRegistry
 			apartments.Add( group.Key, apartment );
 		}
 
+		if ( apartments.Count < 2 )
+		{
+			errors.Add( $"ApartmentRegistry requires at least 2 fully valid apartments to start Alpha 0.1. Found {apartments.Count}." );
+		}
+
 		return new ApartmentRegistry( apartments, errors );
 	}
 
