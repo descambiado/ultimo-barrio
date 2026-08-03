@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: MPL-2.0
 
 namespace UltimoBarrio.Persistence;
 
@@ -16,4 +16,5 @@ public sealed class SaveSnapshot
 
 	public List<ApartmentSaveData> Apartments { get; set; } = [];
 	public List<PlayerEconomySaveData> PlayersEconomy { get; set; } = [];
+	public List<InventorySaveData> Inventories { get; set; } = [];
 }

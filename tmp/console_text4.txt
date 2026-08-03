@@ -1,0 +1,5 @@
+1 entries, oldest first (113 buffered):
+14:35:57 [Generic] Error: UB.Apartment RegistryInvalid reason=ApartmentId 'apartment-a02' is duplicated 2 times.
+    at UltimoBarrio.Apartments.ApartmentClaimService.TryInitialize() in C:\Users\davyd\Documents\GitHub\sbox-last-hood\Code\UltimoBarrio\Apartments\ApartmentClaimService.cs:line 181
+    at UltimoBarrio.Apartments.ApartmentClaimService.OnStart() in C:\Users\davyd\Documents\GitHub\sbox-last-hood\Code\UltimoBarrio\Apartments\ApartmentClaimService.cs:line 35
+    at Sandbox.Component.InternalOnStart()

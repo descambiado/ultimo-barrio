@@ -1,0 +1,51 @@
+50 entries, oldest first (100 buffered):
+14:38:05 [Generic] Info: Added new 0 cloud reference(s) to ServerPackage table.. (took 0.006s)
+14:38:05 [Generic] Info: Found ApartmentComponent on: apartment-a01, ID: apartment-a01
+14:38:05 [Generic] Info: Found ApartmentComponent on: apartment-a02, ID: apartment-a02
+14:38:05 [Generic] Info: ApartmentRegistry.Build: Found 2 components, 2 are valid.
+14:38:05 [Generic] Info: ApartmentRegistry.Build: Found 2 groups.
+14:38:05 [Generic] Info: UB.Apartment ServiceReady apartments=2 loaded=True
+14:38:05 [engine/RenderSystem] Info: Merging and flushing Vulkan pipeline cache to disk.
+14:38:05 [Generic] Info: 👋 C. SATELITE | Descambiado has joined the game
+14:38:05 [Generic] Info: UB.Apartment OwnerRespawned apartment=apartment-a01
+14:44:04 [engine/AssetSystem] Info: On-demand recompile of asset scenes/main.scene
+14:44:04 [engine/AssetSystem] Info:  -> reason: At least one out-of-date dependency: scenes/main.scene (file checksum changed)
+14:44:32 [Generic] Info: Added new 0 cloud reference(s) to ServerPackage table.. (took 0.006s)
+14:44:32 [Generic] Info: Found ApartmentComponent on: apartment-a01, ID: apartment-a01
+14:44:32 [Generic] Info: Found ApartmentComponent on: apartment-a02, ID: apartment-a02
+14:44:32 [Generic] Info: ApartmentRegistry.Build: Found 2 components, 2 are valid.
+14:44:32 [Generic] Info: ApartmentRegistry.Build: Found 2 groups.
+14:44:32 [Generic] Info: UB.Apartment ServiceReady apartments=2 loaded=True
+14:44:32 [engine/RenderSystem] Info: Merging and flushing Vulkan pipeline cache to disk.
+14:44:32 [Generic] Info: 👋 C. SATELITE | Descambiado has joined the game
+14:44:32 [Generic] Warn: Error opening stylesheet: ultimobarrio/ui/inventoryui.cs.scss (File not found)
+14:44:32 [Generic] Info: UB.Apartment OwnerRespawned apartment=apartment-a01
+14:46:10 [Generic] Warn: Unknown Command 'noclip'
+14:46:54 [engine/AssetSystem] Info: On-demand recompile of asset scenes/main.scene
+14:46:54 [engine/AssetSystem] Info:  -> reason: At least one out-of-date dependency: scenes/main.scene (file checksum changed)
+14:46:58 [Generic] Info: Added new 0 cloud reference(s) to ServerPackage table.. (took 0.006s)
+14:46:58 [Generic] Info: Found ApartmentComponent on: apartment-a01, ID: apartment-a01
+14:46:58 [Generic] Info: Found ApartmentComponent on: apartment-a02, ID: apartment-a02
+14:46:58 [Generic] Info: ApartmentRegistry.Build: Found 2 components, 2 are valid.
+14:46:58 [Generic] Info: ApartmentRegistry.Build: Found 2 groups.
+14:46:58 [Generic] Info: UB.Apartment ServiceReady apartments=2 loaded=True
+14:46:58 [engine/RenderSystem] Info: Merging and flushing Vulkan pipeline cache to disk.
+14:46:58 [Generic] Info: 👋 C. SATELITE | Descambiado has joined the game
+14:46:58 [Generic] Info: UB.Apartment OwnerRespawned apartment=apartment-a01
+14:47:50 [Generic] Info: Found ApartmentComponent on: apartment-a01, ID: apartment-a01
+14:47:50 [Generic] Info: Found ApartmentComponent on: apartment-a02, ID: apartment-a02
+14:47:50 [Generic] Info: ApartmentRegistry.Build: Found 2 components, 2 are valid.
+14:47:50 [Generic] Info: ApartmentRegistry.Build: Found 2 groups.
+14:47:50 [Generic] Info: UB.Apartment ServiceReady apartments=2 loaded=True
+14:47:50 [engine/RenderSystem] Info: Merging and flushing Vulkan pipeline cache to disk.
+14:47:50 [Generic] Info: 👋 C. SATELITE | Descambiado has joined the game
+14:47:50 [Generic] Info: UB.Apartment OwnerRespawned apartment=apartment-a01
+14:48:49 [Generic] Info: Added new 0 cloud reference(s) to ServerPackage table.. (took 0.004s)
+14:48:49 [Generic] Info: Found ApartmentComponent on: apartment-a01, ID: apartment-a01
+14:48:49 [Generic] Info: Found ApartmentComponent on: apartment-a02, ID: apartment-a02
+14:48:49 [Generic] Info: ApartmentRegistry.Build: Found 2 components, 2 are valid.
+14:48:49 [Generic] Info: ApartmentRegistry.Build: Found 2 groups.
+14:48:49 [Generic] Info: UB.Apartment ServiceReady apartments=2 loaded=True
+14:48:49 [engine/RenderSystem] Info: Merging and flushing Vulkan pipeline cache to disk.
+14:48:49 [Generic] Info: 👋 C. SATELITE | Descambiado has joined the game
+14:48:49 [Generic] Info: UB.Apartment OwnerRespawned apartment=apartment-a01

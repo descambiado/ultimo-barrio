@@ -20,15 +20,27 @@ namespace UltimoBarrio
 
         public void OnInteract(Guid playerId)
         {
+            Log.Info($"[Pickup] OnInteract called by {playerId}. IsProxy: {IsProxy}");
             if (IsProxy) return;
-            var player = Scene.Directory.FindComponentByGuid(playerId);
-            if (player != null)
+            var player = Scene.Directory.FindByGuid(playerId);
+            if (player == null)
             {
-                var inventory = player.Components.Get<InventoryComponent>();
-                if (inventory != null && inventory.TryAdd(ItemId, Amount))
+                Log.Info($"[Pickup] Player {playerId} not found!");
+                return;
+            }
+            var inventory = player.Components.Get<InventoryComponent>();
+            if (inventory != null)
+            {
+                bool added = inventory.TryAdd(ItemId, Amount);
+                Log.Info($"[Pickup] Added to inventory: {added}");
+                if (added)
                 {
                     GameObject.Destroy();
                 }
+            }
+            else
+            {
+                Log.Info($"[Pickup] No inventory found on player {playerId}!");
             }
         }
     }

@@ -1,0 +1,37 @@
+30 entries, oldest first (551 buffered):
+15:07:48 [Generic] Error: Exception when calling 'Update' on UltimoBarrio.UI.PlayerHud
+    System.NullReferenceException: Object reference not set to an instance of an object.
+    at DMD<System.Void UltimoBarrio.UI.PlayerHud:OnUpdate()>(PlayerHud this)
+    at Sandbox.Component.InternalUpdate()
+15:07:59 [Generic] Info: [HUD] TAB PRESSED! PlayerInvUI.Panel display: 
+15:07:59 [Generic] Error: Exception when calling 'Update' on UltimoBarrio.UI.PlayerHud
+    System.NullReferenceException: Object reference not set to an instance of an object.
+    at DMD<System.Void UltimoBarrio.UI.PlayerHud:OnUpdate()>(PlayerHud this)
+    at Sandbox.Component.InternalUpdate()
+15:08:01 [Generic] Info: [Interact] Player pressed E. Ray hit: False, Object: none at -258.95,170.5356,99.5047
+15:08:01 [Generic] Info: [Interact] Player pressed E. Ray hit: False, Object: none at -48.81,88.9582,51.7407
+15:08:03 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Claim Portal at 94.24,5.4603,57.8376
+15:08:03 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider, ApartmentClaimInteractable
+15:08:03 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Claim Portal at 94.24,1.8165,55.7616
+15:08:03 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider, ApartmentClaimInteractable
+15:08:05 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Apartment Floor at 272.9473,51.8397,4.56
+15:08:05 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider
+15:08:05 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Apartment Floor at 241.9948,47.9936,4.56
+15:08:05 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider
+15:08:05 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Back Wall at 312,76.2627,20.583
+15:08:05 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider
+15:08:06 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Back Wall at 312,71.9072,37.1225
+15:08:06 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider
+15:08:32 [Generic] Info: Added new 0 cloud reference(s) to ServerPackage table.. (took 0.005s)
+15:08:32 [Generic] Info: Found ApartmentComponent on: apartment-a01, ID: apartment-a01
+15:08:32 [Generic] Info: Found ApartmentComponent on: apartment-a02, ID: apartment-a02
+15:08:32 [Generic] Info: ApartmentRegistry.Build: Found 2 components, 2 are valid.
+15:08:32 [Generic] Info: ApartmentRegistry.Build: Found 2 groups.
+15:08:32 [Generic] Info: UB.Apartment ServiceReady apartments=2 loaded=True
+15:08:32 [engine/RenderSystem] Info: Merging and flushing Vulkan pipeline cache to disk.
+15:08:32 [Generic] Info: 👋 C. SATELITE | Descambiado has joined the game
+15:08:32 [Generic] Info: UB.Apartment OwnerRespawned apartment=apartment-a01
+15:08:38 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Back Wall at 312,0.0007,68.6013
+15:08:38 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider
+15:08:45 [Generic] Info: [Interact] Player pressed E. Ray hit: False, Object: none at 338.5793,186.0839,64.0413
+15:08:46 [Generic] Info: [Interact] Player pressed E. Ray hit: False, Object: none at 338.5793,186.0839,64.0413

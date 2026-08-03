@@ -1,0 +1,31 @@
+30 entries, oldest first (248 buffered):
+15:27:07 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider
+15:27:07 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Apartment Floor at 251.4251,50.2686,4.56
+15:27:07 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider
+15:27:08 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Apartment Floor at 249.2464,47.6985,4.56
+15:27:08 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider
+15:27:11 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Chatarra A02 at 125,151.3048,57.3
+15:27:11 [Generic] Info: [Interact] Components on hit object: WorldItemPickup, BoxCollider, ModelRenderer
+15:27:11 [Generic] Info: [Pickup] OnInteract called by 0d59fd55-0277-41db-b12b-6a57c1901aca. IsProxy: False
+15:27:11 [Generic] Info: [Pickup] Added to inventory: True
+15:27:21 [Generic] Warn: UB.Apartment ClaimRejected apartment=apartment-a02 reason=PlayerAlreadyOwnsApartment
+15:27:21 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Claim Portal at 394.24,-7.702,53.9383
+15:27:21 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider, ApartmentClaimInteractable
+15:27:21 [Generic] Warn: UB.Apartment ClaimRejected apartment=apartment-a02 reason=PlayerAlreadyOwnsApartment
+15:27:22 [Generic] Warn: UB.Apartment ClaimRejected apartment=apartment-a02 reason=PlayerAlreadyOwnsApartment
+15:27:22 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Claim Portal at 394.24,-0.4774,53.9184
+15:27:22 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider, ApartmentClaimInteractable
+15:27:22 [Generic] Warn: UB.Apartment ClaimRejected apartment=apartment-a02 reason=PlayerAlreadyOwnsApartment
+15:27:38 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Apartment Floor at 557.3049,53.222,4.56
+15:27:38 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider
+15:27:38 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Apartment Floor at 554.8336,53.7776,4.56
+15:27:38 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider
+15:27:40 [Generic] Warn: UB.Apartment ClaimRejected apartment=apartment-a02 reason=PlayerAlreadyOwnsApartment
+15:27:40 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Apartment Floor at 467.3257,72.6496,4.56
+15:27:40 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider
+15:27:40 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: PrototypeFloor at 368.5981,-14.972,0
+15:27:40 [Generic] Info: [Interact] Components on hit object: ModelRenderer, PlaneCollider
+15:27:40 [Generic] Warn: UB.Apartment ClaimRejected apartment=apartment-a02 reason=PlayerAlreadyOwnsApartment
+15:27:40 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Claim Portal at 399.1506,24,50.5031
+15:27:40 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider, ApartmentClaimInteractable
+15:27:40 [Generic] Warn: UB.Apartment ClaimRejected apartment=apartment-a02 reason=PlayerAlreadyOwnsApartment

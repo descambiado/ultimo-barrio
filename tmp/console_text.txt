@@ -1,0 +1,52 @@
+48 entries, oldest first (48 buffered):
+14:32:32 [MCP] Info: MCP server listening on http://127.0.0.1:7269/mcp
+14:32:36 [Generic] Info: Validating cloud packages
+14:32:37 [PackageManager] Info: Install Package (Already Mounted) local.base#local [local]
+14:32:37 [PackageManager] Info: Install Package (Already Mounted) local.menu#local [local]
+14:32:38 [PackageManager] Info: Install Package (Already Mounted) local.toolbase#local [local]
+14:32:38 [PackageManager] Info: Install Package (Already Mounted) local.shadergraph#local [local]
+14:32:38 [PackageManager] Info: Install Package (Already Mounted) local.actiongraph#local [local]
+14:32:38 [PackageManager] Info: Install Package (Already Mounted) local.moviemaker#local [local]
+14:32:38 [PackageManager] Info: Install Package (Already Mounted) local.hammer#local [local]
+14:32:38 [PackageManager] Info: Install Package (Already Mounted) local.dooeditor#local [local]
+14:32:38 [PackageManager] Info: Install Package (Already Mounted) local.base#local [local]
+14:32:38 [PackageManager] Info: Install Package (Already Mounted) local.menu#local [local]
+14:32:38 [PackageManager] Info: Install Package (Already Mounted) local.toolbase#local [local]
+14:32:38 [PackageManager] Info: Install Package (Already Mounted) local.shadergraph#local [local]
+14:32:38 [PackageManager] Info: Install Package (Already Mounted) local.actiongraph#local [local]
+14:32:38 [PackageManager] Info: Install Package (Already Mounted) local.moviemaker#local [local]
+14:32:38 [PackageManager] Info: Install Package (Already Mounted) local.hammer#local [local]
+14:32:38 [PackageManager] Info: Install Package (Already Mounted) local.dooeditor#local [local]
+14:32:38 [PackageManager] Info: Install Package (Already Mounted) local.base#local [local]
+14:32:42 [PackageManager] Info: Install Package (Already Mounted) local.ultimo_barrio#local [gamemenu]
+14:32:53 [Startup] Info: Importing custom assets
+14:32:56 [Generic] Warn: ImportCustomTypeFiles took 2.18 seconds
+14:32:57 [Startup] Info: ..refresh complete (took 0.009s)
+14:32:58 [Generic] Info: Bootstrap Init Done
+14:32:58 [Generic] Info: Bootstrap Networking...
+14:32:13 [engine/Engine] Info: SteamAPI_Init succeeded.  SteamID is [U:1:365634112] (76561198325899840), AppID is 590830
+14:32:14 [engine/RenderSystem] Info: Layer VK_LAYER_ROCKSTAR_GAMES_social_club uses API version 1.0 which is older than the application specified API version of 1.2. May cause issues.
+14:32:14 [engine/RenderSystem] Info: Vulkan Physical Device: NVIDIA GeForce RTX 2060
+14:32:14 [engine/RenderSystem] Info: Vulkan driver version: 610.74.0.0
+14:33:00 [engine/ResourceSystem] Warn: Error loading resource file "models/citizen_clothes/hair/hair_looseblonde/hair.loose.brown.clothing_c" (Error: ERROR_FILEOPEN: File not found) - from models/citizen_clothes/hair/hair_looseblonde/hair.loose.grey.clothing
+14:33:04 [engine/ResourceSystem] Warn: Error loading resource file "sounds/tools/sfm/denyundo.vsnd_c" (Error: ERROR_FILEOPEN: File not found) - from sounds/player_use_fail.sound
+14:33:04 [engine/ResourceSystem] Warn: Error loading resource file "particles/break/break.cardboard.vpcf_c" (Error: ERROR_FILEOPEN: File not found) - from models/citizen_props/balloonregular01.vmdl
+14:33:05 [engine/ResourceSystem] Warn: Error loading resource file "models/props/metal_wheely_bin/metal_wheely_bin_compost.vmat_c" (Error: ERROR_FILEOPEN: File not found) - from models/sbox_props/metal_wheely_bin/metal_wheely_bin_body_gib.vmdl
+14:33:05 [engine/ResourceSystem] Warn: Error loading resource file "sandbox.decal_c" (Error: ERROR_FILEOPEN: File not found) - from prefabs/surface/cardboard-bullet.prefab
+14:33:05 [engine/ResourceSystem] Warn: Error loading resource file "box_test.vmdl_c" (Error: ERROR_FILEOPEN: File not found) - from scenes/reward-unbox.scene
+14:33:05 [engine/ResourceSystem] Warn: Error loading resource file "materials/default/default_mask_tga_3a4f4d17.generated.vtex_c" (Error: ERROR_FILEOPEN: File not found) - from materials/generic/wall_brick_b_trim_noalpha.vmat
+14:33:06 [engine/ResourceSystem] Warn: Error loading resource file "sounds/button1.sound_c" (Error: ERROR_FILEOPEN: File not found) - from scenes/menu-main.scene
+14:33:06 [engine/MaterialSystem] Warn: Texture g_tTransmissiveColor doesn't exist in models/nature/grass_weeds/material/grass_weeds_01b.vmat!
+14:35:57 [Generic] Info: Added new 0 cloud reference(s) to ServerPackage table.. (took 0.005s)
+14:35:57 [Generic] Info: Found ApartmentComponent on: Prototype Apartment A02, ID: apartment-a02
+14:35:57 [Generic] Info: Found ApartmentComponent on: apartment-a01, ID: apartment-a01
+14:35:57 [Generic] Info: Found ApartmentComponent on: apartment-a02, ID: apartment-a02
+14:35:57 [Generic] Info: ApartmentRegistry.Build: Found 3 components, 3 are valid.
+14:35:57 [Generic] Info: ApartmentRegistry.Build: Found 2 groups.
+14:35:57 [Generic] Error: UB.Apartment RegistryInvalid reason=ApartmentId 'apartment-a02' is duplicated 2 times.
+    at UltimoBarrio.Apartments.ApartmentClaimService.TryInitialize() in C:\Users\davyd\Documents\GitHub\sbox-last-hood\Code\UltimoBarrio\Apartments\ApartmentClaimService.cs:line 181
+    at UltimoBarrio.Apartments.ApartmentClaimService.OnStart() in C:\Users\davyd\Documents\GitHub\sbox-last-hood\Code\UltimoBarrio\Apartments\ApartmentClaimService.cs:line 35
+    at Sandbox.Component.InternalOnStart()
+14:35:57 [engine/RenderSystem] Info: Merging and flushing Vulkan pipeline cache to disk.
+14:35:57 [Generic] Info: 👋 C. SATELITE | Descambiado has joined the game
+14:35:57 [Generic] Warn: Error opening stylesheet: ultimobarrio/ui/playerhud.cs.scss (File not found)

@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: MPL-2.0
 
 using System;
 using System.Globalization;
@@ -341,7 +341,16 @@ public sealed class LocalPersistenceProvider : IPersistenceProvider
 				PlayerId = p.PlayerId,
 				Balance = p.Balance,
 				SaveVersion = p.SaveVersion
-			} ).ToList()
+			} ).ToList(),
+			Inventories = source.Inventories?.Select( i => new InventorySaveData
+			{
+				InventoryId = i.InventoryId,
+				Slots = i.Slots.Select( s => new InventorySlotSaveData
+				{
+					ItemId = s.ItemId,
+					Amount = s.Amount
+				} ).ToList()
+			} ).ToList() ?? new List<InventorySaveData>()
 		};
 	}
 

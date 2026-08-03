@@ -13,6 +13,7 @@ namespace UltimoBarrio
 
     public class InventoryComponent : Component, IInventoryOwner
     {
+        [Property] public string InventoryId { get; set; } = string.Empty;
         [Property] public int MaxSlots { get; set; } = 24;
         [Property] public int HotbarSlots { get; set; } = 6;
         
@@ -73,6 +74,24 @@ namespace UltimoBarrio
         {
             var existing = Slots.FirstOrDefault(s => s.ItemId == itemId);
             return existing?.Amount ?? 0;
+        }
+
+        [Rpc.Host]
+        public void RequestTransfer(string itemId, int amount, Guid targetInventoryId)
+        {
+            var targetInv = Scene.GetAllComponents<InventoryComponent>().FirstOrDefault(c => c.GameObject.Id == targetInventoryId);
+            if (targetInv == null) return;
+
+            // Optional: Validate distance or ownership here if needed
+            
+            if (TryRemove(itemId, amount))
+            {
+                if (!targetInv.TryAdd(itemId, amount))
+                {
+                    // Refund if add failed
+                    TryAdd(itemId, amount);
+                }
+            }
         }
     }
 }

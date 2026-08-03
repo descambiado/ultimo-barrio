@@ -1,0 +1,31 @@
+30 entries, oldest first (262 buffered):
+14:54:05 [Generic] Info: [Interact] Components on hit object: ModelRenderer, PlaneCollider
+14:54:06 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Left Wall at 201.9576,112,13.2101
+14:54:06 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider
+14:54:06 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Left Wall at 214.1176,112,29.9807
+14:54:06 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider
+14:54:06 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: PrototypeFloor at 237.3499,115.7665,0
+14:54:06 [Generic] Info: [Interact] Components on hit object: ModelRenderer, PlaneCollider
+14:54:06 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: PrototypeFloor at 194.0587,149.9829,0
+14:54:06 [Generic] Info: [Interact] Components on hit object: ModelRenderer, PlaneCollider
+14:54:07 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: PrototypeFloor at 180.7144,173.9604,0
+14:54:07 [Generic] Info: [Interact] Components on hit object: ModelRenderer, PlaneCollider
+14:54:07 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: PrototypeFloor at 191.4021,195.6431,0
+14:54:07 [Generic] Info: [Interact] Components on hit object: ModelRenderer, PlaneCollider
+14:54:11 [Generic] Info: Added new 0 cloud reference(s) to ServerPackage table.. (took 0.004s)
+14:54:11 [Generic] Info: Found ApartmentComponent on: apartment-a01, ID: apartment-a01
+14:54:11 [Generic] Info: Found ApartmentComponent on: apartment-a02, ID: apartment-a02
+14:54:11 [Generic] Info: ApartmentRegistry.Build: Found 2 components, 2 are valid.
+14:54:11 [Generic] Info: ApartmentRegistry.Build: Found 2 groups.
+14:54:11 [Generic] Info: UB.Apartment ServiceReady apartments=2 loaded=True
+14:54:11 [engine/RenderSystem] Info: Merging and flushing Vulkan pipeline cache to disk.
+14:54:11 [Generic] Info: 👋 C. SATELITE | Descambiado has joined the game
+14:54:11 [Generic] Info: UB.Apartment OwnerRespawned apartment=apartment-a01
+14:54:14 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Chatarra A02 at 148.0339,175,53.764
+14:54:14 [Generic] Info: [Interact] Components on hit object: WorldItemPickup, BoxCollider, ModelRenderer
+14:54:14 [Generic] Info: [Pickup] OnInteract called by 5f628d53-baca-436b-8d88-88719ac37983. IsProxy: False
+14:54:14 [Generic] Info: [Pickup] Added to inventory: True
+14:54:25 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Apartment Floor at 538.4758,41.8372,4.56
+14:54:25 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider
+14:54:25 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Apartment Floor at 551.8367,51.4192,4.56
+14:54:25 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider

@@ -185,7 +185,7 @@
         "__enabled": true
       },
       {
-        "__type": "UltimoBarrio.Inventory.InventoryComponent",
+        "__type": "UltimoBarrio.InventoryComponent",
         "__guid": "a959eeda-fa54-4e09-a6d2-aad00144bcb1",
         "__enabled": true
       },
@@ -193,6 +193,26 @@
         "__type": "UltimoBarrio.Economy.Wallet",
         "__guid": "cfd92c85-7e62-48bd-90de-badab0794485",
         "__enabled": true
+      },
+      {
+        "__type": "UltimoBarrio.UI.PlayerHud",
+        "__guid": "c1860388-e203-4b6c-aaa0-c87299dff4ae",
+        "__enabled": true
+      },
+      {
+        "__type": "UltimoBarrio.PlayerInteractor",
+        "__guid": "831f293e-d324-4398-b98f-acc29eb5fb26",
+        "__enabled": true
+      },
+      {
+        "__type": "Sandbox.ScreenPanel",
+        "__guid": "c6cf0345-8b32-4003-8797-80253c109341",
+        "__enabled": true,
+        "AutoScreenScale": true,
+        "Opacity": 1,
+        "Scale": 1,
+        "ScaleStrategy": "ConsistentHeight",
+        "ZIndex": 100
       }
     ],
     "Children": [

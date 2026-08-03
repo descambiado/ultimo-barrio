@@ -1,0 +1,21 @@
+20 entries, oldest first (102 buffered):
+15:16:39 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider
+15:16:51 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Apartment Floor at 274.0414,46.3404,4.56
+15:16:51 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider
+15:16:51 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Apartment Floor at 262.8849,52.5316,4.56
+15:16:51 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider
+15:16:51 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Apartment Floor at 255.6218,48.8531,4.56
+15:16:51 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider
+15:16:51 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Apartment Floor at 253.9323,49.8738,4.56
+15:16:51 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider
+15:16:51 [Generic] Info: [Interact] Player pressed E. Ray hit: True, Object: Apartment Floor at 251.4659,50.1683,4.56
+15:16:51 [Generic] Info: [Interact] Components on hit object: ModelRenderer, BoxCollider
+15:17:03 [Generic] Info: Added new 0 cloud reference(s) to ServerPackage table.. (took 0.008s)
+15:17:03 [Generic] Info: Found ApartmentComponent on: apartment-a01, ID: apartment-a01
+15:17:03 [Generic] Info: Found ApartmentComponent on: apartment-a02, ID: apartment-a02
+15:17:03 [Generic] Info: ApartmentRegistry.Build: Found 2 components, 2 are valid.
+15:17:03 [Generic] Info: ApartmentRegistry.Build: Found 2 groups.
+15:17:03 [Generic] Info: UB.Apartment ServiceReady apartments=2 loaded=True
+15:17:03 [engine/RenderSystem] Info: Merging and flushing Vulkan pipeline cache to disk.
+15:17:03 [Generic] Info: 👋 C. SATELITE | Descambiado has joined the game
+15:17:03 [Generic] Info: UB.Apartment OwnerRespawned apartment=apartment-a01

@@ -1,0 +1,21 @@
+20 entries, oldest first (122 buffered):
+15:16:09 [Generic] Warn: ImportCustomTypeFiles took 1.99 seconds
+15:16:11 [engine/ResourceSystem] Warn: Error loading resource file "materials/default/default_mask_tga_3a4f4d17.generated.vtex_c" (Error: ERROR_FILEOPEN: File not found) - from materials/generic/wall_brick_c_trim_noalpha.vmat
+15:16:11 [engine/ResourceSystem] Warn: Error loading resource file "sounds/tools/sfm/denyundo.vsnd_c" (Error: ERROR_FILEOPEN: File not found) - from sounds/player_use_fail.sound
+15:16:11 [engine/ResourceSystem] Warn: Error loading resource file "box_test.vmdl_c" (Error: ERROR_FILEOPEN: File not found) - from scenes/reward-unbox.scene
+15:16:11 [engine/ResourceSystem] Warn: Error loading resource file "sounds/button1.sound_c" (Error: ERROR_FILEOPEN: File not found) - from scenes/menu-main.scene
+15:16:12 [engine/ResourceSystem] Warn: Error loading resource file "particles/break/break.cardboard.vpcf_c" (Error: ERROR_FILEOPEN: File not found) - from models/citizen_props/balloonregular01.vmdl
+15:16:12 [engine/ResourceSystem] Warn: Error loading resource file "models/props/metal_wheely_bin/metal_wheely_bin_compost.vmat_c" (Error: ERROR_FILEOPEN: File not found) - from models/sbox_props/metal_wheely_bin/metal_wheely_bin_body_gib.vmdl
+15:16:12 [engine/ResourceSystem] Warn: Error loading resource file "sandbox.decal_c" (Error: ERROR_FILEOPEN: File not found) - from prefabs/surface/cardboard-bullet.prefab
+15:16:13 [engine/ResourceSystem] Warn: Error loading resource file "models/citizen_clothes/hair/hair_looseblonde/hair.loose.brown.clothing_c" (Error: ERROR_FILEOPEN: File not found) - from models/citizen_clothes/hair/hair_looseblonde/hair.loose.grey.clothing
+15:16:13 [engine/MaterialSystem] Warn: Texture g_tTransmissiveColor doesn't exist in models/nature/grass_weeds/material/grass_weeds_01b.vmat!
+15:16:20 [Generic] Warn: Error opening stylesheet: ultimobarrio/ui/playerhud.cs.scss (File not found)
+15:16:20 [Generic] Warn: Error opening stylesheet: ultimobarrio/ui/inventoryui.cs.scss (File not found)
+15:16:34 [Generic] Warn: UB.Apartment ClaimRejected apartment=apartment-a02 reason=OutOfRange
+15:16:34 [Generic] Warn: UB.Apartment ClaimRejected apartment=apartment-a02 reason=OutOfRange
+15:16:36 [Generic] Warn: UB.Apartment ClaimRejected apartment=apartment-a02 reason=OutOfRange
+15:16:36 [Generic] Warn: UB.Apartment ClaimRejected apartment=apartment-a02 reason=OutOfRange
+15:16:36 [Generic] Warn: UB.Apartment ClaimRejected apartment=apartment-a02 reason=OutOfRange
+15:16:36 [Generic] Warn: UB.Apartment ClaimRejected apartment=apartment-a02 reason=OutOfRange
+15:16:36 [Generic] Warn: UB.Apartment ClaimRejected apartment=apartment-a02 reason=OutOfRange
+15:16:36 [Generic] Warn: UB.Apartment ClaimRejected apartment=apartment-a02 reason=OutOfRange

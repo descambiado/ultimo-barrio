@@ -13,7 +13,11 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 {
 	[Property] public string SaveSlotId { get; set; } = "prototype";
 
-	[Property] public float ClaimDistance { get; set; } = 130.0f;
+	/// <summary>
+	/// El radio mÃ¡ximo (en unidades) desde el cual el jugador puede reclamar el apartamento.
+	/// Evaluado desde la posiciÃ³n del <see cref="ApartmentComponent.SpawnReference"/>.
+	/// </summary>
+	[Property] public float ClaimDistance { get; set; } = 150f;
 
 	private readonly object _claimGate = new();
 	private readonly HashSet<string> _apartmentsInProgress = new( StringComparer.Ordinal );
@@ -31,7 +35,10 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 		if ( Scene.IsEditor )
 			return;
 
-		TryInitialize();
+		if ( !TryInitialize() )
+		{
+			// Log...
+		}
 	}
 
 	protected override void OnUpdate()
