@@ -2,12 +2,9 @@
 
 using System.Globalization;
 
-namespace UltimoBarrio.Players;
+using UltimoBarrio.Core;
 
-public interface IPlayerIdentityProvider
-{
-	bool TryResolve( Connection connection, out string ownerId );
-}
+namespace UltimoBarrio.Players;
 
 public sealed class SteamPlayerIdentityProvider : IPlayerIdentityProvider
 {

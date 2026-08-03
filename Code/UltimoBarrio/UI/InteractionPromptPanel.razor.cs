@@ -9,7 +9,7 @@ namespace UltimoBarrio.UI
         public string TitleText { get; set; } = "";
         public string SubTitleText { get; set; } = "";
         
-        public bool IsVisible { get; set; } = false;
+        public new bool IsVisible { get; set; } = false;
 
         public void Show(string title, string subtitle = "")
         {

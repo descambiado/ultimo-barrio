@@ -1,4 +1,4 @@
-﻿
+
 using Sandbox;
 using Sandbox.UI;
 using System;
@@ -59,7 +59,7 @@ namespace UltimoBarrio.UI
         private WorldClock Clock => PlayerObj?.Scene?.GetAllComponents<WorldClock>().FirstOrDefault();
         private HealthComponent HealthComp => PlayerObj?.Components.Get<HealthComponent>(FindMode.EverythingInSelfAndDescendants);
         private Wallet WalletComp => PlayerObj?.Components.Get<Wallet>(FindMode.EverythingInSelfAndDescendants);
-        private BaseCombatWeapon WeaponComp => PlayerObj?.Components.Get<BaseCombatWeapon>(FindMode.EverythingInSelfAndDescendants);
+        private UltimoBarrio.Combat.BaseCombatWeapon WeaponComp => PlayerObj?.Components.Get<UltimoBarrio.Combat.BaseCombatWeapon>(FindMode.EverythingInSelfAndDescendants);
         
         public override void Tick()
         {
