@@ -34,6 +34,13 @@ public sealed class ApartmentComponent : Component
 		}
 
 		if ( !DoorReference.IsValid() )
+			DoorReference = GameObject.Children.FirstOrDefault(c => c.Name == "Claim Portal");
+		if ( !StashReference.IsValid() )
+			StashReference = GameObject.Children.SelectMany(c => c.Children).FirstOrDefault(c => c.Name == "Stash Anchor");
+		if ( !SpawnReference.IsValid() )
+			SpawnReference = GameObject.Children.SelectMany(c => c.Children).FirstOrDefault(c => c.Name == "Owner Spawn Anchor");
+
+		if ( !DoorReference.IsValid() )
 		{
 			error = $"Apartment '{ApartmentId}' is missing DoorReference.";
 			return false;
