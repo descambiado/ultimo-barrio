@@ -62,8 +62,8 @@ namespace UltimoBarrio.Combat
         [Rpc.Broadcast]
         private void RpcRespawn(Vector3 spawnPosition)
         {
-            Transform.Position = spawnPosition;
-            Transform.Rotation = Rotation.Identity;
+            WorldPosition = spawnPosition;
+            WorldRotation = Rotation.Identity;
         }
     }
 }
