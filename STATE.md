@@ -150,18 +150,21 @@ reinicio, carrera, reconexión y late join.
 - El endpoint MCP quedó ocupado al intentar guardar desde un comando de editor
   después de detectar una limitación de `set_component` con referencias
   `GameObject`. El proceso de s&box sigue respondiendo, pero la escena debe
-  recargarse desde disco (versión externa) antes de continuar la prueba.
-- El archivo de escena en disco sí conserva toda la geometría y las tres
-  referencias; no se debe sobrescribir con la copia antigua que permanece en
-  memoria.
-- Incidencia no bloqueante: el segundo jugador apareció inicialmente en el
-  aire, probablemente por solapamiento en el único spawn.
-- Incidencia no bloqueante: el cliente dev registró errores de recursos que
-  deben clasificarse antes de una build pública.
+  recargarse desde disco (versión externa) antes- **M1-01 (Apartments):** Recuperado, parcheado y publicado en PR #8 (draft). Se añadieron contratos base (Contracts.cs) y UI provisional para claim interactivo.
+- **Producción Masiva (Vertical Slice):** Finalizada y fusionada la ejecución paralela de los 6 agentes:
+  - **[x] Agente B:** `feat/vslice-inventory` (Inventario y Stash) - Integrado
+  - **[x] Agente C:** `feat/vslice-combat` (Combate y armas) - Integrado
+  - **[x] Agente A:** `feat/vslice-world-blockout` (Mundo y edificios) - Integrado
+  - **[x] Agente D:** `feat/vslice-ai` (Vecinos y saqueadores) - Integrado
+  - **[x] Agente F:** `feat/vslice-economy` (Comercio básico) - Integrado
+  - **[x] Agente E:** `feat/vslice-night-cycle` (Ciclo de tiempo y raids) - Integrado
+  
+Todos los sistemas (Inventario, Combate, IA, Mundo, Economía, Reloj) están commiteados en `feat/m1-01-claimable-apartment` y el proyecto compila limpiamente (0 errores de C#).
 
-## Siguientes tres acciones
-
-1. Recargar `scenes/main.scene` desde disco y confirmar las tres referencias
+## Pendiente
+- El usuario debe ensamblar visualmente los prefabs generados (`pf_building_apartment_01.prefab`, `pf_enemy_spawn.prefab`, etc.) dentro de `main.scene` usando el Editor de s&box.
+- Asignar los scripts de Combat, Economy, y WorldTime a GameObjects en la escena.
+- Probar Play Mode con dos clientes para validar el flujo completo (Inventario -> Combate -> Economía -> Noche/Raid). desde disco y confirmar las tres referencias
    mediante MCP.
 2. Compilar, ejecutar Play Mode y probar claim, snapshot y reinicio.
 3. Probar carrera/reconexión/segundo cliente; solo después actualizar el issue
