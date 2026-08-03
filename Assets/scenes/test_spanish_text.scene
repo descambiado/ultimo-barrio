@@ -1,0 +1,38 @@
+{
+  "__guid": "44b75490-ee2a-49e2-8ad1-5885461d1d90",
+  "GameObjects": [
+    {
+      "__guid": "21c9e8c0-8874-45b8-bfef-086e7053d5bd",
+      "Name": "Screen",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ScreenPanel",
+          "__guid": "0d09e9f8-e6a7-48df-ac27-4aaacba9e909",
+          "Opacity": 1,
+          "Scale": 1,
+          "ZIndex": 100
+        },
+        {
+          "__type": "UltimoBarrio.QA.TestSpanishUI",
+          "__guid": "9c632e28-3e36-4e79-8643-86cc6228997d"
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false
+    }
+  }
+}
