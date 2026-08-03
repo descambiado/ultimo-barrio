@@ -18,7 +18,7 @@ namespace UltimoBarrio.UI
         {
             if (Panel != null)
             {
-                Panel.Style.Display = DisplayMode.Flex;
+                Panel.Style.Display = DisplayMode.None; // Hidden by default — PlayerHud.ChangeState controls this
                 Panel.Style.FlexDirection = FlexDirection.Column;
                 Panel.Style.BackgroundColor = new Color(0.12f, 0.12f, 0.12f, 0.9f); // Charcoal
                 Panel.Style.Padding = 20;

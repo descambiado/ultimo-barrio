@@ -205,6 +205,11 @@
         "__enabled": true
       },
       {
+        "__type": "UltimoBarrio.QA.QACommandsPanel",
+        "__guid": "7a1b2c3d-4e5f-6789-abcd-ef0123456789",
+        "__enabled": true
+      },
+      {
         "__type": "Sandbox.ScreenPanel",
         "__guid": "c6cf0345-8b32-4003-8797-80253c109341",
         "__enabled": true,
