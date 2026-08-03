@@ -6,11 +6,19 @@ namespace UltimoBarrio
 {
     public class StashComponent : Component, IInventory, IInteractable
     {
-        [Property] public string InventoryId { get; set; } = System.Guid.NewGuid().ToString();
+        [Property] public string InventoryId { get; set; } = string.Empty;
         [Property] public int MaxSlots { get; set; } = 24;
         [Property] public string ApartmentId { get; set; } = "apartment-a01";
         
         [RequireComponent] public InventoryComponent Inventory { get; set; }
+
+        protected override void OnAwake()
+        {
+            if (Inventory != null && string.IsNullOrEmpty(Inventory.InventoryId))
+            {
+                Inventory.InventoryId = $"{ApartmentId}:stash";
+            }
+        }
 
         public string GetInteractionPrompt(InteractionRequest request) => "Abrir alijo";
 
