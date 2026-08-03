@@ -10,17 +10,19 @@ namespace UltimoBarrio.WorldTime
         [Property] public float NightDuration { get; set; } = 180f; // 3m
         [Property] public float AftermathDuration { get; set; } = 30f; // 30s
 
-        public TimePhase CurrentPhase { get; private set; } = TimePhase.Day;
-        public float TimeRemainingInPhase { get; private set; }
+        [Sync] public TimePhase CurrentPhase { get; private set; } = TimePhase.Day;
+        [Sync] public float TimeRemainingInPhase { get; private set; }
         public event Action<TimePhase> OnPhaseChanged;
 
         protected override void OnStart()
         {
-            SetPhase(TimePhase.Day);
+            if (!IsProxy) SetPhase(TimePhase.Day);
         }
 
         protected override void OnUpdate()
         {
+            if (IsProxy) return;
+
             TimeRemainingInPhase -= Time.Delta;
 
             if (TimeRemainingInPhase <= 0)
@@ -48,6 +50,7 @@ namespace UltimoBarrio.WorldTime
             }
         }
 
+        public void ForcePhase(TimePhase phase) { if(!IsProxy) SetPhase(phase); }
         private void SetPhase(TimePhase newPhase)
         {
             CurrentPhase = newPhase;

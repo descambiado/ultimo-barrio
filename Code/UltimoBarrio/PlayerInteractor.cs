@@ -111,13 +111,14 @@ namespace UltimoBarrio
                 var pickup = tr.GameObject.Components.Get<WorldItemPickup>();
                 if (pickup != null)
                 {
-                    _hud?.ShowPrompt(pickup.GetComponent<IInteractable>().GetInteractionPrompt(new InteractionRequest { InteractorId = player.GameObject.Network.OwnerId.ToString(), InteractorObject = player.GameObject }), "Pulsa E");
+                    var req = new InteractionRequest { InteractorId = Network.OwnerId.ToString(), InteractorObject = GameObject };
+                    _hud?.ShowPrompt(pickup.GetComponent<IInteractable>().GetInteractionPrompt(req), "Pulsa E");
                     if (Input.Pressed("Use"))
                     {
                         var interactable = pickup.GetComponent<IInteractable>();
-                        if (interactable != null && interactable.CanInteract(GameObject.Id))
+                        if (interactable != null && interactable.CanInteract(req))
                         {
-                            interactable.OnInteract(GameObject.Id);
+                            interactable.OnInteract(req);
                             _hud?.ShowMessage("Objeto recogido");
                         }
                     }
