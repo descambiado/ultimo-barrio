@@ -13,7 +13,7 @@ namespace UltimoBarrio.Combat
         
         public bool IsDead => Health <= 0;
 
-        public Action<float, Vector3, Vector3, Guid> OnDamageTaken;
+        public Action<float, Vector3, Vector3, string> OnDamageTaken;
         public Action OnDeath;
 
         protected override void OnStart()
@@ -32,7 +32,7 @@ namespace UltimoBarrio.Combat
             Health -= damageEvent.Amount;
             Health = MathF.Max(0, Health);
             
-            RpcTakeDamageFeedback(amount, position, force, attackerId);
+            RpcTakeDamageFeedback(damageEvent.Amount, damageEvent.Position, damageEvent.Force, damageEvent.AttackerId);
 
             if (Health <= 0)
             {
@@ -41,7 +41,7 @@ namespace UltimoBarrio.Combat
         }
 
         [Rpc.Broadcast]
-        private void RpcTakeDamageFeedback(float amount, Vector3 position, Vector3 force, Guid attackerId)
+        private void RpcTakeDamageFeedback(float amount, Vector3 position, Vector3 force, string attackerId)
         {
             OnDamageTaken?.Invoke(amount, position, force, attackerId);
         }

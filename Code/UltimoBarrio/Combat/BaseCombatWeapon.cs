@@ -145,13 +145,22 @@ namespace UltimoBarrio.Combat
                 var damageable = tr.GameObject.Components.GetInAncestorsOrSelf<IDamageable>();
                 if (damageable != null)
                 {
+                    var dmg = new DamageEvent
+                    {
+                        Amount = BaseDamage,
+                        Position = tr.HitPosition,
+                        Force = ray.Forward * 100f,
+                        AttackerId = Connection.Local?.Id.ToString() ?? "",
+                        WeaponId = GameObject.Name
+                    };
+
                     if (Networking.IsHost)
                     {
-                        damageable.TakeDamage(BaseDamage, tr.HitPosition, ray.Forward * 100f, Guid.Empty);
+                        damageable.TakeDamage(dmg);
                     }
                     else
                     {
-                        RpcApplyDamage(tr.GameObject.Id, BaseDamage, tr.HitPosition, ray.Forward * 100f);
+                        RpcApplyDamage(tr.GameObject.Id, dmg.Amount, dmg.Position, dmg.Force, dmg.AttackerId, dmg.WeaponId);
                     }
                 }
                 
@@ -160,7 +169,7 @@ namespace UltimoBarrio.Combat
         }
 
         [Rpc.Host]
-        private void RpcApplyDamage(Guid hitObjectId, float damage, Vector3 position, Vector3 force)
+        private void RpcApplyDamage(Guid hitObjectId, float damage, Vector3 position, Vector3 force, string attackerId, string weaponId)
         {
             var hitObj = Scene.Directory.FindByGuid(hitObjectId);
             if (hitObj != null)
@@ -168,8 +177,16 @@ namespace UltimoBarrio.Combat
                 var damageable = hitObj.Components.GetInAncestorsOrSelf<IDamageable>();
                 if (damageable != null)
                 {
+                    var dmg = new DamageEvent
+                    {
+                        Amount = damage,
+                        Position = position,
+                        Force = force,
+                        AttackerId = attackerId,
+                        WeaponId = weaponId
+                    };
                     // Check friendly fire later if needed, disabled by default per requirements
-                    damageable.TakeDamage(damage, position, force, Guid.Empty);
+                    damageable.TakeDamage(dmg);
                 }
             }
         }
