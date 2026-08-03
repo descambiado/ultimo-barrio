@@ -1,5 +1,6 @@
 using Sandbox;
 using System;
+using UltimoBarrio.Core;
 
 namespace UltimoBarrio
 {
@@ -8,24 +9,24 @@ namespace UltimoBarrio
         [Property] public string ItemId { get; set; } = "agua";
         [Property] public int Amount { get; set; } = 1;
 
-        public string GetInteractionPrompt()
+        public string GetInteractionPrompt(InteractionRequest request)
         {
             return $"Recoger {ItemId} (x{Amount})";
         }
 
-        public bool CanInteract(Guid playerId)
+        public bool CanInteract(InteractionRequest request)
         {
             return true;
         }
 
-        public void OnInteract(Guid playerId)
+        public void OnInteract(InteractionRequest request)
         {
-            Log.Info($"[Pickup] OnInteract called by {playerId}. IsProxy: {IsProxy}");
+            Log.Info($"[Pickup] OnInteract called by {request.InteractorId}. IsProxy: {IsProxy}");
             if (IsProxy) return;
-            var player = Scene.Directory.FindByGuid(playerId);
+            var player = Scene.Directory.FindByGuid(request.InteractorId);
             if (player == null)
             {
-                Log.Info($"[Pickup] Player {playerId} not found!");
+                Log.Info($"[Pickup] Player {request.InteractorId} not found!");
                 return;
             }
             var inventory = player.Components.Get<InventoryComponent>();
@@ -40,7 +41,7 @@ namespace UltimoBarrio
             }
             else
             {
-                Log.Info($"[Pickup] No inventory found on player {playerId}!");
+                Log.Info($"[Pickup] No inventory found on player {request.InteractorId}!");
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Sandbox;
 using System;
+using UltimoBarrio.Core;
 
 namespace UltimoBarrio.AI
 {
@@ -17,7 +18,7 @@ namespace UltimoBarrio.AI
             Health = MaxHealth;
         }
         
-        public virtual void TakeDamage(float amount, Vector3 position, Vector3 force, Guid attackerId)
+        public virtual void TakeDamage(DamageEvent damageEvent)
         {
             if (IsDead) return;
             Health -= amount;

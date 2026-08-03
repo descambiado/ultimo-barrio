@@ -1,5 +1,6 @@
 using Sandbox;
 using System;
+using UltimoBarrio.Core;
 
 namespace UltimoBarrio.Combat
 {
@@ -79,7 +80,7 @@ namespace UltimoBarrio.Combat
             PerformTrace();
         }
 
-        [Authority]
+        [Rpc.Owner]
         private void RpcRequestFire()
         {
             if (CurrentAmmo <= 0 || IsReloading) return;
@@ -100,7 +101,7 @@ namespace UltimoBarrio.Combat
             }
         }
 
-        [Authority]
+        [Rpc.Owner]
         private void RpcRequestReload()
         {
             StartReload();
@@ -119,14 +120,14 @@ namespace UltimoBarrio.Combat
             CurrentAmmo = MaxAmmo;
         }
 
-        [Broadcast]
+        [Rpc.Broadcast]
         protected virtual void DoFireEffects()
         {
             // Override for sounds/particles
             // Sound.Play("shoot_sound");
         }
 
-        [Broadcast]
+        [Rpc.Broadcast]
         protected virtual void RpcDoReloadEffects()
         {
             // Override for reload sound
@@ -141,7 +142,7 @@ namespace UltimoBarrio.Combat
 
             if (tr.Hit)
             {
-                var damageable = tr.GameObject.Components.GetInAncestorsOrSelf<UltimoBarrio.IDamageable>();
+                var damageable = tr.GameObject.Components.GetInAncestorsOrSelf<IDamageable>();
                 if (damageable != null)
                 {
                     if (Networking.IsHost)
@@ -164,7 +165,7 @@ namespace UltimoBarrio.Combat
             var hitObj = Scene.Directory.FindByGuid(hitObjectId);
             if (hitObj != null)
             {
-                var damageable = hitObj.Components.GetInAncestorsOrSelf<UltimoBarrio.IDamageable>();
+                var damageable = hitObj.Components.GetInAncestorsOrSelf<IDamageable>();
                 if (damageable != null)
                 {
                     // Check friendly fire later if needed, disabled by default per requirements

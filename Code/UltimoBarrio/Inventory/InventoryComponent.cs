@@ -1,5 +1,6 @@
 using Sandbox;
 using System;
+using UltimoBarrio.Core;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,7 +12,7 @@ namespace UltimoBarrio
         public int Amount { get; set; }
     }
 
-    public class InventoryComponent : Component, IInventoryOwner
+    public class InventoryComponent : Component, IInventory
     {
         [Property] public string InventoryId { get; set; } = string.Empty;
         [Property] public int MaxSlots { get; set; } = 24;

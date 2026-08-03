@@ -1,10 +1,11 @@
 using Sandbox;
 using System;
+using UltimoBarrio.Core;
 using UltimoBarrio;
 
 namespace UltimoBarrio.Combat
 {
-    public class HealthComponent : Component, UltimoBarrio.IDamageable
+    public class HealthComponent : Component, IDamageable
     {
         [Property] public float MaxHealth { get; set; } = 100f;
         
@@ -23,12 +24,12 @@ namespace UltimoBarrio.Combat
             }
         }
 
-        public void TakeDamage(float amount, Vector3 position, Vector3 force, Guid attackerId)
+        public void TakeDamage(DamageEvent damageEvent)
         {
             if (!Networking.IsHost) return; // Host validation
             if (IsDead) return;
 
-            Health -= amount;
+            Health -= damageEvent.Amount;
             Health = MathF.Max(0, Health);
             
             RpcTakeDamageFeedback(amount, position, force, attackerId);
@@ -39,13 +40,13 @@ namespace UltimoBarrio.Combat
             }
         }
 
-        [Broadcast]
+        [Rpc.Broadcast]
         private void RpcTakeDamageFeedback(float amount, Vector3 position, Vector3 force, Guid attackerId)
         {
             OnDamageTaken?.Invoke(amount, position, force, attackerId);
         }
 
-        [Broadcast]
+        [Rpc.Broadcast]
         private void RpcDie()
         {
             OnDeath?.Invoke();
@@ -58,7 +59,7 @@ namespace UltimoBarrio.Combat
             RpcRespawn(spawnPosition);
         }
 
-        [Broadcast]
+        [Rpc.Broadcast]
         private void RpcRespawn(Vector3 spawnPosition)
         {
             Transform.Position = spawnPosition;

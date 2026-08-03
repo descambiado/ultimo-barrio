@@ -1,5 +1,6 @@
 using Sandbox;
 using System;
+using UltimoBarrio.Core;
 using UltimoBarrio;
 using UltimoBarrio.Economy;
 
@@ -12,23 +13,23 @@ namespace UltimoBarrio.Trading
         [Property] public int AmmoPrice { get; set; } = 5;
         [Property] public int ScrapSellPrice { get; set; } = 2;
 
-        public string GetInteractionPrompt() => "Interactuar con el Comerciante";
+        public string GetInteractionPrompt(InteractionRequest request) => "Interactuar con el Comerciante";
         
-        public bool CanInteract(Guid playerId) => true;
+        public bool CanInteract(InteractionRequest request) => true;
 
-        public void OnInteract(Guid playerId)
+        public void OnInteract(InteractionRequest request)
         {
             // Usually opens UI
         }
 
-        [Authority]
+        [Rpc.Owner]
         public void BuyItem(GameObject buyer, string itemId, int amount = 1)
         {
             if (!Networking.IsHost) return;
             if (buyer == null) return;
             
             var wallet = buyer.GetComponent<Wallet>();
-            var inventory = buyer.GetComponent<IInventoryOwner>();
+            var inventory = buyer.GetComponent<IInventory>();
 
             if (wallet == null || inventory == null) return;
 
@@ -55,7 +56,7 @@ namespace UltimoBarrio.Trading
             if (seller == null) return;
 
             var wallet = seller.GetComponent<Wallet>();
-            var inventory = seller.GetComponent<IInventoryOwner>();
+            var inventory = seller.GetComponent<IInventory>();
 
             if (wallet == null || inventory == null) return;
 

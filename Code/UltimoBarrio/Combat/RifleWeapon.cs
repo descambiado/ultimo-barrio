@@ -15,7 +15,7 @@ namespace UltimoBarrio.Combat
             IsAutomatic = true;
         }
 
-        [Broadcast]
+        [Rpc.Broadcast]
         protected override void DoFireEffects()
         {
             base.DoFireEffects();

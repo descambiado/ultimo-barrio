@@ -1,5 +1,6 @@
 using Sandbox;
 using System;
+using UltimoBarrio.Core;
 using UltimoBarrio.UI;
 using UltimoBarrio.Apartments;
 
@@ -110,10 +111,10 @@ namespace UltimoBarrio
                 var pickup = tr.GameObject.Components.Get<WorldItemPickup>();
                 if (pickup != null)
                 {
-                    _hud?.ShowPrompt(pickup.GetInteractionPrompt(), "Pulsa E");
+                    _hud?.ShowPrompt(pickup.GetComponent<IInteractable>().GetInteractionPrompt(new InteractionRequest { InteractorId = player.GameObject.Network.OwnerId.ToString(), InteractorObject = player.GameObject }), "Pulsa E");
                     if (Input.Pressed("Use"))
                     {
-                        var interactable = pickup as IInteractable;
+                        var interactable = pickup.GetComponent<IInteractable>();
                         if (interactable != null && interactable.CanInteract(GameObject.Id))
                         {
                             interactable.OnInteract(GameObject.Id);
