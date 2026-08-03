@@ -104,7 +104,8 @@ namespace UltimoBarrio
                 }
 
                 // 2. Stash
-                var stashInv = tr.GameObject.Components.Get<InventoryComponent>();
+                var isPlayer = tr.GameObject.Components.Get<Sandbox.PlayerController>() != null;
+                var stashInv = isPlayer ? null : tr.GameObject.Components.Get<InventoryComponent>();
                 if (stashInv != null)
                 {
                     var apt = tr.GameObject.Components.GetInAncestorsOrSelf<ApartmentComponent>();
