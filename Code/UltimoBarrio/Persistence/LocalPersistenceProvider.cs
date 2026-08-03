@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MPL-2.0
+﻿// SPDX-License-Identifier: MPL-2.0
 
 using System;
 using System.Globalization;
@@ -286,7 +286,8 @@ public sealed class LocalPersistenceProvider : IPersistenceProvider
 		if ( snapshot.SaveVersion != SaveSnapshot.CurrentVersion
 			|| snapshot.Generation < 0
 			|| !string.Equals( snapshot.SlotId, expectedSlotId, StringComparison.Ordinal )
-			|| snapshot.Apartments is null )
+			|| snapshot.Apartments is null
+			|| snapshot.PlayersEconomy is null )
 		{
 			error = "Snapshot metadata is invalid.";
 			return false;
@@ -334,6 +335,12 @@ public sealed class LocalPersistenceProvider : IPersistenceProvider
 				OwnerId = apartment.OwnerId,
 				ClaimState = apartment.ClaimState,
 				SaveVersion = apartment.SaveVersion
+			} ).ToList(),
+			PlayersEconomy = source.PlayersEconomy.Select( p => new PlayerEconomySaveData
+			{
+				PlayerId = p.PlayerId,
+				Balance = p.Balance,
+				SaveVersion = p.SaveVersion
 			} ).ToList()
 		};
 	}
@@ -358,3 +365,5 @@ public sealed class LocalPersistenceProvider : IPersistenceProvider
 		public static EnvelopeReadResult FutureVersion() => new( EnvelopeReadStatus.FutureVersion, null );
 	}
 }
+
+
