@@ -8,6 +8,8 @@
 
 # s&box generated/editor state
 .sbox/*
+/Assets/untitled.scene
+/Assets/untitled.scene_d
 *.csproj
 Properties/*
 *launchSettings.json

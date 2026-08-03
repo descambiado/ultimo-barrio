@@ -32,11 +32,14 @@
 
 - [ ] [M1-01](https://github.com/descambiado/ultimo-barrio/issues/3) Crear apartamento reclamable.
 - Especificación previa de M1-01: `docs/planning/m1-01-apartment-claim.md`.
-  No existe implementación todavía.
+  La rama `feat/m1-01-claimable-apartment` ya contiene contrato, servicio
+  host-authoritative, proveedor local versionado y el blockout A01. El hito
+  sigue abierto hasta probar claim, reinicio, carrera, reconexión y late join.
 - [ ] M1-02 Claim host-authoritative.
 - [ ] M1-03 Puerta interactiva.
 - [ ] M1-04 Contenedor de alijo.
-- [ ] M1-05 Save snapshot v1.
+- [ ] M1-05 Save snapshot v1. Implementado, pendiente de prueba de escritura,
+  corrupción y fallback.
 - [ ] M1-06 Load y recuperación de error.
 
 ## Epic M2 — Ciclo
@@ -83,5 +86,5 @@
 
 - [ ] [SPIKE-WEAPONS-001](https://github.com/descambiado/ultimo-barrio/issues/5) Comparar armas oficiales y OmniParadigm. Investigación terminada; falta prueba aislada.
 - [x] [SPIKE-MAP-001](https://github.com/descambiado/ultimo-barrio/issues/4) Seleccionar la primera manzana. Resultado publicado: blockout propio y pequeño mediante Scene Mapping.
-- [ ] [SPIKE-SAVE-001](https://github.com/descambiado/ultimo-barrio/issues/6) Validar guardado local versionado. Investigación terminada; falta implementación y matriz de recuperación.
+- [ ] [SPIKE-SAVE-001](https://github.com/descambiado/ultimo-barrio/issues/6) Validar guardado local versionado. Investigación y primera implementación terminadas; falta ejecutar la matriz de recuperación.
 - [ ] SPIKE-AI-001 Saqueador vertical.
