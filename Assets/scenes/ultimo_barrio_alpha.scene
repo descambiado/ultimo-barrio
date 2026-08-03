@@ -1,0 +1,2733 @@
+{
+  "__guid": "d0c535bd-1d33-4665-ab1d-43398dd7d824",
+  "GameObjects": [
+    {
+      "__guid": "74ed4037-c7e7-4f18-b3d4-febd2b5cec53",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "MapInstance",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.MapInstance",
+          "__guid": "382765fb-759b-41bb-99c7-38605e8c1e9c",
+          "__enabled": true,
+          "MapName": "thieves.rpdowntown3t",
+          "UseMapFromLaunch": true,
+          "OnMapLoaded": null
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "43ce7f87-feb4-46af-9443-8acd1d0c5e1b",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "UltimoBarrioWorldOverlay",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": [
+        {
+          "__guid": "52b83887-ea7f-435b-a2f6-65419dc3d91f",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "apartment-a01",
+          "Position": "-500, -300, 20",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.Apartments.ApartmentComponent",
+              "__guid": "e7d2af04-f9d1-4358-884b-58f1889bfebc",
+              "__enabled": true,
+              "ApartmentId": "apartment-a01",
+              "ClaimState": 0,
+              "OwnerId": "",
+              "DoorReference": {
+                "_type": "gameobject",
+                "id": "1718a430-3ff0-4368-8ec7-73f3448f5618"
+              },
+              "StashReference": {
+                "_type": "gameobject",
+                "id": "98b80be2-f25f-47ad-9beb-91a36d897b5a"
+              },
+              "SpawnReference": {
+                "_type": "gameobject",
+                "id": "9f84d8b6-4a64-42ff-b6b9-c656e7b77783"
+              },
+              "RaidTargetReference": {
+                "_type": "gameobject",
+                "id": "3486c5c9-66ab-40fb-90ad-3e5d3cebd744"
+              }
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "1718a430-3ff0-4368-8ec7-73f3448f5618",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Claim Portal",
+              "Position": "-460.0,-300.0,60.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "0.5,0.5,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "UltimoBarrio.Apartments.ApartmentClaimInteractable",
+                  "__guid": "fc547440-4caa-408c-87ee-3fa25fda2342",
+                  "__enabled": true,
+                  "ApartmentId": "apartment-a01"
+                },
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "83368e93-78de-46e7-8cc4-8f2cda36c805",
+                  "__enabled": true,
+                  "Center": "0,0,0",
+                  "Scale": "40,40,80",
+                  "Static": true
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "d9f0c505-6cfa-4207-bb28-2a17b6feffd1",
+                  "__enabled": true,
+                  "Model": "models/dev/box.vmdl",
+                  "Tint": "0.2,0.6,0.9,1"
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "98b80be2-f25f-47ad-9beb-91a36d897b5a",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Stash Anchor",
+              "Position": "-540.0,-270.0,40.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "0.5,0.5,0.5",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "UltimoBarrio.StashComponent",
+                  "__guid": "1816ae68-39e2-4bc0-ac99-568794e302ed",
+                  "__enabled": true,
+                  "ApartmentId": "apartment-a01",
+                  "MaxSlots": 24
+                },
+                {
+                  "__type": "UltimoBarrio.InventoryComponent",
+                  "__guid": "b5281452-4dbb-4104-aca3-e675a82fec8b",
+                  "__enabled": true,
+                  "InventoryId": "apartment-a01:stash",
+                  "MaxSlots": 24
+                },
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "851e04eb-70b4-4162-8d3b-57eae9b6b945",
+                  "__enabled": true,
+                  "Center": "0,0,0",
+                  "Scale": "50,50,50",
+                  "Static": true
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "22f00cdd-72ac-4549-9c67-d1d9a081fd94",
+                  "__enabled": true,
+                  "Model": "models/dev/box.vmdl",
+                  "Tint": "0.2,0.7,0.3,1"
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "9f84d8b6-4a64-42ff-b6b9-c656e7b77783",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Owner Spawn Anchor",
+              "Position": "-500.0,-300.0,30.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            },
+            {
+              "__guid": "3486c5c9-66ab-40fb-90ad-3e5d3cebd744",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Raid Target Anchor",
+              "Position": "-480.0,-300.0,30.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            }
+          ]
+        },
+        {
+          "__guid": "50d7016b-b3df-4de9-b564-c9cb76aa5e71",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "apartment-a02",
+          "Position": "-500, 300, 20",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.Apartments.ApartmentComponent",
+              "__guid": "86f99718-671b-4198-9a3b-fa0baec28e81",
+              "__enabled": true,
+              "ApartmentId": "apartment-a02",
+              "ClaimState": 0,
+              "OwnerId": "",
+              "DoorReference": {
+                "_type": "gameobject",
+                "id": "a8581a9e-530c-45da-b58c-63ec7826679d"
+              },
+              "StashReference": {
+                "_type": "gameobject",
+                "id": "9367ae13-d307-409f-8456-c62187ed6d08"
+              },
+              "SpawnReference": {
+                "_type": "gameobject",
+                "id": "fd90c707-c14d-4f9e-a6ef-c02c40388265"
+              },
+              "RaidTargetReference": {
+                "_type": "gameobject",
+                "id": "de3e56f3-38ee-4198-8585-908db3c15b1f"
+              }
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "a8581a9e-530c-45da-b58c-63ec7826679d",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Claim Portal",
+              "Position": "-460.0,300.0,60.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "0.5,0.5,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "UltimoBarrio.Apartments.ApartmentClaimInteractable",
+                  "__guid": "2e2d46fa-0963-4f1d-8859-188baeda7951",
+                  "__enabled": true,
+                  "ApartmentId": "apartment-a02"
+                },
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "6fb058f4-5258-4094-9a55-5c73d6497d0b",
+                  "__enabled": true,
+                  "Center": "0,0,0",
+                  "Scale": "40,40,80",
+                  "Static": true
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "852d130e-950a-4f89-8f5f-67e81e453c1a",
+                  "__enabled": true,
+                  "Model": "models/dev/box.vmdl",
+                  "Tint": "0.2,0.6,0.9,1"
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "9367ae13-d307-409f-8456-c62187ed6d08",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Stash Anchor",
+              "Position": "-540.0,330.0,40.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "0.5,0.5,0.5",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "UltimoBarrio.StashComponent",
+                  "__guid": "b3487c10-81e3-4d13-9cc3-44c65468fad2",
+                  "__enabled": true,
+                  "ApartmentId": "apartment-a02",
+                  "MaxSlots": 24
+                },
+                {
+                  "__type": "UltimoBarrio.InventoryComponent",
+                  "__guid": "dfea2627-ec18-4507-bacb-0353c1c9015e",
+                  "__enabled": true,
+                  "InventoryId": "apartment-a02:stash",
+                  "MaxSlots": 24
+                },
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "c3c8e7a9-7516-4761-8e45-620d477483c4",
+                  "__enabled": true,
+                  "Center": "0,0,0",
+                  "Scale": "50,50,50",
+                  "Static": true
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "6f56f2bf-55a1-449e-ae00-7a214c33a1df",
+                  "__enabled": true,
+                  "Model": "models/dev/box.vmdl",
+                  "Tint": "0.2,0.7,0.3,1"
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "fd90c707-c14d-4f9e-a6ef-c02c40388265",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Owner Spawn Anchor",
+              "Position": "-500.0,300.0,30.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            },
+            {
+              "__guid": "de3e56f3-38ee-4198-8585-908db3c15b1f",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Raid Target Anchor",
+              "Position": "-480.0,300.0,30.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            }
+          ]
+        },
+        {
+          "__guid": "8c92d3b2-5b92-4e51-9e2d-d390136d5e7a",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "apartment-a03",
+          "Position": "0, -600, 20",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.Apartments.ApartmentComponent",
+              "__guid": "15d0de1d-d2e8-4aff-9c4c-c92fb4a50592",
+              "__enabled": true,
+              "ApartmentId": "apartment-a03",
+              "ClaimState": 0,
+              "OwnerId": "",
+              "DoorReference": {
+                "_type": "gameobject",
+                "id": "6da9b951-0f0e-456c-9824-cbe6d1e5359e"
+              },
+              "StashReference": {
+                "_type": "gameobject",
+                "id": "7e7959ac-84a7-478c-bf81-68e53d95366d"
+              },
+              "SpawnReference": {
+                "_type": "gameobject",
+                "id": "6b3fe7c7-09d8-46bb-b088-c694428921f9"
+              },
+              "RaidTargetReference": {
+                "_type": "gameobject",
+                "id": "e15ae428-d2ac-4fb6-96db-0d15925ec5c8"
+              }
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "6da9b951-0f0e-456c-9824-cbe6d1e5359e",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Claim Portal",
+              "Position": "40.0,-600.0,60.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "0.5,0.5,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "UltimoBarrio.Apartments.ApartmentClaimInteractable",
+                  "__guid": "8bde93ba-5dcf-4022-b66f-5fd7cbd554e6",
+                  "__enabled": true,
+                  "ApartmentId": "apartment-a03"
+                },
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "40a7ec00-455a-4c9e-9faa-e1a809b35e4e",
+                  "__enabled": true,
+                  "Center": "0,0,0",
+                  "Scale": "40,40,80",
+                  "Static": true
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "1515e0a3-374a-4b74-b533-ab8b8ea9c0f0",
+                  "__enabled": true,
+                  "Model": "models/dev/box.vmdl",
+                  "Tint": "0.2,0.6,0.9,1"
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "7e7959ac-84a7-478c-bf81-68e53d95366d",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Stash Anchor",
+              "Position": "-40.0,-570.0,40.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "0.5,0.5,0.5",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "UltimoBarrio.StashComponent",
+                  "__guid": "5ce65eae-f58e-45a6-9c4d-4ee88d4bb169",
+                  "__enabled": true,
+                  "ApartmentId": "apartment-a03",
+                  "MaxSlots": 24
+                },
+                {
+                  "__type": "UltimoBarrio.InventoryComponent",
+                  "__guid": "ab3ac9ec-8d26-4f22-acaf-ad200ead05fd",
+                  "__enabled": true,
+                  "InventoryId": "apartment-a03:stash",
+                  "MaxSlots": 24
+                },
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "a91731f9-23f4-43c9-b7eb-36f8a103dd96",
+                  "__enabled": true,
+                  "Center": "0,0,0",
+                  "Scale": "50,50,50",
+                  "Static": true
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "066cd55e-003b-4967-a036-0506ea3c8b93",
+                  "__enabled": true,
+                  "Model": "models/dev/box.vmdl",
+                  "Tint": "0.2,0.7,0.3,1"
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "6b3fe7c7-09d8-46bb-b088-c694428921f9",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Owner Spawn Anchor",
+              "Position": "0.0,-600.0,30.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            },
+            {
+              "__guid": "e15ae428-d2ac-4fb6-96db-0d15925ec5c8",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Raid Target Anchor",
+              "Position": "20.0,-600.0,30.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            }
+          ]
+        },
+        {
+          "__guid": "5df9647c-c50e-4fb5-9982-22e44c30bc85",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "apartment-a04",
+          "Position": "0, 600, 20",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.Apartments.ApartmentComponent",
+              "__guid": "c703d1f2-90a3-40c5-ae82-f09cca2bf210",
+              "__enabled": true,
+              "ApartmentId": "apartment-a04",
+              "ClaimState": 0,
+              "OwnerId": "",
+              "DoorReference": {
+                "_type": "gameobject",
+                "id": "442a78ba-b3a8-49e2-adbf-c780d292927f"
+              },
+              "StashReference": {
+                "_type": "gameobject",
+                "id": "60693859-3a10-4737-9b96-a7e1bfb5080f"
+              },
+              "SpawnReference": {
+                "_type": "gameobject",
+                "id": "47382ba7-1fb0-45c9-ab4d-190bacccd0f2"
+              },
+              "RaidTargetReference": {
+                "_type": "gameobject",
+                "id": "925120ef-e79e-4a0f-b86e-0b98f2228eff"
+              }
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "442a78ba-b3a8-49e2-adbf-c780d292927f",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Claim Portal",
+              "Position": "40.0,600.0,60.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "0.5,0.5,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "UltimoBarrio.Apartments.ApartmentClaimInteractable",
+                  "__guid": "b80de2bb-8401-4840-9ff4-cae33175151a",
+                  "__enabled": true,
+                  "ApartmentId": "apartment-a04"
+                },
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "5947fd3c-359f-45cb-90c1-9d9f6d4966f8",
+                  "__enabled": true,
+                  "Center": "0,0,0",
+                  "Scale": "40,40,80",
+                  "Static": true
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "1f183bd1-6cc7-4453-8566-c6275be839a1",
+                  "__enabled": true,
+                  "Model": "models/dev/box.vmdl",
+                  "Tint": "0.2,0.6,0.9,1"
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "60693859-3a10-4737-9b96-a7e1bfb5080f",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Stash Anchor",
+              "Position": "-40.0,630.0,40.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "0.5,0.5,0.5",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "UltimoBarrio.StashComponent",
+                  "__guid": "583f5911-5150-46fa-b106-c3cca0b02467",
+                  "__enabled": true,
+                  "ApartmentId": "apartment-a04",
+                  "MaxSlots": 24
+                },
+                {
+                  "__type": "UltimoBarrio.InventoryComponent",
+                  "__guid": "91ec73c2-4222-427b-b65c-97e31f1a3df5",
+                  "__enabled": true,
+                  "InventoryId": "apartment-a04:stash",
+                  "MaxSlots": 24
+                },
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "fd8760f9-ca61-4ae4-bcf4-2a54001817fc",
+                  "__enabled": true,
+                  "Center": "0,0,0",
+                  "Scale": "50,50,50",
+                  "Static": true
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "eaab7b6a-fb97-48c4-b01f-324994aeb4f1",
+                  "__enabled": true,
+                  "Model": "models/dev/box.vmdl",
+                  "Tint": "0.2,0.7,0.3,1"
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "47382ba7-1fb0-45c9-ab4d-190bacccd0f2",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Owner Spawn Anchor",
+              "Position": "0.0,600.0,30.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            },
+            {
+              "__guid": "925120ef-e79e-4a0f-b86e-0b98f2228eff",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Raid Target Anchor",
+              "Position": "20.0,600.0,30.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            }
+          ]
+        },
+        {
+          "__guid": "5999bffd-8681-46bc-a951-bee37cf6bee0",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "apartment-a05",
+          "Position": "500, -300, 20",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.Apartments.ApartmentComponent",
+              "__guid": "f9c8154a-4324-49c2-b983-2b8e64dd7a6d",
+              "__enabled": true,
+              "ApartmentId": "apartment-a05",
+              "ClaimState": 0,
+              "OwnerId": "",
+              "DoorReference": {
+                "_type": "gameobject",
+                "id": "61455dba-b254-47b2-91c9-b908ccd2db35"
+              },
+              "StashReference": {
+                "_type": "gameobject",
+                "id": "8b5bd68b-fc78-4f25-a16c-9245f73fe650"
+              },
+              "SpawnReference": {
+                "_type": "gameobject",
+                "id": "1bed32bd-8f5f-4a51-b2b4-1dd48077f62a"
+              },
+              "RaidTargetReference": {
+                "_type": "gameobject",
+                "id": "db845d23-2cfe-4a82-8d1e-a4448bc91ceb"
+              }
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "61455dba-b254-47b2-91c9-b908ccd2db35",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Claim Portal",
+              "Position": "540.0,-300.0,60.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "0.5,0.5,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "UltimoBarrio.Apartments.ApartmentClaimInteractable",
+                  "__guid": "bcb629e3-ecc1-4cf5-b938-af71978d903c",
+                  "__enabled": true,
+                  "ApartmentId": "apartment-a05"
+                },
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "0c1329c9-0b4e-4347-8da5-ef4f5cf785d5",
+                  "__enabled": true,
+                  "Center": "0,0,0",
+                  "Scale": "40,40,80",
+                  "Static": true
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "89cb8cf0-8450-4ebc-9cf8-3cfe8ae209df",
+                  "__enabled": true,
+                  "Model": "models/dev/box.vmdl",
+                  "Tint": "0.2,0.6,0.9,1"
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "8b5bd68b-fc78-4f25-a16c-9245f73fe650",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Stash Anchor",
+              "Position": "460.0,-270.0,40.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "0.5,0.5,0.5",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "UltimoBarrio.StashComponent",
+                  "__guid": "e4feb05b-b96a-4faf-8869-58945c25a5a3",
+                  "__enabled": true,
+                  "ApartmentId": "apartment-a05",
+                  "MaxSlots": 24
+                },
+                {
+                  "__type": "UltimoBarrio.InventoryComponent",
+                  "__guid": "9bef3114-3672-417b-8cad-3a734f78eb25",
+                  "__enabled": true,
+                  "InventoryId": "apartment-a05:stash",
+                  "MaxSlots": 24
+                },
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "cbca8a4a-6cb5-41f1-a7ad-2685e5099506",
+                  "__enabled": true,
+                  "Center": "0,0,0",
+                  "Scale": "50,50,50",
+                  "Static": true
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "7b4676db-92a0-4734-b45a-b2ac3664b7ad",
+                  "__enabled": true,
+                  "Model": "models/dev/box.vmdl",
+                  "Tint": "0.2,0.7,0.3,1"
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "1bed32bd-8f5f-4a51-b2b4-1dd48077f62a",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Owner Spawn Anchor",
+              "Position": "500.0,-300.0,30.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            },
+            {
+              "__guid": "db845d23-2cfe-4a82-8d1e-a4448bc91ceb",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Raid Target Anchor",
+              "Position": "520.0,-300.0,30.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            }
+          ]
+        },
+        {
+          "__guid": "2ba177d1-fa0e-423f-89c7-3b4b53040da2",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "apartment-a06",
+          "Position": "500, 300, 20",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.Apartments.ApartmentComponent",
+              "__guid": "a97b2e6c-82cc-444b-a8f4-3ff39552af73",
+              "__enabled": true,
+              "ApartmentId": "apartment-a06",
+              "ClaimState": 0,
+              "OwnerId": "",
+              "DoorReference": {
+                "_type": "gameobject",
+                "id": "663fce78-9a77-4383-b139-971eea12e2e1"
+              },
+              "StashReference": {
+                "_type": "gameobject",
+                "id": "f26e115b-9a52-400a-a53a-20c7bbad3af6"
+              },
+              "SpawnReference": {
+                "_type": "gameobject",
+                "id": "28f5e19b-aa9c-402a-82b5-3bee5b3de05a"
+              },
+              "RaidTargetReference": {
+                "_type": "gameobject",
+                "id": "89c9ae10-bab4-4a09-8fac-cabf4716d89f"
+              }
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "663fce78-9a77-4383-b139-971eea12e2e1",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Claim Portal",
+              "Position": "540.0,300.0,60.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "0.5,0.5,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "UltimoBarrio.Apartments.ApartmentClaimInteractable",
+                  "__guid": "335ce34e-032e-422f-97d5-16a9752ddd95",
+                  "__enabled": true,
+                  "ApartmentId": "apartment-a06"
+                },
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "cb49b8fc-5bd0-4703-8191-d69024eda926",
+                  "__enabled": true,
+                  "Center": "0,0,0",
+                  "Scale": "40,40,80",
+                  "Static": true
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "0df1377c-b25b-4452-b0a8-48f2894dcd97",
+                  "__enabled": true,
+                  "Model": "models/dev/box.vmdl",
+                  "Tint": "0.2,0.6,0.9,1"
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "f26e115b-9a52-400a-a53a-20c7bbad3af6",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Stash Anchor",
+              "Position": "460.0,330.0,40.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "0.5,0.5,0.5",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "UltimoBarrio.StashComponent",
+                  "__guid": "c8459f3a-9666-41e9-aea7-246219b4d4e3",
+                  "__enabled": true,
+                  "ApartmentId": "apartment-a06",
+                  "MaxSlots": 24
+                },
+                {
+                  "__type": "UltimoBarrio.InventoryComponent",
+                  "__guid": "5879bf24-959b-4eee-bd79-7b352516bda9",
+                  "__enabled": true,
+                  "InventoryId": "apartment-a06:stash",
+                  "MaxSlots": 24
+                },
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "9673945b-6ecf-41a5-b74f-7453323c490d",
+                  "__enabled": true,
+                  "Center": "0,0,0",
+                  "Scale": "50,50,50",
+                  "Static": true
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "957ccff7-ba89-4304-85a2-f72833bd4937",
+                  "__enabled": true,
+                  "Model": "models/dev/box.vmdl",
+                  "Tint": "0.2,0.7,0.3,1"
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "28f5e19b-aa9c-402a-82b5-3bee5b3de05a",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Owner Spawn Anchor",
+              "Position": "500.0,300.0,30.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            },
+            {
+              "__guid": "89c9ae10-bab4-4a09-8fac-cabf4716d89f",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Raid Target Anchor",
+              "Position": "520.0,300.0,30.0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            }
+          ]
+        },
+        {
+          "__guid": "3466211d-91c6-43cd-b5a6-25edc0d8a304",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Kiosko Comerciante",
+          "Position": "0,0,25",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.Trading.Trader",
+              "__guid": "16e70536-6846-48ca-b80d-86bf058d1398",
+              "__enabled": true,
+              "WaterPrice": 10,
+              "MedicinePrice": 20,
+              "AmmoPrice": 5,
+              "ScrapSellPrice": 2
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "58897474-520a-443a-967b-cc86599d54ee",
+              "__enabled": true,
+              "Center": "0,0,25",
+              "Scale": "60,60,50",
+              "Static": true
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "3f6b8499-7460-4a36-ade4-bb7dd9f9d38a",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.8,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "3eb3464e-ff82-49e9-9b81-3b25b6533524",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Chatarra 1",
+          "Position": "180.0,0.0,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "74e25385-0891-47a9-86e6-4866e7e7ca7c",
+              "__enabled": true,
+              "ItemId": "chatarra",
+              "Amount": 1
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "988ed455-bd20-444f-8ac8-a312bcdf139b",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "9edacdd8-98f1-4431-ad25-1062a4d41129",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.6,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "c758559e-5a40-463e-b015-45441d33ce22",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Chatarra 2",
+          "Position": "228.3,74.2,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "ac0b2f13-10a7-4a47-a9fd-856ab0b0c25d",
+              "__enabled": true,
+              "ItemId": "chatarra",
+              "Amount": 2
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "506efd9c-e69a-40a5-9e3c-6ff18f356044",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "4566b7a1-f0a7-44ac-9487-6eabe1a41f32",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.6,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "17c14339-d457-4d38-9ee6-7a19d4eeaf83",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Chatarra 3",
+          "Position": "242.7,176.3,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "2e1a5530-be5a-450c-a600-503fbc20c3db",
+              "__enabled": true,
+              "ItemId": "chatarra",
+              "Amount": 3
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "51b136d2-afda-40d4-932b-399101eca861",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "8dfa8755-3e63-43b2-aca2-de4b0b50e727",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.6,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "0188ff5e-0129-4adc-952f-0bde9a5a02ad",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Chatarra 4",
+          "Position": "105.8,145.6,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "cad03424-9695-4f73-9aff-d439be3c1a43",
+              "__enabled": true,
+              "ItemId": "chatarra",
+              "Amount": 1
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "e6493016-4704-4658-b739-6e895ee6664a",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "139cbe6b-5f62-4019-bd26-a63959023418",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.6,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "99f2c6bc-fd30-4d4d-b6e5-9fef5d63b6f6",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Chatarra 5",
+          "Position": "74.2,228.3,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "5dd799c5-ae6d-42f4-a650-5c6d51cd0b80",
+              "__enabled": true,
+              "ItemId": "chatarra",
+              "Amount": 2
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "50d8c62e-d2d6-4357-8342-c3df2a4080fa",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "42da7b73-4df9-439b-aeca-d19daa8651d2",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.6,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "70b0e4ec-980d-462a-b336-6002406afc0f",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Chatarra 6",
+          "Position": "0.0,300.0,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "6b9bd9d1-0ae4-4549-b315-3d5812bf75ae",
+              "__enabled": true,
+              "ItemId": "chatarra",
+              "Amount": 3
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "baccc8e8-99ab-485d-9731-97144772a043",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "8b063a2c-3554-4c79-b84d-ef26ba0e53d8",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.6,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "38d4a2c4-ebfb-4574-8d23-f8f2a49b68fa",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Chatarra 7",
+          "Position": "-55.6,171.2,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "9a6df1cd-e66f-49a6-a9a3-64add3f95d48",
+              "__enabled": true,
+              "ItemId": "chatarra",
+              "Amount": 1
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "64afb455-2432-41f7-8b54-b841c02e10a4",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "f01e3db5-2391-472c-843f-ef40a8caa71f",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.6,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "14804479-5a06-4685-a09c-9a1a29c351f9",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Chatarra 8",
+          "Position": "-141.1,194.2,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "d2dd7096-816c-4ee3-b346-afed5b346f82",
+              "__enabled": true,
+              "ItemId": "chatarra",
+              "Amount": 2
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "7d81950b-ddf3-4b0b-8cc8-304e55a05255",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "eaf4fd2c-0903-49b2-8e2b-638bdd6caba7",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.6,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "6abab393-371f-477c-bad1-69f92a5f6e51",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Chatarra 9",
+          "Position": "-242.7,176.3,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "133fdc6a-6996-4f64-b0e2-2bc25d6841b9",
+              "__enabled": true,
+              "ItemId": "chatarra",
+              "Amount": 3
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "5650aae5-aaff-4a25-936c-3f4599c0c53d",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "1ba8e743-cdc7-429f-8aa2-b17a335a7f75",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.6,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "28dd4aaf-d664-4284-bd53-63fa01d80b9e",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Chatarra 10",
+          "Position": "-171.2,55.6,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "dd07adea-5a6e-4e2b-8026-c2a3f8278cdb",
+              "__enabled": true,
+              "ItemId": "chatarra",
+              "Amount": 1
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "51ca1eea-b066-4c41-b1a7-142d33ce217c",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "8237aac5-7166-43ce-875c-ddbdb235fcfc",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.6,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "eca55dd7-89f7-41b0-8c7f-d015f0ebfe6e",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Chatarra 11",
+          "Position": "-240.0,0.0,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "0fa9bcd5-4192-4f64-8c8f-1f096c0f6054",
+              "__enabled": true,
+              "ItemId": "chatarra",
+              "Amount": 2
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "9e8e76ce-2746-4893-96bf-4fc9475d1221",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "3420c468-27d3-42df-a207-be37dc98aee8",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.6,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "08a612fa-49b1-4a1d-bd66-79c0fbeeb1bf",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Chatarra 12",
+          "Position": "-285.3,-92.7,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "8f10ca3a-2b53-403f-afdc-cac97e464f71",
+              "__enabled": true,
+              "ItemId": "chatarra",
+              "Amount": 3
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "78c55820-b25f-415d-a336-2383150a65a1",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "01e0c5d5-6379-4214-af0b-f6cb99a29468",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.6,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "8cab3c01-b573-409b-89a4-4f65c09341e3",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Chatarra 13",
+          "Position": "-145.6,-105.8,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "cd4e4dfe-4787-4688-aede-6ec9dda641ed",
+              "__enabled": true,
+              "ItemId": "chatarra",
+              "Amount": 1
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "90036498-5ff2-450d-b4a8-72d141db31ca",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "70a4df5a-e711-4f01-af46-869ff8bf224b",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.6,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "3e11b8f2-8862-46eb-9d8d-bec19464e243",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Chatarra 14",
+          "Position": "-141.1,-194.2,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "baead945-4bb0-40d5-b58c-99813214c2dd",
+              "__enabled": true,
+              "ItemId": "chatarra",
+              "Amount": 2
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "56c71879-5b23-46f0-bb25-022a1cc92ae4",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "ad29e024-c242-4971-a7de-9919ca8a5dc6",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.6,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "4dae6bb4-fde0-4283-a463-bce6f9e6560a",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Chatarra 15",
+          "Position": "-92.7,-285.3,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "46a81b41-c4f0-417c-b843-ad22637de0fd",
+              "__enabled": true,
+              "ItemId": "chatarra",
+              "Amount": 3
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "7528640c-dced-4a1e-8a65-490442538c33",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "42787881-8363-4159-8e36-9a7a5a12ec78",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.6,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "a95da614-1a22-454d-ba03-0b8d4a82f43c",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Chatarra 16",
+          "Position": "-0.0,-180.0,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "51ffe191-d520-46f2-8ed6-5d1bad0a39b7",
+              "__enabled": true,
+              "ItemId": "chatarra",
+              "Amount": 1
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "49454485-f29b-42b2-b409-89796bb3de09",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "3f32c345-3ff0-4bab-b399-426be776e8a4",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.6,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "c6521a68-e692-468e-92ca-6a04e325850f",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Chatarra 17",
+          "Position": "74.2,-228.3,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "d6193cb6-81d1-49ae-8f2c-e4064255e462",
+              "__enabled": true,
+              "ItemId": "chatarra",
+              "Amount": 2
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "a1bb7498-4c8e-453a-9aeb-f4fd121c667b",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "f37c2163-9d6f-4080-8baf-039f04c4524c",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.6,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "e1e31822-90d1-45e9-a98d-d249ef00b5b8",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Chatarra 18",
+          "Position": "176.3,-242.7,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "8ee45da4-d9a8-4d2c-8589-93e6331a35ce",
+              "__enabled": true,
+              "ItemId": "chatarra",
+              "Amount": 3
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "d65e810b-487c-4838-8343-0279e85a9ca1",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "b795e7e3-c3e9-46a5-8c9e-bb66fd137d94",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.6,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "a738f09b-9714-4444-a13b-31e927da9f65",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Chatarra 19",
+          "Position": "145.6,-105.8,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "878532bd-5fe8-4162-bd66-afed223b08cb",
+              "__enabled": true,
+              "ItemId": "chatarra",
+              "Amount": 1
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "f2b9907a-5ad4-4118-807d-2f7b5e62cb8c",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "7a9fe57e-e392-4d24-aca0-2184832c068d",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.6,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "94f14a96-bfcb-481e-b0e2-3068ad9d4bdc",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Chatarra 20",
+          "Position": "228.3,-74.2,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "75c2be47-aec3-4dc3-8a34-ae3c4b13fc42",
+              "__enabled": true,
+              "ItemId": "chatarra",
+              "Amount": 2
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "35fa19d2-aac8-415e-8db6-4920c40ae101",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "b1ad3a69-f313-4e35-9eb0-dbb52c37bebf",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.6,0.6,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "11cddfa9-e4dd-4ced-86a3-f6bfd11fdca4",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Medicina 1",
+          "Position": "215.6,43.7,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "01077a98-0715-4509-9ffa-1c5e60a0a683",
+              "__enabled": true,
+              "ItemId": "medicine",
+              "Amount": 1
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "96992b3b-86ca-4cf7-8b71-4bd84ac9f12d",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "46038a0d-7a9d-4888-bb7e-c8e93853c494",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.9,0.2,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "91c57295-a3d5-41e5-af2e-0e92f73c8365",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Medicina 2",
+          "Position": "70.0,208.6,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "d32bc5d4-38c6-45cc-89b2-3c9fe8c23f8e",
+              "__enabled": true,
+              "ItemId": "medicine",
+              "Amount": 1
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "53b7ab1b-69d7-4f43-8524-14317df34f06",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "cb8c3e04-a8af-44ca-ba63-bdb421114881",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.9,0.2,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "84bde540-7916-480d-bfd7-09b8ea69b0dc",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Medicina 3",
+          "Position": "-145.7,164.9,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "c72f43d9-15f8-4b33-bfd9-3a177fd67e79",
+              "__enabled": true,
+              "ItemId": "medicine",
+              "Amount": 1
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "92b677fb-2151-4278-b612-661feb4ac11f",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "6576deca-7ebe-404e-836a-5be11c98813a",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.9,0.2,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "2690f4a3-d1b0-4783-b5a6-22918a2d092e",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Medicina 4",
+          "Position": "-215.6,-43.7,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "cfb9a4c5-558a-4922-88e8-0488ea822145",
+              "__enabled": true,
+              "ItemId": "medicine",
+              "Amount": 1
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "5f6150ce-b284-43db-9a23-9c709093186b",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "e24a43b3-ef16-442f-9748-551d0025cae8",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.9,0.2,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "864323af-92b9-40ae-ac14-6200458546cc",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Medicina 5",
+          "Position": "-70.0,-208.6,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "d398de5b-8880-4ab6-af96-cdbfc7a3a878",
+              "__enabled": true,
+              "ItemId": "medicine",
+              "Amount": 1
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "defacb50-853b-41c9-8741-5004b4d7e902",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "45d62a5e-fef3-4f8c-9ed8-708289695ff3",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.9,0.2,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "96260a7f-8a25-446f-a1b3-4c8cc5471c8c",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Medicina 6",
+          "Position": "145.7,-164.9,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "de46dec4-9353-4244-992e-38fbfd269e01",
+              "__enabled": true,
+              "ItemId": "medicine",
+              "Amount": 1
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "d638a7b5-a06c-4136-a7a4-3d6d3ebcede7",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "e3ee6bc0-1c65-43f7-b33b-212c14006990",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.9,0.2,0.2,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "79b56d6b-ab73-4f33-8d34-ce23d8bf8d53",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Agua 1",
+          "Position": "245.7,134.2,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "98f77983-f042-47e5-a142-fbb18d34a15c",
+              "__enabled": true,
+              "ItemId": "water",
+              "Amount": 1
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "c7f32774-440a-42c7-a0b3-341335587bb2",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "001c25cd-984e-45b0-a9e4-09342029908c",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.2,0.4,0.9,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "cb41e23a-35e6-4628-b5a1-7938643172f7",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Agua 2",
+          "Position": "6.6,279.9,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "dd2a038a-7fff-4b2e-87b9-56a739005b24",
+              "__enabled": true,
+              "ItemId": "water",
+              "Amount": 1
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "0c0c2f75-c136-4a6b-a550-432f7732d431",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "abf3f90e-948d-4a6c-9259-8000065e23cf",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.2,0.4,0.9,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "74842561-e7d5-4101-9d72-71f08ef75190",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Agua 3",
+          "Position": "-239.1,145.7,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "e2bcb8c7-a8f2-449f-b52f-680af3dbf1b4",
+              "__enabled": true,
+              "ItemId": "water",
+              "Amount": 1
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "c44cc38d-b01d-4fd4-aa86-863a6a4e3b35",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "ac1385be-0ee2-44bc-8c6a-90f4ae59b2d9",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.2,0.4,0.9,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "6de6d3bb-0fe0-4a2d-ae3e-5978d204edeb",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Agua 4",
+          "Position": "-245.7,-134.2,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "73d32ece-99dd-4506-966c-88303f57ed43",
+              "__enabled": true,
+              "ItemId": "water",
+              "Amount": 1
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "a960cfc3-16c1-41c4-a78e-ccb3a26bbfd0",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "36e34b67-b54b-469b-ab31-ece9a4b3f8d9",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.2,0.4,0.9,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "b72d71f5-d032-437d-a4ba-0c25e04a0cfe",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Agua 5",
+          "Position": "-6.6,-279.9,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "7abc372b-a613-4518-a7dd-770524971672",
+              "__enabled": true,
+              "ItemId": "water",
+              "Amount": 1
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "fec31892-b72c-4965-b3d9-63178a5c0905",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "69cbe0b1-a26c-4fc9-a15e-9322ca0b1050",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.2,0.4,0.9,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "2ad16a66-0094-4596-ab92-512caf10d9ed",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Agua 6",
+          "Position": "239.1,-145.7,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "5d4fe756-82b7-4966-8cfe-3672dbb8b4d3",
+              "__enabled": true,
+              "ItemId": "water",
+              "Amount": 1
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "47943058-8776-4097-ae82-37a6e8104bb7",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "28aca166-7ce1-4191-8d80-39d3ff92cc79",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.2,0.4,0.9,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "2bb17e6a-e55c-45ee-919b-8d3b64850251",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Municion 1",
+          "Position": "114.7,96.6,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "55e1bd69-d324-43e9-ac39-cf213f369a62",
+              "__enabled": true,
+              "ItemId": "ammo",
+              "Amount": 10
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "18ac906e-e9ed-4114-985f-5c8b35ea2347",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "92cc46e7-3470-4cd3-939d-f4333df31d90",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.3,0.8,0.3,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "1a5554d3-0d36-4d2c-a283-23b9fecd2cb8",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Municion 2",
+          "Position": "-96.6,114.7,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "632da3b8-2deb-4493-b023-b03754fb23ff",
+              "__enabled": true,
+              "ItemId": "ammo",
+              "Amount": 10
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "aac8866a-9c0c-4370-a6ad-06c5066c7466",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "84994101-e04c-41c4-b937-1dbe822a802a",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.3,0.8,0.3,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "7b9d5463-d214-49c0-a377-a063fa5439ea",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Municion 3",
+          "Position": "-114.7,-96.6,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "a0fcc5d6-993e-4a4c-8c02-0e98f431e8f0",
+              "__enabled": true,
+              "ItemId": "ammo",
+              "Amount": 10
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "144ac45b-614e-4e3f-8223-832daf097c35",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "a1196e47-43b0-4ec6-9692-66312efa51ee",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.3,0.8,0.3,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "955c5495-c65d-4c99-879f-75fda344a9f2",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Municion 4",
+          "Position": "96.6,-114.7,15",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "d21aad8d-4d8c-4fb0-9d4b-33780f05d577",
+              "__enabled": true,
+              "ItemId": "ammo",
+              "Amount": 10
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "031f43a9-9978-4c58-905d-710421674137",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "Scale": "20,20,20"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "de7a9cd1-7eac-4ce4-a50b-20d8c98f0ed2",
+              "__enabled": true,
+              "Model": "models/dev/box.vmdl",
+              "Tint": "0.3,0.8,0.3,1"
+            }
+          ],
+          "Children": []
+        }
+      ]
+    },
+    {
+      "__guid": "f98751d4-4a42-4665-933c-816cb7f1add1",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Systems",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "UltimoBarrio.WorldTime.WorldClock",
+          "__guid": "88b0eed3-056d-4370-89d0-da94db9a7be9",
+          "__enabled": true
+        },
+        {
+          "__type": "UltimoBarrio.Raids.RaidManager",
+          "__guid": "41529945-a6b1-4fa7-8016-812f418ee200",
+          "__enabled": true
+        },
+        {
+          "__type": "UltimoBarrio.World.LootRespawner",
+          "__guid": "89147e9d-ed41-4095-b724-a8dafbef7800",
+          "__enabled": true,
+          "IntervalSeconds": 45
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "bbb73d60-9548-49b1-a637-8ddb3e7306a7",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Main Camera",
+          "Position": "-300,0,100",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.CameraComponent",
+              "__guid": "ab78ab34-cf92-4f13-86ec-c0bd0b576cb9",
+              "__enabled": true,
+              "BackgroundColor": "0.33333,0.46275,0.52157,1",
+              "ClearFlags": "All",
+              "EnablePostProcessing": true,
+              "FieldOfView": 60,
+              "FovAxis": "Horizontal",
+              "IsMainCamera": true,
+              "Priority": 1,
+              "ZFar": 5000,
+              "ZNear": 5
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "de661945-2677-4dfa-9cc1-8321e00e1fcc",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Network",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.NetworkHelper",
+              "__guid": "83e39875-f958-4122-abe0-a5046757428b",
+              "__enabled": true,
+              "PlayerPrefab": {
+                "_type": "gameobject",
+                "prefab": "prefabs/player.prefab"
+              },
+              "StartServer": true
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "3134b9db-b862-46fd-9a60-e20533fe8639",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Apartment Claims",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.Apartments.ApartmentClaimService",
+              "__guid": "36859cc5-41b4-4374-ba06-eae6d2f60a1d",
+              "__enabled": true,
+              "ClaimDistance": 5000,
+              "SaveSlotId": "ultimo_barrio_alpha"
+            }
+          ],
+          "Children": []
+        }
+      ]
+    },
+    {
+      "__guid": "c3f88006-041b-4ddb-8ba6-c19b1208882d",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "SpawnPoints",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": [
+        {
+          "__guid": "07754ebe-594c-437e-b7c4-9c14b5d64c60",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Primary Spawn A",
+          "Position": "-100,-100,10",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.SpawnPoint",
+              "__guid": "b2966003-3cfa-413f-86e6-70617477be60",
+              "__enabled": true
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "e7b85118-1330-472f-9a73-b3c43597a0b6",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Primary Spawn B",
+          "Position": "100,100,10",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.SpawnPoint",
+              "__guid": "f0e217c5-8490-420a-8c19-a39e25cdae7c",
+              "__enabled": true
+            }
+          ],
+          "Children": []
+        }
+      ]
+    }
+  ]
+}
