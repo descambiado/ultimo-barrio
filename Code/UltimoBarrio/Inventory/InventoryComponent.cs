@@ -107,11 +107,9 @@ namespace UltimoBarrio
                     prefabPath = "prefabs/items/pf_scrap_pickup.prefab"; 
                 }
 
-                var prefab = Scene.Directory.FindPrefab(prefabPath); // Wait, s&box API is different. 
-                // Wait, it is SceneUtility.GetPrefabScene() or similar.
-                
                 // s&box way to spawn prefab:
-                var obj = SceneUtility.GetPrefabScene(prefabPath)?.Clone();
+                var prefabScene = ResourceLibrary.Get<PrefabScene>(prefabPath);
+                var obj = SceneUtility.GetPrefabScene(prefabScene)?.Clone();
                 if (obj != null)
                 {
                     obj.WorldPosition = GameObject.WorldPosition + Vector3.Up * 50f + GameObject.WorldRotation.Forward * 50f;
