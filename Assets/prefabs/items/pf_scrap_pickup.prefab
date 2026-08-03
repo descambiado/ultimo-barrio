@@ -1,44 +1,41 @@
 {
-  "RootObject": "28fc361b-e294-4a57-a703-b39fb1d26bff",
-  "GameObjects": [
-    {
-      "__guid": "737e7ae6-eedd-48da-aa6d-b91c3ec90880",
-      "__version": 2,
-      "Flags": 0,
-      "Name": "Scrap Pickup",
-      "Position": "0,0,0",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 1,
-      "NetworkFlags": 0,
-      "NetworkOrphaned": 0,
-      "NetworkTransmit": true,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__guid": "1e9face0-fd15-418b-8990-b49189bc115e",
-          "__enabled": true,
-          "__type": "UltimoBarrio.Items.WorldItemPickup",
-          "ItemId": "item-scrap",
-          "Amount": 1
-        },
-        {
-          "__guid": "d8c68a65-2675-49f7-8193-6bd586ac6eae",
-          "__enabled": true,
-          "__type": "Sandbox.BoxCollider",
-          "Scale": "10,10,10"
-        },
-        {
-          "__guid": "c24b399e-edfc-4cea-819d-a3ba767258b2",
-          "__enabled": true,
-          "__type": "Sandbox.ModelRenderer",
-          "Model": "models/dev/box.vmdl",
-          "Tint": "0.5,0.5,0.5,1"
-        }
-      ],
-      "Children": []
-    }
-  ]
+  "RootObject": {
+    "__guid": "737e7ae6-eedd-48da-aa6d-b91c3ec90880",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "Scrap Pickup",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__guid": "1e9face0-fd15-418b-8990-b49189bc115e",
+        "__enabled": true,
+        "__type": "UltimoBarrio.WorldItemPickup",
+        "ItemId": "item-scrap",
+        "Amount": 1
+      },
+      {
+        "__guid": "d8c68a65-2675-49f7-8193-6bd586ac6eae",
+        "__enabled": true,
+        "__type": "Sandbox.BoxCollider",
+        "Scale": "10,10,10"
+      },
+      {
+        "__guid": "c24b399e-edfc-4cea-819d-a3ba767258b2",
+        "__enabled": true,
+        "__type": "Sandbox.ModelRenderer",
+        "Model": "models/dev/box.vmdl",
+        "Tint": "0.5,0.5,0.5,1"
+      }
+    ],
+    "Children": []
+  }
 }

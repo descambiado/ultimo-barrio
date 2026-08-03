@@ -1,37 +1,34 @@
 {
-  "RootObject": "f3e533c5-b9cb-4294-ad55-06f023391a23",
-  "GameObjects": [
-    {
-      "__guid": "9e39f16b-e6af-46e8-bb59-7c930a33af47",
-      "__version": 2,
-      "Flags": 0,
-      "Name": "Apartment Stash",
-      "Position": "0,0,0",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 1,
-      "NetworkFlags": 0,
-      "NetworkOrphaned": 0,
-      "NetworkTransmit": true,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__guid": "3bfe727e-a38a-4c59-b921-dbecf08bd0b6",
-          "__enabled": true,
-          "__type": "Sandbox.BoxCollider",
-          "Scale": "60,60,60",
-          "Static": true
-        },
-        {
-          "__guid": "18bb3ecc-ae76-44a5-abf7-403018702101",
-          "__enabled": true,
-          "__type": "Sandbox.ModelRenderer",
-          "Model": "models/dev/box.vmdl"
-        }
-      ],
-      "Children": []
-    }
-  ]
+  "RootObject": {
+    "__guid": "9e39f16b-e6af-46e8-bb59-7c930a33af47",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "Apartment Stash",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__guid": "3bfe727e-a38a-4c59-b921-dbecf08bd0b6",
+        "__enabled": true,
+        "__type": "Sandbox.BoxCollider",
+        "Scale": "60,60,60",
+        "Static": true
+      },
+      {
+        "__guid": "18bb3ecc-ae76-44a5-abf7-403018702101",
+        "__enabled": true,
+        "__type": "Sandbox.ModelRenderer",
+        "Model": "models/dev/box.vmdl"
+      }
+    ],
+    "Children": []
+  }
 }

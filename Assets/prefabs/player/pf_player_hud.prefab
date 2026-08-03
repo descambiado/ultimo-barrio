@@ -1,34 +1,31 @@
 {
-  "RootObject": "0746898a-6d6c-4889-b0a2-a13d79d67825",
-  "GameObjects": [
-    {
-      "__guid": "4b8841d2-0373-4747-af47-41d0e5d475b3",
-      "__version": 2,
-      "Flags": 0,
-      "Name": "Player HUD",
-      "Position": "0,0,0",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 1,
-      "NetworkFlags": 0,
-      "NetworkOrphaned": 0,
-      "NetworkTransmit": true,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__guid": "d6f98687-9ee8-487d-b026-cbc99c3fe586",
-          "__enabled": true,
-          "__type": "UltimoBarrio.UI.PlayerHud"
-        },
-        {
-          "__guid": "6d9bbb98-c4da-4f45-9821-e0c242acfbad",
-          "__enabled": true,
-          "__type": "Sandbox.ScreenPanel"
-        }
-      ],
-      "Children": []
-    }
-  ]
+  "RootObject": {
+    "__guid": "4b8841d2-0373-4747-af47-41d0e5d475b3",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "Player HUD",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__guid": "d6f98687-9ee8-487d-b026-cbc99c3fe586",
+        "__enabled": true,
+        "__type": "UltimoBarrio.UI.PlayerHud"
+      },
+      {
+        "__guid": "6d9bbb98-c4da-4f45-9821-e0c242acfbad",
+        "__enabled": true,
+        "__type": "Sandbox.ScreenPanel"
+      }
+    ],
+    "Children": []
+  }
 }
