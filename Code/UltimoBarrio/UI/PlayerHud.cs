@@ -5,8 +5,17 @@ using System.Linq;
 
 namespace UltimoBarrio.UI
 {
+    public enum HudState
+    {
+        Gameplay,
+        InventoryOnly,
+        InventoryAndStash,
+        Trader,
+        Dead
+    }
+
     [Title("Player HUD")]
-    [Category("sltimo Barrio")]
+    [Category("Último Barrio")]
     [Icon("desktop_windows")]
     public sealed class PlayerHud : PanelComponent
     {
@@ -17,7 +26,7 @@ namespace UltimoBarrio.UI
         public InventoryUI PlayerInvUI { get; private set; }
         public InventoryUI StashInvUI { get; private set; }
 
-        private bool _isInventoryOpen = false;
+        public HudState CurrentState { get; private set; } = HudState.Gameplay;
 
         protected override void OnStart()
         {
@@ -45,6 +54,35 @@ namespace UltimoBarrio.UI
 
             StashInvUI = GameObject.Components.Create<InventoryUI>();
             StashInvUI.Title = "Alijo";
+            
+            ChangeState(HudState.Gameplay);
+        }
+
+        public void ChangeState(HudState newState)
+        {
+            if (IsProxy) return;
+            CurrentState = newState;
+            
+            // Toggle cursor
+            bool showCursor = (newState != HudState.Gameplay && newState != HudState.Dead);
+            // We can't directly lock mouse in UI easily without Scene.Camera or Input, 
+            // but we can set panel pointer events
+            Panel.Style.PointerEvents = showCursor ? PointerEvents.All : PointerEvents.None;
+            
+            if (showCursor)
+            {
+                Panel.Style.PointerEvents = PointerEvents.All;
+            }
+            
+            // Manage UI visibility based on state
+            if (PlayerInvUI.Panel != null)
+                PlayerInvUI.Panel.Style.Display = (newState == HudState.InventoryOnly || newState == HudState.InventoryAndStash || newState == HudState.Trader) ? DisplayMode.Flex : DisplayMode.None;
+                
+            if (StashInvUI.Panel != null)
+                StashInvUI.Panel.Style.Display = (newState == HudState.InventoryAndStash) ? DisplayMode.Flex : DisplayMode.None;
+                
+            if (_traderUI != null)
+                _traderUI.Style.Display = (newState == HudState.Trader) ? DisplayMode.Flex : DisplayMode.None;
         }
 
         protected override void OnUpdate()
@@ -59,7 +97,6 @@ namespace UltimoBarrio.UI
                 PlayerInvUI.Panel.Style.Top = Length.Percent(30);
                 PlayerInvUI.Panel.Style.Width = 400;
                 PlayerInvUI.Panel.Style.PointerEvents = PointerEvents.All;
-                PlayerInvUI.Panel.Style.Display = _isInventoryOpen ? DisplayMode.Flex : DisplayMode.None;
             }
 
             if (StashInvUI.Panel != null)
@@ -69,33 +106,42 @@ namespace UltimoBarrio.UI
                 StashInvUI.Panel.Style.Top = Length.Percent(30);
                 StashInvUI.Panel.Style.Width = 400;
                 StashInvUI.Panel.Style.PointerEvents = PointerEvents.All;
+            }
 
-                // Check distance
-                if (StashInvUI.TargetInventory != null)
+            // Check distance for Stash and Trader
+            if (CurrentState == HudState.InventoryAndStash && StashInvUI.TargetInventory != null)
+            {
+                var distance = (WorldPosition - StashInvUI.TargetInventory.WorldPosition).Length;
+                if (distance > 200f) // Threshold slightly larger than interaction range
                 {
-                    var distance = (Transform.Position - StashInvUI.TargetInventory.Transform.Position).Length;
-                    if (distance > 200f) // Threshold slightly larger than interaction range
-                    {
-                        StashInvUI.TargetInventory = null;
-                        PlayerInvUI.TransferTarget = null;
-                    }
+                    StashInvUI.TargetInventory = null;
+                    PlayerInvUI.TransferTarget = null;
+                    ChangeState(HudState.Gameplay);
                 }
-
-                // Only show stash if we have a valid target
-                bool showStash = _isInventoryOpen && StashInvUI.TargetInventory != null && PlayerInvUI.TransferTarget != null;
-                StashInvUI.Panel.Style.Display = showStash ? DisplayMode.Flex : DisplayMode.None;
+            }
+            
+            if (CurrentState == HudState.Trader && _traderUI.TargetTrader != null)
+            {
+                var distance = (WorldPosition - _traderUI.TargetTrader.WorldPosition).Length;
+                if (distance > 200f)
+                {
+                    ChangeState(HudState.Gameplay);
+                }
             }
 
             // Toggle inventory
             if (Input.Pressed("Score")) // TAB key usually
             {
-                _isInventoryOpen = !_isInventoryOpen;
-                if (_isInventoryOpen)
+                if (CurrentState == HudState.Gameplay)
                 {
                     PlayerInvUI.TargetInventory = GameObject.Components.Get<InventoryComponent>();
-                    // When pressing TAB normally, we clear the transfer target so the stash hides
                     PlayerInvUI.TransferTarget = null;
                     StashInvUI.TargetInventory = null;
+                    ChangeState(HudState.InventoryOnly);
+                }
+                else
+                {
+                    ChangeState(HudState.Gameplay);
                 }
             }
         }
@@ -104,6 +150,12 @@ namespace UltimoBarrio.UI
         {
             if (IsProxy) return;
             _traderUI?.Open(trader);
+            
+            var playerInv = GameObject.Components.Get<InventoryComponent>();
+            PlayerInvUI.TargetInventory = playerInv;
+            PlayerInvUI.TransferTarget = null;
+            
+            ChangeState(HudState.Trader);
         }
 
         public void OpenStash(InventoryComponent stashInv)
@@ -117,7 +169,7 @@ namespace UltimoBarrio.UI
             StashInvUI.TargetInventory = stashInv;
             StashInvUI.TransferTarget = playerInv;
 
-            _isInventoryOpen = true;
+            ChangeState(HudState.InventoryAndStash);
         }
 
         protected override void OnDestroy()
