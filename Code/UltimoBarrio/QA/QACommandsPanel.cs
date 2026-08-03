@@ -1,115 +1,148 @@
-using Sandbox;
+﻿using Sandbox;
 using System;
 using System.Linq;
-using UltimoBarrio.Core;
-using UltimoBarrio.Apartments;
 
 namespace UltimoBarrio.QA
 {
     /// <summary>
-    /// Panel de QA — actívalo añadiendo el componente al player prefab
-    /// o como un GO en la escena con ScreenPanel.
-    /// Teclas de debug: F1=Reset save, F2=Give chatarra, F3=Give money,
-    /// F4=Force Night, F5=Release my apartment.
+    /// Comandos de consola para QA. EscrÃ­belos en la consola de s&box (tilde ~).
+    /// qa_inv        â€” muestra el inventario del jugador local
+    /// qa_give_scrap â€” aÃ±ade 10 chatarra al inventario
+    /// qa_give_money â€” aÃ±ade 100 al wallet
+    /// qa_apts       â€” muestra el estado de todos los apartamentos
+    /// qa_force_night â€” fuerza la fase Noche en WorldClock
+    /// qa_force_day   â€” fuerza la fase DÃ­a en WorldClock
+    /// qa_release_apt â€” libera el apartamento del jugador local (host only)
     /// </summary>
-    [Title("QA Commands Panel")]
-    [Category("Último Barrio — QA")]
+    [Title("QA Commands")]
+    [Category("Ãšltimo Barrio â€” QA")]
     [Icon("bug_report")]
     public sealed class QACommandsPanel : Component
     {
-        [Property] public bool ShowPanel { get; set; } = false;
-
-        protected override void OnUpdate()
+        // â”€â”€ qa_inv â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        [ConCmd("qa_inv")]
+        public static void CmdInventory()
         {
-            if (IsProxy) return;
+            var player = FindLocalPlayer();
+            if (player == null) { Log.Warning("[QA] No se encontrÃ³ el jugador local."); return; }
 
-            // F1 — Reset QA save
-            if (Input.Pressed("F1"))
+            var inv = player.Components.Get<InventoryComponent>();
+            if (inv == null) { Log.Warning("[QA] Sin InventoryComponent."); return; }
+
+            Log.Info($"[QA] InventoryId: {inv.InventoryId}");
+            int filled = 0;
+            foreach (var slot in inv.Slots.Where(s => !string.IsNullOrEmpty(s.ItemId)))
             {
-                Log.Info("[QA] F1 → Reset QA save slot");
-                var claimService = Scene.GetAllComponents<ApartmentClaimService>().FirstOrDefault();
-                if (claimService != null)
-                {
-                    Log.Info("[QA] ApartmentClaimService found — cannot reset save in runtime, delete Data/prototype.json manually");
-                }
-                else
-                {
-                    Log.Warning("[QA] ApartmentClaimService not found in scene");
-                }
+                Log.Info($"  [{slot.ItemId}] x{slot.Amount}");
+                filled++;
+            }
+            if (filled == 0) Log.Info("  (inventario vacÃ­o)");
+        }
+
+        // â”€â”€ qa_give_scrap â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        [ConCmd("qa_give_scrap")]
+        public static void CmdGiveScrap()
+        {
+            var player = FindLocalPlayer();
+            if (player == null) { Log.Warning("[QA] No se encontrÃ³ el jugador local."); return; }
+
+            var inv = player.Components.Get<InventoryComponent>();
+            if (inv == null) { Log.Warning("[QA] Sin InventoryComponent."); return; }
+
+            bool ok = inv.TryAdd("chatarra", 10);
+            Log.Info($"[QA] Give 10 chatarra â†’ {(ok ? "OK" : "FALLIDO (sin espacio o proxy)")}");
+        }
+
+        // â”€â”€ qa_give_money â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        [ConCmd("qa_give_money")]
+        public static void CmdGiveMoney()
+        {
+            var player = FindLocalPlayer();
+            if (player == null) { Log.Warning("[QA] No se encontrÃ³ el jugador local."); return; }
+
+            var wallet = player.Components.Get<Economy.Wallet>();
+            if (wallet == null) { Log.Warning("[QA] Sin Wallet."); return; }
+
+            wallet.Deposit(100);
+            Log.Info($"[QA] AÃ±adidos 100. Saldo: {wallet.Balance}");
+        }
+
+        // â”€â”€ qa_apts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        [ConCmd("qa_apts")]
+        public static void CmdApartments()
+        {
+            var scene = Game.ActiveScene;
+            if (scene == null) { Log.Warning("[QA] Sin escena activa."); return; }
+
+            var apts = scene.GetAllComponents<Apartments.ApartmentComponent>();
+            foreach (var apt in apts)
+            {
+                string owner = string.IsNullOrEmpty(apt.OwnerId) ? "(libre)" : apt.OwnerId;
+                Log.Info($"[QA] {apt.ApartmentId} | {apt.ClaimState} | Owner: {owner}");
+            }
+        }
+
+        // â”€â”€ qa_force_night â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        [ConCmd("qa_force_night")]
+        public static void CmdForceNight()
+        {
+            var scene = Game.ActiveScene;
+            if (scene == null) { Log.Warning("[QA] Sin escena activa."); return; }
+
+            var clock = scene.GetAllComponents<WorldTime.WorldClock>().FirstOrDefault();
+            if (clock == null) { Log.Warning("[QA] WorldClock no encontrado."); return; }
+
+            clock.ForcePhase(WorldTime.TimePhase.Night);
+            Log.Info("[QA] WorldClock â†’ Night");
+        }
+
+        // â”€â”€ qa_force_day â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        [ConCmd("qa_force_day")]
+        public static void CmdForceDay()
+        {
+            var scene = Game.ActiveScene;
+            if (scene == null) { Log.Warning("[QA] Sin escena activa."); return; }
+
+            var clock = scene.GetAllComponents<WorldTime.WorldClock>().FirstOrDefault();
+            if (clock == null) { Log.Warning("[QA] WorldClock no encontrado."); return; }
+
+            clock.ForcePhase(WorldTime.TimePhase.Day);
+            Log.Info("[QA] WorldClock â†’ Day");
+        }
+
+        // â”€â”€ qa_release_apt â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        [ConCmd("qa_release_apt")]
+        public static void CmdReleaseApartment()
+        {
+            if (!Networking.IsHost) { Log.Warning("[QA] Solo el host puede liberar apartamentos."); return; }
+
+            var scene = Game.ActiveScene;
+            if (scene == null) { Log.Warning("[QA] Sin escena activa."); return; }
+
+            var steamId = Game.SteamId.ToString();
+            var apt = scene.GetAllComponents<Apartments.ApartmentComponent>()
+                          .FirstOrDefault(a => a.OwnerId == steamId);
+
+            if (apt == null)
+            {
+                Log.Warning($"[QA] No se encontrÃ³ apartamento para SteamId {steamId}");
+                return;
             }
 
-            // F2 — Give 10 chatarra
-            if (Input.Pressed("F2"))
-            {
-                Log.Info("[QA] F2 → Give 10 chatarra");
-                var inv = Components.Get<InventoryComponent>();
-                if (inv != null)
-                {
-                    bool ok = inv.TryAdd("chatarra", 10);
-                    Log.Info($"[QA] TryAdd chatarra(10) = {ok}. Slots used: {inv.Slots.Count(s => !string.IsNullOrEmpty(s.ItemId))}");
-                }
-                else
-                {
-                    Log.Warning("[QA] No InventoryComponent on local player");
-                }
-            }
+            apt.ApplyState(string.Empty, Apartments.ApartmentClaimState.Unclaimed);
+            Log.Info($"[QA] {apt.ApartmentId} liberado.");
+        }
 
-            // F3 — Give 100 money
-            if (Input.Pressed("F3"))
-            {
-                Log.Info("[QA] F3 → Give 100 dinero");
-                var wallet = Components.Get<UltimoBarrio.Economy.Wallet>();
-                if (wallet != null)
-                {
-                    wallet.Deposit(100);
-                    Log.Info($"[QA] Wallet balance now: {wallet.Balance}");
-                }
-                else
-                {
-                    Log.Warning("[QA] No Wallet on local player");
-                }
-            }
+        // â”€â”€ helper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        private static GameObject FindLocalPlayer()
+        {
+            var scene = Game.ActiveScene;
+            if (scene == null) return null;
 
-            // F4 — Force Night on WorldClock
-            if (Input.Pressed("F4"))
-            {
-                Log.Info("[QA] F4 → Force Night phase");
-                var clock = Scene.GetAllComponents<WorldTime.WorldClock>().FirstOrDefault();
-                if (clock != null)
-                {
-                    clock.ForcePhase(UltimoBarrio.WorldTime.TimePhase.Night);
-                    Log.Info("[QA] WorldClock forced to Night");
-                }
-                else
-                {
-                    Log.Warning("[QA] WorldClock not found");
-                }
-            }
-
-            // F5 — Print inventory state
-            if (Input.Pressed("F5"))
-            {
-                Log.Info("[QA] F5 → Inventory dump");
-                var inv = Components.Get<InventoryComponent>();
-                if (inv != null)
-                {
-                    Log.Info($"[QA] InventoryId: {inv.InventoryId}");
-                    foreach (var slot in inv.Slots.Where(s => !string.IsNullOrEmpty(s.ItemId)))
-                    {
-                        Log.Info($"  [{slot.ItemId}] x{slot.Amount}");
-                    }
-                }
-            }
-
-            // F6 — Print apartment states
-            if (Input.Pressed("F6"))
-            {
-                Log.Info("[QA] F6 → Apartment state dump");
-                foreach (var apt in Scene.GetAllComponents<ApartmentComponent>())
-                {
-                    Log.Info($"  Apt: {apt.ApartmentId} | State: {apt.ClaimState} | Owner: {(string.IsNullOrEmpty(apt.OwnerId) ? "(none)" : apt.OwnerId)}");
-                }
-            }
+            return scene.GetAllComponents<PlayerController>()
+                        .FirstOrDefault(p => !p.IsProxy)
+                        ?.GameObject;
         }
     }
 }
+
