@@ -270,17 +270,7 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 		if ( _registry == null || !_registry.TryGet( apartmentId, out var apartment ) ) return true;
 		if ( apartment.ClaimState != ApartmentClaimState.Claimed ) return true;
 		
-		if ( !Guid.TryParse(playerId, out var guid) ) return false;
-		var playerGo = Scene.Directory.FindByGuid( guid );
-		if ( playerGo == null ) return false;
-		
-		var connection = Networking.Connections.FirstOrDefault( c => c.Id == playerGo.Network.OwnerId );
-		if ( connection == null ) return false;
-		
-		if ( _identityProvider.TryResolve( connection, out var ownerId ) )
-		{
-			return apartment.OwnerId == ownerId;
-		}
-		return false;
+		// playerId is the domain PlayerId (e.g. SteamId or QA ID)
+		return apartment.OwnerId == playerId;
 	}
 }
