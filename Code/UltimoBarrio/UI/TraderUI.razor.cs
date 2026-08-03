@@ -1,4 +1,3 @@
-
 using Sandbox;
 using Sandbox.UI;
 using System.Linq;
@@ -30,10 +29,19 @@ namespace UltimoBarrio.UI
             TargetTrader.BuyItem(PlayerObj, itemId, 1);
         }
 
-        public void Sell(string itemId)
+        public void SellOne(string itemId)
         {
             if (TargetTrader == null || PlayerObj == null) return;
-            // Get player inventory to count how many to sell
+            var inv = PlayerObj.Components.Get<IInventory>();
+            if (inv != null && inv.GetCount(itemId) >= 1)
+            {
+                TargetTrader.SellItem(PlayerObj, itemId, 1);
+            }
+        }
+
+        public void SellAll(string itemId)
+        {
+            if (TargetTrader == null || PlayerObj == null) return;
             var inv = PlayerObj.Components.Get<IInventory>();
             if (inv != null)
             {
@@ -51,7 +59,6 @@ namespace UltimoBarrio.UI
             
             if (IsOpen && TargetTrader != null && PlayerObj != null)
             {
-                // Auto close if too far
                 var distance = (TargetTrader.WorldPosition - PlayerObj.WorldPosition).Length;
                 if (distance > 200f)
                 {
@@ -63,4 +70,3 @@ namespace UltimoBarrio.UI
         }
     }
 }
-

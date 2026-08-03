@@ -19,7 +19,6 @@ namespace UltimoBarrio.Trading
 
         public void OnInteract(InteractionRequest request)
         {
-            // Usually opens UI
             Log.Info($"[Trader] Interaction initiated by {request.InteractorId}");
         }
 
@@ -55,7 +54,7 @@ namespace UltimoBarrio.Trading
                 {
                     if (wallet.TryWithdraw(totalCost))
                     {
-                        Log.Info($"[Trader] {buyer.Name} bought {amount} {itemId} for {totalCost}.");
+                        Log.Info($"[Trader] {buyer.Name} bought {amount} {itemId} for {totalCost}. Balance now: ${wallet.Balance}");
                     }
                     else 
                     {
@@ -69,7 +68,7 @@ namespace UltimoBarrio.Trading
             }
             else 
             {
-                Log.Info($"[Trader] {buyer.Name} cannot afford {totalCost} (Balance: {wallet.Balance}).");
+                Log.Info($"[Trader] {buyer.Name} cannot afford {totalCost} (Balance: ${wallet.Balance}).");
             }
         }
 
@@ -84,25 +83,23 @@ namespace UltimoBarrio.Trading
 
             if (wallet == null || inventory == null) return;
 
-            if (itemId != "scrap") 
+            string targetItem = (itemId == "chatarra" || itemId == "scrap") ? "chatarra" : itemId;
+            int available = inventory.GetCount("chatarra");
+            if (available == 0) available = inventory.GetCount("scrap");
+
+            if (available <= 0)
             {
-                Log.Info($"[Trader] Can only sell scrap.");
+                Log.Info($"[Trader] {seller.Name} has no scrap to sell.");
                 return;
             }
 
-            int totalPrice = ScrapSellPrice * amount;
+            int actualAmount = Math.Min(amount, available);
+            int totalPrice = ScrapSellPrice * actualAmount;
 
-            if (inventory.GetCount(itemId) >= amount)
+            if (inventory.TryRemove("chatarra", actualAmount) || inventory.TryRemove("scrap", actualAmount))
             {
-                if (inventory.TryRemove(itemId, amount))
-                {
-                    wallet.Deposit(totalPrice);
-                    Log.Info($"[Trader] {seller.Name} sold {amount} {itemId} for {totalPrice}.");
-                }
-            }
-            else
-            {
-                Log.Info($"[Trader] {seller.Name} does not have enough {itemId} to sell.");
+                wallet.Deposit(totalPrice);
+                Log.Info($"[Trader] {seller.Name} sold {actualAmount} scrap for ${totalPrice}. Balance now: ${wallet.Balance}");
             }
         }
     }
