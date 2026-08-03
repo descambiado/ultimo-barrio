@@ -1,7 +1,9 @@
 using Sandbox;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UltimoBarrio.WorldTime;
+using UltimoBarrio.Apartments;
 
 namespace UltimoBarrio.Raids
 {
@@ -12,15 +14,16 @@ namespace UltimoBarrio.Raids
         [Property] public int MinLooters { get; set; } = 1;
         [Property] public int MaxLooters { get; set; } = 3;
         [Property] public Transform SpawnPoint { get; set; }
-        [Property] public float MaxRaidDuration { get; set; } = 180f; // Termina por tiempo
+        [Property] public float MaxRaidDuration { get; set; } = 180f; 
 
+        [Property, Sync(SyncFlags.FromHost)] public bool isRaidActive { get; set; } = false;
+        [Property, Sync(SyncFlags.FromHost)] public float currentRaidTime { get; set; } = 0f;
+        
         private List<GameObject> activeLooters = new List<GameObject>();
-        private bool isRaidActive = false;
-        private float currentRaidTime = 0f;
 
         protected override void OnStart()
         {
-            if (Clock != null)
+            if (Clock != null && !IsProxy)
             {
                 Clock.OnPhaseChanged += HandlePhaseChanged;
             }
@@ -28,13 +31,15 @@ namespace UltimoBarrio.Raids
 
         private void HandlePhaseChanged(TimePhase newPhase)
         {
+            if (IsProxy) return;
+
             if (newPhase == TimePhase.Night)
             {
                 StartRaid();
             }
             else if (newPhase == TimePhase.Aftermath)
             {
-                EndRaid();
+                EndRaid(false);
             }
         }
 
@@ -44,38 +49,68 @@ namespace UltimoBarrio.Raids
             isRaidActive = true;
             currentRaidTime = 0f;
 
-            int numLooters = Game.Random.Int(MinLooters, MaxLooters);
+            Log.Info("Raid Started!");
+
+            var target = FindRaidTarget();
+
+            int numLooters = Random.Shared.Next(MinLooters, MaxLooters + 1);
             for (int i = 0; i < numLooters; i++)
             {
-                SpawnLooter();
+                SpawnLooter(target);
             }
         }
 
-        private void SpawnLooter()
+        private GameObject FindRaidTarget()
+        {
+            var apartment = Scene.GetAllComponents<ApartmentComponent>().FirstOrDefault();
+            if (apartment != null)
+            {
+                return Random.Shared.Next(0, 2) == 0 ? apartment.DoorReference : apartment.StashReference;
+            }
+            return null;
+        }
+
+        private void SpawnLooter(GameObject target)
         {
             if (LooterPrefab == null || SpawnPoint == null) return;
 
             var looter = LooterPrefab.Clone(SpawnPoint.Position, SpawnPoint.Rotation);
+            looter.NetworkSpawn();
             activeLooters.Add(looter);
+
+            var brain = looter.Components.Get<AI.SaqueadorBrain>();
+            if (brain != null)
+            {
+                brain.RaidTarget = target;
+            }
         }
 
         protected override void OnUpdate()
         {
+            if (IsProxy) return;
+
             if (isRaidActive)
             {
                 currentRaidTime += Time.Delta;
                 activeLooters.RemoveAll(l => l == null || !l.IsValid);
 
-                if (activeLooters.Count == 0 || currentRaidTime >= MaxRaidDuration)
+                if (activeLooters.Count == 0)
                 {
-                    EndRaid();
+                    EndRaid(true); // Defeated all enemies
+                }
+                else if (currentRaidTime >= MaxRaidDuration)
+                {
+                    EndRaid(false); // Time out, enemies won or raid over
                 }
             }
         }
 
-        private void EndRaid()
+        private void EndRaid(bool victory)
         {
+            if (!isRaidActive) return;
             isRaidActive = false;
+
+            Log.Info(victory ? "Raid Ended: Victory!" : "Raid Ended: Defeat!");
 
             foreach (var looter in activeLooters)
             {
