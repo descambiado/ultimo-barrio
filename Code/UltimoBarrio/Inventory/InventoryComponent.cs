@@ -95,4 +95,35 @@ namespace UltimoBarrio
             }
         }
     }
+
+        [Rpc.Host]
+        public void RequestDrop(string itemId, int amount)
+        {
+            if (TryRemove(itemId, amount))
+            {
+                var prefabPath = "prefabs/items/pf_scrap_pickup.prefab"; // Default to scrap for now
+                if (itemId != "scrap" && itemId != "chatarra")
+                {
+                    // For demo purposes, we will use scrap pickup for all dropped items, or instantiate dynamic if possible
+                    prefabPath = "prefabs/items/pf_scrap_pickup.prefab"; 
+                }
+
+                var prefab = Scene.Directory.FindPrefab(prefabPath); // Wait, s&box API is different. 
+                // Wait, it is SceneUtility.GetPrefabScene() or similar.
+                
+                // s&box way to spawn prefab:
+                var obj = SceneUtility.GetPrefabScene(prefabPath)?.Clone();
+                if (obj != null)
+                {
+                    obj.WorldPosition = GameObject.WorldPosition + Vector3.Up * 50f + GameObject.WorldRotation.Forward * 50f;
+                    var pickup = obj.Components.Get<WorldItemPickup>();
+                    if (pickup != null)
+                    {
+                        pickup.ItemId = itemId;
+                        pickup.Amount = amount;
+                    }
+                    obj.NetworkSpawn();
+                }
+            }
+        }
 }

@@ -8,7 +8,7 @@ namespace UltimoBarrio
     {
         [Property] public string InventoryId { get; set; } = System.Guid.NewGuid().ToString();
         [Property] public int MaxSlots { get; set; } = 24;
-        [Property] public Guid ApartmentId { get; set; }
+        [Property] public string ApartmentId { get; set; } = "apartment-a01";
         
         [RequireComponent] public InventoryComponent Inventory { get; set; }
 
