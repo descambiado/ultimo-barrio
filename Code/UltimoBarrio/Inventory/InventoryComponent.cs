@@ -100,12 +100,9 @@ namespace UltimoBarrio
         {
             if (TryRemove(itemId, amount))
             {
-                var prefabPath = "prefabs/items/pf_scrap_pickup.prefab"; // Default to scrap for now
-                if (itemId != "scrap" && itemId != "chatarra")
-                {
-                    // For demo purposes, we will use scrap pickup for all dropped items, or instantiate dynamic if possible
-                    prefabPath = "prefabs/items/pf_scrap_pickup.prefab"; 
-                }
+                var prefabPath = "prefabs/items/pf_scrap_pickup.prefab"; 
+                if (itemId == "weapon_usp") prefabPath = "prefabs/items/pf_usp_pickup.prefab";
+                else if (itemId == "ammo_9mm") prefabPath = "prefabs/items/pf_ammo_9mm_pickup.prefab";
 
                 // s&box way to spawn prefab:
                 var prefabFile = ResourceLibrary.Get<PrefabFile>(prefabPath);
