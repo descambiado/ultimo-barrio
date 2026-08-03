@@ -3,13 +3,14 @@
 using System;
 using UltimoBarrio.Persistence;
 using UltimoBarrio.Players;
+using UltimoBarrio.Core;
 
 namespace UltimoBarrio.Apartments;
 
 [Title( "Apartment Claim Service" )]
 [Category( "Ultimo Barrio" )]
 [Icon( "real_estate_agent" )]
-public sealed class ApartmentClaimService : Component, Component.INetworkListener
+public sealed class ApartmentClaimService : Component, Component.INetworkListener, IApartmentAccessPolicy
 {
 	[Property] public string SaveSlotId { get; set; } = "prototype";
 
@@ -252,5 +253,33 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 			_pendingRespawns.Remove( connection );
 			Log.Info( $"UB.Apartment OwnerRespawned apartment={apartment.ApartmentId}" );
 		}
+	}
+
+	public bool CanEnter( string apartmentId, string playerId )
+	{
+		return CheckAccess( apartmentId, playerId );
+	}
+
+	public bool CanAccessStash( string apartmentId, string playerId )
+	{
+		return CheckAccess( apartmentId, playerId );
+	}
+
+	private bool CheckAccess( string apartmentId, string playerId )
+	{
+		if ( _registry == null || !_registry.TryGet( apartmentId, out var apartment ) ) return true;
+		if ( apartment.ClaimState != ApartmentClaimState.Claimed ) return true;
+		
+		var playerGo = Scene.Directory.FindByGuid( playerId );
+		if ( playerGo == null ) return false;
+		
+		var connection = Networking.Connections.FirstOrDefault( c => c.Id == playerGo.Network.OwnerId );
+		if ( connection == null ) return false;
+		
+		if ( _identityProvider.TryResolve( connection, out var ownerId ) )
+		{
+			return apartment.OwnerId == ownerId;
+		}
+		return false;
 	}
 }
