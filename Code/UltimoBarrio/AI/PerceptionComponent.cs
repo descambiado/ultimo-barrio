@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 using System;
 using System.Collections.Generic;
 
@@ -20,15 +20,15 @@ namespace UltimoBarrio.AI
         {
             if (target == null) return false;
             
-            var dirToTarget = (target.Transform.Position - Transform.Position).Normal;
-            var distToTarget = Vector3.DistanceBetween(target.Transform.Position, Transform.Position);
+            var dirToTarget = (target.WorldPosition - WorldPosition).Normal;
+            var distToTarget = Vector3.DistanceBetween(target.WorldPosition, WorldPosition);
 
             if (distToTarget > VisionRange) return false;
 
-            var angle = Vector3.GetAngle(Transform.Rotation.Forward, dirToTarget);
+            var angle = Vector3.GetAngle(WorldRotation.Forward, dirToTarget);
             if (angle > FieldOfView * 0.5f) return false;
 
-            var tr = Scene.Trace.Ray(Transform.Position + Vector3.Up * 50f, target.Transform.Position + Vector3.Up * 50f)
+            var tr = Scene.Trace.Ray(WorldPosition + Vector3.Up * 50f, target.WorldPosition + Vector3.Up * 50f)
                 .IgnoreGameObjectHierarchy(GameObject)
                 .Run();
 
@@ -37,7 +37,7 @@ namespace UltimoBarrio.AI
 
         public void HearSound(Vector3 position, float volume)
         {
-            if (Vector3.DistanceBetween(position, Transform.Position) <= HearingRange * volume)
+            if (Vector3.DistanceBetween(position, WorldPosition) <= HearingRange * volume)
             {
                 UpdateMemory(position);
             }
@@ -48,7 +48,7 @@ namespace UltimoBarrio.AI
             if (CanSee(target))
             {
                 CurrentTarget = target;
-                UpdateMemory(target.Transform.Position);
+                UpdateMemory(target.WorldPosition);
             }
             else
             {

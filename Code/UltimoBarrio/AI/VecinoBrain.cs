@@ -32,7 +32,7 @@ namespace UltimoBarrio.AI
                     if (timeInState > 10f) ChangeState(VecinoState.ReturnHome);
                     break;
                 case VecinoState.ReturnHome:
-                    if (Home != null && Vector3.DistanceBetween(Transform.Position, Home.Transform.Position) < 50f)
+                    if (Home != null && Vector3.DistanceBetween(WorldPosition, Home.WorldPosition) < 50f)
                         ChangeState(VecinoState.Idle);
                     break;
             }

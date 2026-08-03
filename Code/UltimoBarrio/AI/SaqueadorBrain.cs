@@ -39,9 +39,9 @@ namespace UltimoBarrio.AI
                     {
                         if (Agent != null)
                         {
-                            Agent.MoveTo(RaidTarget.Transform.Position);
+                            Agent.MoveTo(RaidTarget.WorldPosition);
                         }
-                        if (Vector3.DistanceBetween(Transform.Position, RaidTarget.Transform.Position) < 150f)
+                        if (Vector3.DistanceBetween(WorldPosition, RaidTarget.WorldPosition) < 150f)
                         {
                             ChangeState(SaqueadorState.Attack);
                         }
@@ -56,9 +56,9 @@ namespace UltimoBarrio.AI
                     {
                         if (Agent != null)
                         {
-                            Agent.MoveTo(Perception.CurrentTarget.Transform.Position);
+                            Agent.MoveTo(Perception.CurrentTarget.WorldPosition);
                         }
-                        if (Vector3.DistanceBetween(Transform.Position, Perception.CurrentTarget.Transform.Position) < 100f)
+                        if (Vector3.DistanceBetween(WorldPosition, Perception.CurrentTarget.WorldPosition) < 100f)
                         {
                             ChangeState(SaqueadorState.Attack);
                         }
