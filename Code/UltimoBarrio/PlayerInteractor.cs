@@ -1,4 +1,4 @@
-using Sandbox;
+﻿using Sandbox;
 using System;
 using UltimoBarrio.Core;
 using UltimoBarrio.UI;
@@ -7,7 +7,7 @@ using UltimoBarrio.Apartments;
 namespace UltimoBarrio
 {
     [Title("Player Interactor")]
-    [Category("Último Barrio")]
+    [Category("Ãšltimo Barrio")]
     [Icon("pan_tool")]
     public sealed class PlayerInteractor : Component
     {
@@ -66,11 +66,11 @@ namespace UltimoBarrio
                     {
                         if (apt.ClaimState == ApartmentClaimState.Unclaimed)
                         {
-                            _hud?.ShowPrompt("Este piso está disponible", "Pulsa E para reclamarlo");
+                            _hud?.ShowPrompt("Este piso estÃ¡ disponible", "Pulsa E para reclamarlo");
                         }
                         else
                         {
-                            _hud?.ShowPrompt("Este piso ya tiene dueño", "");
+                            _hud?.ShowPrompt("Este piso ya tiene dueÃ±o", "");
                         }
 
                         if (Input.Pressed("Use"))
@@ -108,6 +108,17 @@ namespace UltimoBarrio
                     return;
                 }
                 
+                var trader = tr.GameObject.Components.Get<UltimoBarrio.Trading.Trader>();
+                if (trader != null)
+                {
+                    _hud?.ShowPrompt("Comerciante", "Pulsa E");
+                    if (Input.Pressed("Use"))
+                    {
+                        _hud?.OpenTrader(trader);
+                    }
+                    return;
+                }
+
                 var pickup = tr.GameObject.Components.Get<WorldItemPickup>();
                 if (pickup != null)
                 {
@@ -129,3 +140,4 @@ namespace UltimoBarrio
         }
     }
 }
+

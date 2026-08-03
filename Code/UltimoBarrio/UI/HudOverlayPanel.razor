@@ -1,0 +1,37 @@
+﻿@using Sandbox;
+@using Sandbox.UI;
+@inherits Panel
+@namespace UltimoBarrio.UI
+@attribute [StyleSheet]
+
+<root>
+    <div class="top-bar">
+        <div class="phase-info">
+            <label class="phase-name">@CurrentPhaseName</label>
+            <label class="phase-timer">@TimeRemaining</label>
+        </div>
+        <div class="raid-status @(IsRaidActive ? "active" : "inactive")">
+            <label>@RaidText</label>
+        </div>
+        <div class="apartment-status">
+            <label>@ApartmentText</label>
+        </div>
+    </div>
+
+    <div class="bottom-bar">
+        <div class="health-block">
+            <label class="health-value">@HealthText</label>
+            <label class="health-label">VIDA</label>
+        </div>
+        
+        <div class="ammo-block">
+            <label class="ammo-value">@AmmoText</label>
+            <label class="ammo-label">MUNICIÓN</label>
+        </div>
+
+        <div class="money-block">
+            <label class="money-value">@MoneyText</label>
+            <label class="money-label">FONDOS</label>
+        </div>
+    </div>
+</root>

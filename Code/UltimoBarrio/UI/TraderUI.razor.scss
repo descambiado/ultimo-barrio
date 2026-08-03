@@ -1,0 +1,108 @@
+﻿
+TraderUI {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+
+    &.visible {
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    .trader-window {
+        flex-direction: column;
+        background-color: rgba(31, 31, 31, 0.95); /* Charcoal */
+        border: 2px solid #006A4E; /* Persiana green */
+        border-radius: 4px;
+        width: 400px;
+        box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.6);
+        pointer-events: all;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 16px;
+        background-color: rgba(25, 25, 112, 0.4); /* Night blue */
+        border-bottom: 2px solid #006A4E;
+
+        .title {
+            color: #F8F8FF;
+            font-size: 20px;
+            font-family: Poppins, sans-serif;
+            font-weight: bold;
+        }
+
+        .close-btn {
+            color: #FF2020;
+            font-weight: bold;
+            font-size: 20px;
+            cursor: pointer;
+            &:hover {
+                color: #FFBF00;
+            }
+        }
+    }
+
+    .content {
+        flex-direction: column;
+        padding: 16px;
+        gap: 16px;
+
+        .section-title {
+            color: #A0A0A0;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-family: Poppins, sans-serif;
+        }
+
+        .buy-section, .sell-section {
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 8px 12px;
+            border-radius: 2px;
+            
+            label {
+                color: #F8F8FF;
+                font-family: Poppins, sans-serif;
+                font-size: 16px;
+            }
+
+            .action-btn {
+                background-color: #006A4E;
+                color: #F8F8FF;
+                padding: 4px 12px;
+                border-radius: 2px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: background-color 0.1s ease;
+
+                &:hover {
+                    background-color: #008A6E;
+                }
+
+                &.sell {
+                    background-color: #FFBF00;
+                    color: #1F1F1F;
+                    &:hover {
+                        background-color: #FFDF00;
+                    }
+                }
+            }
+        }
+    }
+}
+
