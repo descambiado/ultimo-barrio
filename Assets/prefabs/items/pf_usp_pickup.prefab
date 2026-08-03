@@ -1,9 +1,9 @@
 {
   "RootObject": {
-    "__guid": "a7b8c9d0-1e2f-3a4b-5c6d-7e8f9a0b1c2d",
+    "__guid": "737e7ae6-eedd-48da-aa6d-b91c3ec90880",
     "__version": 2,
     "Flags": 0,
-    "Name": "UB USP Pistol",
+    "Name": "USP Pickup",
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
@@ -16,26 +16,24 @@
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__guid": "b8c9d0e1-2f3a-4b5c-6d7e-8f9a0b1c2d3e",
+        "__guid": "1e9face0-fd15-418b-8990-b49189bc115e",
         "__enabled": true,
-        "__type": "UltimoBarrio.Combat.UltimoBarrioWeaponAdapter",
-        "WeaponId": "weapon_usp",
-        "AmmoItemId": "ammo_9mm",
-        "ClipSize": 12,
-        "DamagePerShot": 25
+        "__type": "UltimoBarrio.WorldItemPickup",
+        "ItemId": "item-scrap",
+        "Amount": 1
       },
       {
-        "__guid": "c9d0e1f2-3a4b-5c6d-7e8f-9a0b1c2d3e4f",
+        "__guid": "d8c68a65-2675-49f7-8193-6bd586ac6eae",
         "__enabled": true,
         "__type": "Sandbox.BoxCollider",
-        "Scale": "15,15,15"
+        "Scale": "10,10,10"
       },
       {
-        "__guid": "d0e1f2a3-4b5c-6d7e-8f9a-0b1c2d3e4f5a",
+        "__guid": "c24b399e-edfc-4cea-819d-a3ba767258b2",
         "__enabled": true,
         "__type": "Sandbox.ModelRenderer",
         "Model": "facepunch.w_usp",
-        "Tint": "0.1,0.1,0.1,1"
+        "Tint": "0.5,0.5,0.5,1"
       }
     ],
     "Children": []

@@ -26,8 +26,8 @@ namespace UltimoBarrio.Combat
             // Spawn new weapon
             var newWep = weaponPrefab.Clone();
             newWep.SetParent(WeaponHolder ?? GameObject);
-            newWep.Transform.LocalPosition = Vector3.Zero;
-            newWep.Transform.LocalRotation = Rotation.Identity;
+            newWep.LocalPosition = Vector3.Zero;
+            newWep.LocalRotation = Rotation.Identity;
             newWep.NetworkSpawn(Connection.Local);
 
             CurrentWeaponId = newWep.Id;
