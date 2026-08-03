@@ -1,13 +1,16 @@
 ﻿using Sandbox;
 using System;
 using UltimoBarrio.Persistence;
+using UltimoBarrio.Core;
 
 namespace UltimoBarrio.Economy
 {
-    public sealed class Wallet : Component
+    public sealed class Wallet : Component, IWallet
     {
         [Sync, Property]
         public int Balance { get; private set; }
+
+        public string WalletId => GameObject.Id.ToString();
 
         public void AddFunds(int amount)
         {
@@ -35,5 +38,11 @@ namespace UltimoBarrio.Economy
             if (!Networking.IsHost) return;
             Balance = savedBalance;
         }
+
+        public bool CanAfford(int amount) => Balance >= amount;
+
+        public bool TryWithdraw(int amount) => TryRemoveFunds(amount);
+
+        public void Deposit(int amount) => AddFunds(amount);
     }
 }

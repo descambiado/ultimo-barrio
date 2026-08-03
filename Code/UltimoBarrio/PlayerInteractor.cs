@@ -108,17 +108,16 @@ namespace UltimoBarrio
                     return;
                 }
                 
-                var pickup = tr.GameObject.Components.Get<WorldItemPickup>();
-                if (pickup != null)
+                var interactable = tr.GameObject.Components.Get<IInteractable>();
+                if (interactable != null)
                 {
-                    _hud?.ShowPrompt(pickup.GetComponent<IInteractable>().GetInteractionPrompt(new InteractionRequest { InteractorId = player.GameObject.Network.OwnerId.ToString(), InteractorObject = player.GameObject }), "Pulsa E");
+                    var req = new InteractionRequest { InteractorId = GameObject.Network.OwnerId.ToString(), InteractorObject = GameObject };
+                    _hud?.ShowPrompt(interactable.GetInteractionPrompt(req), "Pulsa E");
                     if (Input.Pressed("Use"))
                     {
-                        var interactable = pickup.GetComponent<IInteractable>();
-                        if (interactable != null && interactable.CanInteract(GameObject.Id))
+                        if (interactable.CanInteract(req))
                         {
-                            interactable.OnInteract(GameObject.Id);
-                            _hud?.ShowMessage("Objeto recogido");
+                            interactable.OnInteract(req);
                         }
                     }
                     return;

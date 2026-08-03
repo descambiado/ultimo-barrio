@@ -1,0 +1,50 @@
+﻿{
+  "RootObject": {
+    "__guid": "12345678-1234-1234-1234-123456789012",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "Trader",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "UltimoBarrio.Trading.Trader",
+        "__guid": "23456789-2345-2345-2345-234567890123",
+        "__enabled": true,
+        "WaterPrice": 10,
+        "MedicinePrice": 20,
+        "AmmoPrice": 5,
+        "ScrapSellPrice": 2
+      },
+      {
+        "__type": "Sandbox.BoxCollider",
+        "__guid": "34567890-3456-3456-3456-345678901234",
+        "__enabled": true,
+        "Center": "0,0,32",
+        "IsTrigger": false,
+        "Scale": "32,32,64",
+        "Static": false
+      },
+      {
+        "__type": "Sandbox.ModelRenderer",
+        "__guid": "45678901-4567-4567-4567-456789012345",
+        "__enabled": true,
+        "Model": "models/dev/box.vmdl",
+        "RenderType": "On",
+        "Tint": "0,1,0,1"
+      }
+    ]
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": true,
+  "MenuPath": "Economy/Trader",
+  "MenuIcon": "store",
+  "__version": 2
+}

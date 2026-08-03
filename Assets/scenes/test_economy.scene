@@ -272,6 +272,38 @@
           "Scale": 0.2
         }
       ]
+    },
+    {
+      "__guid": "60c9c012-bace-4da1-b017-4226ea93b750",
+      "Flags": 0,
+      "Name": "Network",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.NetworkHelper",
+          "__guid": "490ad887-0d52-4d13-b4fe-dbd963de050a",
+          "PlayerPrefab": {
+            "_type": "gameobject",
+            "prefab": "prefabs/player.prefab"
+          },
+          "SpawnPoints": [
+            {
+              "_type": "gameobject",
+              "go": "00000000-0000-0000-0000-000000000000"
+            }
+          ],
+          "StartServer": true
+        }
+      ]
+    },
+    {
+      "__guid": "751b216d-7c50-436b-ad31-db5ea4982907",
+      "Flags": 0,
+      "Name": "Trader",
+      "Position": "0,50,0",
+      "Enabled": true,
+      "__prefab": "prefabs/economy/trader.prefab",
+      "__prefab_variables": {}
     }
   ],
   "SceneProperties": {
