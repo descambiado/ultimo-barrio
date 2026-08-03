@@ -142,7 +142,7 @@ namespace UltimoBarrio.Combat
 
             if (tr.Hit)
             {
-                var damageable = tr.GameObject.Components.GetInAncestorsOrSelf<IDamageable>();
+                var damageable = tr.GameObject.Components.GetInAncestorsOrSelf<UltimoBarrio.Core.IDamageable>();
                 if (damageable != null)
                 {
                     var dmg = new DamageEvent
@@ -174,7 +174,7 @@ namespace UltimoBarrio.Combat
             var hitObj = Scene.Directory.FindByGuid(hitObjectId);
             if (hitObj != null)
             {
-                var damageable = hitObj.Components.GetInAncestorsOrSelf<IDamageable>();
+                var damageable = hitObj.Components.GetInAncestorsOrSelf<UltimoBarrio.Core.IDamageable>();
                 if (damageable != null)
                 {
                     var dmg = new DamageEvent

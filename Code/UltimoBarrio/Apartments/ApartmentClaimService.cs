@@ -270,7 +270,8 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 		if ( _registry == null || !_registry.TryGet( apartmentId, out var apartment ) ) return true;
 		if ( apartment.ClaimState != ApartmentClaimState.Claimed ) return true;
 		
-		var playerGo = Scene.Directory.FindByGuid( playerId );
+		if ( !Guid.TryParse(playerId, out var guid) ) return false;
+		var playerGo = Scene.Directory.FindByGuid( guid );
 		if ( playerGo == null ) return false;
 		
 		var connection = Networking.Connections.FirstOrDefault( c => c.Id == playerGo.Network.OwnerId );

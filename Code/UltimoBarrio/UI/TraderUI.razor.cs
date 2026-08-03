@@ -1,9 +1,10 @@
-﻿
+
 using Sandbox;
 using Sandbox.UI;
 using System.Linq;
 using UltimoBarrio.Trading;
 using UltimoBarrio.Economy;
+using UltimoBarrio.Core;
 
 namespace UltimoBarrio.UI
 {
@@ -36,10 +37,10 @@ namespace UltimoBarrio.UI
             var inv = PlayerObj.Components.Get<IInventory>();
             if (inv != null)
             {
-                var scrapSlot = inv.Slots.FirstOrDefault(s => s.ItemId == itemId);
-                if (scrapSlot != null && scrapSlot.Amount > 0)
+                var amount = inv.GetCount(itemId);
+                if (amount > 0)
                 {
-                    TargetTrader.SellItem(PlayerObj, itemId, scrapSlot.Amount);
+                    TargetTrader.SellItem(PlayerObj, itemId, amount);
                 }
             }
         }

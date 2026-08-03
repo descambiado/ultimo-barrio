@@ -23,7 +23,8 @@ namespace UltimoBarrio
         {
             Log.Info($"[Pickup] OnInteract called by {request.InteractorId}. IsProxy: {IsProxy}");
             if (IsProxy) return;
-            var player = Scene.Directory.FindByGuid(request.InteractorId);
+            if (!Guid.TryParse(request.InteractorId, out var guid)) return;
+            var player = Scene.Directory.FindByGuid(guid);
             if (player == null)
             {
                 Log.Info($"[Pickup] Player {request.InteractorId} not found!");

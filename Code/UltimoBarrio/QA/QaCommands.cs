@@ -13,7 +13,7 @@ namespace UltimoBarrio.QA
         [ConCmd("ub_qa_reset_save")]
         public static void ResetQaSave()
         {
-            if (!Game.IsServer) return;
+            if (!Networking.IsHost) return;
             Log.Info("[QA] Resetting QA save slot...");
             try 
             {
@@ -32,7 +32,7 @@ namespace UltimoBarrio.QA
         [ConCmd("ub_qa_release_apartment")]
         public static void ReleaseApartment(string apartmentId)
         {
-            if (!Game.IsServer) return;
+            if (!Networking.IsHost) return;
             var apt = Game.ActiveScene.GetAllComponents<ApartmentComponent>().FirstOrDefault(a => a.ApartmentId == apartmentId);
             if (apt != null)
             {
@@ -44,7 +44,7 @@ namespace UltimoBarrio.QA
         [ConCmd("ub_qa_assign_apartment")]
         public static void AssignApartment(string apartmentId, string ownerId)
         {
-            if (!Game.IsServer) return;
+            if (!Networking.IsHost) return;
             
             // Check 1 apartment per player rule
             var existing = Game.ActiveScene.GetAllComponents<ApartmentComponent>().FirstOrDefault(a => a.OwnerId == ownerId);
@@ -65,7 +65,7 @@ namespace UltimoBarrio.QA
         [ConCmd("ub_qa_clear_inventory")]
         public static void ClearInventory(string inventoryId)
         {
-            if (!Game.IsServer) return;
+            if (!Networking.IsHost) return;
             var inv = Game.ActiveScene.GetAllComponents<InventoryComponent>().FirstOrDefault(i => i.InventoryId == inventoryId);
             if (inv != null)
             {
@@ -77,7 +77,7 @@ namespace UltimoBarrio.QA
         [ConCmd("ub_qa_give_scrap")]
         public static void GiveScrap(string inventoryId, int amount)
         {
-            if (!Game.IsServer) return;
+            if (!Networking.IsHost) return;
             var inv = Game.ActiveScene.GetAllComponents<InventoryComponent>().FirstOrDefault(i => i.InventoryId == inventoryId);
             if (inv != null)
             {
@@ -95,21 +95,21 @@ namespace UltimoBarrio.QA
         }
 
         [ConCmd("ub_qa_give_money")]
-        public static void GiveMoney(string playerId, int amount)
+        public static void GiveMoney(int amount)
         {
-            if (!Game.IsServer) return;
-            var comp = Game.ActiveScene.GetAllComponents<PlayerEconomyComponent>().FirstOrDefault(c => c.PlayerId == playerId);
+            if (!Networking.IsHost) return;
+            var comp = Game.ActiveScene.GetAllComponents<Wallet>().FirstOrDefault();
             if (comp != null)
             {
-                comp.Balance += amount;
-                Log.Info($"[QA] Added {amount} money to player {playerId}.");
+                comp.AddFunds(amount);
+                Log.Info($"[QA] Added {amount} money to first wallet found.");
             }
         }
 
         [ConCmd("ub_qa_force_day")]
         public static void ForceDay()
         {
-            if (!Game.IsServer) return;
+            if (!Networking.IsHost) return;
             var clock = Game.ActiveScene.GetAllComponents<WorldClock>().FirstOrDefault();
             if (clock != null)
             {
@@ -121,7 +121,7 @@ namespace UltimoBarrio.QA
         [ConCmd("ub_qa_force_preparation")]
         public static void ForcePreparation()
         {
-            if (!Game.IsServer) return;
+            if (!Networking.IsHost) return;
             var clock = Game.ActiveScene.GetAllComponents<WorldClock>().FirstOrDefault();
             if (clock != null)
             {
@@ -133,7 +133,7 @@ namespace UltimoBarrio.QA
         [ConCmd("ub_qa_force_night")]
         public static void ForceNight()
         {
-            if (!Game.IsServer) return;
+            if (!Networking.IsHost) return;
             var clock = Game.ActiveScene.GetAllComponents<WorldClock>().FirstOrDefault();
             if (clock != null)
             {
@@ -145,7 +145,7 @@ namespace UltimoBarrio.QA
         [ConCmd("ub_qa_spawn_raider")]
         public static void SpawnRaider()
         {
-            if (!Game.IsServer) return;
+            if (!Networking.IsHost) return;
             Log.Info("[QA] Spawning Raider...");
         }
     }

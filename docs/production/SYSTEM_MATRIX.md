@@ -67,3 +67,9 @@ Alpha general: 0%
 * **Errores conocidos:** N/A
 * **Última evidencia:** N/A
 * **Próximo gate:** Implementación inicial
+
+
+
+
+
+
