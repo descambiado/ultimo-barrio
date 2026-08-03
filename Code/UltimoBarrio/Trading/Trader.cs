@@ -1,4 +1,4 @@
-using Sandbox;
+﻿using Sandbox;
 using System;
 using UltimoBarrio.Core;
 using UltimoBarrio;
@@ -20,32 +20,56 @@ namespace UltimoBarrio.Trading
         public void OnInteract(InteractionRequest request)
         {
             // Usually opens UI
+            Log.Info($"[Trader] Interaction initiated by {request.InteractorId}");
         }
 
-        [Rpc.Owner]
+        [Rpc.Host]
         public void BuyItem(GameObject buyer, string itemId, int amount = 1)
         {
             if (!Networking.IsHost) return;
             if (buyer == null) return;
             
-            var wallet = buyer.GetComponent<Wallet>();
+            var wallet = buyer.GetComponent<IWallet>();
             var inventory = buyer.GetComponent<IInventory>();
 
-            if (wallet == null || inventory == null) return;
+            if (wallet == null || inventory == null) 
+            {
+                Log.Info($"[Trader] {buyer.Name} lacks wallet or inventory.");
+                return;
+            }
 
             int price = 0;
             if (itemId == "water") price = WaterPrice;
             else if (itemId == "medicine") price = MedicinePrice;
             else if (itemId == "ammo") price = AmmoPrice;
-            else return;
+            else 
+            {
+                Log.Info($"[Trader] Invalid item: {itemId}");
+                return;
+            }
 
             int totalCost = price * amount;
-            if (wallet.Balance >= totalCost)
+            if (wallet.CanAfford(totalCost))
             {
-                if (inventory.TryAdd(itemId, amount))
+                if (inventory.CanAdd(itemId, amount) && inventory.TryAdd(itemId, amount))
                 {
-                    wallet.TryRemoveFunds(totalCost);
+                    if (wallet.TryWithdraw(totalCost))
+                    {
+                        Log.Info($"[Trader] {buyer.Name} bought {amount} {itemId} for {totalCost}.");
+                    }
+                    else 
+                    {
+                        inventory.TryRemove(itemId, amount);
+                    }
                 }
+                else
+                {
+                    Log.Info($"[Trader] {buyer.Name} has no inventory space for {amount} {itemId}.");
+                }
+            }
+            else 
+            {
+                Log.Info($"[Trader] {buyer.Name} cannot afford {totalCost} (Balance: {wallet.Balance}).");
             }
         }
 
@@ -55,18 +79,30 @@ namespace UltimoBarrio.Trading
             if (!Networking.IsHost) return;
             if (seller == null) return;
 
-            var wallet = seller.GetComponent<Wallet>();
+            var wallet = seller.GetComponent<IWallet>();
             var inventory = seller.GetComponent<IInventory>();
 
             if (wallet == null || inventory == null) return;
 
-            if (itemId != "scrap") return;
+            if (itemId != "scrap") 
+            {
+                Log.Info($"[Trader] Can only sell scrap.");
+                return;
+            }
 
             int totalPrice = ScrapSellPrice * amount;
 
-            if (inventory.TryRemove(itemId, amount))
+            if (inventory.GetCount(itemId) >= amount)
             {
-                wallet.AddFunds(totalPrice);
+                if (inventory.TryRemove(itemId, amount))
+                {
+                    wallet.Deposit(totalPrice);
+                    Log.Info($"[Trader] {seller.Name} sold {amount} {itemId} for {totalPrice}.");
+                }
+            }
+            else
+            {
+                Log.Info($"[Trader] {seller.Name} does not have enough {itemId} to sell.");
             }
         }
     }
