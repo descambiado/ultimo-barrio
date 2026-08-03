@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 using System;
 using UltimoBarrio;
 using UltimoBarrio.Economy;
@@ -48,7 +48,7 @@ namespace UltimoBarrio.Trading
             }
         }
 
-        [Authority]
+        [Rpc.Host]
         public void SellItem(GameObject seller, string itemId, int amount = 1)
         {
             if (!Networking.IsHost) return;

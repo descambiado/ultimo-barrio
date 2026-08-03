@@ -141,7 +141,7 @@ namespace UltimoBarrio.Combat
 
             if (tr.Hit)
             {
-                var damageable = tr.GameObject.Components.GetInAncestorsOrSelf<IDamageable>();
+                var damageable = tr.GameObject.Components.GetInAncestorsOrSelf<UltimoBarrio.IDamageable>();
                 if (damageable != null)
                 {
                     if (Networking.IsHost)
@@ -158,13 +158,13 @@ namespace UltimoBarrio.Combat
             }
         }
 
-        [Authority]
+        [Rpc.Host]
         private void RpcApplyDamage(Guid hitObjectId, float damage, Vector3 position, Vector3 force)
         {
             var hitObj = Scene.Directory.FindByGuid(hitObjectId);
             if (hitObj != null)
             {
-                var damageable = hitObj.Components.GetInAncestorsOrSelf<IDamageable>();
+                var damageable = hitObj.Components.GetInAncestorsOrSelf<UltimoBarrio.IDamageable>();
                 if (damageable != null)
                 {
                     // Check friendly fire later if needed, disabled by default per requirements
@@ -173,7 +173,7 @@ namespace UltimoBarrio.Combat
             }
         }
 
-        [Broadcast]
+        [Rpc.Broadcast]
         protected virtual void DoHitEffects(Vector3 position, Vector3 normal)
         {
             // Particles etc.

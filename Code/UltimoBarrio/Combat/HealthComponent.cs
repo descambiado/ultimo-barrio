@@ -4,7 +4,7 @@ using UltimoBarrio;
 
 namespace UltimoBarrio.Combat
 {
-    public class HealthComponent : Component, IDamageable
+    public class HealthComponent : Component, UltimoBarrio.IDamageable
     {
         [Property] public float MaxHealth { get; set; } = 100f;
         

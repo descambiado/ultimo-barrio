@@ -19,7 +19,7 @@ namespace UltimoBarrio.UI
                 Panel.Style.BackgroundColor = Color.Black.WithAlpha(0.8f);
                 Panel.Style.Padding = 20;
 
-                Panel.AddChild(new Label { Text = "Inventory", Style = { FontSize = 24, Color = Color.White } });
+                Panel.AddChild(new Label { Text = "Inventory", Style = { FontSize = 24, FontColor = Color.White } });
                 
                 inventoryContainer = Panel.AddChild<Panel>();
                 inventoryContainer.Style.Display = DisplayMode.Flex;
@@ -45,7 +45,7 @@ namespace UltimoBarrio.UI
 
                 if (!string.IsNullOrEmpty(slot.ItemId))
                 {
-                    slotPanel.AddChild(new Label { Text = $"{slot.ItemId}\nx{slot.Amount}", Style = { FontSize = 12, Color = Color.White, TextAlign = TextAlign.Center } });
+                    slotPanel.AddChild(new Label { Text = $"{slot.ItemId}\nx{slot.Amount}", Style = { FontSize = 12, FontColor = Color.White, TextAlign = TextAlign.Center } });
                 }
             }
         }

@@ -22,7 +22,7 @@ namespace UltimoBarrio
         {
             if (Slots.Count == 0 && !IsProxy)
             {
-                for(int i=0; i<MaxSlots; i++) Slots.Add(new InventorySlot { ItemId = """", Amount = 0 });
+                for(int i=0; i<MaxSlots; i++) Slots.Add(new InventorySlot { ItemId = "", Amount = 0 });
             }
         }
 
@@ -61,7 +61,7 @@ namespace UltimoBarrio
                 existing.Amount -= amount;
                 if (existing.Amount <= 0)
                 {
-                    existing.ItemId = """";
+                    existing.ItemId = "";
                     existing.Amount = 0;
                 }
                 return true;
