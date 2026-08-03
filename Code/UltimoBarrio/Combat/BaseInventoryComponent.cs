@@ -7,7 +7,7 @@ namespace UltimoBarrio.Combat
 {
     public class BaseInventoryComponent : Component, IInventory
     {
-        [Property] public string InventoryId { get; set; } = System.Guid.NewGuid().ToString();
+        [Property] public string InventoryId { get; set; } = string.Empty;
         [Property] public int MaxSlots { get; set; } = 24;
         // Simple dictionary for items and amounts
         private Dictionary<string, int> _items = new Dictionary<string, int>();
