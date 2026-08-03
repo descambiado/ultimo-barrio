@@ -1,44 +1,50 @@
-# Alpha 0.1 Integration Plan
+﻿# Alpha 0.1 Runtime Repair Plan
 
-El objetivo es transicionar el proyecto desde el estado de Spike funcional (M1.5) hacia una Alpha 0.1 jugable, modular y medible, respetando la regla inquebrantable de **una vivienda por jugador** en producción, y utilizando una interfaz QA para pruebas locales de múltiples viviendas.
+Este plan detalla las acciones correctivas necesarias para transformar el build "verde" en una experiencia Alpha 0.1 completamente funcional en runtime.
 
-## User Review Required
-> [!IMPORTANT]
-> Se crearán múltiples subagentes para paralelizar el trabajo en diferentes "carriles".
-> Requiero tu confirmación antes de disparar la creación masiva de ramas y el trabajo de los subagentes paralelos, para asegurar que la arquitectura de integración y los contratos están acordes a tus expectativas.
+## Open Questions
+- Debido a que mi entorno MCP no tiene acceso directo a S&box Editor en modo interactivo (`main.scene` Play Mode), ejecutarÃ© verificaciones estÃ¡ticas profundas en la escena y en el cÃ³digo. GenerarÃ© las escenas de prueba `test_spanish_text.scene` y actualizarÃ© `main.scene` mediante manipulaciÃ³n directa de JSON/S&box properties y scripts. Â¿EstÃ¡s de acuerdo con este enfoque puramente estÃ¡tico + scripts QA para resolver los Gates?
 
 ## Proposed Changes
 
-### 1. Control del Proyecto & QA
-- **Ramas:** Se creará la rama base `feat/alpha-0.1-integration` a partir del HEAD actual.
-- **Documentación:** Se generarán los documentos solicitados en `docs/production/` (`ALPHA_0_1_ROADMAP.md`, `SYSTEM_MATRIX.md`, `INTEGRATION_CONTRACTS.md`, `STYLE_BIBLE.md`, `QA_PLAYBOOK.md`).
-- **QA Panel/Console:** Implementaré herramientas exclusivas de QA para forzar asignaciones de A02 sin romper la regla global, manipular fases del día, y generar recursos/enemigos bajo demanda.
+### 1. Limpieza de Repositorio y CodificaciÃ³n
+- [DELETE] `refactor_contracts.py`, `fix_compile.py`, `fix_compile2.py` (si existen).
+- [MODIFY] `docs/production/evidence/encoding-audit.md` generado.
+- [MODIFY] Todos los `.cs`, `.razor`, `.md` con errores de codificaciÃ³n serÃ¡n reescritos a UTF-8 (sin BOM).
 
-### 2. Definición de Contratos (Contracts)
-Definiremos e implementaremos las interfaces unificadoras:
-- `IInteractable`, `IPlayerIdentityProvider`
-- `IInventory`, `IInventoryContainer`, `IApartmentAccessPolicy`
-- `IPersistenceProvider`, `IWallet`, `IDamageable`, `IWorldClock`, `IRaidTarget`
+### 2. Identidad y Persistencia Determinista
+- [MODIFY] `InventoryComponent.cs`: Eliminar `Guid.NewGuid().ToString()` al generar identificadores de inventario.
+  - Los jugadores usarÃ¡n `player:{PlayerId}:inventory`.
+  - Los alijos usarÃ¡n `{ApartmentId}:stash`.
+  - Los mercaderes usarÃ¡n `{TraderId}:stock`.
+- [MODIFY] `PlayerIdentityProvider`: Mantener una API limpia que exponga el `PlayerId` de manera segura, sin parsear strings no validados.
 
-### 3. Delegación a Subagentes (Carriles)
-Lanzaré subagentes para trabajar en ramas derivadas de `feat/alpha-0.1-integration`:
-- **Carril A (Foundation & QA)**: Rama `feat/alpha-foundation`. Responsable de QA, Feature Flags, IDs deterministas.
-- **Carril B (Viviendas & Inventario)**: Rama `feat/alpha-housing-inventory`. Responsable de A01/A02 físicos, mochilas, stash, shift-clic.
-- **Carril C (Economía)**: Rama `feat/alpha-economy`. Responsable del Wallet y Trader.
-- **Carril D (Combate)**: Rama `feat/alpha-combat`. Responsable de la pistola, munición, daño y salud.
-- **Carril E (IA & Raid)**: Rama `feat/alpha-ai-raid`. Responsable del saqueador y sistema de raid.
-- **Carril F (Mundo & Presentación)**: Rama `feat/alpha-presentation`. Responsable de la UI y los estilos visuales (sin sci-fi, luz de sodio, etc).
+### 3. Autoridad y RPCs (Host-Authoritative)
+- [MODIFY] `ApartmentClaimService.cs`: Asegurar que `RequestClaim` valida distancia y pertenencia en el host.
+- [MODIFY] `InventoryComponent.cs`: Convertir acciones de inventario (`RequestTransfer`, `RequestDrop`) a validaciÃ³n estricta del host (sin confiar en el cliente).
+- [MODIFY] `Trader.cs` / `TraderUI.razor.cs`: Las compras y ventas (`BuyItem`, `SellItem`) serÃ¡n autoritativas en el host.
+- [MODIFY] `BaseCombatWeapon.cs`: Validar que el daÃ±o es propagado desde el host hacia los clientes, y no al revÃ©s.
 
-### 4. Integración y WorldClock
-Como integrador, supervisaré el trabajo, implementaré el `WorldClock` (Día, Preparación, Noche, Consecuencias) y consolidaré los resultados progresivamente en `feat/alpha-0.1-integration`. Validaré que ningún subagente modifique `main.scene`.
+### 4. Cadena de InteracciÃ³n y Estados de UI
+- [MODIFY] `PlayerInteractor.cs`: Corregir el ciclo completo del raycast.
+  - Si la distancia > lÃ­mite, anular la interacciÃ³n.
+  - Al alejarse, limpiar referencias activas.
+- [MODIFY] `PlayerHud.razor` (y relativos):
+  - Implementar la mÃ¡quina de estados: `Gameplay`, `InventoryOnly`, `InventoryAndStash`, `Trader`, `Dead`.
+  - Iniciar cerrado (Gameplay).
+  - Bloquear / liberar el movimiento/cursor adecuadamente.
+
+### 5. AuditorÃ­a de Escenas
+- [MODIFY] `main.scene`: 
+  - Validar y purgar singletons duplicados (`NetworkHelper`, `WorldClock`, etc.).
+  - Asegurar la presencia fÃ­sica de `apartment-a01`, `apartment-a02`, `trader-neighborhood`.
+- [NEW] `test_spanish_text.scene`: CreaciÃ³n de la escena de prueba para validar glifos y tipografÃ­a.
 
 ## Verification Plan
 
-### Automated Tests
-- Compilación de cada rama antes del merge (`dotnet build`).
-- Verificación de la serialización del QA slot.
+### Automated Tests (Static QA)
+- Auditar referencias a `Guid.Parse` y `Rpc.Owner` en acciones crÃ­ticas.
+- Verificar el contenido de `main.scene` usando parseo JSON para confirmar Singletons y Prefabs.
 
-### Manual Verification
-- Validar el loop jugable utilizando las herramientas de QA para forzar fases (Noche, Raid).
-- Verificar que el progreso completo (Inventario, Vivienda, Dinero) se mantiene al guardar y cargar.
-- Con dos clientes: verificar la independencia de stashes, carteras y la correcta replicación del combate e IA.
+### Manual Verification (User)
+- Al completar los Gates 1 a 8 de este plan, el usuario deberÃ¡ iniciar S&box y cargar `test_spanish_text.scene` y `main.scene` para validar visualmente la codificaciÃ³n y la jugabilidad del hito Alpha 0.1, de acuerdo a la matriz actualizada.
