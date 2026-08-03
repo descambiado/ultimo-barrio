@@ -13,7 +13,7 @@ namespace UltimoBarrio.Raids
         [Property] public GameObject LooterPrefab { get; set; }
         [Property] public int MinLooters { get; set; } = 1;
         [Property] public int MaxLooters { get; set; } = 3;
-        [Property] public Transform SpawnPoint { get; set; }
+        [Property] public GameObject SpawnPoint { get; set; }
         [Property] public float MaxRaidDuration { get; set; } = 180f; 
 
         [Property, Sync(SyncFlags.FromHost)] public bool isRaidActive { get; set; } = false;
@@ -74,7 +74,7 @@ namespace UltimoBarrio.Raids
         {
             if (LooterPrefab == null || SpawnPoint == null) return;
 
-            var looter = LooterPrefab.Clone(SpawnPoint.Position, SpawnPoint.Rotation);
+            var looter = LooterPrefab.Clone(SpawnPoint.WorldPosition, SpawnPoint.WorldRotation);
             looter.NetworkSpawn();
             activeLooters.Add(looter);
 
