@@ -72,93 +72,82 @@ namespace UltimoBarrio
 
             if (tr.Hit && tr.GameObject != null)
             {
-                float dist = (tr.EndPosition - rayPos).Length;
-
-                if (Input.Pressed("Use"))
-                {
-                    Log.Info($"[Interact] Target: {tr.GameObject.Name}, Distance: {dist}");
-                }
-
-                // 1. Apartment
-                var claimable = tr.GameObject.Components.Get<ApartmentClaimInteractable>();
-                if (claimable != null)
-                {
-                    var apt = Scene.GetAllComponents<ApartmentComponent>().FirstOrDefault(a => a.ApartmentId == claimable.ApartmentId);
-                    if (apt != null)
-                    {
-                        string prompt = apt.ClaimState == ApartmentClaimState.Unclaimed ? "Este piso está disponible" : "Este piso ya tiene dueño";
-                        _hud?.ShowPrompt(prompt, apt.ClaimState == ApartmentClaimState.Unclaimed ? "Pulsa E para reclamarlo" : "");
-
-                        if (Input.Pressed("Use"))
-                        {
-                            Log.Info($"[Interact] Type: ApartmentClaimInteractable, Prompt: {prompt}, CanInteract: True");
-                            Log.Info("[Interact] Sending RPC to Host...");
-                            var pressable = claimable as Component.IPressable;
-                            if (pressable.CanPress(new Component.IPressable.Event()))
-                            {
-                                pressable.Press(new Component.IPressable.Event());
-                            }
-                        }
-                    }
-                    return;
-                }
-
-                // 2. Stash
-                var isPlayer = tr.GameObject.Components.Get<Sandbox.PlayerController>() != null;
-                var stashInv = isPlayer ? null : tr.GameObject.Components.Get<InventoryComponent>();
-                if (stashInv != null)
-                {
-                    var apt = tr.GameObject.Components.GetInAncestorsOrSelf<ApartmentComponent>();
-                    bool canOpen = apt == null || apt.OwnerId == Game.SteamId.ToString();
-                    
-                    if (canOpen)
-                    {
-                        _hud?.ShowPrompt("Pulsa E para abrir el alijo", "");
-                        if (Input.Pressed("Use"))
-                        {
-                            Log.Info("[Interact] Type: Stash, Prompt: Abrir alijo, CanInteract: True");
-                            _hud?.OpenStash(stashInv);
-                        }
-                    }
-                    else
-                    {
-                        _hud?.ShowPrompt("No puedes acceder a este apartamento", "");
-                        if (Input.Pressed("Use"))
-                        {
-                            Log.Info("[Interact] Type: Stash, Prompt: Denegado, CanInteract: False");
-                        }
-                    }
-                    return;
-                }
-                
-                // 3. Trader
-                var trader = tr.GameObject.Components.Get<UltimoBarrio.Trading.Trader>();
-                if (trader != null)
-                {
-                    _hud?.ShowPrompt("Comerciante", "Pulsa E");
-                    if (Input.Pressed("Use"))
-                    {
-                        Log.Info("[Interact] Type: Trader, Prompt: Comerciante, CanInteract: True");
-                        _hud?.OpenTrader(trader);
-                    }
-                    return;
-                }
-
-                // 4. IInteractable (Pickups, etc)
-                var interactable = tr.GameObject.Components.Get<IInteractable>();
+                // Only query for IWorldInteractable components
+                var interactable = tr.GameObject.Components.Get<IWorldInteractable>();
                 if (interactable != null)
                 {
-                    var req = new InteractionRequest { InteractorId = GameObject.Network.OwnerId.ToString(), InteractorObject = GameObject };
-                    string prompt = interactable.GetInteractionPrompt(req);
-                    _hud?.ShowPrompt(prompt, "Pulsa E");
-                    
+                    var req = new InteractionRequest
+                    {
+                        InteractorId = GameObject.Network.OwnerId.ToString(),
+                        InteractorObject = GameObject
+                    };
+
+                    // Special handling for Apartment Claim
+                    var claimable = interactable as ApartmentClaimInteractable;
+                    if (claimable != null)
+                    {
+                        var apt = Scene.GetAllComponents<ApartmentComponent>().FirstOrDefault(a => a.ApartmentId == claimable.ApartmentId);
+                        if (apt != null)
+                        {
+                            string prompt = apt.ClaimState == ApartmentClaimState.Unclaimed ? "Este piso está disponible" : "Este piso ya tiene dueño";
+                            _hud?.ShowPrompt(prompt, apt.ClaimState == ApartmentClaimState.Unclaimed ? "Pulsa E para reclamarlo" : "");
+
+                            if (Input.Pressed("Use"))
+                            {
+                                Log.Info($"[Interact] Claimable: {claimable.ApartmentId}");
+                                var pressable = claimable as Component.IPressable;
+                                pressable?.Press(new Component.IPressable.Event());
+                            }
+                        }
+                        return;
+                    }
+
+                    // Special handling for Trader
+                    var trader = interactable as Trading.Trader;
+                    if (trader != null)
+                    {
+                        _hud?.ShowPrompt("Comerciante", "Pulsa E para comerciar");
+                        if (Input.Pressed("Use"))
+                        {
+                            Log.Info($"[Interact] Opening Trader");
+                            _hud?.OpenTrader(trader);
+                        }
+                        return;
+                    }
+
+                    // Special handling for World Container (Stash)
+                    var container = interactable as IWorldContainer;
+                    if (container != null)
+                    {
+                        string prompt = interactable.GetInteractionPrompt(req);
+                        bool canInteract = interactable.CanInteract(req);
+                        _hud?.ShowPrompt(prompt, canInteract ? "Pulsa E" : "");
+
+                        if (Input.Pressed("Use"))
+                        {
+                            Log.Info($"[Interact] Stash/Container interact, canInteract={canInteract}");
+                            if (canInteract)
+                            {
+                                var inv = container.GetContainerInventory();
+                                if (inv != null)
+                                {
+                                    _hud?.OpenStash(inv);
+                                }
+                            }
+                        }
+                        return;
+                    }
+
+                    // Default IWorldInteractable (Pickups, etc)
+                    string defaultPrompt = interactable.GetInteractionPrompt(req);
+                    bool can = interactable.CanInteract(req);
+                    _hud?.ShowPrompt(defaultPrompt, can ? "Pulsa E" : "");
+
                     if (Input.Pressed("Use"))
                     {
-                        bool can = interactable.CanInteract(req);
-                        Log.Info($"[Interact] Type: IInteractable, Prompt: {prompt}, CanInteract: {can}");
+                        Log.Info($"[Interact] Direct IWorldInteractable: {defaultPrompt}, Can={can}");
                         if (can)
                         {
-                            Log.Info("[Interact] Sending RPC/Call to Host...");
                             interactable.OnInteract(req);
                         }
                     }

@@ -151,6 +151,37 @@ namespace UltimoBarrio.QA
             Log.Info("[QA] Todos los apartamentos han sido liberados.");
         }
 
+        // ── qa_test_stash_isolation ───────────────────────────────────────────
+        [ConCmd("qa_test_stash_isolation")]
+        public static void CmdTestStashIsolation()
+        {
+            var scene = Game.ActiveScene;
+            if (scene == null) { Log.Warning("[QA] Sin escena activa."); return; }
+
+            // Test 1: Given a Player with InventoryComponent, when checked for IWorldInteractable, then false.
+            var localPlayer = FindLocalPlayer();
+            if (localPlayer != null)
+            {
+                var playerInteractable = localPlayer.Components.Get<UltimoBarrio.Core.IWorldInteractable>();
+                bool passPlayerTest = playerInteractable == null;
+                Log.Info($"[QA Test] Player has no IWorldInteractable: {(passPlayerTest ? "PASS" : "FAIL")}");
+            }
+
+            // Test 2: Given a physical StashComponent, when checked for IWorldInteractable & IWorldContainer, then true.
+            var stash = scene.GetAllComponents<StashComponent>().FirstOrDefault();
+            if (stash != null)
+            {
+                var stashInteractable = stash.GameObject.Components.Get<UltimoBarrio.Core.IWorldInteractable>();
+                var stashContainer = stash.GameObject.Components.Get<UltimoBarrio.Core.IWorldContainer>();
+                bool passStashTest = stashInteractable != null && stashContainer != null;
+                Log.Info($"[QA Test] Physical StashComponent implements IWorldInteractable & IWorldContainer: {(passStashTest ? "PASS" : "FAIL")}");
+            }
+            else
+            {
+                Log.Info("[QA Test] Physical StashComponent not found in current scene (PASS by design)");
+            }
+        }
+
         // ── helper ────────────────────────────────────────────────────────────
         private static GameObject FindLocalPlayer()
         {

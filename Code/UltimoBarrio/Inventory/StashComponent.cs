@@ -1,10 +1,12 @@
 using Sandbox;
 using UltimoBarrio.Core;
 using System;
+using System.Linq;
+using UltimoBarrio.Apartments;
 
 namespace UltimoBarrio
 {
-    public class StashComponent : Component, IInventory, IInteractable
+    public class StashComponent : Component, IWorldContainer, IWorldInteractable, IInteractable
     {
         [Property] public string InventoryId { get; set; } = string.Empty;
         [Property] public int MaxSlots { get; set; } = 24;
@@ -20,7 +22,14 @@ namespace UltimoBarrio
             }
         }
 
-        public string GetInteractionPrompt(InteractionRequest request) => "Abrir alijo";
+        public InventoryComponent GetContainerInventory() => Inventory;
+
+        public string GetInteractionPrompt(InteractionRequest request)
+        {
+            var apt = Scene.GetAllComponents<ApartmentComponent>().FirstOrDefault(a => a.ApartmentId == ApartmentId);
+            bool canAccess = apt == null || apt.OwnerId == request.InteractorId || apt.OwnerId == Game.SteamId.ToString();
+            return canAccess ? "Pulsa E para abrir el alijo" : "No puedes acceder a este apartamento";
+        }
 
         public bool CanInteract(InteractionRequest request)
         {
@@ -29,17 +38,13 @@ namespace UltimoBarrio
             {
                 return policy.CanAccessStash(ApartmentId, request.InteractorId);
             }
-            return true;
+            var apt = Scene.GetAllComponents<ApartmentComponent>().FirstOrDefault(a => a.ApartmentId == ApartmentId);
+            return apt == null || apt.OwnerId == request.InteractorId || apt.OwnerId == Game.SteamId.ToString();
         }
 
         public void OnInteract(InteractionRequest request)
         {
-            // Open stash UI logic here
+            // Interactor opens HUD for this container
         }
-
-        public bool CanAdd(string itemId, int amount) => Inventory.CanAdd(itemId, amount);
-        public bool TryAdd(string itemId, int amount) => Inventory.TryAdd(itemId, amount);
-        public bool TryRemove(string itemId, int amount) => Inventory.TryRemove(itemId, amount);
-        public int GetCount(string itemId) => Inventory.GetCount(itemId);
     }
 }

@@ -29,11 +29,20 @@ public struct InteractionRequest
     public GameObject InteractorObject;
 }
 
-public interface IInteractable
+public interface IWorldInteractable
 {
     string GetInteractionPrompt(InteractionRequest request);
     bool CanInteract(InteractionRequest request);
     void OnInteract(InteractionRequest request);
+}
+
+public interface IWorldContainer
+{
+    InventoryComponent GetContainerInventory();
+}
+
+public interface IInteractable : IWorldInteractable
+{
 }
 
 public interface IPlayerIdentityProvider
