@@ -5,12 +5,12 @@
 ## Identidad
 
 - Proyecto: Último Barrio
-- Fase: Bootstrap
+- Fase: M1 — primer apartamento reclamable
 - Versión objetivo: `0.1.0-alpha`
-- Rama activa: `feat/m0-bootstrap`
+- Rama activa: `feat/m1-01-claimable-apartment`
 - Rama estable: `main`
-- Último commit de implementación estable: `2ba1925` (`feat(scene): add first boot scene`)
-- Último commit operativo publicado: `9417320` (`docs: record M0-02 publication`)
+- Último commit estable: `d5ed250` (merge de la PR #7 en `main`)
+- Último commit de M0 publicado: `72c74d5` (`test(network): validate local two-client session`)
 - Baseline etiquetado: `0298207` (`bootstrap-v0.0.0`, publicado sin reescribir)
 - Licencia: Mozilla Public License 2.0 (`SPDX-License-Identifier: MPL-2.0`)
 - Build de s&box: `26.07.22`, Steam BuildID `24338653`
@@ -26,7 +26,7 @@
 - Issues activados; wiki y Discussions desactivadas.
 - GitHub Pages: no configurado.
 - Releases: ninguna.
-- Draft PR: [#7 — chore: bootstrap real del proyecto s&box](https://github.com/descambiado/ultimo-barrio/pull/7).
+- PR de bootstrap: [#7 — chore: bootstrap real del proyecto s&box](https://github.com/descambiado/ultimo-barrio/pull/7) — fusionada en `main` mediante `d5ed250`.
 - Issues:
   - [#1 — M0-03: crear `main.scene` y validar el primer boot jugable](https://github.com/descambiado/ultimo-barrio/issues/1) — cerrado.
   - [#2 — M0-04: validar sesión local con dos clientes](https://github.com/descambiado/ultimo-barrio/issues/2) — cerrado.
@@ -72,21 +72,25 @@
 
 ## Hito activo
 
-### Cierre M0 — integrar el bootstrap
+### M1-01 — primer apartamento reclamable
 
-**Objetivo:** publicar el bloque estable, comprobar la PR #7 y fusionarla en
-`main` antes de abrir una rama limpia de M1.
+**Objetivo:** crear una unidad provisional que el host pueda asignar a una
+identidad estable, guardar en un snapshot local v1 y restaurar al reiniciar.
 
 ### Criterios de aceptación
 
-- [ ] Commit de M0-04 publicado en `feat/m0-bootstrap`.
-- [ ] Check de la PR #7 correcto.
-- [ ] PR #7 fusionada sin force-push.
-- [ ] `main` local actualizada y árbol limpio.
-- [ ] Rama M1 creada desde `main`.
-
-M0-03 y M0-04 están completados. La integración de la PR todavía no se ha
-ejecutado.
+- [x] Rama M1 creada desde el merge estable de `main`.
+- [x] Contrato de siete campos implementado.
+- [x] Petición de claim limitada a `ApartmentId`; identidad y distancia se
+  resuelven en el host.
+- [x] Proveedor local implementado con generaciones inmutables, CRC64,
+  relectura y bloqueo ante versiones futuras.
+- [x] Blockout provisional, portal y anchors serializados en `main.scene`.
+- [ ] Escena recargada en el editor con las tres referencias resueltas.
+- [ ] Claim probado en Play Mode.
+- [ ] Persistencia y reaparición probadas después de reiniciar.
+- [ ] Carrera, reconexión y segundo cliente probados.
+- [ ] Consola de host y cliente revisada para este hito.
 
 ## Estado técnico comprobado
 
@@ -119,9 +123,9 @@ ejecutado.
   funcional, pero la consola del cliente no se declara limpia.
 - Captura de evidencia: `docs/media/first-boot.png`, 1280×720, captura real de Play Mode; no demuestra movimiento.
 
-## M1-01 preparado, no implementado
+## M1-01 implementado parcialmente, todavía no validado
 
-El contrato previsto para el primer apartamento reclamable queda preparado para su issue:
+La rama contiene el contrato previsto para el primer apartamento reclamable:
 
 - `ApartmentId`
 - `OwnerId`
@@ -131,11 +135,25 @@ El contrato previsto para el primer apartamento reclamable queda preparado para 
 - `SpawnReference`
 - `SaveVersion`
 
-El flujo será autoritativo en host y la persistencia se aislará tras una interfaz con snapshots versionados. No existe todavía código, apartamento, claim ni guardado.
+El flujo implementado reserva simultáneamente por apartamento y propietario,
+persiste antes de aplicar el estado sincronizado y usa
+`Connection.SteamId.ValueUnsigned` detrás de `IPlayerIdentityProvider`. El
+cliente solo envía `ApartmentId`.
+
+`Assets/scenes/main.scene` contiene el blockout `Prototype Apartment A01`, el
+portal de claim, `DoorReference`, `StashReference`, `SpawnReference` y el
+servicio bajo `Systems`. No se ha declarado completado: falta ejecutar claim,
+reinicio, carrera, reconexión y late join.
 
 ## Bloqueadores reales
 
-- Ninguno para publicar y fusionar el bootstrap.
+- El endpoint MCP quedó ocupado al intentar guardar desde un comando de editor
+  después de detectar una limitación de `set_component` con referencias
+  `GameObject`. El proceso de s&box sigue respondiendo, pero la escena debe
+  recargarse desde disco (versión externa) antes de continuar la prueba.
+- El archivo de escena en disco sí conserva toda la geometría y las tres
+  referencias; no se debe sobrescribir con la copia antigua que permanece en
+  memoria.
 - Incidencia no bloqueante: el segundo jugador apareció inicialmente en el
   aire, probablemente por solapamiento en el único spawn.
 - Incidencia no bloqueante: el cliente dev registró errores de recursos que
@@ -143,9 +161,11 @@ El flujo será autoritativo en host y la persistencia se aislará tras una inter
 
 ## Siguientes tres acciones
 
-1. Publicar el commit de M0-04 y cerrar el issue #2 con evidencia.
-2. Comprobar y fusionar la PR #7 en `main`.
-3. Crear la rama M1 desde `main` y empezar los anchors del apartamento.
+1. Recargar `scenes/main.scene` desde disco y confirmar las tres referencias
+   mediante MCP.
+2. Compilar, ejecutar Play Mode y probar claim, snapshot y reinicio.
+3. Probar carrera/reconexión/segundo cliente; solo después actualizar el issue
+   #3, hacer commit y publicar la rama.
 
 ## Decisiones vigentes
 
@@ -178,3 +198,4 @@ El flujo será autoritativo en host y la persistencia se aislará tras una inter
 | 2026-08-02 | Codex + subagentes | `feat/m0-bootstrap` | M0-02 publicado: repositorio público, refs, draft PR e issues iniciales | `a8fbd90` |
 | 2026-08-03 | Codex + prueba manual | `feat/m0-bootstrap` | M0-03 validado: WASD, salto, ratón, primera/tercera persona y consola del proyecto limpia | `test(player): verify movement and camera input` |
 | 2026-08-03 | Codex + prueba de red | `feat/m0-bootstrap` | M0-04 validado con host, segundo cliente, input independiente y desconexión | `test(network): validate local two-client session` |
+| 2026-08-03 | Codex + subagentes | `feat/m1-01-claimable-apartment` | PR #7 fusionada; contrato, persistencia y blockout A01 implementados; validación de M1 bloqueada hasta recargar la escena | `d5ed250` |

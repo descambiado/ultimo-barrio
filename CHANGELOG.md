@@ -37,6 +37,13 @@ El formato se inspira en Keep a Changelog y el proyecto utiliza versionado semá
   `Sandbox.NetworkHelper`, sin Player directo duplicado en la escena.
 - Prueba local real con editor host y segundo `sbox.exe`: dos jugadores,
   movimiento/cámara independientes y desconexión verificada.
+- Contrato inicial del apartamento con identidad estable resuelta por host,
+  validación de configuración y reserva contra claims simultáneos.
+- Persistencia local v1 mediante `FileSystem.Data`, snapshots de generación
+  inmutables, CRC64, relectura, fallback y bloqueo de escritura ante versiones
+  futuras.
+- Blockout `Prototype Apartment A01` con portal de interacción y anchors de
+  puerta, alijo y reaparición; todavía no se presenta como feature validada.
 
 ### Changed
 
@@ -56,6 +63,8 @@ El formato se inspira en Keep a Changelog y el proyecto utiliza versionado semá
   host-only mediante generaciones inmutables sobre `FileSystem.Data`.
 - M0-04 queda funcionalmente validado. El smoke test conserva como seguimientos
   el spawn solapado observado y los errores de recursos del cliente dev.
+- La PR #7 del bootstrap quedó fusionada en `main` mediante `d5ed250`; el
+  desarrollo continúa en `feat/m1-01-claimable-apartment`.
 
 ## [0.0.0] - 2026-08-02
 
