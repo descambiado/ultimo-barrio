@@ -1,0 +1,41 @@
+﻿
+@using Sandbox;
+@using Sandbox.UI;
+@inherits Panel
+@namespace UltimoBarrio.UI
+@attribute [StyleSheet]
+
+<root class="@(IsOpen ? "visible" : "")">
+    <div class="trader-window">
+        <div class="header">
+            <label class="title">COMERCIANTE</label>
+            <button class="close-btn" onclick=@Close>X</button>
+        </div>
+        <div class="content">
+            <div class="buy-section">
+                <label class="section-title">COMPRAR</label>
+                <div class="item">
+                    <label>Agua ($@TargetTrader?.WaterPrice)</label>
+                    <button class="action-btn" onclick=@(() => Buy("water"))>Comprar</button>
+                </div>
+                <div class="item">
+                    <label>Medicina ($@TargetTrader?.MedicinePrice)</label>
+                    <button class="action-btn" onclick=@(() => Buy("medicine"))>Comprar</button>
+                </div>
+                <div class="item">
+                    <label>Munición ($@TargetTrader?.AmmoPrice)</label>
+                    <button class="action-btn" onclick=@(() => Buy("ammo"))>Comprar</button>
+                </div>
+            </div>
+            
+            <div class="sell-section">
+                <label class="section-title">VENDER</label>
+                <div class="item">
+                    <label>Chatarra ($@TargetTrader?.ScrapSellPrice c/u)</label>
+                    <button class="action-btn sell" onclick=@(() => Sell("scrap"))>Vender Todo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</root>
+

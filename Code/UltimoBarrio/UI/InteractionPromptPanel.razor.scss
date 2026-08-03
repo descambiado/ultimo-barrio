@@ -1,3 +1,4 @@
+﻿
 InteractionPromptPanel {
     position: absolute;
     width: 100%;
@@ -14,26 +15,27 @@ InteractionPromptPanel {
 
     .prompt-container {
         flex-direction: column;
-        background-color: rgba(10, 10, 10, 0.85);
+        background-color: rgba(31, 31, 31, 0.9); /* Charcoal */
         padding: 16px 24px;
-        border-radius: 8px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        border-bottom: 4px solid #FFBF00; /* Amber streetlight */
         align-items: center;
-        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
+        box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.6);
     }
 
     .title {
-        color: white;
+        color: #F8F8FF; /* Off-white */
         font-size: 24px;
         font-family: Poppins, sans-serif;
-        font-weight: bold;
+        font-weight: 800;
         text-shadow: 1px 1px 2px black;
     }
 
     .subtitle {
-        color: #d0d0d0;
+        color: #A0A0A0;
         font-size: 16px;
         margin-top: 4px;
         font-family: Poppins, sans-serif;
     }
 }
+

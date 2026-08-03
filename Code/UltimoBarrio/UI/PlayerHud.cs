@@ -11,6 +11,8 @@ namespace UltimoBarrio.UI
     public sealed class PlayerHud : PanelComponent
     {
         private InteractionPromptPanel _promptPanel;
+        private HudOverlayPanel _hudOverlay;
+        private TraderUI _traderUI;
         
         public InventoryUI PlayerInvUI { get; private set; }
         public InventoryUI StashInvUI { get; private set; }
@@ -28,6 +30,14 @@ namespace UltimoBarrio.UI
 
             _promptPanel = new InteractionPromptPanel();
             Panel.AddChild( _promptPanel );
+
+            _hudOverlay = new HudOverlayPanel();
+            _hudOverlay.PlayerObj = GameObject;
+            Panel.AddChild( _hudOverlay );
+
+            _traderUI = new TraderUI();
+            _traderUI.PlayerObj = GameObject;
+            Panel.AddChild( _traderUI );
 
             // Dynamically add the inventory UIs
             PlayerInvUI = GameObject.Components.Create<InventoryUI>();
@@ -90,6 +100,12 @@ namespace UltimoBarrio.UI
             }
         }
 
+        public void OpenTrader(UltimoBarrio.Trading.Trader trader)
+        {
+            if (IsProxy) return;
+            _traderUI?.Open(trader);
+        }
+
         public void OpenStash(InventoryComponent stashInv)
         {
             if (IsProxy) return;
@@ -110,6 +126,16 @@ namespace UltimoBarrio.UI
             {
                 _promptPanel.Delete();
                 _promptPanel = null;
+            }
+            if ( _hudOverlay != null )
+            {
+                _hudOverlay.Delete();
+                _hudOverlay = null;
+            }
+            if ( _traderUI != null )
+            {
+                _traderUI.Delete();
+                _traderUI = null;
             }
         }
 
