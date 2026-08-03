@@ -27,19 +27,34 @@ namespace UltimoBarrio
         public string GetInteractionPrompt(InteractionRequest request)
         {
             var apt = Scene.GetAllComponents<ApartmentComponent>().FirstOrDefault(a => a.ApartmentId == ApartmentId);
-            bool canAccess = apt == null || apt.OwnerId == request.InteractorId || apt.OwnerId == Game.SteamId.ToString();
-            return canAccess ? "Pulsa E para abrir el alijo" : "No puedes acceder a este apartamento";
+            if (apt == null || apt.ClaimState == ApartmentClaimState.Unclaimed || string.IsNullOrEmpty(apt.OwnerId))
+            {
+                return "Alijo Bloqueado (Vivienda Sin Reclamar)";
+            }
+
+            bool isOwner = apt.OwnerId == request.InteractorId || apt.OwnerId == Game.SteamId.ToString();
+            return isOwner ? "Pulsa E para abrir el alijo" : "No puedes acceder a este alijo";
         }
 
         public bool CanInteract(InteractionRequest request)
         {
+            var apt = Scene.GetAllComponents<ApartmentComponent>().FirstOrDefault(a => a.ApartmentId == ApartmentId);
+            if (apt == null || apt.ClaimState == ApartmentClaimState.Unclaimed || string.IsNullOrEmpty(apt.OwnerId))
+            {
+                return false;
+            }
+
             var policy = Scene.GetAllComponents<IApartmentAccessPolicy>().FirstOrDefault();
             if (policy != null)
             {
                 return policy.CanAccessStash(ApartmentId, request.InteractorId);
             }
-            var apt = Scene.GetAllComponents<ApartmentComponent>().FirstOrDefault(a => a.ApartmentId == ApartmentId);
-            return apt == null || apt.OwnerId == request.InteractorId || apt.OwnerId == Game.SteamId.ToString();
+
+            bool isOwner = apt.OwnerId == request.InteractorId || apt.OwnerId == Game.SteamId.ToString();
+            float dist = request.InteractorObject != null ? Vector3.DistanceBetween(WorldPosition, request.InteractorObject.WorldPosition) : 0f;
+
+            Log.Info($"[Stash] PlayerId={request.InteractorId}, ApartmentId={ApartmentId}, OwnerId={apt.OwnerId}, IsClaimed={apt.ClaimState}, IsOwner={isOwner}, Distance={dist:F1}, Decision={isOwner}");
+            return isOwner;
         }
 
         public void OnInteract(InteractionRequest request)
