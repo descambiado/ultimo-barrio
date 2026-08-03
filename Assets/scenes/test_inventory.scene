@@ -1,0 +1,30 @@
+{
+  "__guid": "00000000-0000-0000-0000-000000000000",
+  "GameObjects": [
+    {
+      "__guid": "11111111-1111-1111-1111-111111111111",
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "22222222-2222-2222-2222-222222222222",
+          "Description": "Test Inventory Scene"
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false
+    }
+  },
+  "Title": "test_inventory"
+}
