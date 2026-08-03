@@ -94,7 +94,6 @@ namespace UltimoBarrio
                 }
             }
         }
-    }
 
         [Rpc.Host]
         public void RequestDrop(string itemId, int amount)
@@ -126,4 +125,5 @@ namespace UltimoBarrio
                 }
             }
         }
+    }
 }
