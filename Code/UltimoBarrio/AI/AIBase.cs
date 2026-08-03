@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 using System;
 using UltimoBarrio.Core;
 
@@ -21,7 +21,7 @@ namespace UltimoBarrio.AI
         public virtual void TakeDamage(DamageEvent damageEvent)
         {
             if (IsDead) return;
-            Health -= amount;
+            Health -= damageEvent.Amount;
             if (Health <= 0)
             {
                 Die();
