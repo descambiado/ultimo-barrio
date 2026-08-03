@@ -1,5 +1,6 @@
 using Sandbox;
 using System;
+using System.Linq;
 using UltimoBarrio.Core;
 using UltimoBarrio.UI;
 using UltimoBarrio.Apartments;
@@ -7,7 +8,7 @@ using UltimoBarrio.Apartments;
 namespace UltimoBarrio
 {
     [Title("Player Interactor")]
-    [Category("Ãšltimo Barrio")]
+    [Category("Último Barrio")]
     [Icon("pan_tool")]
     public sealed class PlayerInteractor : Component
     {
@@ -18,27 +19,50 @@ namespace UltimoBarrio
         protected override void OnStart()
         {
             _hud = Components.Get<PlayerHud>();
+            
+            // Set deterministic inventory ID
+            var inv = Components.Get<InventoryComponent>();
+            if (inv != null && GameObject.Network.OwnerId != Guid.Empty)
+            {
+                var identityProvider = Scene.GetAllComponents<IPlayerIdentityProvider>().FirstOrDefault();
+                if (identityProvider != null)
+                {
+                    var connection = Connection.All.FirstOrDefault(c => c.Id == GameObject.Network.OwnerId);
+                    if (connection != null && identityProvider.TryResolve(connection, out var ownerId))
+                    {
+                        inv.InventoryId = $"player:{ownerId}:inventory";
+                    }
+                    else
+                    {
+                        inv.InventoryId = $"player:{GameObject.Network.OwnerId}:inventory";
+                    }
+                }
+            }
         }
 
         protected override void OnUpdate()
         {
             if (IsProxy) return;
+            
+            // Only interact if in Gameplay state
+            if (_hud != null && _hud.CurrentState != HudState.Gameplay)
+            {
+                _hud?.HidePrompt();
+                return;
+            }
 
-            var rayPos = Transform.Position + Vector3.Up * 64f;
-            var rayDir = Transform.Rotation.Forward;
+            var rayPos = WorldPosition + Vector3.Up * 64f;
+            var rayDir = WorldRotation.Forward;
 
             var pc = Components.Get<Sandbox.PlayerController>();
-            if (pc != null)
-            {
-                rayDir = pc.EyeAngles.Forward;
-            }
+            if (pc != null) rayDir = pc.EyeAngles.Forward;
             else
             {
                 var cam = Scene.GetAllComponents<CameraComponent>().FirstOrDefault();
                 if (cam != null)
                 {
-                    rayPos = cam.Transform.Position;
-                    rayDir = cam.Transform.Rotation.Forward;
+                    rayPos = cam.WorldPosition;
+                    rayDir = cam.WorldRotation.Forward;
                 }
             }
 
@@ -46,35 +70,29 @@ namespace UltimoBarrio
                 .IgnoreGameObjectHierarchy(GameObject)
                 .Run();
 
-            if (Input.Pressed("Use"))
-            {
-                Log.Info($"[Interact] Player pressed E. Ray hit: {tr.Hit}, Object: {tr.GameObject?.Name ?? "none"} at {tr.EndPosition}");
-                if (tr.GameObject != null)
-                {
-                    var allComps = string.Join(", ", tr.GameObject.Components.GetAll().Select(c => c.GetType().Name));
-                    Log.Info($"[Interact] Components on hit object: {allComps}");
-                }
-            }
-
             if (tr.Hit && tr.GameObject != null)
             {
+                float dist = (tr.EndPosition - rayPos).Length;
+
+                if (Input.Pressed("Use"))
+                {
+                    Log.Info($"[Interact] Target: {tr.GameObject.Name}, Distance: {dist}");
+                }
+
+                // 1. Apartment
                 var claimable = tr.GameObject.Components.Get<ApartmentClaimInteractable>();
                 if (claimable != null)
                 {
                     var apt = Scene.GetAllComponents<ApartmentComponent>().FirstOrDefault(a => a.ApartmentId == claimable.ApartmentId);
                     if (apt != null)
                     {
-                        if (apt.ClaimState == ApartmentClaimState.Unclaimed)
-                        {
-                            _hud?.ShowPrompt("Este piso estÃ¡ disponible", "Pulsa E para reclamarlo");
-                        }
-                        else
-                        {
-                            _hud?.ShowPrompt("Este piso ya tiene dueÃ±o", "");
-                        }
+                        string prompt = apt.ClaimState == ApartmentClaimState.Unclaimed ? "Este piso está disponible" : "Este piso ya tiene dueño";
+                        _hud?.ShowPrompt(prompt, apt.ClaimState == ApartmentClaimState.Unclaimed ? "Pulsa E para reclamarlo" : "");
 
                         if (Input.Pressed("Use"))
                         {
+                            Log.Info($"[Interact] Type: ApartmentClaimInteractable, Prompt: {prompt}, CanInteract: True");
+                            Log.Info("[Interact] Sending RPC to Host...");
                             var pressable = claimable as Component.IPressable;
                             if (pressable.CanPress(new Component.IPressable.Event()))
                             {
@@ -85,11 +103,10 @@ namespace UltimoBarrio
                     return;
                 }
 
+                // 2. Stash
                 var stashInv = tr.GameObject.Components.Get<InventoryComponent>();
                 if (stashInv != null)
                 {
-                    // For stash, we should only open if we are the owner or it's public.
-                    // A simple check for now: find parent ApartmentComponent and check owner.
                     var apt = tr.GameObject.Components.GetInAncestorsOrSelf<ApartmentComponent>();
                     bool canOpen = apt == null || apt.OwnerId == Game.SteamId.ToString();
                     
@@ -98,36 +115,49 @@ namespace UltimoBarrio
                         _hud?.ShowPrompt("Pulsa E para abrir el alijo", "");
                         if (Input.Pressed("Use"))
                         {
+                            Log.Info("[Interact] Type: Stash, Prompt: Abrir alijo, CanInteract: True");
                             _hud?.OpenStash(stashInv);
                         }
                     }
                     else
                     {
-                        _hud?.ShowPrompt("No puedes abrir este alijo", "");
+                        _hud?.ShowPrompt("No puedes acceder a este apartamento", "");
+                        if (Input.Pressed("Use"))
+                        {
+                            Log.Info("[Interact] Type: Stash, Prompt: Denegado, CanInteract: False");
+                        }
                     }
                     return;
                 }
                 
+                // 3. Trader
                 var trader = tr.GameObject.Components.Get<UltimoBarrio.Trading.Trader>();
                 if (trader != null)
                 {
                     _hud?.ShowPrompt("Comerciante", "Pulsa E");
                     if (Input.Pressed("Use"))
                     {
+                        Log.Info("[Interact] Type: Trader, Prompt: Comerciante, CanInteract: True");
                         _hud?.OpenTrader(trader);
                     }
                     return;
                 }
 
+                // 4. IInteractable (Pickups, etc)
                 var interactable = tr.GameObject.Components.Get<IInteractable>();
                 if (interactable != null)
                 {
                     var req = new InteractionRequest { InteractorId = GameObject.Network.OwnerId.ToString(), InteractorObject = GameObject };
-                    _hud?.ShowPrompt(interactable.GetInteractionPrompt(req), "Pulsa E");
+                    string prompt = interactable.GetInteractionPrompt(req);
+                    _hud?.ShowPrompt(prompt, "Pulsa E");
+                    
                     if (Input.Pressed("Use"))
                     {
-                        if (interactable.CanInteract(req))
+                        bool can = interactable.CanInteract(req);
+                        Log.Info($"[Interact] Type: IInteractable, Prompt: {prompt}, CanInteract: {can}");
+                        if (can)
                         {
+                            Log.Info("[Interact] Sending RPC/Call to Host...");
                             interactable.OnInteract(req);
                         }
                     }
@@ -139,4 +169,3 @@ namespace UltimoBarrio
         }
     }
 }
-
