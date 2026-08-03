@@ -52,7 +52,7 @@ namespace UltimoBarrio.UI
             if (IsOpen && TargetTrader != null && PlayerObj != null)
             {
                 // Auto close if too far
-                var distance = (TargetTrader.Transform.Position - PlayerObj.Transform.Position).Length;
+                var distance = (TargetTrader.WorldPosition - PlayerObj.WorldPosition).Length;
                 if (distance > 200f)
                 {
                     Close();
