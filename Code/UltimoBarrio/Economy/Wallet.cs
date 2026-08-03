@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 using System;
 using UltimoBarrio.Persistence;
 using UltimoBarrio.Core;
