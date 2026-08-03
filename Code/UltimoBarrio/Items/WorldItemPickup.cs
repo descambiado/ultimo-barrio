@@ -1,4 +1,4 @@
-using Sandbox;
+﻿using Sandbox;
 using System;
 using UltimoBarrio.Core;
 
@@ -21,28 +21,36 @@ namespace UltimoBarrio
 
         public void OnInteract(InteractionRequest request)
         {
-            Log.Info($"[Pickup] OnInteract called by {request.InteractorId}. IsProxy: {IsProxy}");
-            if (IsProxy) return;
-            if (!Guid.TryParse(request.InteractorId, out var guid)) return;
-            var player = Scene.Directory.FindByGuid(guid);
-            if (player == null)
+            if (IsProxy)
             {
-                Log.Info($"[Pickup] Player {request.InteractorId} not found!");
-                return;
+                // We are on client, send RPC to host
+                RequestPickupOnHost(request.InteractorId, request.InteractorObject?.Id ?? Guid.Empty);
             }
-            var inventory = player.Components.Get<InventoryComponent>();
+            else
+            {
+                // We are host
+                ProcessPickup(request.InteractorObject);
+            }
+        }
+
+        [Rpc.Host]
+        private void RequestPickupOnHost(string interactorId, Guid interactorObjectId)
+        {
+            var interactorGo = Scene.Directory.FindByGuid(interactorObjectId);
+            ProcessPickup(interactorGo);
+        }
+
+        private void ProcessPickup(GameObject interactorGo)
+        {
+            if (interactorGo == null) return;
+            var inventory = interactorGo.Components.Get<InventoryComponent>();
             if (inventory != null)
             {
                 bool added = inventory.TryAdd(ItemId, Amount);
-                Log.Info($"[Pickup] Added to inventory: {added}");
                 if (added)
                 {
                     GameObject.Destroy();
                 }
-            }
-            else
-            {
-                Log.Info($"[Pickup] No inventory found on player {request.InteractorId}!");
             }
         }
     }
