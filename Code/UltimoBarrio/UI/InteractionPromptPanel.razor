@@ -1,0 +1,18 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits Panel
+@namespace UltimoBarrio.UI
+@attribute [StyleSheet]
+
+<root class="@(IsVisible ? "visible" : "")">
+    <div class="prompt-container">
+        @if (!string.IsNullOrEmpty(TitleText))
+        {
+            <label class="title">@TitleText</label>
+        }
+        @if (!string.IsNullOrEmpty(SubTitleText))
+        {
+            <label class="subtitle">@SubTitleText</label>
+        }
+    </div>
+</root>
