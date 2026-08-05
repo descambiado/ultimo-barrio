@@ -23,6 +23,40 @@ namespace UltimoBarrio.Players
             CurrentStamina = System.Math.Clamp( CurrentStamina - amount, 0f, Profile.MaxStamina );
         }
 
+        private void ValidateSpawn()
+        {
+            if ( !Networking.IsHost ) return;
+            
+            var pos = GameObject.WorldPosition;
+            var tr = Scene.Trace.Ray( pos + Vector3.Up * 20f, pos + Vector3.Down * 2000f )
+                .IgnoreGameObjectHierarchy( GameObject )
+                .Run();
+
+            if ( tr.Hit )
+            {
+                GameObject.WorldPosition = tr.EndPosition + Vector3.Up * 5f;
+                Log.Info($"Player spawned at valid floor: {GameObject.WorldPosition}");
+            }
+            else
+            {
+                Log.Warning($"Invalid spawn position {pos}. Searching for fallback SpawnPoint...");
+                var points = Scene.GetAllComponents<SpawnPoint>();
+                foreach (var p in points)
+                {
+                    var ptr = Scene.Trace.Ray( p.GameObject.WorldPosition + Vector3.Up * 20f, p.GameObject.WorldPosition + Vector3.Down * 2000f ).Run();
+                    if ( ptr.Hit )
+                    {
+                        GameObject.WorldPosition = ptr.EndPosition + Vector3.Up * 5f;
+                        Log.Info($"Fallback spawn selected: {GameObject.WorldPosition}");
+                        return;
+                    }
+                }
+                
+                // Absolute fallback to a high point if map is missing entirely
+                GameObject.WorldPosition = new Vector3(0, 0, 1000f);
+            }
+        }
+
         public float CurrentWeight { get; set; } = 0f; // For inventory integration later
 
         private bool _wasOnGround = true;
@@ -41,6 +75,8 @@ namespace UltimoBarrio.Players
                 CurrentStamina = Profile.MaxStamina;
             }
 
+            ValidateSpawn();
+
             // Ensure PlayerCameraEffects is present on the Camera
             var cam = Components.GetInDescendantsOrSelf<CameraComponent>();
             if (cam != null)
@@ -53,6 +89,13 @@ namespace UltimoBarrio.Players
 
         protected override void OnUpdate()
         {
+            if ( GameObject.WorldPosition.z < -2000f )
+            {
+                Log.Warning("Player fell below KillZ! Recovering...");
+                ValidateSpawn();
+                return;
+            }
+
             if (Controller == null || Profile == null) return;
             
             if (!IsProxy)

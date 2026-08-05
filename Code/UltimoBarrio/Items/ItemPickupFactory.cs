@@ -32,30 +32,43 @@ namespace UltimoBarrio
             var prefabFile = ResourceLibrary.Get<PrefabFile>( prefabPath );
             GameObject pickup = null;
 
-            if ( prefabFile is not null )
+            if ( prefabFile is null )
             {
-                var prefabScene = SceneUtility.GetPrefabScene( prefabFile );
-                if ( prefabScene is not null )
-                    pickup = prefabScene.Clone();
+                Log.Warning($"[ItemPickupFactory] Prefab inválido para '{itemId}'. Spawn rechazado.");
+                return null;
             }
 
-            if ( pickup is null )
+            var prefabScene = SceneUtility.GetPrefabScene( prefabFile );
+            if ( prefabScene is null ) return null;
+            
+            // Validate model exist and not a dev placeholder
+            var modelRenderer = prefabScene.Components.GetAll<ModelRenderer>(FindMode.EverythingInDescendants).FirstOrDefault();
+            if (modelRenderer != null && modelRenderer.Model != null)
             {
-                // Fallback: pickup procedural sin prefab.
-                pickup = new GameObject( true, $"{itemId} pickup" );
-                pickup.WorldPosition = position;
-
-                var collider = pickup.Components.Create<BoxCollider>();
-                collider.Scale = new Vector3( 12, 12, 12 );
-
-                var renderer = pickup.Components.Create<ModelRenderer>();
-                renderer.Model = Model.Load( "models/dev/box.vmdl" );
-                renderer.Tint = definition.Category == ItemCategory.Firearm
-                    ? new Color( 0.25f, 0.25f, 0.3f )
-                    : new Color( 0.5f, 0.45f, 0.3f );
-
-                pickup.Components.Create<WorldItemPickup>();
+                var modelName = modelRenderer.Model.Name.ToLowerInvariant();
+                if (modelName.Contains("dev/box") || modelName.Contains("dev/sphere") || modelName.Contains("error.vmdl"))
+                {
+                    Log.Warning($"[ItemPickupFactory] Modelo dev placeholder '{modelName}' en '{itemId}'. Spawn rechazado.");
+                    return null;
+                }
             }
+
+            // Validar MaxActive (límite provisional de 100 objetos dinámicos)
+            if ( scene.GetAllComponents<WorldItemPickup>().Count() > 100 )
+            {
+                Log.Warning("[ItemPickupFactory] MaxActive alcanzado. Spawn rechazado.");
+                return null;
+            }
+
+            // Validar posición con suelo
+            var tr = scene.Trace.Ray( position + Vector3.Up * 10f, position + Vector3.Down * 500f ).Run();
+            if ( !tr.Hit )
+            {
+                Log.Warning($"[ItemPickupFactory] Posición sin suelo para '{itemId}'. Spawn rechazado.");
+                return null;
+            }
+
+            pickup = prefabScene.Clone();
 
             pickup.WorldPosition = position;
 
