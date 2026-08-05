@@ -1,0 +1,33 @@
+{
+  "RootObject": {
+    "__guid": "b7b8c9d0-1e2f-3a4b-5c6d-7e8f9a0b1c2e",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "UB Melee Crowbar",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__guid": "c8c9d0e1-2f3a-4b5c-6d7e-8f9a0b1c2d3f",
+        "__enabled": true,
+        "__type": "UltimoBarrio.Combat.MeleeWeapon"
+      },
+      {
+        "__guid": "d9d0e1f2-3a4b-5c6d-7e8f-9a0b1c2d3e5a",
+        "__enabled": true,
+        "__type": "Sandbox.ModelRenderer",
+        "Model": "models/weapons/sbox_melee_crowbar/w_crowbar.vmdl",
+        "Tint": "1,1,1,1"
+      }
+    ],
+    "Children": []
+  }
+}

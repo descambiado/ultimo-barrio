@@ -1,0 +1,47 @@
+{
+  "RootObject": {
+    "__guid": "f1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "UB Crafting Station",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__guid": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+        "__enabled": true,
+        "__type": "UltimoBarrio.Crafting.CraftingStation",
+        "OutputItemId": "ammo_9mm",
+        "OutputAmount": 12,
+        "InputItems": [
+          "item-scrap"
+        ],
+        "InputAmounts": [
+          5
+        ]
+      },
+      {
+        "__guid": "b1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+        "__enabled": true,
+        "__type": "Sandbox.BoxCollider",
+        "Scale": "50,50,50"
+      },
+      {
+        "__guid": "c1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+        "__enabled": true,
+        "__type": "Sandbox.ModelRenderer",
+        "Model": "models/props_c17/furnitureworkbench01a.vmdl",
+        "Tint": "1,1,1,1"
+      }
+    ],
+    "Children": []
+  }
+}

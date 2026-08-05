@@ -218,6 +218,26 @@
         "Scale": 1,
         "ScaleStrategy": "ConsistentHeight",
         "ZIndex": 100
+      },
+      {
+        "__type": "UltimoBarrio.Combat.HeldItemController",
+        "__enabled": true,
+        "MeleePrefab": {
+          "_type": "gameobject",
+          "prefab": "prefabs/weapons/ub_melee.prefab"
+        },
+        "PistolPrefab": {
+          "_type": "gameobject",
+          "prefab": "prefabs/weapons/ub_usp.prefab"
+        },
+        "HandBone": {
+          "_type": "gameobject",
+          "go": "6b5cbc3e-e37c-4eb9-afa6-577469114047"
+        }
+      },
+      {
+        "__type": "UltimoBarrio.Players.PlayerMovementModifier",
+        "__enabled": true
       }
     ],
     "Children": [
