@@ -81,16 +81,16 @@ namespace UltimoBarrio.QA
             var inv = Game.ActiveScene.GetAllComponents<InventoryComponent>().FirstOrDefault(i => i.InventoryId == inventoryId);
             if (inv != null)
             {
-                var existing = inv.Slots.FirstOrDefault(s => s.ItemId == "item_scrap");
+                var existing = inv.Slots.FirstOrDefault(s => s.ItemId == "chatarra");
                 if (existing != null)
                 {
                     existing.Amount += amount;
                 }
                 else
                 {
-                    inv.Slots.Add(new InventorySlot { ItemId = "item_scrap", Amount = amount });
+                    inv.Slots.Add(new InventorySlot { ItemId = "chatarra", Amount = amount });
                 }
-                Log.Info($"[QA] Added {amount} scrap to {inventoryId}.");
+                Log.Info($"[QA] Added {amount} chatarra to {inventoryId}.");
             }
         }
 
