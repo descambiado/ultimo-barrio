@@ -1,0 +1,41 @@
+{
+  "RootObject": {
+    "__guid": "4122187d-8a10-48ee-a4de-e8e2bca0f44b",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "Scrap Metal",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__guid": "03cc1f07-49b0-4bde-b284-c5fa371e169a",
+        "__enabled": true,
+        "__type": "UltimoBarrio.WorldItemPickup",
+        "ItemId": "chatarra",
+        "Amount": 1
+      },
+      {
+        "__guid": "5cdb5b14-0a9f-4e63-a6c5-d598a9d23bd3",
+        "__enabled": true,
+        "__type": "Sandbox.BoxCollider",
+        "Scale": "10,10,10"
+      },
+      {
+        "__guid": "c2b1e9da-52ab-4d9a-b943-e2ee5f2a5c29",
+        "__enabled": true,
+        "__type": "Sandbox.ModelRenderer",
+        "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+        "Tint": "0.5,0.5,0.5,1"
+      }
+    ],
+    "Children": []
+  }
+}

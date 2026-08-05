@@ -1,0 +1,41 @@
+{
+  "RootObject": {
+    "__guid": "2fe44a10-514b-4554-8f90-60130768d5b4",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "Scrap Cable",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__guid": "7aa9c5b6-0b3a-4e70-adf5-29e9cb824b95",
+        "__enabled": true,
+        "__type": "UltimoBarrio.WorldItemPickup",
+        "ItemId": "chatarra",
+        "Amount": 1
+      },
+      {
+        "__guid": "adfcf763-fba9-4aba-8d44-370511a00c64",
+        "__enabled": true,
+        "__type": "Sandbox.BoxCollider",
+        "Scale": "10,10,10"
+      },
+      {
+        "__guid": "416dcd00-3ad3-45fe-88ab-7377a4e35bd0",
+        "__enabled": true,
+        "__type": "Sandbox.ModelRenderer",
+        "Model": "models/sbox_props/power_cord/power_cord.vmdl",
+        "Tint": "0.5,0.5,0.5,1"
+      }
+    ],
+    "Children": []
+  }
+}
