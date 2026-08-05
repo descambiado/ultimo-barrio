@@ -217,6 +217,8 @@ namespace UltimoBarrio
                     _fists.TrySwing();
                     CurrentState = HeldItemState.Using;
                     _timeSinceStateChange = 0;
+                    ViewmodelArms?.Set( "b_attack", true );
+                    ViewmodelArms?.Set( "fists_attack", true );
                 }
             }
 
