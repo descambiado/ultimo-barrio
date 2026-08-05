@@ -31,6 +31,31 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 	private bool _initializationAttempted;
 	private bool _isReady;
 
+	public bool IsReady => _isReady;
+
+	/// <summary>
+	/// Guardado general (host): snapshot completo con apartamentos, inventarios,
+	/// economía, reloj, fortificación, misiones y hotbar. Usado por autosave,
+	/// PersistenceBridge y comandos QA. Devuelve el resultado del proveedor.
+	/// </summary>
+	public PersistenceSaveResult TrySaveNow()
+	{
+		if ( !Networking.IsHost || !_isReady || _persistence is null || _registry is null )
+			return PersistenceSaveResult.Failed( "El servicio de persistencia no está listo." );
+
+		try
+		{
+			var snapshot = _registry.CreateSnapshot( SaveSlotId, null, null );
+			WorldSnapshotService.Capture( snapshot, Scene );
+			return _persistence.Save( snapshot );
+		}
+		catch ( Exception ex )
+		{
+			Log.Error( $"UB.Save FallaAlGuardar: {ex}" );
+			return PersistenceSaveResult.Failed( ex.Message );
+		}
+	}
+
 	protected override void OnStart()
 	{
 		if ( Scene.IsEditor )
@@ -191,6 +216,8 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 		_persistence ??= new LocalPersistenceProvider( FileSystem.Data );
 		_identityProvider ??= new SteamPlayerIdentityProvider();
 
+		PersistenceBridge.Register( TrySaveNow );
+
 		var loadResult = _persistence.Load( SaveSlotId );
 		if ( !loadResult.Succeeded )
 		{
@@ -199,7 +226,10 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 		}
 
 		if ( loadResult.Snapshot is not null )
+		{
 			_registry.ApplySnapshot( loadResult.Snapshot );
+			WorldSnapshotService.Apply( loadResult.Snapshot, Scene );
+		}
 
 		_isReady = true;
 		Log.Info( $"UB.Apartment ServiceReady apartments={_registry.Apartments.Count} loaded={loadResult.Status == PersistenceLoadStatus.Loaded}" );

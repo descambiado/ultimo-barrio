@@ -126,6 +126,21 @@ namespace UltimoBarrio.WorldTime
                 SetPhase( phase );
         }
 
+        /// <summary>Restaura el estado del reloj desde el snapshot (host).</summary>
+        internal void RestoreState( TimePhase phase, float remainingSeconds, float lightLevel )
+        {
+            if ( IsProxy )
+                return;
+
+            CurrentPhase = phase;
+            TimeRemainingInPhase = Math.Max( 0f, remainingSeconds );
+            _targetLightLevel = MathX.Clamp( lightLevel, 0f, 1f );
+            LightLevel = _targetLightLevel;
+
+            Log.Info( $"UB.WorldClock Restaurada fase={phase} restante={TimeRemainingInPhase}" );
+            OnPhaseChanged?.Invoke( CurrentPhase );
+        }
+
         private void SetPhase( TimePhase newPhase )
         {
             CurrentPhase = newPhase;

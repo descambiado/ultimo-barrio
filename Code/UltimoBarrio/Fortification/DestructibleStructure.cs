@@ -19,7 +19,7 @@ namespace UltimoBarrio.Fortification
 
         [Property] public float MaxHealth { get; set; } = 200f;
 
-        [Sync] public float Health { get; private set; }
+        [Sync] public float Health { get; protected set; }
 
         public bool IsDestroyed => Health <= 0;
 

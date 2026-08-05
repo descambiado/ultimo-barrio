@@ -99,5 +99,21 @@ namespace UltimoBarrio.Fortification
             Log.Info( $"UB.Fortification Mejora apartment={ApartmentId} nivel={UpgradeLevel}" );
             return true;
         }
+
+        /// <summary>Restaura nivel y salud de puerta desde el snapshot (host).</summary>
+        internal void RestoreLevel( int upgradeLevel, float doorHealth, float doorMaxHealth )
+        {
+            if ( !Networking.IsHost )
+                return;
+
+            UpgradeLevel = Math.Clamp( upgradeLevel, 0, FortificationMath.MaxUpgradeLevel );
+            ApplyUpgradeBonuses();
+
+            if ( DoorStructure is not null && DoorStructure.IsValid() && doorMaxHealth > 0f )
+            {
+                DoorStructure.MaxHealth = doorMaxHealth;
+                DoorStructure.Health = Math.Clamp( doorHealth, 0f, doorMaxHealth );
+            }
+        }
     }
 }

@@ -70,11 +70,15 @@ public sealed class ApartmentComponent : Component
 			return false;
 		}
 
-		if ( SaveVersion != SaveSnapshot.CurrentVersion )
+		if ( SaveVersion > SaveSnapshot.CurrentVersion )
 		{
-			error = $"Apartment '{ApartmentId}' has unsupported SaveVersion {SaveVersion}.";
+			error = $"Apartment '{ApartmentId}' has a future SaveVersion {SaveVersion}.";
 			return false;
 		}
+
+		// Normalizar versiones antiguas (migración silenciosa del propio campo).
+		if ( SaveVersion != SaveSnapshot.CurrentVersion )
+			SaveVersion = SaveSnapshot.CurrentVersion;
 
 		error = string.Empty;
 		return true;
@@ -98,7 +102,7 @@ public sealed class ApartmentComponent : Component
 			ApartmentId = ApartmentId,
 			OwnerId = ownerId,
 			ClaimState = claimState,
-			SaveVersion = SaveVersion
+			SaveVersion = SaveSnapshot.CurrentVersion
 		};
 	}
 }

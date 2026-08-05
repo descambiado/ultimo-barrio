@@ -717,5 +717,15 @@ namespace UltimoBarrio
             else
                 SelectEmptyHands();
         }
+
+        /// <summary>Restaura la selección de hotbar guardada (host).</summary>
+        internal void RestoreSelection( int slot )
+        {
+            if ( !Networking.IsHost )
+                return;
+
+            if ( slot >= 0 )
+                DoSelectSlot( slot );
+        }
     }
 }

@@ -20,6 +20,8 @@ namespace UltimoBarrio.Fortification
 
         public bool HasBarricade => _barricade.IsValid();
 
+        public Barricade BarricadeReference => _barricade;
+
         private Barricade _barricade;
 
         public string GetInteractionPrompt( InteractionRequest request )
@@ -110,6 +112,36 @@ namespace UltimoBarrio.Fortification
             _barricade = null;
             UI.PlayerFeedback.Push( "¡Tu barricada fue destruida!" );
             Persistence.PersistenceBridge.RequestSave();
+        }
+
+        /// <summary>Restaura una barricada guardada (host, sin consumir ítem).</summary>
+        internal void RestoreBarricade( float health, float maxHealth )
+        {
+            if ( !Networking.IsHost || HasBarricade || health <= 0f )
+                return;
+
+            var barricadeGo = new GameObject( true, $"Barricade_{AnchorId}" );
+            barricadeGo.Parent = GameObject.Parent ?? GameObject;
+            barricadeGo.WorldPosition = GameObject.WorldPosition;
+            barricadeGo.WorldRotation = GameObject.WorldRotation;
+
+            var renderer = barricadeGo.Components.Create<ModelRenderer>();
+            renderer.Model = Model.Load( "models/dev/box.vmdl" );
+            renderer.Tint = new Color( 0.45f, 0.3f, 0.15f );
+            barricadeGo.LocalScale = new Vector3( 40f, 10f, 70f );
+
+            barricadeGo.Components.Create<BoxCollider>();
+
+            var barricade = barricadeGo.Components.Create<Barricade>();
+            barricade.ApartmentId = ApartmentId;
+            barricade.AnchorId = AnchorId;
+            barricade.MaxHealth = maxHealth > 0f ? maxHealth : 150f;
+            barricade.Health = health;
+
+            if ( Networking.IsActive )
+                barricadeGo.NetworkSpawn();
+
+            _barricade = barricade;
         }
     }
 }

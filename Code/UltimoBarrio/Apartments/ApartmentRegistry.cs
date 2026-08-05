@@ -112,7 +112,8 @@ public sealed class ApartmentRegistry
 					Slots = i.Slots.Select( s => new InventorySlotSaveData
 					{
 						ItemId = s.ItemId,
-						Amount = s.Amount
+						Amount = s.Amount,
+						AmmoInMag = s.AmmoInMag
 					} ).ToList()
 				} ).ToList()
 		};
@@ -145,7 +146,12 @@ public sealed class ApartmentRegistry
 					inv.Slots.Clear();
 					foreach ( var slot in savedInventory.Slots )
 					{
-						inv.Slots.Add( new InventorySlot { ItemId = slot.ItemId, Amount = slot.Amount } );
+						inv.Slots.Add( new InventorySlot
+						{
+							ItemId = slot.ItemId,
+							Amount = slot.Amount,
+							AmmoInMag = slot.AmmoInMag
+						} );
 					}
 					// Ensure we have at least MaxSlots
 					while ( inv.Slots.Count < inv.MaxSlots )

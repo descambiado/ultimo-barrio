@@ -114,5 +114,48 @@ namespace UltimoBarrio.Missions
                 }
             }
         }
+
+        /// <summary>Restaura misiones guardadas (host); re-inicializa la cadena si no había guardado.</summary>
+        public void Restore(List<Persistence.MissionSaveData> savedMissions)
+        {
+            if (IsProxy) return;
+
+            ActiveMissions.Clear();
+            CompletedMissionIds.Clear();
+
+            if (savedMissions is { Count: > 0 })
+            {
+                foreach (var saved in savedMissions)
+                {
+                    var mission = new MissionDefinition
+                    {
+                        MissionId = saved.MissionId,
+                        Title = saved.MissionId,
+                        Description = "Misión restaurada",
+                        Objectives = new List<MissionObjective>()
+                    };
+
+                    foreach (var savedObjective in saved.Objectives ?? new())
+                    {
+                        mission.Objectives.Add(new MissionObjective
+                        {
+                            Id = savedObjective.Id,
+                            Description = savedObjective.Id,
+                            CurrentProgress = savedObjective.Progress,
+                            TargetAmount = savedObjective.Completed ? savedObjective.Progress : Math.Max(1, savedObjective.Progress + 1),
+                            IsCompleted = savedObjective.Completed
+                        });
+                    }
+
+                    ActiveMissions.Add(mission);
+                }
+
+                Log.Info($"[Missions] Restauradas {ActiveMissions.Count} misiones.");
+            }
+            else
+            {
+                InitFirstQuestChain();
+            }
+        }
     }
 }
