@@ -239,16 +239,34 @@
         "__type": "UltimoBarrio.Players.PlayerMovementModifier",
         "__enabled": true
       },
-      {
-        "__type": "Sandbox.CameraComponent",
-        "__enabled": true,
-        "FieldOfView": 90,
-        "IsMainCamera": true,
-        "ZFar": 10000,
-        "ZNear": 10
-      }
     ],
     "Children": [
+      {
+        "__guid": "a4d87123-5f8a-4c2c-8a1a-4c2c8a1a4c2c",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "HeadCamera",
+        "Position": "0,0,64",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "maincamera",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.CameraComponent",
+            "__guid": "b2c91834-6c3d-4c3e-8c3e-4c3e8c3e4c3e",
+            "__enabled": true,
+            "FieldOfView": 90,
+            "IsMainCamera": true,
+            "ZFar": 10000,
+            "ZNear": 10
+          }
+        ]
+      },
       {
         "__guid": "6b5cbc3e-e37c-4eb9-afa6-577469114047",
         "__version": 1,
