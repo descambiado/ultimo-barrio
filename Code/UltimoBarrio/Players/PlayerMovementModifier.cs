@@ -20,11 +20,15 @@ namespace UltimoBarrio.Players
         public float CurrentWeight { get; set; } = 0f; // For inventory integration later
 
         private bool _wasOnGround = true;
+        private float _defaultJumpSpeed = 300f;
 
         protected override void OnStart()
         {
             Controller = Components.GetInAncestorsOrSelf<Sandbox.PlayerController>();
             HeldItems = Components.GetInDescendantsOrSelf<HeldItemController>();
+
+            if ( Controller is not null )
+                _defaultJumpSpeed = Controller.JumpSpeed;
 
             if (Profile != null)
             {
@@ -72,37 +76,33 @@ namespace UltimoBarrio.Players
 
             // Sprinting & Stamina
             bool trySprint = Input.Down("run") && !IsExhausted && Controller.Velocity.Length > 10f && !Input.Down("duck") && Controller.IsOnGround;
-            
-            if (trySprint)
-            {
-                IsSprinting = true;
-                CurrentStamina -= Profile.StaminaDrainRate * Time.Delta;
-                CurrentStamina = System.Math.Clamp(CurrentStamina, 0f, Profile.MaxStamina);
-            }
-            else
-            {
-                IsSprinting = false;
-                CurrentStamina += Profile.StaminaRegenRate * Time.Delta;
-                if (CurrentStamina > Profile.MaxStamina) CurrentStamina = Profile.MaxStamina;
-            }
 
-            // Jump Stamina logic (if we want to intercept, we'd need to check jump input or just deduct if we jumped)
-            // But since PlayerController handles jump internally based on its own logic, we can just detect jump if we can
-            // For now, if we detect an upward velocity burst while grounded was just lost, or intercept jump action.
+            CurrentStamina = StaminaMath.Step(
+                CurrentStamina,
+                Profile.MaxStamina,
+                Profile.StaminaDrainRate,
+                Profile.StaminaRegenRate,
+                sprinting: trySprint,
+                Time.Delta );
+
+            IsSprinting = trySprint && CurrentStamina > 0f;
+
+            // Salto con coste de stamina; agotado = sin salto.
             if (Input.Pressed("jump") && Controller.IsOnGround && !IsExhausted)
             {
                 if (CurrentStamina >= Profile.JumpStaminaCost)
                 {
-                    CurrentStamina -= Profile.JumpStaminaCost;
-                    // Actual jump is handled by PlayerController
-                }
-                else
-                {
-                    // Not enough stamina to jump - we might want to cancel the jump but PlayerController does it itself.
-                    // We can temporarily set JumpSpeed to 0 if we don't want them to jump?
-                    // Actually, modifying JumpSpeed dynamically:
+                    CurrentStamina = System.Math.Clamp(CurrentStamina - Profile.JumpStaminaCost, 0f, Profile.MaxStamina);
                 }
             }
+
+            // Agotamiento: bloquea el salto y el sprint (el sprint ya se bloquea
+            // arriba por IsExhausted; aquí cortamos el salto del PlayerController).
+            Controller.JumpSpeed = IsExhausted ? 0f : _defaultJumpSpeed;
+
+            // Peso real del inventario (única fuente: InventoryComponent).
+            var inventory = Components.Get<InventoryComponent>( FindMode.EverythingInSelfAndDescendants );
+            CurrentWeight = inventory?.GetTotalWeight() ?? 0f;
 
             // Calculate Multipliers
             float weightRatio = MathX.Clamp(CurrentWeight / MathF.Max(1f, Profile.MaxWeight), 0f, 1f);
@@ -124,9 +124,6 @@ namespace UltimoBarrio.Players
 
             Controller.AccelerationTime = Profile.AccelerationTime;
             Controller.DeaccelerationTime = Profile.DecelerationTime;
-            
-            // If exhausted, disable jumping or reduce speed
-            // Since we can't easily disable jump if PlayerController handles it, we can just let stamina be a deterrent.
         }
     }
 }
