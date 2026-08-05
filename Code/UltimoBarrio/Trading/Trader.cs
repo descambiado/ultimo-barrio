@@ -1,5 +1,6 @@
 using Sandbox;
 using System;
+using System.Linq;
 using UltimoBarrio.Core;
 using UltimoBarrio;
 using UltimoBarrio.Economy;
@@ -57,6 +58,9 @@ namespace UltimoBarrio.Trading
                     {
                         Log.Info($"[Trader] {buyer.Name} bought {amount} {itemId} for {totalCost}. Balance now: ${wallet.Balance}");
                         NotifyTraderFeedback($"Comprado: {amount}x {itemId} por ${totalCost}");
+
+                        var journal = Scene.GetAllComponents<Missions.MissionJournal>().FirstOrDefault();
+                        journal?.NotifyProgress(Missions.ObjectiveType.BuyItem, itemId, amount);
                     }
                     else 
                     {
@@ -109,6 +113,9 @@ namespace UltimoBarrio.Trading
             {
                 wallet.Deposit(totalPrice);
                 Log.Info($"[Trader] {seller.Name} sold {actualAmount} scrap for ${totalPrice}. Balance now: ${wallet.Balance}");
+
+                var journal = Scene.GetAllComponents<Missions.MissionJournal>().FirstOrDefault();
+                journal?.NotifyProgress(Missions.ObjectiveType.SellToTrader, "chatarra", actualAmount);
             }
         }
     }

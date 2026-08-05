@@ -78,6 +78,18 @@ namespace UltimoBarrio
 
             _fists = Components.GetOrCreate<FistsWeapon>();
             SelectEmptyHands();
+
+            // Al morir, soltar el objeto activo (host).
+            var health = Components.GetInDescendantsOrSelf<HealthComponent>();
+            if ( health is not null )
+                health.OnDeath += OnOwnerDied;
+        }
+
+        protected override void OnDestroy()
+        {
+            var health = Components.GetInDescendantsOrSelf<HealthComponent>();
+            if ( health is not null )
+                health.OnDeath -= OnOwnerDied;
         }
 
         protected override void OnUpdate()

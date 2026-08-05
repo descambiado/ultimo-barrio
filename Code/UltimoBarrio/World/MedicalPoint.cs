@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UltimoBarrio.Combat;
 using UltimoBarrio.Core;
+using UltimoBarrio.Persistence;
 
 namespace UltimoBarrio.World
 {

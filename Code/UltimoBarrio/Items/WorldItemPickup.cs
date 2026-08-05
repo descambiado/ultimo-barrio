@@ -1,6 +1,7 @@
 using Sandbox;
 using System;
 using UltimoBarrio.Core;
+using UltimoBarrio.World;
 
 namespace UltimoBarrio
 {
@@ -104,6 +105,9 @@ namespace UltimoBarrio
             if ( inventory.AddItem( itemId, amount, ammoInMag ) is not null )
             {
                 NotifyPickup( $"Recogido: {name} x{amount}" );
+
+                var journal = Scene.GetAllComponents<Missions.MissionJournal>().FirstOrDefault();
+                journal?.NotifyProgress( Missions.ObjectiveType.CollectItem, itemId, amount );
             }
         }
 

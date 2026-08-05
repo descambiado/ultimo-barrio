@@ -50,7 +50,7 @@ namespace UltimoBarrio.AI
             float nearestDistance = float.MaxValue;
             foreach ( var player in targets )
             {
-                if ( !player.IsValid() || player.GameObject.IsProxy )
+                if ( !player.IsValid() )
                     continue;
 
                 Perception.UpdateTarget( player.GameObject );

@@ -101,6 +101,9 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 		if ( result.Succeeded )
 		{
 			Log.Info( $"UB.Apartment ClaimSucceeded apartment={knownApartmentId}" );
+
+			var journal = Scene.GetAllComponents<Missions.MissionJournal>().FirstOrDefault();
+			journal?.NotifyProgress( Missions.ObjectiveType.ClaimApartment, knownApartmentId );
 			return;
 		}
 
