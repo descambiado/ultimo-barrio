@@ -33,10 +33,6 @@ namespace UltimoBarrio.Combat
         [Property] public SkinnedModelRenderer ViewmodelArms { get; set; }
         [Property] public Model BaseHandsModel { get; set; }
 
-        [Property] public GameObject MeleePrefab { get; set; }
-        [Property] public GameObject PrimaryPrefab { get; set; }
-        [Property] public GameObject SecondaryPrefab { get; set; }
-
         [Sync] public Guid ActiveWeaponId { get; set; }
         [Sync] public HeldItemState CurrentState { get; set; }
         [Sync] public HeldItemSlot CurrentSlot { get; set; }
@@ -116,14 +112,15 @@ namespace UltimoBarrio.Combat
         {
             if (CurrentState == HeldItemState.Equipping || CurrentState == HeldItemState.Dropping) return;
 
-            if (Input.Pressed("Slot1")) SelectSlot(0);
-            else if (Input.Pressed("Slot2")) SelectSlot(1);
-            else if (Input.Pressed("Slot3")) SelectSlot(2);
-            else if (Input.Pressed("Slot4")) SelectSlot(3);
-            else if (Input.Pressed("Slot5")) SelectSlot(4);
-            else if (Input.Pressed("Slot6")) SelectSlot(5);
+            if (Input.Pressed("Slot1")) { Log.Info("[Input] Hotbar slot=0"); SelectSlot(0); }
+            else if (Input.Pressed("Slot2")) { Log.Info("[Input] Hotbar slot=1"); SelectSlot(1); }
+            else if (Input.Pressed("Slot3")) { Log.Info("[Input] Hotbar slot=2"); SelectSlot(2); }
+            else if (Input.Pressed("Slot4")) { Log.Info("[Input] Hotbar slot=3"); SelectSlot(3); }
+            else if (Input.Pressed("Slot5")) { Log.Info("[Input] Hotbar slot=4"); SelectSlot(4); }
+            else if (Input.Pressed("Slot6")) { Log.Info("[Input] Hotbar slot=5"); SelectSlot(5); }
             else if (Input.Pressed("Drop"))
             {
+                Log.Info("[Input] Drop");
                 DropCurrentWeapon();
             }
             
@@ -132,8 +129,22 @@ namespace UltimoBarrio.Combat
                 ViewmodelArms.Set("b_jump", true);
             }
 
+            if (Input.Pressed("attack2"))
+            {
+                Log.Info("[Input] Secondary");
+                // TODO: AIM or alt attack
+            }
+            
+            float wheel = Input.MouseWheel.y;
+            if (wheel != 0f)
+            {
+                Log.Info($"[Input] MouseWheel {wheel}");
+                // TODO: scroll hotbar
+            }
+
             if (Input.Pressed("attack1") && CurrentState == HeldItemState.Equipped)
             {
+                Log.Info("[Input] Primary");
                 if (_activeWeapon != null)
                 {
                     _activeWeapon.Fire();
@@ -160,6 +171,7 @@ namespace UltimoBarrio.Combat
             
             if (Input.Pressed("reload") && _activeWeapon != null && CurrentState == HeldItemState.Equipped)
             {
+                Log.Info("[Input] Reload");
                 _activeWeapon.Reload();
                 CurrentState = HeldItemState.Reloading;
                 _timeSinceStateChange = 0;
@@ -207,31 +219,26 @@ namespace UltimoBarrio.Combat
                 return;
             }
 
-            // Fallbacks to properties if WorldPrefab is null (for backward compat with agent's old code)
-            GameObject prefabToSpawn = def.WorldPrefab;
-            HeldItemSlot slotType = HeldItemSlot.Primary;
-
-            if (def.Category == ItemCategory.Melee)
+            string prefabToSpawn = def.WorldModelPrefab;
+            if (string.IsNullOrEmpty(prefabToSpawn))
             {
-                slotType = HeldItemSlot.Melee;
-                if (prefabToSpawn == null) prefabToSpawn = MeleePrefab;
+                Log.Error($"Item {slot.ItemId} does not have a WorldModelPrefab defined.");
+                DoEquip(HeldItemSlot.None, null, string.Empty);
+                return;
             }
-            else if (def.Category == ItemCategory.Firearm)
-            {
-                slotType = HeldItemSlot.Primary;
-                if (prefabToSpawn == null) prefabToSpawn = PrimaryPrefab;
-            }
+            
+            HeldItemSlot slotType = def.Category == ItemCategory.Melee ? HeldItemSlot.Melee : HeldItemSlot.Primary;
 
             DoEquip(slotType, prefabToSpawn, slot.ItemId);
         }
 
-        private void DoEquip(HeldItemSlot slot, GameObject prefab, string itemId)
+        private void DoEquip(HeldItemSlot slot, string prefab, string itemId)
         {
             ClearCurrentWeapon();
             CurrentSlot = slot;
             ActiveItemId = itemId;
-
-            if (slot == HeldItemSlot.None || prefab == null)
+            
+            if (slot == HeldItemSlot.None || string.IsNullOrEmpty(prefab))
             {
                 CurrentState = HeldItemState.Holstered;
                 if (ViewmodelArms != null)
@@ -243,7 +250,12 @@ namespace UltimoBarrio.Combat
                 return;
             }
 
-            var newWep = prefab.Clone();
+            var prefabFile = ResourceLibrary.Get<PrefabFile>(prefab);
+            if (prefabFile == null) return;
+            var scene = SceneUtility.GetPrefabScene(prefabFile);
+            if (scene == null) return;
+            
+            var newWep = scene.Clone();
             
             if (WorldBodyRenderer != null)
             {

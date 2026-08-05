@@ -122,5 +122,58 @@ namespace UltimoBarrio.QA
             Log.Info($"IsExhausted: {mod.IsExhausted}");
             Log.Info($"camera local position: {cam.GameObject.LocalPosition}");
         }
+        [ConCmd("ub_qa_run_preflight")]
+        public static void RunPreflight()
+        {
+            Log.Info("--- ub_qa_run_preflight ---");
+            
+            // 1. Give Items
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            if (player != null)
+            {
+                var inv = player.Components.Get<InventoryComponent>();
+                if (inv != null)
+                {
+                    inv.TryAdd("weapon_crowbar", 1);
+                    inv.TryAdd("weapon_usp", 1);
+                    inv.TryAdd("ammo_9mm", 24);
+                    inv.TryAdd("chatarra", 5);
+                }
+            }
+            
+            // 2. Dump Player
+            var hud = Game.ActiveScene.GetAllComponents<UI.PlayerHud>().FirstOrDefault();
+            var invComp = player?.Components.Get<InventoryComponent>();
+            var held = player?.Components.Get<Combat.HeldItemController>();
+
+            Log.Info($"PlayerHud presente: {hud != null}");
+            Log.Info($"HotbarPanel creado: {hud?.Hotbar != null}");
+            Log.Info($"InventoryComponent presente: {invComp != null}");
+            Log.Info($"HeldItemController presente: {held != null}");
+            Log.Info($"ItemRegistry disponible: {ItemRegistry.GetDefinition("chatarra") != null}");
+            Log.Info($"SelectedSlot: {held?.SelectedHotbarSlot}");
+            Log.Info($"SelectedItemId: {held?.ActiveItemId}");
+            
+            var wpn = held?.GameObject.Components.GetAll<Component>(FindMode.EverythingInDescendants).FirstOrDefault(c => c.GetType().Name.Contains("Weapon"));
+            Log.Info($"ActiveViewModel: {wpn != null}");
+            Log.Info($"ActiveWorldModel: {wpn != null}");
+
+            // 3. Dump Registry
+            var items = new[] { "chatarra", "water", "medicine", "ammo_9mm", "weapon_crowbar", "weapon_usp" };
+            foreach (var id in items)
+            {
+                var def = ItemRegistry.GetDefinition(id);
+                if (def != null)
+                {
+                    Log.Info($"ItemId: {def.ItemId}");
+                    Log.Info($"Category: {def.Category}");
+                    Log.Info($"EquipSlot: {def.EquipSlot}");
+                    Log.Info($"WorldPrefab: {def.WorldPrefab}");
+                    Log.Info($"ViewModelPrefab: {def.ViewModelPrefab}");
+                    Log.Info($"WorldModelPrefab: {def.WorldModelPrefab}");
+                    Log.Info($"Droppable: {def.Droppable}");
+                }
+            }
+        }
     }
 }

@@ -238,6 +238,14 @@
       {
         "__type": "UltimoBarrio.Players.PlayerMovementModifier",
         "__enabled": true
+      },
+      {
+        "__type": "Sandbox.CameraComponent",
+        "__enabled": true,
+        "FieldOfView": 90,
+        "IsMainCamera": true,
+        "ZFar": 10000,
+        "ZNear": 10
       }
     ],
     "Children": [

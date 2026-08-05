@@ -45,6 +45,22 @@ namespace UltimoBarrio.Players
         {
             if (Controller == null || Profile == null) return;
             
+            if (!IsProxy)
+            {
+                var eyeAngles = Controller.EyeAngles;
+                eyeAngles.pitch += Input.AnalogLook.pitch;
+                eyeAngles.yaw += Input.AnalogLook.yaw;
+                eyeAngles.pitch = eyeAngles.pitch.Clamp(-89f, 89f);
+                Controller.EyeAngles = eyeAngles;
+
+                var cam = Components.GetInDescendantsOrSelf<CameraComponent>();
+                if (cam != null)
+                {
+                    cam.WorldRotation = Controller.EyeAngles.ToRotation();
+                    cam.LocalPosition = Vector3.Up * 64f;
+                }
+            }
+
             // Landing detection for Camera Effects
             if (!_wasOnGround && Controller.IsOnGround)
             {

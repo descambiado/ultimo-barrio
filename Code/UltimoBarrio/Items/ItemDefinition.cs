@@ -23,9 +23,9 @@ namespace UltimoBarrio
         public int StackSize { get; set; } = 64;
         public ItemCategory Category { get; set; } = ItemCategory.Resource;
         public string EquipSlot { get; set; } // Primary, Melee, etc.
-        public GameObject WorldPrefab { get; set; }
-        public GameObject ViewModelPrefab { get; set; }
-        public GameObject WorldModelPrefab { get; set; }
+        public string WorldPrefab { get; set; }
+        public string ViewModelPrefab { get; set; }
+        public string WorldModelPrefab { get; set; }
         public string AmmoType { get; set; } // For firearms
         public bool Usable { get; set; } = false;
         public bool Droppable { get; set; } = true;

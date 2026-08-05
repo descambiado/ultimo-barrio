@@ -44,13 +44,17 @@ namespace UltimoBarrio
             {
                 ItemId = "weapon_usp", DisplayName = "Pistola USP", Description = "Pistola estándar",
                 Category = ItemCategory.Firearm, StackSize = 1, AmmoType = "ammo_9mm",
-                EquipSlot = "Primary"
+                EquipSlot = "Primary",
+                ViewModelPrefab = "prefabs/weapons/v_usp.prefab",
+                WorldModelPrefab = "prefabs/weapons/ub_usp.prefab"
             };
 
             _fallbacks["weapon_crowbar"] = new ItemDefinition
             {
                 ItemId = "weapon_crowbar", DisplayName = "Palanca", Description = "Para abrir cabezas",
-                Category = ItemCategory.Melee, StackSize = 1, EquipSlot = "Melee"
+                Category = ItemCategory.Melee, StackSize = 1, EquipSlot = "Melee",
+                ViewModelPrefab = "prefabs/weapons/v_melee.prefab",
+                WorldModelPrefab = "prefabs/weapons/ub_melee.prefab"
             };
         }
 
