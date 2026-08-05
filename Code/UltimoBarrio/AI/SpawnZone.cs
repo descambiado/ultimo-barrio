@@ -78,7 +78,16 @@ namespace UltimoBarrio.AI
                 if ( zone is null || !zone.HostilePrefab.IsValid() )
                     continue;
 
-                for ( int i = 0; i < zone.MaxHostiles; i++ )
+                // Las zonas marcadas como peligrosas (callejones) suman hostiles.
+                int extra = 0;
+                foreach ( var danger in Scene.GetAllComponents<World.DangerZone>() )
+                {
+                    if ( danger is not null && danger.Contains( zone.WorldPosition ) )
+                        extra += danger.ExtraSpawnCount;
+                }
+
+                int total = zone.MaxHostiles + extra;
+                for ( int i = 0; i < total; i++ )
                 {
                     var hostile = zone.HostilePrefab.Clone( zone.RandomPoint() );
                     hostile.NetworkSpawn();
