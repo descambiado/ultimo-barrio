@@ -1,146 +1,111 @@
-﻿using Sandbox;
-using UltimoBarrio.Core;
-using UltimoBarrio.Inventory;
+using Sandbox;
+using System;
 using System.Collections.Generic;
+using UltimoBarrio.Core;
 
 namespace UltimoBarrio.Crafting
 {
-    public struct CraftingRecipe
-    {
-        public string Name { get; set; }
-        public string OutputItemId { get; set; }
-        public int OutputAmount { get; set; }
-        public List<string> InputItems { get; set; }
-        public List<int> InputAmounts { get; set; }
-    }
-
-    [Title("Crafting Station")]
-    [Category("Último Barrio — Crafting")]
-    [Icon("construction")]
+    /// <summary>
+    /// Estación de crafteo: abre el panel de fabricación. Todo el crafteo es
+    /// host-autoritativo vía CraftingService; el cliente solo envía la receta.
+    /// </summary>
+    [Title( "Crafting Station" )]
+    [Category( "Último Barrio — Crafting" )]
+    [Icon( "construction" )]
     public sealed class CraftingStation : Component, IInteractable
     {
-        [Property] public List<CraftingRecipe> Recipes { get; set; } = new List<CraftingRecipe>();
         [Property] public float MaxInteractionDistance { get; set; } = 200f;
 
-        [Sync] public int CurrentRecipeIndex { get; set; } = 0;
+        /// <summary>Recetas propias del editor (si vacío, se usa CraftingLibrary).</summary>
+        [Property] public List<CraftingRecipe> Recipes { get; set; } = new();
 
-        protected override void OnAwake()
+        public IReadOnlyList<CraftingRecipe> AvailableRecipes
+            => Recipes is { Count: > 0 } ? Recipes : CraftingLibrary.AllRecipes;
+
+        public CraftingRecipe GetRecipe( string recipeId )
         {
-            if (Recipes.Count == 0 && !IsProxy)
+            foreach ( var recipe in AvailableRecipes )
             {
-                Recipes.Add(new CraftingRecipe { Name = "Ammo 9mm", OutputItemId = "ammo_9mm", OutputAmount = 12, InputItems = new List<string> { "chatarra" }, InputAmounts = new List<int> { 5 } });
-                Recipes.Add(new CraftingRecipe { Name = "Vendaje", OutputItemId = "medicina", OutputAmount = 1, InputItems = new List<string> { "chatarra" }, InputAmounts = new List<int> { 3 } });
-                Recipes.Add(new CraftingRecipe { Name = "Repair Kit", OutputItemId = "repair_kit", OutputAmount = 1, InputItems = new List<string> { "chatarra", "scrap_parts" }, InputAmounts = new List<int> { 5, 2 } });
-                Recipes.Add(new CraftingRecipe { Name = "Improvised Crowbar", OutputItemId = "weapon_crowbar", OutputAmount = 1, InputItems = new List<string> { "chatarra", "scrap_metal" }, InputAmounts = new List<int> { 10, 5 } });
-                Recipes.Add(new CraftingRecipe { Name = "Barricada", OutputItemId = "barricade", OutputAmount = 1, InputItems = new List<string> { "chatarra" }, InputAmounts = new List<int> { 20 } });
+                if ( recipe.RecipeId == recipeId )
+                    return recipe;
             }
+
+            return null;
         }
 
-        public string GetInteractionPrompt(InteractionRequest request)
+        public string GetInteractionPrompt( InteractionRequest request )
+            => "Interactuar con la estación de crafteo";
+
+        public bool CanInteract( InteractionRequest request )
         {
-            if (Recipes == null || Recipes.Count == 0) return "No recipes available";
-            var recipe = Recipes[CurrentRecipeIndex];
-            string inputs = "";
-            for(int i=0; i<recipe.InputItems.Count; i++) {
-                inputs += $"{recipe.InputAmounts[i]}x {recipe.InputItems[i]} ";
-            }
-            return $"[Interact] Craft {recipe.OutputAmount}x {recipe.Name} (Needs {inputs}) | [Run+Interact] Cycle Recipe";
+            if ( request.InteractorObject == null ) return false;
+            return Vector3.DistanceBetween( request.InteractorObject.WorldPosition, GameObject.WorldPosition ) <= MaxInteractionDistance;
         }
 
-        public bool CanInteract(InteractionRequest request)
+        public void OnInteract( InteractionRequest request )
         {
-            if (request.InteractorObject == null) return false;
-            return Vector3.DistanceBetween(request.InteractorObject.WorldPosition, GameObject.WorldPosition) <= MaxInteractionDistance;
+            // Abre la UI en el cliente que interactúa.
+            var hud = request.InteractorObject?.Components.GetInDescendantsOrSelf<UI.PlayerHud>();
+            if ( hud is not null )
+                hud.OpenCrafting( this );
         }
 
-        public void OnInteract(InteractionRequest request)
-        {
-            bool cycleRecipe = Input.Down("Run"); // Shift by default in s&box
-
-            if (IsProxy)
-            {
-                RequestCraftOnHost(request.Identity.CanonicalId, request.InteractorObject?.Id ?? System.Guid.Empty, cycleRecipe);
-            }
-            else
-            {
-                ProcessCraft(request.InteractorObject, cycleRecipe);
-            }
-        }
-
+        /// <summary>El cliente solicita fabricar una receta; el host decide.</summary>
         [Rpc.Host]
-        private void RequestCraftOnHost(string interactorId, System.Guid interactorObjectId, bool cycleRecipe)
+        public void RequestCraft( Guid crafterObjectId, string recipeId )
         {
-            var interactorGo = Scene.Directory.FindByGuid(interactorObjectId);
-            ProcessCraft(interactorGo, cycleRecipe);
-        }
-
-        private void ProcessCraft(GameObject interactorGo, bool cycleRecipe)
-        {
-            if (interactorGo == null) return;
-            
-            if (Vector3.DistanceBetween(interactorGo.WorldPosition, GameObject.WorldPosition) > MaxInteractionDistance)
-            {
-                Log.Warning("[CraftingStation] Player tried to interact from too far.");
+            if ( !Networking.IsHost )
                 return;
-            }
 
-            if (Recipes == null || Recipes.Count == 0) return;
-
-            if (cycleRecipe)
-            {
-                CurrentRecipeIndex = (CurrentRecipeIndex + 1) % Recipes.Count;
-                Log.Info($"[CraftingStation] Switched to recipe: {Recipes[CurrentRecipeIndex].Name}");
+            var crafter = Scene.Directory.FindByGuid( crafterObjectId );
+            if ( crafter is null )
                 return;
-            }
 
-            var recipe = Recipes[CurrentRecipeIndex];
-            var playerInv = interactorGo.Components.GetInDescendantsOrSelf<UltimoBarrioPlayerInventory>();
-            if (playerInv == null) return;
+            var inventory = crafter.Components.GetInDescendantsOrSelf<InventoryComponent>();
+            var recipe = GetRecipe( recipeId );
 
-            for (int i = 0; i < recipe.InputItems.Count; i++)
-            {
-                if (playerInv.GetCount(recipe.InputItems[i]) < recipe.InputAmounts[i])
-                {
-                    Log.Info($"[CraftingStation] Missing {recipe.InputAmounts[i]} of {recipe.InputItems[i]}");
-                    return;
-                }
-            }
+            var result = new CraftingService().TryCraft(
+                inventory,
+                playerPosition: crafter.WorldPosition,
+                stationPosition: WorldPosition,
+                maxDistance: MaxInteractionDistance,
+                recipe: recipe,
+                persist: null );
 
-            bool rollback = false;
-            int consumedCount = 0;
-            for (int i = 0; i < recipe.InputItems.Count; i++)
-            {
-                if (!playerInv.TryRemove(recipe.InputItems[i], recipe.InputAmounts[i]))
-                {
-                    rollback = true;
-                    break;
-                }
-                consumedCount++;
-            }
-
-            if (rollback)
-            {
-                for (int i = 0; i < consumedCount; i++) playerInv.TryAdd(recipe.InputItems[i], recipe.InputAmounts[i]);
-                Log.Warning("[CraftingStation] Transaction failed, rolled back ingredients.");
-                return;
-            }
-
-            if (!playerInv.TryAdd(recipe.OutputItemId, recipe.OutputAmount))
-            {
-                for (int i = 0; i < recipe.InputItems.Count; i++) playerInv.TryAdd(recipe.InputItems[i], recipe.InputAmounts[i]);
-                Log.Warning("[CraftingStation] Inventory full, rolled back ingredients.");
-                return;
-            }
-
-            Log.Info($"[CraftingStation] Crafted {recipe.OutputAmount}x {recipe.OutputItemId}!");
-            BroadcastCraftEffects();
+            var message = CraftingFeedback.GetMessage( result, recipe );
+            Log.Info( $"[Crafting] resultado={result} receta={recipeId}" );
+            NotifyCraftResult( message, result == CraftResult.Success );
         }
 
         [Rpc.Broadcast]
-        private void BroadcastCraftEffects()
+        private void NotifyCraftResult( string message, bool success )
         {
-            // Placeholder feedback
-            Log.Info("Crafting effect played");
+            UI.PlayerFeedback.Push( message );
+        }
+    }
+
+    /// <summary>Traducción de resultados de crafteo a mensajes de feedback.</summary>
+    public static class CraftingFeedback
+    {
+        public static string GetMessage( CraftResult result, CraftingRecipe recipe )
+        {
+            var name = recipe?.DisplayName ?? "receta";
+
+            switch ( result )
+            {
+                case CraftResult.Success:
+                    return $"Fabricado: {name}";
+                case CraftResult.MissingIngredients:
+                    return $"Faltan ingredientes para {name}";
+                case CraftResult.InventoryFull:
+                    return "Inventario lleno: no cabe el resultado";
+                case CraftResult.OutOfRange:
+                    return "Estás demasiado lejos de la estación";
+                case CraftResult.PersistFailed:
+                    return "El guardado falló: crafteo cancelado";
+                default:
+                    return $"No se pudo fabricar {name}";
+            }
         }
     }
 }

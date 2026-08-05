@@ -115,6 +115,19 @@ namespace UltimoBarrio
                         return;
                     }
 
+                    // Special handling for CraftingStation
+                    var crafting = interactable as Crafting.CraftingStation;
+                    if (crafting != null)
+                    {
+                        _hud?.ShowPrompt("Estación de crafteo", "Pulsa E para fabricar");
+                        if (Input.Pressed("Use"))
+                        {
+                            Log.Info($"[Interact] Opening Crafting Station");
+                            _hud?.OpenCrafting(crafting);
+                        }
+                        return;
+                    }
+
                     // Special handling for World Container (Stash)
                     var container = interactable as IWorldContainer;
                     if (container != null)

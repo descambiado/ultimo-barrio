@@ -11,6 +11,7 @@ namespace UltimoBarrio.UI
         InventoryOnly,
         InventoryAndStash,
         Trader,
+        Crafting,
         Dead
     }
 
@@ -26,6 +27,7 @@ namespace UltimoBarrio.UI
         public InventoryUI PlayerInvUI { get; private set; }
         public InventoryUI StashInvUI { get; private set; }
         public HotbarPanel Hotbar { get; private set; }
+        public CraftingPanel CraftingUI { get; private set; }
 
         public HudState CurrentState { get; private set; } = HudState.Gameplay;
 
@@ -59,6 +61,8 @@ namespace UltimoBarrio.UI
             Hotbar = GameObject.Components.Create<HotbarPanel>();
             Hotbar.TargetInventory = GameObject.Components.Get<InventoryComponent>();
             Hotbar.HeldItemCtrl = GameObject.Components.Get<Combat.HeldItemController>();
+
+            CraftingUI = GameObject.Components.Create<CraftingPanel>();
             
             ChangeState(HudState.Gameplay);
         }
@@ -88,6 +92,9 @@ namespace UltimoBarrio.UI
                 
             if (_traderUI != null)
                 _traderUI.Style.Display = (newState == HudState.Trader) ? DisplayMode.Flex : DisplayMode.None;
+                
+            if (CraftingUI != null && CraftingUI.Panel != null)
+                CraftingUI.Panel.Style.Display = (newState == HudState.Crafting) ? DisplayMode.Flex : DisplayMode.None;
                 
             if (Hotbar != null && Hotbar.Panel != null)
                 Hotbar.Panel.Style.Display = (newState == HudState.Gameplay || newState == HudState.InventoryOnly || newState == HudState.InventoryAndStash) ? DisplayMode.Flex : DisplayMode.None;
@@ -137,6 +144,17 @@ namespace UltimoBarrio.UI
                 }
             }
 
+            // Distancia para la estación de crafteo.
+            if (CurrentState == HudState.Crafting && CraftingUI.TargetStation != null)
+            {
+                var distance = (WorldPosition - CraftingUI.TargetStation.WorldPosition).Length;
+                if (distance > 200f)
+                {
+                    CraftingUI.Close();
+                    ChangeState(HudState.Gameplay);
+                }
+            }
+
             // Toggle inventory
             if (Input.Pressed("Score")) // TAB key usually
             {
@@ -180,6 +198,14 @@ namespace UltimoBarrio.UI
             ChangeState(HudState.InventoryAndStash);
         }
 
+        public void OpenCrafting(Crafting.CraftingStation station)
+        {
+            if (IsProxy || station == null) return;
+
+            CraftingUI.Open(station, GameObject.Components.Get<InventoryComponent>());
+            ChangeState(HudState.Crafting);
+        }
+
         protected override void OnDestroy()
         {
             if ( _promptPanel != null )
@@ -211,6 +237,11 @@ namespace UltimoBarrio.UI
             {
                 Hotbar.Destroy();
                 Hotbar = null;
+            }
+            if ( CraftingUI != null )
+            {
+                CraftingUI.Destroy();
+                CraftingUI = null;
             }
         }
 
