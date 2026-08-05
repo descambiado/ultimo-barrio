@@ -32,7 +32,7 @@ namespace UltimoBarrio
                 return "Alijo Bloqueado (Vivienda Sin Reclamar)";
             }
 
-            bool isOwner = apt.OwnerId == request.InteractorId || apt.OwnerId == Game.SteamId.ToString();
+            bool isOwner = apt.OwnerId == request.Identity.CanonicalId;
             return isOwner ? "Pulsa E para abrir el alijo" : "No puedes acceder a este alijo";
         }
 
@@ -47,13 +47,13 @@ namespace UltimoBarrio
             var policy = Scene.GetAllComponents<IApartmentAccessPolicy>().FirstOrDefault();
             if (policy != null)
             {
-                return policy.CanAccessStash(ApartmentId, request.InteractorId);
+                return policy.CanAccessStash(ApartmentId, request.Identity.CanonicalId);
             }
 
-            bool isOwner = apt.OwnerId == request.InteractorId || apt.OwnerId == Game.SteamId.ToString();
+            bool isOwner = apt.OwnerId == request.Identity.CanonicalId;
             float dist = request.InteractorObject != null ? Vector3.DistanceBetween(WorldPosition, request.InteractorObject.WorldPosition) : 0f;
 
-            Log.Info($"[Stash] PlayerId={request.InteractorId}, ApartmentId={ApartmentId}, OwnerId={apt.OwnerId}, IsClaimed={apt.ClaimState}, IsOwner={isOwner}, Distance={dist:F1}, Decision={isOwner}");
+            Log.Info($"[Stash] PlayerId={request.Identity.CanonicalId}, ApartmentId={ApartmentId}, OwnerId={apt.OwnerId}, IsClaimed={apt.ClaimState}, IsOwner={isOwner}, Distance={dist:F1}, Decision={isOwner}");
             return isOwner;
         }
 

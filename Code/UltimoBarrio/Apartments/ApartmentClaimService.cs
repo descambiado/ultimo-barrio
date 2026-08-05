@@ -91,7 +91,7 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 				"The claim service is not ready." );
 		}
 
-		if ( caller is null || !caller.IsActive || !_identityProvider.TryResolve( caller, out var ownerId ) )
+		if ( caller is null || !caller.IsActive || !_identityProvider.TryResolve( caller, out var ownerIdentity ) )
 		{
 			return ApartmentClaimResult.Rejected(
 				ApartmentClaimFailure.InvalidCaller,
@@ -124,7 +124,7 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 		lock ( _claimGate )
 		{
 			if ( _apartmentsInProgress.Contains( apartment.ApartmentId )
-				|| _ownersInProgress.Contains( ownerId ) )
+				|| _ownersInProgress.Contains( ownerIdentity.CanonicalId ) )
 			{
 				return ApartmentClaimResult.Rejected(
 					ApartmentClaimFailure.ClaimInProgress,
@@ -138,7 +138,7 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 					"The apartment is no longer available." );
 			}
 
-			if ( _registry.FindByOwner( ownerId ).IsValid() )
+			if ( _registry.FindByOwner( ownerIdentity.CanonicalId ).IsValid() )
 			{
 				return ApartmentClaimResult.Rejected(
 					ApartmentClaimFailure.PlayerAlreadyOwnsApartment,
@@ -146,11 +146,11 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 			}
 
 			_apartmentsInProgress.Add( apartment.ApartmentId );
-			_ownersInProgress.Add( ownerId );
+			_ownersInProgress.Add( ownerIdentity.CanonicalId );
 
 			try
 			{
-				var candidate = _registry.CreateSnapshot( SaveSlotId, apartment.ApartmentId, ownerId );
+				var candidate = _registry.CreateSnapshot( SaveSlotId, apartment.ApartmentId, ownerIdentity.CanonicalId );
 				var saveResult = _persistence.Save( candidate );
 				if ( !saveResult.Succeeded )
 				{
@@ -159,13 +159,13 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 						saveResult.Error );
 				}
 
-				apartment.ApplyState( ownerId, ApartmentClaimState.Claimed );
+				apartment.ApplyState( ownerIdentity.CanonicalId, ApartmentClaimState.Claimed );
 				return ApartmentClaimResult.Success();
 			}
 			finally
 			{
 				_apartmentsInProgress.Remove( apartment.ApartmentId );
-				_ownersInProgress.Remove( ownerId );
+				_ownersInProgress.Remove( ownerIdentity.CanonicalId );
 			}
 		}
 	}
@@ -225,13 +225,13 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 				continue;
 			}
 
-			if ( !_identityProvider.TryResolve( connection, out var ownerId ) )
+			if ( !_identityProvider.TryResolve( connection, out var ownerIdentity ) )
 			{
 				_pendingRespawns.Remove( connection );
 				continue;
 			}
 
-			var apartment = _registry.FindByOwner( ownerId );
+			var apartment = _registry.FindByOwner( ownerIdentity.CanonicalId );
 			if ( !apartment.IsValid() )
 			{
 				_pendingRespawns.Remove( connection );

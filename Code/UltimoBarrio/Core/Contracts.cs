@@ -25,7 +25,7 @@ public struct DamageEvent
 
 public struct InteractionRequest
 {
-    public string InteractorId;
+    public PlayerIdentity Identity;
     public GameObject InteractorObject;
 }
 
@@ -47,7 +47,7 @@ public interface IInteractable : IWorldInteractable
 
 public interface IPlayerIdentityProvider
 {
-    bool TryResolve(Connection connection, out string playerId);
+    bool TryResolve(Connection connection, out PlayerIdentity identity);
 }
 
 public interface IInventory

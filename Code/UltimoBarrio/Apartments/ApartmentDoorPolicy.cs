@@ -21,7 +21,7 @@ namespace UltimoBarrio.Apartments
                 return "Puerta Bloqueada (Vivida Sin Reclamar)";
             }
 
-            bool isOwner = apt.OwnerId == request.InteractorId || apt.OwnerId == Game.SteamId.ToString();
+            bool isOwner = apt.OwnerId == request.Identity.CanonicalId;
             return isOwner ? "Pulsa E para abrir/cerrar la puerta" : "Puerta Bloqueada (Acceso Denegado)";
         }
 
@@ -30,7 +30,7 @@ namespace UltimoBarrio.Apartments
             var apt = Scene.GetAllComponents<ApartmentComponent>().FirstOrDefault(a => a.ApartmentId == ApartmentId);
             if (apt == null || apt.ClaimState == ApartmentClaimState.Unclaimed) return false;
 
-            return apt.OwnerId == request.InteractorId || apt.OwnerId == Game.SteamId.ToString();
+            return apt.OwnerId == request.Identity.CanonicalId;
         }
 
         public void OnInteract(InteractionRequest request)

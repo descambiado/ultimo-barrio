@@ -19,7 +19,7 @@ namespace UltimoBarrio.Trading
 
         public void OnInteract(InteractionRequest request)
         {
-            Log.Info($"[Trader] Interaction initiated by {request.InteractorId}");
+            Log.Info($"[Trader] Interaction initiated by {request.Identity.CanonicalId}");
         }
 
         [Rpc.Host]

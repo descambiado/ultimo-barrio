@@ -78,7 +78,7 @@ namespace UltimoBarrio
                 {
                     var req = new InteractionRequest
                     {
-                        InteractorId = GameObject.Network.OwnerId.ToString(),
+                        Identity = PlayerIdentity.FromGameObject(GameObject),
                         InteractorObject = GameObject
                     };
 

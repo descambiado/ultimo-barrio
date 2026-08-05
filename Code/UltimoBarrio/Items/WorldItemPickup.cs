@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 using System;
 using UltimoBarrio.Core;
 
@@ -24,7 +24,7 @@ namespace UltimoBarrio
             if (IsProxy)
             {
                 // We are on client, send RPC to host
-                RequestPickupOnHost(request.InteractorId, request.InteractorObject?.Id ?? Guid.Empty);
+                RequestPickupOnHost(request.Identity.CanonicalId, request.InteractorObject?.Id ?? Guid.Empty);
             }
             else
             {

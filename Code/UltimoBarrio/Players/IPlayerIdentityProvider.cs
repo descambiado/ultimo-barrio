@@ -8,17 +8,15 @@ namespace UltimoBarrio.Players;
 
 public sealed class SteamPlayerIdentityProvider : IPlayerIdentityProvider
 {
-	public bool TryResolve( Connection connection, out string ownerId )
+	public bool TryResolve( Connection connection, out PlayerIdentity identity )
 	{
-		ownerId = string.Empty;
-		if ( connection is null )
+		if ( connection is null || !connection.IsActive )
+		{
+			identity = default;
 			return false;
+		}
 
-		var steamId = connection.SteamId.ValueUnsigned;
-		if ( steamId == 0 )
-			return false;
-
-		ownerId = steamId.ToString( CultureInfo.InvariantCulture );
+		identity = PlayerIdentity.FromConnection( connection );
 		return true;
 	}
 }
