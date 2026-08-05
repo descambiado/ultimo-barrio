@@ -43,25 +43,45 @@ namespace UltimoBarrio.Combat
 
         protected virtual void HandleInput()
         {
-            if (IsReloading) return;
+            if ( IsReloading ) return;
+
+            if ( IsUiCapturingInput() ) return;
 
             bool wantToFire = IsAutomatic ? Input.Down("attack1") : Input.Pressed("attack1");
-            if (wantToFire && _lastFired >= FireRate)
+            if ( wantToFire && _lastFired >= FireRate )
             {
-                if (CurrentAmmo > 0)
+                if ( CurrentAmmo > 0 )
                 {
                     Fire();
                 }
                 else
                 {
+                    // Dry fire: sonido y feedback, sin gastar nada.
+                    OnDryFire();
                     Reload();
                 }
             }
 
-            if (Input.Pressed("reload") && CurrentAmmo < MaxAmmo)
+            if ( Input.Pressed("reload") && CurrentAmmo < MaxAmmo )
             {
                 Reload();
             }
+        }
+
+        /// <summary>
+        /// El input de armas se bloquea mientras stash/trader/inventario/
+        /// crafting capturan la UI.
+        /// </summary>
+        protected bool IsUiCapturingInput()
+        {
+            var hud = Components.GetInAncestorsOrSelf<UltimoBarrio.UI.PlayerHud>();
+            return hud is not null && hud.CurrentState != UltimoBarrio.UI.HudState.Gameplay;
+        }
+
+        /// <summary>Disparo en vacío (sin munición): feedback por arma.</summary>
+        [Rpc.Broadcast]
+        protected virtual void OnDryFire()
+        {
         }
 
         public void Fire()
