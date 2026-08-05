@@ -1,10 +1,10 @@
 {
   "RootObject": {
-    "__guid": "524faf65-35dd-4a45-b86c-30d3149bf1b0",
+    "__guid": "b9b02694-cf71-454b-82a1-0c5f16566728",
     "__version": 2,
     "Flags": 0,
-    "Name": "USP World Model",
-    "Position": "0,0,0",
+    "Name": "Medical Point",
+    "Position": "0,0,40",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
     "Tags": "",
@@ -16,22 +16,23 @@
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__guid": "72bedfa4-fa17-42bf-b02e-0726410bb0a9",
+        "__guid": "26e37d5a-5e4c-4254-8fa1-e9ab822ec96c",
         "__enabled": true,
-        "__type": "UltimoBarrio.Combat.USPPistol"
+        "__type": "UltimoBarrio.World.MedicalPoint",
+        "HealAmount": 50,
+        "CooldownSeconds": 15
       },
       {
-        "__guid": "951d9770-adb8-4a26-ab82-e6ed5d40ca30",
+        "__guid": "14cbf179-b5e2-4707-b56c-2c30a6d52e27",
         "__enabled": true,
         "__type": "Sandbox.BoxCollider",
-        "Scale": "4,8,16"
+        "Scale": "20,20,20"
       },
       {
-        "__guid": "289806a0-0548-4747-b83a-4611e2d95355",
+        "__guid": "0c2cec2c-5db2-4341-914e-dca19888091f",
         "__enabled": true,
         "__type": "Sandbox.ModelRenderer",
-        "Model": "models/dev/box.vmdl",
-        "Tint": "0.15,0.15,0.17,1"
+        "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl"
       }
     ],
     "Children": []

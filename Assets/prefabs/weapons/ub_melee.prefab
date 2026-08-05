@@ -1,10 +1,39 @@
-﻿{
-  "GameObjects": [
-    {
-      "Id": "00000000-0000-0000-0000-000000000000",
-      "Name": "WeaponRoot",
-      "Enabled": true,
-      "Components": []
-    }
-  ]
+{
+  "RootObject": {
+    "__guid": "d685c7e3-2923-4caf-bc71-fdc90b239f20",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "Crowbar World Model",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__guid": "388d1863-d568-4ee7-84ce-8bbc95200d7d",
+        "__enabled": true,
+        "__type": "UltimoBarrio.Combat.MeleeWeapon"
+      },
+      {
+        "__guid": "ac70e0f3-3c78-40d1-a86e-cbc5d1362c98",
+        "__enabled": true,
+        "__type": "Sandbox.BoxCollider",
+        "Scale": "4,4,24"
+      },
+      {
+        "__guid": "45c3ab03-c331-4d46-8da2-fbe8d2455cbd",
+        "__enabled": true,
+        "__type": "Sandbox.ModelRenderer",
+        "Model": "models/dev/box.vmdl",
+        "Tint": "0.35,0.25,0.15,1"
+      }
+    ],
+    "Children": []
+  }
 }

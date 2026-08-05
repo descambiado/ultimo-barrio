@@ -1,9 +1,9 @@
 {
   "RootObject": {
-    "__guid": "524faf65-35dd-4a45-b86c-30d3149bf1b0",
+    "__guid": "2248b6e6-87fb-4755-8665-281f61f7c00b",
     "__version": 2,
     "Flags": 0,
-    "Name": "USP World Model",
+    "Name": "Window Defense Point",
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
@@ -16,22 +16,24 @@
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__guid": "72bedfa4-fa17-42bf-b02e-0726410bb0a9",
+        "__guid": "895db677-0df0-49c6-84fb-1c9a1ebb4d40",
         "__enabled": true,
-        "__type": "UltimoBarrio.Combat.USPPistol"
+        "__type": "UltimoBarrio.Fortification.WindowDefensePoint",
+        "ApartmentId": "apartment-a01",
+        "IsCoverPosition": true
       },
       {
-        "__guid": "951d9770-adb8-4a26-ab82-e6ed5d40ca30",
+        "__guid": "8486fb38-724a-4e82-93c8-06733cbd149c",
         "__enabled": true,
         "__type": "Sandbox.BoxCollider",
-        "Scale": "4,8,16"
+        "Scale": "10,30,60"
       },
       {
-        "__guid": "289806a0-0548-4747-b83a-4611e2d95355",
+        "__guid": "1b831487-06c7-4a6f-a720-fc1be7bc51b6",
         "__enabled": true,
         "__type": "Sandbox.ModelRenderer",
         "Model": "models/dev/box.vmdl",
-        "Tint": "0.15,0.15,0.17,1"
+        "Tint": "0.2,0.4,0.6,1"
       }
     ],
     "Children": []

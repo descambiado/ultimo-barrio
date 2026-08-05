@@ -15,9 +15,9 @@
     "MinPlayers": 1,
     "TickRate": 50,
     "GameNetworkType": "Multiplayer",
-    "MapSelect": "Unrestricted",
+    "MapSelect": "Locked",
     "MapList": [
-      "facepunch.flatgrass"
+      "thieves.rpdowntown3t"
     ],
     "RankType": "None",
     "PerMapRanking": false,

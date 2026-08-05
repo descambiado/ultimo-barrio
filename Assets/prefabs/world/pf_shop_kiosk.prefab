@@ -1,1 +1,38 @@
-﻿{}
+{
+  "RootObject": {
+    "__guid": "5884450f-716a-4790-845d-655efc0fbb6c",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "Shop Kiosk",
+    "Position": "0,0,60",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__guid": "7077f952-a21e-4714-91a5-bf2d387b1b61",
+        "__enabled": true,
+        "__type": "UltimoBarrio.Trading.Trader"
+      },
+      {
+        "__guid": "bf847c93-6fdc-491b-9d94-d1d260f18ef3",
+        "__enabled": true,
+        "__type": "Sandbox.BoxCollider",
+        "Scale": "40,40,60"
+      },
+      {
+        "__guid": "64688b0c-c4cb-49dc-8cd0-7ac3c816e8f0",
+        "__enabled": true,
+        "__type": "Sandbox.ModelRenderer",
+        "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl"
+      }
+    ],
+    "Children": []
+  }
+}

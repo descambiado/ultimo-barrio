@@ -1,10 +1,33 @@
-﻿{
-  "GameObjects": [
-    {
-      "Id": "00000000-0000-0000-0000-000000000000",
-      "Name": "WeaponRoot",
-      "Enabled": true,
-      "Components": []
-    }
-  ]
+{
+  "RootObject": {
+    "__guid": "1fbea26b-264b-481a-87e8-a60cc4a7ca4d",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "USP Viewmodel",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__guid": "30ee185a-f6a5-4640-8e44-10d17cbcf3ee",
+        "__enabled": true,
+        "__type": "UltimoBarrio.Combat.USPPistol"
+      },
+      {
+        "__guid": "d795ab0d-3e86-4f4f-a8f9-76107c065ea2",
+        "__enabled": true,
+        "__type": "Sandbox.ModelRenderer",
+        "Model": "models/dev/box.vmdl",
+        "Tint": "0.15,0.15,0.17,1"
+      }
+    ],
+    "Children": []
+  }
 }

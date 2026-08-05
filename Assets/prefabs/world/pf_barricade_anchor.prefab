@@ -1,1 +1,39 @@
-﻿{}
+{
+  "RootObject": {
+    "__guid": "014486d3-0447-4c11-a578-6a5882645f8e",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "Barricade Anchor",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__guid": "390ac245-97a9-4bf3-b7d7-e3ed8cd434dc",
+        "__enabled": true,
+        "__type": "UltimoBarrio.Fortification.BarricadeAnchor"
+      },
+      {
+        "__guid": "1156d80c-dcf4-4828-a181-415dabd90b57",
+        "__enabled": true,
+        "__type": "Sandbox.BoxCollider",
+        "Scale": "10,10,10"
+      },
+      {
+        "__guid": "91115ef8-1bef-4676-b445-b35b368ebfbb",
+        "__enabled": true,
+        "__type": "Sandbox.ModelRenderer",
+        "Model": "models/dev/box.vmdl",
+        "Tint": "0.6,0.5,0.2,1"
+      }
+    ],
+    "Children": []
+  }
+}

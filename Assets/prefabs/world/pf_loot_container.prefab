@@ -1,0 +1,48 @@
+{
+  "RootObject": {
+    "__guid": "b9e96d5f-3f9f-438d-b8c9-a6903cb8a8bf",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "Loot Container",
+    "Position": "0,0,40",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__guid": "94db9247-28a4-43d9-a81b-9e70275ca449",
+        "__enabled": true,
+        "__type": "UltimoBarrio.World.LootContainer",
+        "LootTableId": "StreetLoot",
+        "MinItems": 2,
+        "MaxItems": 4
+      },
+      {
+        "__guid": "581c12c6-311f-42ee-9242-2e1c64176b90",
+        "__enabled": true,
+        "__type": "UltimoBarrio.InventoryComponent",
+        "InventoryId": "loot:container",
+        "MaxSlots": 12,
+        "HotbarSlots": 6
+      },
+      {
+        "__guid": "ec563ffd-8f6e-48eb-aded-569951c1f85a",
+        "__enabled": true,
+        "__type": "Sandbox.BoxCollider"
+      },
+      {
+        "__guid": "9e6fccd3-aa40-4ee7-979a-4ad19e106832",
+        "__enabled": true,
+        "__type": "Sandbox.ModelRenderer",
+        "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl"
+      }
+    ],
+    "Children": []
+  }
+}

@@ -1,9 +1,9 @@
 {
   "RootObject": {
-    "__guid": "d7c67ac1-6590-4c63-82d1-edebba526db8",
+    "__guid": "a1a45d2a-84bb-4835-9481-eb6a862e96d7",
     "__version": 2,
     "Flags": 0,
-    "Name": "Melee Viewmodel",
+    "Name": "Danger Zone",
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
@@ -16,16 +16,18 @@
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__guid": "b7a8d6e4-182a-4092-9e2f-80c06536c1ec",
+        "__guid": "75efcbe0-bd6f-4c26-8e27-e70b1b23c309",
         "__enabled": true,
-        "__type": "UltimoBarrio.Combat.MeleeWeapon"
+        "__type": "UltimoBarrio.World.DangerZone",
+        "Radius": 600,
+        "ExtraSpawnCount": 2
       },
       {
-        "__guid": "10711d1f-7288-43d5-91a1-31dba479ef5e",
+        "__guid": "23c4f635-512f-4f9f-b0a7-62adb8d422d2",
         "__enabled": true,
-        "__type": "Sandbox.ModelRenderer",
-        "Model": "models/dev/box.vmdl",
-        "Tint": "0.35,0.25,0.15,1"
+        "__type": "Sandbox.BoxCollider",
+        "Scale": "300,300,40",
+        "IsTrigger": true
       }
     ],
     "Children": []

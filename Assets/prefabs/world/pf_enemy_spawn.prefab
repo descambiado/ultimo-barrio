@@ -1,1 +1,35 @@
-﻿{}
+{
+  "RootObject": {
+    "__guid": "cbe97702-3712-41f2-8e07-59ee1e0edcfa",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "Enemy Spawn Zone",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__guid": "3f3277ff-4199-4cc8-889c-e11efc358a60",
+        "__enabled": true,
+        "__type": "UltimoBarrio.AI.SpawnZone",
+        "Radius": 400,
+        "MaxHostiles": 2
+      },
+      {
+        "__guid": "f5c71349-fcfc-4d57-bf4e-7c0c4c9e5fe7",
+        "__enabled": true,
+        "__type": "Sandbox.BoxCollider",
+        "Scale": "200,200,40",
+        "IsTrigger": true
+      }
+    ],
+    "Children": []
+  }
+}

@@ -1,1 +1,49 @@
-﻿{}
+{
+  "RootObject": {
+    "__guid": "51345f15-fab8-41d3-a610-e6ae008c51d7",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "Vecino",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__guid": "73b46467-8802-4826-97f8-bc0cfedeed50",
+        "__enabled": true,
+        "__type": "Sandbox.NavMeshAgent"
+      },
+      {
+        "__guid": "07665d70-15f6-44ee-97fa-4b6e97c337a7",
+        "__enabled": true,
+        "__type": "UltimoBarrio.AI.PerceptionComponent"
+      },
+      {
+        "__guid": "e22cc7b7-9fbe-4867-9e90-70b17f2af99f",
+        "__enabled": true,
+        "__type": "UltimoBarrio.AI.VecinoBrain"
+      },
+      {
+        "__guid": "c0c2a2ee-2826-484d-b940-3d88365e1e24",
+        "__enabled": true,
+        "__type": "Sandbox.CapsuleCollider",
+        "Scale": "16,16,72"
+      },
+      {
+        "__guid": "bb49cc93-951e-4abd-85d3-9fd603cc0982",
+        "__enabled": true,
+        "__type": "Sandbox.ModelRenderer",
+        "Model": "models/dev/box.vmdl",
+        "Tint": "0.3,0.35,0.5,1"
+      }
+    ],
+    "Children": []
+  }
+}
