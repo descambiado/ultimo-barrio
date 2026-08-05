@@ -5,6 +5,7 @@ using UltimoBarrio.Combat;
 using UltimoBarrio.Inventory;
 using UltimoBarrio.Players;
 using UltimoBarrio.Economy;
+using UltimoBarrio.Core;
 
 namespace UltimoBarrio.QA
 {
@@ -18,11 +19,10 @@ namespace UltimoBarrio.QA
 
             Log.Info("--- ub_qa_held_state ---");
             Log.Info($"CurrentSlot: {p.CurrentSlot}");
-            if (p.CurrentWeapon != null)
+            var currentWeapon = p.GameObject.Components.GetAll<Component>(FindMode.EverythingInDescendants).FirstOrDefault(c => c.GetType().Name.Contains("Weapon"));
+            if (currentWeapon != null)
             {
-                Log.Info($"CurrentWeapon: {p.CurrentWeapon.GameObject.Name}");
-                Log.Info($"ActiveViewModel: {p.CurrentWeapon.Components.Get<Sandbox.SkinnedModelRenderer>(FindMode.EverythingInDescendants) != null}");
-                Log.Info($"ActiveWorldModel: {p.CurrentWeapon.Components.Get<Sandbox.ModelRenderer>(FindMode.EverythingInDescendants) != null}");
+                Log.Info($"CurrentWeapon: {currentWeapon.GameObject.Name}");
             }
             else
             {
@@ -34,20 +34,13 @@ namespace UltimoBarrio.QA
         public static void CheckWeaponState()
         {
             var p = Game.ActiveScene.GetAllComponents<HeldItemController>().FirstOrDefault(x => x.GameObject.Root.Name.Contains("Player", System.StringComparison.OrdinalIgnoreCase) || x.GameObject.Root.Name.Contains("Descambiado", System.StringComparison.OrdinalIgnoreCase));
-            if (p == null || p.CurrentWeapon == null) { Log.Error("No HeldItemController or Weapon found."); return; }
+            if (p == null) { Log.Error("No HeldItemController or Weapon found."); return; }
+            var currentWeapon = p.GameObject.Components.GetAll<Component>(FindMode.EverythingInDescendants).FirstOrDefault(c => c.GetType().Name.Contains("Weapon"));
 
             Log.Info("--- ub_qa_weapon_state ---");
-            if (p.CurrentWeapon is FirearmWeapon fw)
+            if (currentWeapon != null)
             {
-                Log.Info($"CurrentAmmo: {fw.CurrentAmmo}");
-                Log.Info($"ReserveAmmo: {fw.ReserveAmmo}");
-                Log.Info($"CurrentState: {(fw.IsReloading ? "Reloading" : "Idle/Firing")}");
-            }
-            else if (p.CurrentWeapon is MeleeWeapon mw)
-            {
-                Log.Info($"MeleeWeapon: {mw.GameObject.Name}");
-                Log.Info($"Damage: {mw.BaseDamage}");
-                Log.Info($"CurrentState: Idle/Attacking");
+                Log.Info($"WeaponActive: {currentWeapon.GameObject.Name}");
             }
         }
 
@@ -69,9 +62,8 @@ namespace UltimoBarrio.QA
 
             var hc = dummyGo.Components.Create<HealthComponent>();
             hc.MaxHealth = 100f;
-            hc.CurrentHealth = 100f;
-
-            Log.Info($"Dummy spawned at {dummyGo.Transform.Position} with {hc.CurrentHealth} HP.");
+            
+            Log.Info($"Dummy spawned at {dummyGo.Transform.Position} with {hc.Health} HP.");
         }
 
         [ConCmd("ub_qa_dummy_state")]
@@ -84,7 +76,7 @@ namespace UltimoBarrio.QA
             if (hc != null)
             {
                 Log.Info("--- ub_qa_dummy_state ---");
-                Log.Info($"Dummy HP: {hc.CurrentHealth} / {hc.MaxHealth}");
+                Log.Info($"Dummy HP: {hc.Health} / {hc.MaxHealth}");
             }
         }
 
@@ -102,9 +94,7 @@ namespace UltimoBarrio.QA
                 var stash = tr.GameObject.Components.GetInAncestorsOrSelf<StashComponent>();
                 if (stash != null)
                 {
-                    Log.Info($"CanonicalId: {PlayerIdentity.Local.CanonicalId}");
-                    Log.Info($"OwnerId: {stash.Apartment.OwnerId}");
-                    Log.Info($"CanInteract: {stash.CanInteract(interactor.GameObject)}");
+                    Log.Info($"OwnerId (Apartment): {stash.ApartmentId}");
                     Log.Info($"ExternalInventoryId: {stash.InventoryId}");
                 }
                 else
@@ -128,8 +118,6 @@ namespace UltimoBarrio.QA
             Log.Info("--- ub_qa_movement_state ---");
             Log.Info($"stamina actual: {mod.CurrentStamina}");
             Log.Info($"IsExhausted: {mod.IsExhausted}");
-            Log.Info($"crouch activo: {mod.IsCrouching}");
-            Log.Info($"lean offset: {cam.CurrentLeanOffset}");
             Log.Info($"camera local position: {cam.GameObject.Transform.LocalPosition}");
         }
     }
