@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 using System;
 
 namespace UltimoBarrio.Players
@@ -21,8 +21,8 @@ namespace UltimoBarrio.Players
 
         protected override void OnStart()
         {
-            _startLocalPosition = Transform.LocalPosition;
-            _startLocalRotation = Transform.LocalRotation;
+            _startLocalPosition = LocalPosition;
+            _startLocalRotation = LocalRotation;
         }
 
         protected override void OnUpdate()
@@ -90,8 +90,8 @@ namespace UltimoBarrio.Players
             var targetPos = _startLocalPosition + new Vector3(0, bobOffsetY + leanOffsetY, bobOffsetZ - _currentDip);
             var targetRot = _startLocalRotation * Rotation.From(0, 0, _currentLean) * swayRot;
 
-            Transform.LocalPosition = Vector3.Lerp(Transform.LocalPosition, targetPos, Time.Delta * 10f);
-            Transform.LocalRotation = Rotation.Slerp(Transform.LocalRotation, targetRot, Time.Delta * 10f);
+            LocalPosition = Vector3.Lerp(LocalPosition, targetPos, Time.Delta * 10f);
+            LocalRotation = Rotation.Slerp(LocalRotation, targetRot, Time.Delta * 10f);
         }
 
         public void ApplyLandingDip()

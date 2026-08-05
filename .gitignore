@@ -62,3 +62,6 @@ TestResults/
 # IMPORTANT:
 # Do NOT ignore Libraries/. s&box libraries are vendored source and should be committed.
 # Do NOT ignore Assets/ or Code/.
+*.scene_d
+/poll_console*.ps1
+/run_sbox_restart.ps1

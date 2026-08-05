@@ -1,9 +1,9 @@
-﻿using Sandbox;
+using Sandbox;
 using System;
 
 namespace UltimoBarrio.Players
 {
-    [GameResource("Movement Profile", "mvprf", "Configures player movement speeds, stamina, camera bob, etc.", Icon = "directions_run")]
+    [GameResource("Movement Profile", "movement", "Defines speed and limits for movement states.", Icon = "directions_run")]
     public class MovementProfile : GameResource
     {
         [Category("Speeds")] public float WalkSpeed { get; set; } = 130f;

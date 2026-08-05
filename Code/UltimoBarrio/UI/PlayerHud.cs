@@ -25,6 +25,7 @@ namespace UltimoBarrio.UI
         
         public InventoryUI PlayerInvUI { get; private set; }
         public InventoryUI StashInvUI { get; private set; }
+        public HotbarPanel Hotbar { get; private set; }
 
         public HudState CurrentState { get; private set; } = HudState.Gameplay;
 
@@ -55,6 +56,10 @@ namespace UltimoBarrio.UI
             StashInvUI = GameObject.Components.Create<InventoryUI>();
             StashInvUI.Title = "Alijo";
             
+            Hotbar = GameObject.Components.Create<HotbarPanel>();
+            Hotbar.TargetInventory = GameObject.Components.Get<InventoryComponent>();
+            Hotbar.HeldItemCtrl = GameObject.Components.Get<Combat.HeldItemController>();
+            
             ChangeState(HudState.Gameplay);
         }
 
@@ -83,6 +88,9 @@ namespace UltimoBarrio.UI
                 
             if (_traderUI != null)
                 _traderUI.Style.Display = (newState == HudState.Trader) ? DisplayMode.Flex : DisplayMode.None;
+                
+            if (Hotbar != null && Hotbar.Panel != null)
+                Hotbar.Panel.Style.Display = (newState == HudState.Gameplay || newState == HudState.InventoryOnly || newState == HudState.InventoryAndStash) ? DisplayMode.Flex : DisplayMode.None;
         }
 
         protected override void OnUpdate()
@@ -198,6 +206,11 @@ namespace UltimoBarrio.UI
             {
                 StashInvUI.Destroy();
                 StashInvUI = null;
+            }
+            if ( Hotbar != null )
+            {
+                Hotbar.Destroy();
+                Hotbar = null;
             }
         }
 

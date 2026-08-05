@@ -5,7 +5,7 @@ using System.Linq;
 namespace UltimoBarrio.QA
 {
     /// <summary>
-    /// Comandos de consola para QA. Escríbelos en la consola de s&box (tilde ~).
+    /// Comandos de consola para QA. Escríbelos en la consola de s&amp;box (tilde ~).
     /// qa_inv         — muestra el inventario del jugador local
     /// qa_give_scrap  — añade 10 chatarra al inventario
     /// qa_give_money  — añade 100 al wallet

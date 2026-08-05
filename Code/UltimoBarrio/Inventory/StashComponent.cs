@@ -59,7 +59,11 @@ namespace UltimoBarrio
 
         public void OnInteract(InteractionRequest request)
         {
-            // Interactor opens HUD for this container
+            var hud = request.InteractorObject?.Components.GetInDescendantsOrSelf<UltimoBarrio.UI.PlayerHud>();
+            if (hud != null && Inventory != null)
+            {
+                hud.OpenStash(Inventory);
+            }
         }
     }
 }

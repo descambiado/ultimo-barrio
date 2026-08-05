@@ -4,15 +4,30 @@ using System.Collections.Generic;
 
 namespace UltimoBarrio
 {
-    [GameResource("Item Definition", "item", "Defines an item in Ultimo Barrio")]
+    public enum ItemCategory
+    {
+        Resource,
+        Consumable,
+        Ammo,
+        Melee,
+        Firearm
+    }
+
+    [GameResource("Item Definition", "item", "A data-driven definition of an inventory item.", Icon = "category")]
     public class ItemDefinition : GameResource
     {
         public string ItemId { get; set; } = "unknown";
-        public string Name { get; set; } = "Item Name";
+        public string DisplayName { get; set; } = "Item Name";
         public string Description { get; set; } = "Item description";
-        public Texture Icon { get; set; }
-        public bool IsStackable { get; set; } = true;
-        public int MaxStackSize { get; set; } = 64;
+        public string Icon { get; set; } // Using string path for simple UI icons or Texture
+        public int StackSize { get; set; } = 64;
+        public ItemCategory Category { get; set; } = ItemCategory.Resource;
+        public string EquipSlot { get; set; } // Primary, Melee, etc.
         public GameObject WorldPrefab { get; set; }
+        public GameObject ViewModelPrefab { get; set; }
+        public GameObject WorldModelPrefab { get; set; }
+        public string AmmoType { get; set; } // For firearms
+        public bool Usable { get; set; } = false;
+        public bool Droppable { get; set; } = true;
     }
 }

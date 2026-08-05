@@ -115,10 +115,33 @@ namespace UltimoBarrio.Combat
             RpcDoReloadEffects();
         }
 
+        [Property] public string AmmoType { get; set; } = "ammo_9mm";
+
         private void FinishReload()
         {
             IsReloading = false;
-            CurrentAmmo = MaxAmmo;
+            
+            int needed = MaxAmmo - CurrentAmmo;
+            if (needed <= 0) return;
+
+            var inv = Components.GetInAncestorsOrSelf<InventoryComponent>();
+            if (inv != null && !string.IsNullOrEmpty(AmmoType))
+            {
+                int available = inv.GetCount(AmmoType);
+                int toTake = Math.Min(needed, available);
+                if (toTake > 0)
+                {
+                    if (inv.TryRemove(AmmoType, toTake))
+                    {
+                        CurrentAmmo += toTake;
+                    }
+                }
+            }
+            else
+            {
+                // Fallback for non-inventory users (NPCs)
+                CurrentAmmo = MaxAmmo;
+            }
         }
 
         [Rpc.Broadcast]

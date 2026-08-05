@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 using System;
 using System.Linq;
 
@@ -40,6 +40,8 @@ namespace UltimoBarrio.Combat
         [Sync] public Guid ActiveWeaponId { get; set; }
         [Sync] public HeldItemState CurrentState { get; set; }
         [Sync] public HeldItemSlot CurrentSlot { get; set; }
+        [Sync] public int SelectedHotbarSlot { get; set; } = -1;
+        [Sync] public string ActiveItemId { get; set; } = string.Empty;
 
         private BaseCombatWeapon _activeWeapon;
         private GameObject _currentViewmodel;
@@ -53,7 +55,7 @@ namespace UltimoBarrio.Combat
                 ViewmodelArms.Model = BaseHandsModel;
             }
             
-            EquipSlot(HeldItemSlot.None);
+            DoEquip(HeldItemSlot.None, null, string.Empty);
         }
 
         protected override void OnUpdate()
@@ -78,7 +80,7 @@ namespace UltimoBarrio.Combat
                 case HeldItemState.Dropping:
                     if (_timeSinceStateChange > 0.2f)
                     {
-                        EquipSlot(HeldItemSlot.None);
+                        DoEquip(HeldItemSlot.None, null, string.Empty);
                     }
                     break;
                 case HeldItemState.Reloading:
@@ -114,22 +116,12 @@ namespace UltimoBarrio.Combat
         {
             if (CurrentState == HeldItemState.Equipping || CurrentState == HeldItemState.Dropping) return;
 
-            if (Input.Pressed("Slot1"))
-            {
-                EquipSlot(HeldItemSlot.None);
-            }
-            else if (Input.Pressed("Slot2"))
-            {
-                EquipSlot(HeldItemSlot.Melee);
-            }
-            else if (Input.Pressed("Slot3"))
-            {
-                EquipSlot(HeldItemSlot.Primary);
-            }
-            else if (Input.Pressed("Slot4"))
-            {
-                EquipSlot(HeldItemSlot.Secondary);
-            }
+            if (Input.Pressed("Slot1")) SelectSlot(0);
+            else if (Input.Pressed("Slot2")) SelectSlot(1);
+            else if (Input.Pressed("Slot3")) SelectSlot(2);
+            else if (Input.Pressed("Slot4")) SelectSlot(3);
+            else if (Input.Pressed("Slot5")) SelectSlot(4);
+            else if (Input.Pressed("Slot6")) SelectSlot(5);
             else if (Input.Pressed("Drop"))
             {
                 DropCurrentWeapon();
@@ -174,49 +166,80 @@ namespace UltimoBarrio.Combat
             }
         }
 
-        public void EquipSlot(HeldItemSlot slot)
+        public void SelectSlot(int index)
         {
             if (!Networking.IsHost)
             {
-                RpcRequestEquip((int)slot);
+                RpcRequestSelectSlot(index);
                 return;
             }
-            DoEquip(slot);
+            DoSelectSlot(index);
         }
 
         [Rpc.Host]
-        private void RpcRequestEquip(int slotInt)
+        private void RpcRequestSelectSlot(int index)
         {
-            DoEquip((HeldItemSlot)slotInt);
+            DoSelectSlot(index);
         }
 
-        private void DoEquip(HeldItemSlot slot)
+        private void DoSelectSlot(int index)
+        {
+            SelectedHotbarSlot = index;
+            
+            var inv = Components.Get<InventoryComponent>();
+            if (inv == null || index < 0 || index >= inv.HotbarSlots || index >= inv.Slots.Count)
+            {
+                DoEquip(HeldItemSlot.None, null, string.Empty);
+                return;
+            }
+
+            var slot = inv.Slots[index];
+            if (string.IsNullOrEmpty(slot.ItemId) || slot.Amount <= 0)
+            {
+                DoEquip(HeldItemSlot.None, null, string.Empty);
+                return;
+            }
+
+            var def = ItemRegistry.GetDefinition(slot.ItemId);
+            if (def == null || (def.Category != ItemCategory.Melee && def.Category != ItemCategory.Firearm))
+            {
+                DoEquip(HeldItemSlot.None, null, string.Empty);
+                return;
+            }
+
+            // Fallbacks to properties if WorldPrefab is null (for backward compat with agent's old code)
+            GameObject prefabToSpawn = def.WorldPrefab;
+            HeldItemSlot slotType = HeldItemSlot.Primary;
+
+            if (def.Category == ItemCategory.Melee)
+            {
+                slotType = HeldItemSlot.Melee;
+                if (prefabToSpawn == null) prefabToSpawn = MeleePrefab;
+            }
+            else if (def.Category == ItemCategory.Firearm)
+            {
+                slotType = HeldItemSlot.Primary;
+                if (prefabToSpawn == null) prefabToSpawn = PrimaryPrefab;
+            }
+
+            DoEquip(slotType, prefabToSpawn, slot.ItemId);
+        }
+
+        private void DoEquip(HeldItemSlot slot, GameObject prefab, string itemId)
         {
             ClearCurrentWeapon();
             CurrentSlot = slot;
+            ActiveItemId = itemId;
 
-            if (slot == HeldItemSlot.None)
+            if (slot == HeldItemSlot.None || prefab == null)
             {
                 CurrentState = HeldItemState.Holstered;
                 if (ViewmodelArms != null)
                 {
                     ViewmodelArms.Enabled = true;
                     if (BaseHandsModel != null) ViewmodelArms.Model = BaseHandsModel;
+                    ViewmodelArms.Set("holdtype", 0); // Fists/Empty
                 }
-                return;
-            }
-
-            GameObject prefab = slot switch
-            {
-                HeldItemSlot.Melee => MeleePrefab,
-                HeldItemSlot.Primary => PrimaryPrefab,
-                HeldItemSlot.Secondary => SecondaryPrefab,
-                _ => null
-            };
-
-            if (prefab == null)
-            {
-                EquipSlot(HeldItemSlot.None);
                 return;
             }
 
@@ -251,7 +274,10 @@ namespace UltimoBarrio.Combat
 
             if (ViewmodelArms != null)
             {
-                ViewmodelArms.Enabled = false;
+                ViewmodelArms.Enabled = true;
+                if (CurrentSlot == HeldItemSlot.Melee) ViewmodelArms.Set("holdtype", 4);
+                else if (CurrentSlot == HeldItemSlot.Primary) ViewmodelArms.Set("holdtype", 2);
+                else if (CurrentSlot == HeldItemSlot.Secondary) ViewmodelArms.Set("holdtype", 1);
             }
             
             RpcOnWeaponEquipped(ActiveWeaponId);
@@ -271,42 +297,47 @@ namespace UltimoBarrio.Combat
             var wepObj = Scene.Directory.FindByGuid(weaponId);
             if (wepObj != null)
             {
-                // Spawn Viewmodel locally logic here
+                var originalRenderer = wepObj.Components.GetInDescendantsOrSelf<ModelRenderer>();
+                if (originalRenderer != null && ViewmodelArms != null)
+                {
+                    _currentViewmodel = new GameObject(true, "ViewmodelWeapon");
+                    _currentViewmodel.SetParent(ViewmodelArms.GameObject);
+                    
+                    var bone = ViewmodelArms.GetBoneObject("hold_R");
+                    if (bone != null) _currentViewmodel.SetParent(bone);
+                    else
+                    {
+                        _currentViewmodel.LocalPosition = Vector3.Zero;
+                        _currentViewmodel.LocalRotation = Rotation.Identity;
+                    }
+
+                    var newRenderer = _currentViewmodel.Components.Create<ModelRenderer>();
+                    newRenderer.Model = originalRenderer.Model;
+                }
             }
         }
 
         private void DropCurrentWeapon()
         {
-            if (CurrentSlot == HeldItemSlot.None) return;
+            if (CurrentSlot == HeldItemSlot.None || string.IsNullOrEmpty(ActiveItemId)) return;
             
             if (Networking.IsHost)
             {
-                GameObject prefab = CurrentSlot switch
+                var inv = Components.Get<InventoryComponent>();
+                if (inv != null)
                 {
-                    HeldItemSlot.Melee => MeleePrefab,
-                    HeldItemSlot.Primary => PrimaryPrefab,
-                    HeldItemSlot.Secondary => SecondaryPrefab,
-                    _ => null
-                };
-                
-                if (prefab != null)
-                {
-                    var tr = Scene.Trace.Ray(WorldPosition + Vector3.Up * 50f, WorldPosition + WorldRotation.Forward * 50f)
-                        .IgnoreGameObjectHierarchy(GameObject.Root)
-                        .Run();
-                        
-                    var pickup = new GameObject();
-                    pickup.WorldPosition = tr.Hit ? tr.HitPosition : tr.EndPosition;
-                    var clone = prefab.Clone(pickup.WorldPosition);
-                    clone.WorldPosition = pickup.WorldPosition;
-                    
-                    var phys = clone.Components.Get<Rigidbody>(FindMode.EnabledInSelfAndDescendants);
-                    if (phys != null) phys.Velocity = WorldRotation.Forward * 200f;
+                    // Call the inventory to handle dropping
+                    inv.RequestDrop(ActiveItemId, 1);
                 }
                 
                 ClearCurrentWeapon();
                 CurrentState = HeldItemState.Dropping;
                 _timeSinceStateChange = 0;
+                SelectedHotbarSlot = -1; // Deselect
+                ActiveItemId = string.Empty;
+                
+                // Return to empty hands
+                DoEquip(HeldItemSlot.None, null, string.Empty);
             }
             else
             {

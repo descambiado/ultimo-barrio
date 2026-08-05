@@ -4,9 +4,8 @@ using System;
 namespace UltimoBarrio.Core
 {
     /// <summary>
-    /// Represents a persistent canonical identity for a player across sessions and systems.
-    /// This avoids comparing transient network GameObject IDs or random Guids.
-    /// Format: "steam:<steamId>"
+    /// Represents a unique identifier for a player within a session.
+    /// Canonical IDs take the form: "steam:76561198..." or "bot:1".
     /// </summary>
     public struct PlayerIdentity : IEquatable<PlayerIdentity>
     {

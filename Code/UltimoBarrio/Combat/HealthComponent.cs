@@ -29,8 +29,11 @@ namespace UltimoBarrio.Combat
             if (!Networking.IsHost) return; // Host validation
             if (IsDead) return;
 
+            var before = Health;
             Health -= damageEvent.Amount;
             Health = MathF.Max(0, Health);
+            
+            Log.Info($"[Damage] source={damageEvent.WeaponId} before={before} damage={damageEvent.Amount} after={Health}");
             
             RpcTakeDamageFeedback(damageEvent.Amount, damageEvent.Position, damageEvent.Force, damageEvent.AttackerId);
 

@@ -51,7 +51,7 @@ namespace UltimoBarrio.QA
             if (player == null) { Log.Error("Player not found"); return; }
 
             var dummyGo = new GameObject(true, "QA_CombatDummy");
-            dummyGo.Transform.Position = player.Transform.Position + player.Transform.Rotation.Forward * 100f + Vector3.Up * 10f;
+            dummyGo.WorldPosition = player.WorldPosition + player.WorldRotation.Forward * 100f + Vector3.Up * 10f;
             
             var model = dummyGo.Components.Create<ModelRenderer>();
             model.Model = Model.Load("models/citizen/citizen.vmdl");
@@ -63,7 +63,7 @@ namespace UltimoBarrio.QA
             var hc = dummyGo.Components.Create<HealthComponent>();
             hc.MaxHealth = 100f;
             
-            Log.Info($"Dummy spawned at {dummyGo.Transform.Position} with {hc.Health} HP.");
+            Log.Info($"Dummy spawned at {dummyGo.WorldPosition} with {hc.Health} HP.");
         }
 
         [ConCmd("ub_qa_dummy_state")]
@@ -86,7 +86,9 @@ namespace UltimoBarrio.QA
             var interactor = Game.ActiveScene.GetAllComponents<PlayerInteractor>().FirstOrDefault();
             if (interactor == null) { Log.Error("PlayerInteractor not found."); return; }
 
-            var tr = Game.ActiveScene.Trace.Ray(interactor.GameObject.Transform.Position + Vector3.Up * 64f, interactor.GameObject.Transform.Position + Vector3.Up * 64f + interactor.GameObject.Transform.Rotation.Forward * 150f).Run();
+            var tr = Game.ActiveScene.Trace.Ray(interactor.GameObject.WorldPosition + Vector3.Up * 64f, interactor.GameObject.WorldPosition + Vector3.Up * 64f + interactor.GameObject.WorldRotation.Forward * 150f)
+                .IgnoreGameObjectHierarchy(interactor.GameObject)
+                .Run();
             
             Log.Info("--- ub_qa_stash_state ---");
             if (tr.Hit && tr.GameObject != null)
@@ -118,7 +120,7 @@ namespace UltimoBarrio.QA
             Log.Info("--- ub_qa_movement_state ---");
             Log.Info($"stamina actual: {mod.CurrentStamina}");
             Log.Info($"IsExhausted: {mod.IsExhausted}");
-            Log.Info($"camera local position: {cam.GameObject.Transform.LocalPosition}");
+            Log.Info($"camera local position: {cam.GameObject.LocalPosition}");
         }
     }
 }

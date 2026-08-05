@@ -226,7 +226,7 @@
           "_type": "gameobject",
           "prefab": "prefabs/weapons/ub_melee.prefab"
         },
-        "PistolPrefab": {
+        "PrimaryPrefab": {
           "_type": "gameobject",
           "prefab": "prefabs/weapons/ub_usp.prefab"
         },

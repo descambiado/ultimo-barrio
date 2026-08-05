@@ -141,7 +141,7 @@ namespace UltimoBarrio.Combat
         [Rpc.Broadcast]
         protected void DoMissEffects()
         {
-            if (MissSound != null) Sound.Play(MissSound, Transform.Position);
+            if (MissSound != null) Sound.Play(MissSound, WorldPosition);
             Log.Info("Melee Miss!");
         }
     }
