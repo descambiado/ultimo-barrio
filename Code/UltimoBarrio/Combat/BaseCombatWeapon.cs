@@ -12,6 +12,7 @@ namespace UltimoBarrio.Combat
         [Property] public float ReloadTime { get; set; } = 2.0f;
         [Property] public bool IsAutomatic { get; set; } = false;
         [Property] public bool FriendlyFire { get; set; } = false;
+        [Property] public float Range { get; set; } = 5000f;
 
         [Sync] public int CurrentAmmo { get; protected set; }
         [Sync] public bool IsReloading { get; protected set; }
@@ -136,7 +137,7 @@ namespace UltimoBarrio.Combat
         protected virtual void PerformTrace()
         {
             var ray = Scene.Camera.ScreenNormalToRay(0.5f);
-            var tr = Scene.Trace.Ray(ray, 5000f)
+            var tr = Scene.Trace.Ray(ray, Range)
                 .IgnoreGameObjectHierarchy(GameObject.Root)
                 .Run();
 
