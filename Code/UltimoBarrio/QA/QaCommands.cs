@@ -148,5 +148,31 @@ namespace UltimoBarrio.QA
             if (!Networking.IsHost) return;
             Log.Info("[QA] Spawning Raider...");
         }
+
+        [ConCmd("ub_qa_test_stash")]
+        public static void TestStash(string apartmentId)
+        {
+            if (!Networking.IsHost) return;
+            var player = Game.ActiveScene.GetAllComponents<Sandbox.PlayerController>().FirstOrDefault()?.GameObject;
+            if (player == null) return;
+            
+            var provider = Game.ActiveScene.GetAllComponents<IPlayerIdentityProvider>().FirstOrDefault();
+            if (provider == null || !provider.TryResolve(player.Network.Owner, out var id)) return;
+
+            var apt = Game.ActiveScene.GetAllComponents<ApartmentComponent>().FirstOrDefault(a => a.ApartmentId == apartmentId);
+            var stash = Game.ActiveScene.GetAllComponents<UltimoBarrio.Inventory.StashComponent>().FirstOrDefault(s => s.ApartmentId == apartmentId);
+            if (apt == null || stash == null) return;
+
+            var req = new InteractionRequest { Identity = id, InteractorObject = player };
+            bool canInteract = stash.CanInteract(req);
+            
+            var inv = stash.Components.Get<UltimoBarrio.InventoryComponent>();
+            Log.Info($"[QA_TEST] Target: {apartmentId}");
+            Log.Info($"[QA_TEST] CanonicalId: {id.CanonicalId}");
+            Log.Info($"[QA_TEST] OwnerId persistido: {apt.OwnerId}");
+            Log.Info($"[QA_TEST] InventoryId del stash: {inv?.InventoryId}");
+            Log.Info($"[QA_TEST] IsOwner: {id.CanonicalId == apt.OwnerId}");
+            Log.Info($"[QA_TEST] CanInteract: {canInteract}");
+        }
     }
 }

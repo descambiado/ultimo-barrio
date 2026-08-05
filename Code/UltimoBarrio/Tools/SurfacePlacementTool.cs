@@ -28,7 +28,7 @@ namespace UltimoBarrio.Tools
                 var startPos = go.WorldPosition.WithZ(go.WorldPosition.z + 500f);
                 var tr = scene.Trace.Ray(startPos, startPos + Vector3.Down * 2000f)
                     .IgnoreGameObjectHierarchy(go)
-                    .WithoutTags("trigger", "player")
+                    .WithoutTags("trigger", "player", "pickup", "weapon")
                     .Run();
                     
                 if (tr.Hit)
@@ -41,10 +41,13 @@ namespace UltimoBarrio.Tools
                     }
                     
                     var newPos = tr.HitPosition + Vector3.Up * (offsetZ + 0.5f);
+                    float distance = Vector3.DistanceBetween(startPos, tr.HitPosition);
+                    
+                    Log.Info($"[Grounding] {go.Name} | Prev: {go.WorldPosition} | Hit: {tr.HitPosition} | Normal: {tr.Normal} | BoundsZ: {offsetZ*2} | Final: {newPos} | Dist: {distance}");
+                    
                     go.WorldPosition = newPos;
                     results[go.Id.ToString()] = newPos;
                     grounded++;
-                    Log.Info($"[Grounding] {go.Name} grounded to {newPos}");
                 }
             }
             

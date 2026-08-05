@@ -13,7 +13,7 @@ namespace UltimoBarrio.Crafting
         [Property] public string OutputItemId { get; set; } = "ammo_9mm";
         [Property] public int OutputAmount { get; set; } = 12;
         
-        [Property] public List<string> InputItems { get; set; } = new List<string> { "item-scrap" };
+        [Property] public List<string> InputItems { get; set; } = new List<string> { "chatarra" };
         [Property] public List<int> InputAmounts { get; set; } = new List<int> { 5 };
 
         public string GetInteractionPrompt(InteractionRequest request)
