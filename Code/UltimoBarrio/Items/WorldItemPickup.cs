@@ -65,6 +65,21 @@ namespace UltimoBarrio
                 return;
             }
 
+            // Nodo de recurso: la recolección lo agota y respawnea; el pickup
+            // NO se destruye (vive en el mismo GameObject que el nodo).
+            var node = Components.Get<ResourceNode>( FindMode.InSelf );
+            if ( node is not null )
+            {
+                if ( !node.IsAvailable )
+                    return;
+
+                if ( !node.TryHarvest( interactorGo, out _ ) )
+                    return;
+
+                DeliverTo( inventory, node.ResolvedHarvestItemId, Amount, 0 );
+                return;
+            }
+
             var definition = ItemRegistry.GetDefinition( ItemId );
             int magToRestore = definition is not null && definition.IsWeapon ? AmmoInMag : 0;
 
@@ -78,6 +93,17 @@ namespace UltimoBarrio
                 var name = definition?.DisplayName ?? ItemId;
                 NotifyPickup( $"Recogido: {name} x{Amount}" );
                 GameObject.Destroy();
+            }
+        }
+
+        private void DeliverTo( InventoryComponent inventory, string itemId, int amount, int ammoInMag )
+        {
+            var definition = ItemRegistry.GetDefinition( itemId );
+            var name = definition?.DisplayName ?? itemId;
+
+            if ( inventory.AddItem( itemId, amount, ammoInMag ) is not null )
+            {
+                NotifyPickup( $"Recogido: {name} x{amount}" );
             }
         }
 

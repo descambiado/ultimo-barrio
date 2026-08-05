@@ -13,6 +13,17 @@ namespace UltimoBarrio.World
         [Property] public int Amount { get; set; } = 1;
         [Property] public float RespawnTime { get; set; } = 30f;
 
+        /// <summary>
+        /// Ítem que entrega la recolección. Vacío = ItemId; las variantes de
+        /// chatarra (scrap_*) producen chatarra internamente por defecto.
+        /// </summary>
+        [Property] public string HarvestItemId { get; set; } = string.Empty;
+
+        public string ResolvedHarvestItemId
+            => !string.IsNullOrEmpty( HarvestItemId )
+                ? HarvestItemId
+                : ( ItemId.StartsWith( "scrap_", StringComparison.Ordinal ) ? "chatarra" : ItemId );
+
         [Sync(SyncFlags.FromHost)] public bool IsAvailable { get; private set; } = true;
 
         private TimeSince timeSinceCollected;

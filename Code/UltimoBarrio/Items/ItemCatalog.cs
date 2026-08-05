@@ -35,6 +35,7 @@ namespace UltimoBarrio
             AddConsumable( "water", "Agua", "Agua purificada", 5, heal: 0, weight: 1f );
             AddConsumable( "medicine", "Medicinas", "Cura tus heridas", 5, heal: 25, weight: 0.5f );
             AddConsumable( "bandage", "Vendaje", "Cura heridas ligeras", 8, heal: 15, weight: 0.2f );
+            AddConsumable( "food", "Comida", "Alimento envasado", 6, heal: 10, weight: 0.8f );
 
             // ── Munición ─────────────────────────────────────────────────────
             Add( "ammo_9mm", "Mun. 9mm", "Balas calibre 9mm", ItemCategory.Ammo, 120, weight: 0.05f );
