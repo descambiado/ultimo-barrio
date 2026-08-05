@@ -32,7 +32,7 @@
         "__guid": "2ea42d67-448d-4e44-abfa-30bd318d478c",
         "__enabled": true,
         "__type": "Sandbox.ModelRenderer",
-        "Model": "models/sbox_props/paint_bucket/paint_bucket.vmdl",
+        "Model": "models/dev/box.vmdl",
         "Tint": "0.5,0.5,0.5,1"
       }
     ],

@@ -1,4 +1,4 @@
-﻿{
+{
   "RootObject": {
     "__guid": "737e7ae6-eedd-48da-aa6d-b91c3ec90880",
     "__version": 2,
@@ -32,10 +32,11 @@
         "__guid": "c24b399e-edfc-4cea-819d-a3ba767258b2",
         "__enabled": true,
         "__type": "Sandbox.ModelRenderer",
-        "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+        "Model": "models/dev/box.vmdl",
         "Tint": "0.5,0.5,0.5,1"
       }
     ],
     "Children": []
   }
 }
+

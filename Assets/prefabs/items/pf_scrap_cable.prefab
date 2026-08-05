@@ -32,7 +32,7 @@
         "__guid": "416dcd00-3ad3-45fe-88ab-7377a4e35bd0",
         "__enabled": true,
         "__type": "Sandbox.ModelRenderer",
-        "Model": "models/sbox_props/power_cord/power_cord.vmdl",
+        "Model": "models/dev/box.vmdl",
         "Tint": "0.5,0.5,0.5,1"
       }
     ],

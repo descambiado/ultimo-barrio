@@ -11,8 +11,14 @@ namespace UltimoBarrio.Core
     {
         public static bool EnableEconomy { get; set; } = true;
         public static bool EnableCombat { get; set; } = true;
-        public static bool EnableRaids { get; set; } = true;
+        public static bool EnableRaids { get; set; } = false;
         public static bool EnableWorldClock { get; set; } = true;
-        public static bool EnableAI { get; set; } = true;
+        public static bool EnableAI { get; set; } = false;
+        
+        // Added to isolate bugs
+        public static bool EnableLootSpawners { get; set; } = false;
+        public static bool EnableFortifications { get; set; } = false;
+        public static bool EnableDangerZones { get; set; } = false;
+        public static bool EnableWorldCrafting { get; set; } = false;
     }
 }

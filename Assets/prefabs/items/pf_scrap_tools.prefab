@@ -32,7 +32,7 @@
         "__guid": "343c4935-ece4-44ad-b0f3-dc44475b99be",
         "__enabled": true,
         "__type": "Sandbox.ModelRenderer",
-        "Model": "models/sbox_props/tool_box/tool_box.vmdl",
+        "Model": "models/dev/box.vmdl",
         "Tint": "0.5,0.5,0.5,1"
       }
     ],

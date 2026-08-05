@@ -32,7 +32,7 @@
         "__guid": "75ddd3af-ba7e-4c8e-896d-1d96a994ff49",
         "__enabled": true,
         "__type": "Sandbox.ModelRenderer",
-        "Model": "models/sbox_props/tv_monitor_crt/tv_monitor_crt.vmdl",
+        "Model": "models/dev/box.vmdl",
         "Tint": "0.5,0.5,0.5,1"
       }
     ],
