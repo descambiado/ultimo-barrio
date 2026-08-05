@@ -178,19 +178,18 @@ namespace UltimoBarrio.Combat
             IsReloading = false;
             
             int needed = MaxAmmo - CurrentAmmo;
-            if (needed <= 0) return;
+            if ( needed <= 0 ) return;
 
             var inv = Components.GetInAncestorsOrSelf<InventoryComponent>();
-            if (inv != null && !string.IsNullOrEmpty(AmmoType))
+            if ( inv != null && !string.IsNullOrEmpty( AmmoType ) )
             {
-                int available = inv.GetCount(AmmoType);
-                int toTake = Math.Min(needed, available);
-                if (toTake > 0)
+                int available = inv.GetCount( AmmoType );
+                var (newClip, newReserve) = ReloadMath.Reload( CurrentAmmo, MaxAmmo, available );
+
+                int toTake = newClip - CurrentAmmo;
+                if ( toTake > 0 && inv.TryRemove( AmmoType, toTake ) )
                 {
-                    if (inv.TryRemove(AmmoType, toTake))
-                    {
-                        CurrentAmmo += toTake;
-                    }
+                    CurrentAmmo = newClip;
                 }
             }
             else
