@@ -84,10 +84,42 @@ namespace UltimoBarrio.Combat
         {
         }
 
+        /// <summary>
+        /// Aplica las estadísticas del ItemDefinition canónico al arma (única
+        /// fuente de verdad): daño, cadencia, cargador, munición y alcance.
+        /// Lo invoca HeldItemController al crear el objeto de arma.
+        /// </summary>
+        public void ApplyDefinitionStats( ItemDefinition definition )
+        {
+            if ( definition is null )
+                return;
+
+            if ( definition.Damage > 0f )
+                BaseDamage = definition.Damage;
+
+            if ( definition.FireRate > 0f )
+                FireRate = definition.FireRate;
+
+            if ( definition.MagazineSize > 0 )
+                MaxAmmo = definition.MagazineSize;
+
+            if ( !string.IsNullOrEmpty( definition.AmmoType ) )
+                AmmoType = definition.AmmoType;
+
+            if ( definition.MeleeRange > 0f )
+                Range = definition.MeleeRange;
+        }
+
         public void Fire()
         {
             _lastFired = 0f;
-            
+
+            if ( CurrentAmmo <= 0 )
+            {
+                OnDryFire();
+                return;
+            }
+
             if (Networking.IsHost)
             {
                 CurrentAmmo--;
@@ -96,7 +128,11 @@ namespace UltimoBarrio.Combat
             {
                 RpcRequestFire();
             }
-            
+
+            // Ruido para la IA (investigación de disparos), host-side.
+            if ( Networking.IsHost )
+                WeaponNoise.Emit( WorldPosition, 2200f );
+
             DoFireEffects();
             PerformTrace();
         }

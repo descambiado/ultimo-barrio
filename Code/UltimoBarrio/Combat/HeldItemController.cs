@@ -412,6 +412,10 @@ namespace UltimoBarrio
             var newWeapon = scene.Clone();
             newWeapon.Name = $"{definition.ItemId} (slot)";
 
+            // Estadísticas desde el registro canónico (fuente de verdad).
+            var weaponComp = newWeapon.Components.GetInDescendantsOrSelf<BaseCombatWeapon>();
+            weaponComp?.ApplyDefinitionStats( definition );
+
             // Attach por nombre de hueso (nunca por GUID).
             if ( WorldBodyRenderer is not null )
             {
