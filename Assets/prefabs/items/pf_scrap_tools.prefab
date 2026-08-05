@@ -1,0 +1,41 @@
+{
+  "RootObject": {
+    "__guid": "f9f429ee-523d-471d-9871-7d265cdfb0e2",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "Scrap Tools",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__guid": "6ee2809f-16df-4b31-8b8c-fa4fd71837b3",
+        "__enabled": true,
+        "__type": "UltimoBarrio.WorldItemPickup",
+        "ItemId": "chatarra",
+        "Amount": 1
+      },
+      {
+        "__guid": "07189325-fe3d-4d01-a5fa-cd40f98ae752",
+        "__enabled": true,
+        "__type": "Sandbox.BoxCollider",
+        "Scale": "10,10,10"
+      },
+      {
+        "__guid": "343c4935-ece4-44ad-b0f3-dc44475b99be",
+        "__enabled": true,
+        "__type": "Sandbox.ModelRenderer",
+        "Model": "models/sbox_props/tool_box/tool_box.vmdl",
+        "Tint": "0.5,0.5,0.5,1"
+      }
+    ],
+    "Children": []
+  }
+}

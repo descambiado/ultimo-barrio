@@ -1,0 +1,41 @@
+{
+  "RootObject": {
+    "__guid": "0a84b65c-b5dd-46f9-96cc-035b323b86d7",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "Scrap Parts",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__guid": "500d4c34-d7a5-4ba9-9c7e-346d6394ebe1",
+        "__enabled": true,
+        "__type": "UltimoBarrio.WorldItemPickup",
+        "ItemId": "chatarra",
+        "Amount": 1
+      },
+      {
+        "__guid": "3269b040-147d-47f6-a105-97f41cd5fc41",
+        "__enabled": true,
+        "__type": "Sandbox.BoxCollider",
+        "Scale": "10,10,10"
+      },
+      {
+        "__guid": "2ea42d67-448d-4e44-abfa-30bd318d478c",
+        "__enabled": true,
+        "__type": "Sandbox.ModelRenderer",
+        "Model": "models/sbox_props/paint_bucket/paint_bucket.vmdl",
+        "Tint": "0.5,0.5,0.5,1"
+      }
+    ],
+    "Children": []
+  }
+}
