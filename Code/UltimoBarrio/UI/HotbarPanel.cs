@@ -1,5 +1,6 @@
 using Sandbox;
 using Sandbox.UI;
+using System.Linq;
 
 namespace UltimoBarrio.UI
 {
@@ -7,19 +8,17 @@ namespace UltimoBarrio.UI
     {
         [Property] public InventoryComponent TargetInventory { get; set; }
         [Property] public Combat.HeldItemController HeldItemCtrl { get; set; }
-        
+
         private Panel _container;
 
         protected override void OnStart()
         {
-            if (Panel != null)
+            if ( Panel != null )
             {
                 Panel.Style.Position = PositionMode.Absolute;
                 Panel.Style.Bottom = 20;
-                Panel.Style.Left = Length.Percent(50);
-                Panel.Style.Width = Length.Percent(100);
-                // Center transform is not supported directly in this simple CSS engine sometimes, so flex box it:
                 Panel.Style.Left = 0;
+                Panel.Style.Right = 0;
                 Panel.Style.Display = DisplayMode.Flex;
                 Panel.Style.JustifyContent = Justify.Center;
                 Panel.Style.PointerEvents = PointerEvents.None;
@@ -27,7 +26,6 @@ namespace UltimoBarrio.UI
                 _container = Panel.AddChild<Panel>();
                 _container.Style.Display = DisplayMode.Flex;
                 _container.Style.FlexDirection = FlexDirection.Row;
-                // _container.Style.Gap = 8;
                 _container.Style.PointerEvents = PointerEvents.All;
             }
         }
@@ -37,70 +35,142 @@ namespace UltimoBarrio.UI
 
         protected override void OnUpdate()
         {
-            if (TargetInventory == null || HeldItemCtrl == null || _container == null) return;
-            
+            if ( TargetInventory == null || HeldItemCtrl == null || _container == null ) return;
+
             int activeSlot = HeldItemCtrl.SelectedHotbarSlot;
-            
-            int currentHash = System.HashCode.Combine(activeSlot, TargetInventory.HotbarSlots);
-            for(int i = 0; i < TargetInventory.HotbarSlots; i++)
+
+            // Munición del arma activa (cargador + recarga).
+            var activeWeapon = ResolveActiveWeapon();
+            int mag = activeWeapon?.CurrentAmmo ?? 0;
+            int maxMag = activeWeapon?.MaxAmmo ?? 0;
+            bool reloading = activeWeapon?.IsReloading ?? false;
+
+            int currentHash = System.HashCode.Combine( activeSlot, TargetInventory.HotbarSlots, mag, maxMag, reloading );
+            for ( int i = 0; i < TargetInventory.HotbarSlots; i++ )
             {
-                if (i < TargetInventory.Slots.Count)
+                if ( i < TargetInventory.Slots.Count )
                 {
                     var s = TargetInventory.Slots[i];
-                    currentHash = System.HashCode.Combine(currentHash, s.ItemId, s.Amount);
+                    currentHash = System.HashCode.Combine( currentHash, s.ItemId, s.Amount, s.AmmoInMag );
                 }
             }
 
-            if (_lastHash == currentHash && _container.ChildrenCount > 0) return;
+            if ( _lastHash == currentHash && _container.ChildrenCount > 0 )
+                return;
+
             _lastHash = currentHash;
             _lastSelected = activeSlot;
 
-            _container.DeleteChildren(true);
-            
-            for (int i = 0; i < TargetInventory.HotbarSlots; i++)
+            _container.DeleteChildren( true );
+
+            for ( int i = 0; i < TargetInventory.HotbarSlots; i++ )
             {
                 var slotPanel = _container.AddChild<Panel>();
                 slotPanel.Style.Width = 64;
                 slotPanel.Style.Height = 64;
-                
-                bool isSelected = (i == activeSlot);
-                slotPanel.Style.BackgroundColor = isSelected ? new Color(0.1f, 0.6f, 0.3f, 0.9f) : new Color(0.12f, 0.12f, 0.12f, 0.8f);
-                // slotPanel.Style.Border = new Border(Length.Pixels(2), BorderStyle.Solid, isSelected ? Color.White : new Color(0.3f, 0.3f, 0.3f, 1f));
-                
+
+                bool isSelected = ( i == activeSlot );
+                slotPanel.Style.BackgroundColor = isSelected
+                    ? new Color( 0.1f, 0.6f, 0.3f, 0.95f )
+                    : new Color( 0.12f, 0.12f, 0.12f, 0.8f );
+
                 slotPanel.Style.AlignItems = Align.Center;
                 slotPanel.Style.JustifyContent = Justify.Center;
                 slotPanel.Style.FlexDirection = FlexDirection.Column;
-                
+                slotPanel.Style.PointerEvents = PointerEvents.All;
+                slotPanel.Style.Cursor = "pointer";
+
+                var slotIndex = i;
+                slotPanel.AddEventListener( "onclick", () => HeldItemCtrl.SelectSlot( slotIndex ) );
+
                 var numberLbl = slotPanel.AddChild<Label>();
-                numberLbl.Text = (i + 1).ToString();
+                numberLbl.Text = ( i + 1 ).ToString();
                 numberLbl.Style.Position = PositionMode.Absolute;
                 numberLbl.Style.Top = 2;
                 numberLbl.Style.Left = 4;
                 numberLbl.Style.FontSize = 10;
                 numberLbl.Style.FontColor = Color.White;
 
-                if (i < TargetInventory.Slots.Count)
+                if ( i < TargetInventory.Slots.Count )
                 {
                     var slot = TargetInventory.Slots[i];
-                    if (!string.IsNullOrEmpty(slot.ItemId) && slot.Amount > 0)
+                    if ( !string.IsNullOrEmpty( slot.ItemId ) && slot.Amount > 0 )
                     {
-                        var def = ItemRegistry.GetDefinition(slot.ItemId);
+                        var def = ItemRegistry.GetDefinition( slot.ItemId );
                         string displayName = def != null ? def.DisplayName : slot.ItemId;
-                        
+
+                        // Icono provisional: inicial coloreada por categoría.
+                        var iconLbl = slotPanel.AddChild<Label>();
+                        iconLbl.Text = !string.IsNullOrEmpty( displayName ) ? displayName[..1].ToUpper() : "?";
+                        iconLbl.Style.FontSize = 22;
+                        iconLbl.Style.FontColor = CategoryColor( def );
+                        iconLbl.Style.FontWeight = 800;
+
                         var nameLbl = slotPanel.AddChild<Label>();
                         nameLbl.Text = displayName;
-                        nameLbl.Style.FontSize = 10;
+                        nameLbl.Style.FontSize = 9;
                         nameLbl.Style.FontColor = Color.White;
                         nameLbl.Style.TextAlign = TextAlign.Center;
-                        
+
                         var amtLbl = slotPanel.AddChild<Label>();
                         amtLbl.Text = $"x{slot.Amount}";
                         amtLbl.Style.FontSize = 12;
-                        amtLbl.Style.FontColor = new Color(0.8f, 0.8f, 0.8f);
+                        amtLbl.Style.FontColor = new Color( 0.8f, 0.8f, 0.8f );
                         amtLbl.Style.FontWeight = 800;
+
+                        // Cargador del arma en este slot (persistente).
+                        if ( def is not null && def.IsWeapon && def.MagazineSize > 0 )
+                        {
+                            var magLbl = slotPanel.AddChild<Label>();
+                            magLbl.Text = $"{slot.AmmoInMag}/{def.MagazineSize}";
+                            magLbl.Style.FontSize = 10;
+                            magLbl.Style.FontColor = slot.AmmoInMag == 0 ? new Color( 1f, 0.3f, 0.3f ) : new Color( 0.9f, 0.9f, 0.5f );
+                            magLbl.Style.FontWeight = 700;
+                        }
                     }
                 }
             }
+
+            // Indicador de munición/recarga del arma activa (HUD inferior).
+            if ( activeWeapon is not null && ( mag > 0 || reloading ) )
+            {
+                var statusLabel = _container.AddChild<Label>();
+                statusLabel.Text = reloading
+                    ? "RECARGANDO..."
+                    : $"CARGA: {mag}/{maxMag}";
+                statusLabel.Style.FontSize = 14;
+                statusLabel.Style.FontColor = reloading ? new Color( 1f, 0.7f, 0.2f ) : Color.White;
+                statusLabel.Style.FontWeight = 800;
+                statusLabel.Style.Padding = 6;
+            }
+        }
+
+        private Combat.BaseCombatWeapon ResolveActiveWeapon()
+        {
+            if ( HeldItemCtrl.ActiveWeaponId == System.Guid.Empty )
+                return null;
+
+            var weaponObj = HeldItemCtrl.Scene?.Directory.FindByGuid( HeldItemCtrl.ActiveWeaponId );
+            if ( weaponObj == null )
+                return null;
+
+            return weaponObj.Components.GetInDescendantsOrSelf<Combat.BaseCombatWeapon>();
+        }
+
+        private static Color CategoryColor( ItemDefinition definition )
+        {
+            if ( definition is null )
+                return Color.Gray;
+
+            return definition.Category switch
+            {
+                ItemCategory.Firearm => new Color( 0.9f, 0.4f, 0.3f ),
+                ItemCategory.Melee => new Color( 0.7f, 0.7f, 0.9f ),
+                ItemCategory.Consumable => new Color( 0.3f, 0.9f, 0.4f ),
+                ItemCategory.Ammo => new Color( 0.9f, 0.8f, 0.3f ),
+                ItemCategory.Resource => new Color( 0.7f, 0.5f, 0.3f ),
+                _ => Color.White
+            };
         }
     }
 }

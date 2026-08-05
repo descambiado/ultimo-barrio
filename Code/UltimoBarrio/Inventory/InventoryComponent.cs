@@ -1,7 +1,5 @@
 using Sandbox;
 using System;
-using UltimoBarrio.Core;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace UltimoBarrio
@@ -10,6 +8,13 @@ namespace UltimoBarrio
     {
         public string ItemId { get; set; }
         public int Amount { get; set; }
+
+        /// <summary>
+        /// Munición actual del cargador del arma apilada en este slot.
+        /// El inventario es la única fuente de verdad del cargador: sobrevive
+        /// al cambio de slot, al drop/re-pickup y al guardado.
+        /// </summary>
+        public int AmmoInMag { get; set; }
     }
 
     public class InventoryComponent : Component, IInventory
@@ -17,106 +22,186 @@ namespace UltimoBarrio
         [Property] public string InventoryId { get; set; } = string.Empty;
         [Property] public int MaxSlots { get; set; } = 24;
         [Property] public int HotbarSlots { get; set; } = 6;
-        
+
         [Sync] public NetList<InventorySlot> Slots { get; set; } = new NetList<InventorySlot>();
 
         protected override void OnAwake()
         {
-            if (Slots.Count == 0 && !IsProxy)
+            if ( Slots.Count == 0 && !IsProxy )
             {
-                for(int i=0; i<MaxSlots; i++) Slots.Add(new InventorySlot { ItemId = "", Amount = 0 });
+                for ( int i = 0; i < MaxSlots; i++ )
+                    Slots.Add( new InventorySlot { ItemId = "", Amount = 0 } );
             }
         }
 
-        public bool CanAdd(string itemId, int amount)
+        public bool CanAdd( string itemId, int amount )
         {
-            return true; // Simplification for now
+            if ( string.IsNullOrEmpty( itemId ) || amount <= 0 )
+                return false;
+
+            var definition = ItemRegistry.GetDefinition( itemId );
+            var stackSize = definition?.StackSize ?? 64;
+
+            int remaining = amount;
+            foreach ( var slot in Slots )
+            {
+                if ( slot.ItemId == itemId && slot.Amount < stackSize )
+                    remaining -= stackSize - slot.Amount;
+                if ( remaining <= 0 )
+                    return true;
+            }
+
+            int freeSlots = Slots.Count( s => string.IsNullOrEmpty( s.ItemId ) );
+            int neededSlots = ( remaining + stackSize - 1 ) / stackSize;
+            return freeSlots >= neededSlots;
         }
 
-        public bool TryAdd(string itemId, int amount)
+        public bool TryAdd( string itemId, int amount )
         {
-            if (IsProxy) return false;
-            // Find existing stack
-            var existing = Slots.FirstOrDefault(s => s.ItemId == itemId);
-            if (existing != null)
+            if ( IsProxy ) return false;
+            if ( !CanAdd( itemId, amount ) ) return false;
+
+            var definition = ItemRegistry.GetDefinition( itemId );
+            var stackSize = definition?.StackSize ?? 64;
+
+            int remaining = amount;
+
+            // 1) Apilar sobre stacks existentes del mismo ítem.
+            foreach ( var slot in Slots )
             {
-                existing.Amount += amount;
-                return true;
+                if ( remaining <= 0 ) break;
+                if ( slot.ItemId != itemId ) continue;
+
+                int space = stackSize - slot.Amount;
+                if ( space <= 0 ) continue;
+
+                int toAdd = Math.Min( space, remaining );
+                slot.Amount += toAdd;
+                remaining -= toAdd;
             }
-            // Find empty slot
-            var empty = Slots.FirstOrDefault(s => string.IsNullOrEmpty(s.ItemId));
-            if (empty != null)
+
+            // 2) Llenar slots vacíos.
+            foreach ( var slot in Slots )
             {
-                empty.ItemId = itemId;
-                empty.Amount = amount;
-                return true;
+                if ( remaining <= 0 ) break;
+                if ( !string.IsNullOrEmpty( slot.ItemId ) ) continue;
+
+                int toAdd = Math.Min( stackSize, remaining );
+                slot.ItemId = itemId;
+                slot.Amount = toAdd;
+                remaining -= toAdd;
             }
-            return false;
+
+            return remaining == 0;
         }
 
-        public bool TryRemove(string itemId, int amount)
+        /// <summary>
+        /// Añade ítems devolviendo el slot donde terminó (usado por pickups
+        /// para transferir el cargador del arma recogida). Devuelve null si falla.
+        /// </summary>
+        public InventorySlot AddItem( string itemId, int amount, int ammoInMag = 0 )
         {
-            if (IsProxy) return false;
-            var existing = Slots.FirstOrDefault(s => s.ItemId == itemId);
-            if (existing != null && existing.Amount >= amount)
+            if ( !TryAdd( itemId, amount ) )
+                return null;
+
+            // El ítem terminó en el último slot no vacío de ese id.
+            var definition = ItemRegistry.GetDefinition( itemId );
+            if ( definition is not null && definition.IsWeapon && ammoInMag > 0 )
             {
-                existing.Amount -= amount;
-                if (existing.Amount <= 0)
+                var slot = Slots.LastOrDefault( s => s.ItemId == itemId && s.Amount > 0 );
+                if ( slot is not null )
+                    slot.AmmoInMag = Math.Clamp( ammoInMag, 0, Math.Max( 1, definition.MagazineSize ) );
+            }
+
+            return Slots.LastOrDefault( s => s.ItemId == itemId && s.Amount > 0 );
+        }
+
+        public bool TryRemove( string itemId, int amount )
+        {
+            if ( IsProxy ) return false;
+
+            if ( GetCount( itemId ) < amount )
+                return false;
+
+            int remaining = amount;
+            for ( int i = Slots.Count - 1; i >= 0 && remaining > 0; i-- )
+            {
+                var slot = Slots[i];
+                if ( slot.ItemId != itemId ) continue;
+
+                int toRemove = Math.Min( slot.Amount, remaining );
+                slot.Amount -= toRemove;
+                remaining -= toRemove;
+
+                if ( slot.Amount <= 0 )
                 {
-                    existing.ItemId = "";
-                    existing.Amount = 0;
+                    slot.ItemId = "";
+                    slot.Amount = 0;
+                    slot.AmmoInMag = 0;
                 }
-                return true;
             }
-            return false;
+
+            return remaining == 0;
         }
 
-        public int GetCount(string itemId)
+        public int GetCount( string itemId )
         {
-            var existing = Slots.FirstOrDefault(s => s.ItemId == itemId);
-            return existing?.Amount ?? 0;
+            int total = 0;
+            foreach ( var slot in Slots )
+            {
+                if ( slot.ItemId == itemId )
+                    total += slot.Amount;
+            }
+            return total;
+        }
+
+        /// <summary>Peso total del inventario (penalización de movimiento).</summary>
+        public float GetTotalWeight()
+        {
+            float total = 0f;
+            foreach ( var slot in Slots )
+            {
+                if ( string.IsNullOrEmpty( slot.ItemId ) || slot.Amount <= 0 )
+                    continue;
+
+                var definition = ItemRegistry.GetDefinition( slot.ItemId );
+                if ( definition is not null )
+                    total += definition.Weight * slot.Amount;
+            }
+            return total;
         }
 
         [Rpc.Host]
-        public void RequestTransfer(string itemId, int amount, Guid targetInventoryId)
+        public void RequestTransfer( string itemId, int amount, Guid targetInventoryId )
         {
-            var targetInv = Scene.GetAllComponents<InventoryComponent>().FirstOrDefault(c => c.GameObject.Id == targetInventoryId);
-            if (targetInv == null) return;
+            var targetInv = Scene.GetAllComponents<InventoryComponent>()
+                .FirstOrDefault( c => c.GameObject.Id == targetInventoryId );
+            if ( targetInv == null ) return;
 
-            // Optional: Validate distance or ownership here if needed
-            
-            if (TryRemove(itemId, amount))
+            // Autorización: el stash valida propietario; aquí solo se transfiere
+            // si el destino acepta (atomicidad con reembolso).
+            if ( TryRemove( itemId, amount ) )
             {
-                if (!targetInv.TryAdd(itemId, amount))
+                if ( !targetInv.TryAdd( itemId, amount ) )
                 {
-                    // Refund if add failed
-                    TryAdd(itemId, amount);
+                    // Rollback: devolver lo extraído.
+                    TryAdd( itemId, amount );
                 }
             }
         }
 
         [Rpc.Host]
-        public void RequestDrop(string itemId, int amount)
+        public void RequestDrop( string itemId, int amount )
         {
-            if (TryRemove(itemId, amount))
+            if ( TryRemove( itemId, amount ) )
             {
-                var prefabPath = "prefabs/items/pf_scrap_pickup.prefab"; 
-                if (itemId == "weapon_usp") prefabPath = "prefabs/items/pf_usp_pickup.prefab";
-                else if (itemId == "ammo_9mm") prefabPath = "prefabs/items/pf_ammo_9mm_pickup.prefab";
+                var pickup = ItemPickupFactory.SpawnPickup( Scene, itemId, amount, 0,
+                    GameObject.WorldPosition + Vector3.Up * 50f + GameObject.WorldRotation.Forward * 50f );
 
-                // s&box way to spawn prefab:
-                var prefabFile = ResourceLibrary.Get<PrefabFile>(prefabPath);
-                var obj = SceneUtility.GetPrefabScene(prefabFile)?.Clone();
-                if (obj != null)
+                if ( pickup is null )
                 {
-                    obj.WorldPosition = GameObject.WorldPosition + Vector3.Up * 50f + GameObject.WorldRotation.Forward * 50f;
-                    var pickup = obj.Components.Get<WorldItemPickup>();
-                    if (pickup != null)
-                    {
-                        pickup.ItemId = itemId;
-                        pickup.Amount = amount;
-                    }
-                    obj.NetworkSpawn();
+                    // Rollback: no se pudo materializar el pickup.
+                    TryAdd( itemId, amount );
                 }
             }
         }
