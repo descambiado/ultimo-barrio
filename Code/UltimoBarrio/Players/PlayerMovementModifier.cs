@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 using UltimoBarrio.Combat;
 using System;
 
@@ -55,7 +55,7 @@ namespace UltimoBarrio.Players
             _wasOnGround = Controller.IsOnGround;
 
             // Sprinting & Stamina
-            bool trySprint = Input.Down("run") && !IsExhausted && Controller.Velocity.Length > 10f && !Controller.IsDucked && Controller.IsOnGround;
+            bool trySprint = Input.Down("run") && !IsExhausted && Controller.Velocity.Length > 10f && !Input.Down("duck") && Controller.IsOnGround;
             
             if (trySprint)
             {
@@ -95,8 +95,8 @@ namespace UltimoBarrio.Players
             float weaponMult = 1f;
             if (HeldItems != null)
             {
-                if (HeldItems.CurrentType == HeldItemType.Pistol) weaponMult = 0.95f;
-                else if (HeldItems.CurrentType == HeldItemType.Melee) weaponMult = 1.05f;
+                if (HeldItems.CurrentSlot == HeldItemSlot.Primary) weaponMult = 0.95f;
+                else if (HeldItems.CurrentSlot == HeldItemSlot.Melee) weaponMult = 1.05f;
             }
 
             float finalMult = weightMult * weaponMult;

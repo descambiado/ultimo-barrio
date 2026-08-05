@@ -39,7 +39,7 @@ namespace UltimoBarrio.Players
             float bobSpeed = Profile.BobSpeedWalk;
             float bobIntensity = Profile.BobIntensityWalk;
 
-            if (controller.IsDucked)
+            if (Input.Down("duck"))
             {
                 bobSpeed = Profile.BobSpeedDucked;
                 bobIntensity = Profile.BobIntensityDucked;

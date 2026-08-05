@@ -7,9 +7,9 @@ namespace UltimoBarrio
 {
     public class HeldConsumable : Component
     {
-        [Property] public string ConsumableType { get; set; } = ""agua""; // agua, medicina, chatarra
+        [Property] public string ConsumableType { get; set; } = "agua"; // agua, medicina, chatarra
         [Property] public int HealAmount { get; set; } = 25;
-        [Property] public string SoundEffect { get; set; } = ""sounds/drink.sound"";
+        [Property] public string SoundEffect { get; set; } = "sounds/drink.sound";
         
         [Property] public float Cooldown { get; set; } = 1.0f;
         private TimeSince timeSinceLastUse;
@@ -18,12 +18,12 @@ namespace UltimoBarrio
         {
             if (IsProxy) return; // Only process input on owner/host
 
-            if (Input.Pressed(""attack1"") && timeSinceLastUse > Cooldown)
+            if (Input.Pressed("attack1") && timeSinceLastUse > Cooldown)
             {
                 UseConsumable();
                 timeSinceLastUse = 0;
             }
-            else if (Input.Pressed(""attack2"") && timeSinceLastUse > Cooldown)
+            else if (Input.Pressed("attack2") && timeSinceLastUse > Cooldown)
             {
                 DropConsumable();
                 timeSinceLastUse = 0;
@@ -37,17 +37,17 @@ namespace UltimoBarrio
             {
                 if (inv.TryRemove(ConsumableType, 1))
                 {
-                    if (ConsumableType == ""agua"")
+                    if (ConsumableType == "agua")
                     {
-                        Log.Info(""Beber agua!"");
+                        Log.Info("Beber agua!");
                     }
-                    else if (ConsumableType == ""medicina"")
+                    else if (ConsumableType == "medicina")
                     {
-                        Log.Info($""Curarse {HealAmount} HP!"");
+                        Log.Info($"Curarse {HealAmount} HP!");
                     }
-                    else if (ConsumableType == ""chatarra"")
+                    else if (ConsumableType == "chatarra")
                     {
-                        Log.Info(""No puedes consumir chatarra. Solo soltarla."");
+                        Log.Info("No puedes consumir chatarra. Solo soltarla.");
                         inv.TryAdd(ConsumableType, 1);
                         return;
                     }

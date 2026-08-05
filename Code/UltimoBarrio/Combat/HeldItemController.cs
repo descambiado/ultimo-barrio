@@ -225,10 +225,10 @@ namespace UltimoBarrio.Combat
             if (WorldBodyRenderer != null)
             {
                 newWep.SetParent(WorldBodyRenderer.GameObject);
-                var boneT = WorldBodyRenderer.GetBoneTransform("hold_R");
-                if (boneT != global::Sandbox.Transform.Zero)
+                var boneT = WorldBodyRenderer.GetBoneObject("hold_R");
+                if (boneT != null)
                 {
-                    newWep.WorldTransform = boneT;
+                    newWep.SetParent(boneT);
                 }
                 else
                 {
