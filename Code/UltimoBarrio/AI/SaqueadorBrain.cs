@@ -105,6 +105,17 @@ namespace UltimoBarrio.AI
                     if ( destination.HasValue )
                     {
                         Agent.MoveTo( destination.Value );
+
+                        // Si el objetivo del raid es una estructura (puerta/alijo),
+                        // pasar a atacarla al llegar.
+                        if ( RaidTarget.IsValid()
+                            && Vector3.DistanceBetween( WorldPosition, RaidTarget.WorldPosition ) <= AttackRange
+                            && RaidTarget.Components.GetInAncestorsOrSelf<UltimoBarrio.Core.IDamageable>() is not null )
+                        {
+                            ChangeState( SaqueadorState.Attack );
+                            break;
+                        }
+
                         if ( Vector3.DistanceBetween( WorldPosition, destination.Value ) < 80f || _timeInState > 6f )
                             ChangeState( nearestTarget is not null ? SaqueadorState.Detect : SaqueadorState.Idle );
                     }
@@ -142,6 +153,17 @@ namespace UltimoBarrio.AI
                         TryAttack( nearestTarget );
 
                         if ( Vector3.DistanceBetween( WorldPosition, nearestTarget.WorldPosition ) > AttackRange * 1.6f )
+                            ChangeState( SaqueadorState.Approach );
+                        else if ( _timeInState > 8f )
+                            ChangeState( SaqueadorState.Retreat );
+                    }
+                    else if ( RaidTarget.IsValid()
+                        && RaidTarget.Components.GetInAncestorsOrSelf<UltimoBarrio.Core.IDamageable>() is not null )
+                    {
+                        // Asalto a la estructura (puerta/alijo).
+                        TryAttack( RaidTarget );
+
+                        if ( Vector3.DistanceBetween( WorldPosition, RaidTarget.WorldPosition ) > AttackRange * 1.6f )
                             ChangeState( SaqueadorState.Approach );
                         else if ( _timeInState > 8f )
                             ChangeState( SaqueadorState.Retreat );
