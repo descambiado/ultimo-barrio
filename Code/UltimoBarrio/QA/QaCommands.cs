@@ -149,6 +149,23 @@ namespace UltimoBarrio.QA
             Log.Info("[QA] Spawning Raider...");
         }
 
+        [ConCmd("ub_qa_assign_me")]
+        public static void AssignToMe(string apartmentId)
+        {
+            if (!Networking.IsHost) return;
+            var player = Game.ActiveScene.GetAllComponents<Sandbox.PlayerController>().FirstOrDefault()?.GameObject;
+            if (player == null) return;
+            var provider = Game.ActiveScene.GetAllComponents<IPlayerIdentityProvider>().FirstOrDefault();
+            if (provider == null || !provider.TryResolve(player.Network.Owner, out var id)) return;
+
+            var apt = Game.ActiveScene.GetAllComponents<ApartmentComponent>().FirstOrDefault(a => a.ApartmentId == apartmentId);
+            if (apt != null)
+            {
+                apt.ApplyState(id.CanonicalId, ApartmentClaimState.Claimed);
+                Log.Info($"[QA] Apartment {apartmentId} assigned to REAL ID {id.CanonicalId}.");
+            }
+        }
+
         [ConCmd("ub_qa_test_stash")]
         public static void TestStash(string apartmentId)
         {
@@ -173,6 +190,12 @@ namespace UltimoBarrio.QA
             Log.Info($"[QA_TEST] InventoryId del stash: {inv?.InventoryId}");
             Log.Info($"[QA_TEST] IsOwner: {id.CanonicalId == apt.OwnerId}");
             Log.Info($"[QA_TEST] CanInteract: {canInteract}");
+
+            if (canInteract)
+            {
+                stash.OnInteract(req); // Abre la UI de verdad
+                Log.Info($"[QA_TEST] Opened Stash UI for {id.CanonicalId}");
+            }
         }
     }
 }

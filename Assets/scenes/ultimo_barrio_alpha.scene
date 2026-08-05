@@ -150,53 +150,6 @@
                   "Children": []
                 },
                 {
-                  "__guid": "0f9e7f86-36ad-4007-a0c2-313db56c774f",
-                  "__version": 2,
-                  "Flags": 0,
-                  "Name": "Stash Anchor",
-                  "Position": "-1040,-570,473.5",
-                  "Rotation": "0,0,0,1",
-                  "Scale": "0.5,0.5,0.5",
-                  "Tags": "",
-                  "Enabled": true,
-                  "NetworkMode": 2,
-                  "NetworkFlags": 0,
-                  "NetworkOrphaned": 0,
-                  "NetworkTransmit": true,
-                  "OwnerTransfer": 1,
-                  "Components": [
-                    {
-                      "__type": "UltimoBarrio.StashComponent",
-                      "__guid": "92b20872-2b3f-4374-8e17-d9a2752a117e",
-                      "__enabled": true,
-                      "ApartmentId": "apartment-a01",
-                      "MaxSlots": 24
-                    },
-                    {
-                      "__type": "UltimoBarrio.InventoryComponent",
-                      "__guid": "3fa93d9c-1100-48f8-8c80-5ca7ff341c54",
-                      "__enabled": true,
-                      "InventoryId": "apartment-a01:stash",
-                      "MaxSlots": 24
-                    },
-                    {
-                      "__type": "Sandbox.BoxCollider",
-                      "__guid": "aede5d9c-ae1b-4082-ba6b-476577066bf3",
-                      "__enabled": true,
-                      "Center": "0,0,0",
-                      "Scale": "50,50,50",
-                      "Static": true
-                    },
-                    {
-                      "__type": "Sandbox.ModelRenderer",
-                      "__guid": "657b0a0a-37b3-4eee-9706-27aab8aa0207",
-                      "__enabled": true,
-                      "Model": "models/sbox_props/cardboard_box/cardboard_box_open.vmdl"
-                    }
-                  ],
-                  "Children": []
-                },
-                {
                   "__guid": "47e48310-13c4-4fd5-90cd-e119e3cf981d",
                   "__version": 2,
                   "Flags": 0,
@@ -231,6 +184,108 @@
                   "OwnerTransfer": 1,
                   "Components": [],
                   "Children": []
+                },
+                {
+                  "__guid": "0fd8a760-88f8-4d5e-8cb6-1ecd1bf7ecec",
+                  "Flags": 0,
+                  "Name": "ApartmentEntranceAnchor",
+                  "Position": "0,0,0",
+                  "Enabled": true,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "bbfee9a0-3a3a-470a-9176-f6d6ef55d4df",
+                  "Flags": 0,
+                  "Name": "ApartmentDoorAnchor",
+                  "Position": "0,0,0",
+                  "Enabled": true,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "12714ae7-98ee-4c94-84f9-6d7df49b247a",
+                  "Flags": 0,
+                  "Name": "ApartmentInteriorAnchor",
+                  "Position": "0,0,0",
+                  "Enabled": true,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "a9b45d15-b979-499b-9998-dd152ef83dc9",
+                  "Flags": 0,
+                  "Name": "ApartmentSpawnAnchor",
+                  "Position": "0,0,0",
+                  "Enabled": true,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "0f6597f0-432e-48f8-889d-09d27a7f8735",
+                  "Flags": 0,
+                  "Name": "ApartmentWindowAnchor",
+                  "Position": "0,0,0",
+                  "Enabled": true,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "8bb0e020-e1bb-4ebf-983a-fb9bb900a063",
+                  "Flags": 0,
+                  "Name": "ApartmentStashAnchor",
+                  "Position": "0,0,0",
+                  "Enabled": true,
+                  "Components": [],
+                  "Children": [
+                    {
+                      "__guid": "0f9e7f86-36ad-4007-a0c2-313db56c774f",
+                      "__version": 2,
+                      "Flags": 0,
+                      "Name": "Stash Anchor",
+                      "Position": "0,0,0",
+                      "Rotation": "0,0,0,1",
+                      "Scale": "0.5,0.5,0.5",
+                      "Tags": "",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkFlags": 0,
+                      "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
+                      "OwnerTransfer": 1,
+                      "Components": [
+                        {
+                          "__type": "UltimoBarrio.StashComponent",
+                          "__guid": "92b20872-2b3f-4374-8e17-d9a2752a117e",
+                          "__enabled": true,
+                          "ApartmentId": "apartment-a01",
+                          "MaxSlots": 24
+                        },
+                        {
+                          "__type": "UltimoBarrio.InventoryComponent",
+                          "__guid": "3fa93d9c-1100-48f8-8c80-5ca7ff341c54",
+                          "__enabled": true,
+                          "InventoryId": "apartment-a01:stash",
+                          "MaxSlots": 24
+                        },
+                        {
+                          "__type": "Sandbox.BoxCollider",
+                          "__guid": "aede5d9c-ae1b-4082-ba6b-476577066bf3",
+                          "__enabled": true,
+                          "Center": "0,0,0",
+                          "Scale": "50,50,50",
+                          "Static": true
+                        },
+                        {
+                          "__type": "Sandbox.ModelRenderer",
+                          "__guid": "657b0a0a-37b3-4eee-9706-27aab8aa0207",
+                          "__enabled": true,
+                          "Model": "models/sbox_props/cardboard_box/cardboard_box_open.vmdl"
+                        }
+                      ],
+                      "Children": []
+                    }
+                  ]
                 }
               ]
             },
@@ -323,53 +378,6 @@
                   "Children": []
                 },
                 {
-                  "__guid": "ce094d8e-2843-4854-8177-7fe708302669",
-                  "__version": 2,
-                  "Flags": 0,
-                  "Name": "Stash Anchor",
-                  "Position": "-1040,630,17.5",
-                  "Rotation": "0,0,0,1",
-                  "Scale": "0.5,0.5,0.5",
-                  "Tags": "",
-                  "Enabled": true,
-                  "NetworkMode": 2,
-                  "NetworkFlags": 0,
-                  "NetworkOrphaned": 0,
-                  "NetworkTransmit": true,
-                  "OwnerTransfer": 1,
-                  "Components": [
-                    {
-                      "__type": "UltimoBarrio.StashComponent",
-                      "__guid": "d39dfc43-07a5-42ca-9222-11173ce53115",
-                      "__enabled": true,
-                      "ApartmentId": "apartment-a02",
-                      "MaxSlots": 24
-                    },
-                    {
-                      "__type": "UltimoBarrio.InventoryComponent",
-                      "__guid": "9d9b14e7-0e9f-43f7-98c6-5eb72bfedae3",
-                      "__enabled": true,
-                      "InventoryId": "apartment-a02:stash",
-                      "MaxSlots": 24
-                    },
-                    {
-                      "__type": "Sandbox.BoxCollider",
-                      "__guid": "385d7cc8-3c65-45ed-b82d-19bf9ed57f55",
-                      "__enabled": true,
-                      "Center": "0,0,0",
-                      "Scale": "50,50,50",
-                      "Static": true
-                    },
-                    {
-                      "__type": "Sandbox.ModelRenderer",
-                      "__guid": "6ef617bb-1557-499e-8057-32d920a0efaf",
-                      "__enabled": true,
-                      "Model": "models/sbox_props/cardboard_box/cardboard_box_open.vmdl"
-                    }
-                  ],
-                  "Children": []
-                },
-                {
                   "__guid": "1ede310e-13e1-4fb3-b3ed-5966f61fa254",
                   "__version": 2,
                   "Flags": 0,
@@ -404,6 +412,108 @@
                   "OwnerTransfer": 1,
                   "Components": [],
                   "Children": []
+                },
+                {
+                  "__guid": "d2008426-46cf-49a8-abe4-89db2f6028fa",
+                  "Flags": 0,
+                  "Name": "ApartmentEntranceAnchor",
+                  "Position": "0,0,0",
+                  "Enabled": true,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "7d0d164b-eb2a-4bd3-b317-edc8f866eebc",
+                  "Flags": 0,
+                  "Name": "ApartmentDoorAnchor",
+                  "Position": "0,0,0",
+                  "Enabled": true,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "6fcc945c-a5ed-4e71-8a39-e27569138589",
+                  "Flags": 0,
+                  "Name": "ApartmentInteriorAnchor",
+                  "Position": "0,0,0",
+                  "Enabled": true,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "f669cb2e-3f21-4812-bba8-0e7cf127b0cb",
+                  "Flags": 0,
+                  "Name": "ApartmentSpawnAnchor",
+                  "Position": "0,0,0",
+                  "Enabled": true,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "70fe22bd-a1b6-4309-ba45-c4b11f0e42d7",
+                  "Flags": 0,
+                  "Name": "ApartmentWindowAnchor",
+                  "Position": "0,0,0",
+                  "Enabled": true,
+                  "Components": [],
+                  "Children": []
+                },
+                {
+                  "__guid": "f84c85a6-a314-4399-9023-5c2f1b401cc8",
+                  "Flags": 0,
+                  "Name": "ApartmentStashAnchor",
+                  "Position": "0,0,0",
+                  "Enabled": true,
+                  "Components": [],
+                  "Children": [
+                    {
+                      "__guid": "ce094d8e-2843-4854-8177-7fe708302669",
+                      "__version": 2,
+                      "Flags": 0,
+                      "Name": "Stash Anchor",
+                      "Position": "0,0,0",
+                      "Rotation": "0,0,0,1",
+                      "Scale": "0.5,0.5,0.5",
+                      "Tags": "",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkFlags": 0,
+                      "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
+                      "OwnerTransfer": 1,
+                      "Components": [
+                        {
+                          "__type": "UltimoBarrio.StashComponent",
+                          "__guid": "d39dfc43-07a5-42ca-9222-11173ce53115",
+                          "__enabled": true,
+                          "ApartmentId": "apartment-a02",
+                          "MaxSlots": 24
+                        },
+                        {
+                          "__type": "UltimoBarrio.InventoryComponent",
+                          "__guid": "9d9b14e7-0e9f-43f7-98c6-5eb72bfedae3",
+                          "__enabled": true,
+                          "InventoryId": "apartment-a02:stash",
+                          "MaxSlots": 24
+                        },
+                        {
+                          "__type": "Sandbox.BoxCollider",
+                          "__guid": "385d7cc8-3c65-45ed-b82d-19bf9ed57f55",
+                          "__enabled": true,
+                          "Center": "0,0,0",
+                          "Scale": "50,50,50",
+                          "Static": true
+                        },
+                        {
+                          "__type": "Sandbox.ModelRenderer",
+                          "__guid": "6ef617bb-1557-499e-8057-32d920a0efaf",
+                          "__enabled": true,
+                          "Model": "models/sbox_props/cardboard_box/cardboard_box_open.vmdl"
+                        }
+                      ],
+                      "Children": []
+                    }
+                  ]
                 }
               ]
             },
