@@ -1,43 +1,10 @@
-{
-  "RootObject": {
-    "__guid": "a7b8c9d0-1e2f-3a4b-5c6d-7e8f9a0b1c2d",
-    "__version": 2,
-    "Flags": 0,
-    "Name": "UB USP Pistol",
-    "Position": "0,0,0",
-    "Rotation": "0,0,0,1",
-    "Scale": "1,1,1",
-    "Tags": "",
-    "Enabled": true,
-    "NetworkMode": 1,
-    "NetworkFlags": 0,
-    "NetworkOrphaned": 0,
-    "NetworkTransmit": true,
-    "OwnerTransfer": 1,
-    "Components": [
-      {
-        "__guid": "b8c9d0e1-2f3a-4b5c-6d7e-8f9a0b1c2d3e",
-        "__enabled": true,
-        "__type": "UltimoBarrio.Combat.UltimoBarrioWeaponAdapter",
-        "WeaponId": "weapon_usp",
-        "AmmoItemId": "ammo_9mm",
-        "ClipSize": 12,
-        "DamagePerShot": 25
-      },
-      {
-        "__guid": "c9d0e1f2-3a4b-5c6d-7e8f-9a0b1c2d3e4f",
-        "__enabled": true,
-        "__type": "Sandbox.BoxCollider",
-        "Scale": "15,15,15"
-      },
-      {
-        "__guid": "d0e1f2a3-4b5c-6d7e-8f9a-0b1c2d3e4f5a",
-        "__enabled": true,
-        "__type": "Sandbox.ModelRenderer",
-        "Model": "facepunch.w_usp",
-        "Tint": "0.1,0.1,0.1,1"
-      }
-    ],
-    "Children": []
-  }
+﻿{
+  "GameObjects": [
+    {
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "Name": "WeaponRoot",
+      "Enabled": true,
+      "Components": []
+    }
+  ]
 }
