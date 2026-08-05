@@ -189,6 +189,16 @@ namespace UltimoBarrio.UI
                 _traderUI.Delete();
                 _traderUI = null;
             }
+            if ( PlayerInvUI != null )
+            {
+                PlayerInvUI.Destroy();
+                PlayerInvUI = null;
+            }
+            if ( StashInvUI != null )
+            {
+                StashInvUI.Destroy();
+                StashInvUI = null;
+            }
         }
 
         public void ShowPrompt( string title, string subtitle = "" )
