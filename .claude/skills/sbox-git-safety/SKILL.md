@@ -1,6 +1,6 @@
 ---
 name: sbox-git-safety
-description: Use for every git operation in this repository - staging, committing, branching, and especially before integrating any external dependency found via sbox-reuse-first/sbox-source-auditor. Enforces small atomic commits, selective staging (never git add -A or git add .), a checkpoint branch before any external code lands, one isolated branch per external dependency, and a hard ban on reset --hard/clean/restore-global/force-push/merge-to-main without explicit validation. This project's history includes contradictory subagent commits and lost work from unsafe git operations - this skill exists to stop that from repeating.
+description: Use for every git operation in this repository - staging, committing, branching, and especially before integrating any external dependency found via sbox-integration-factory/sbox-license-auditor. Enforces small atomic commits, selective staging (never git add -A or git add .), a checkpoint branch before any external code lands, one isolated branch per external dependency, and a hard ban on reset --hard/clean/restore-global/force-push/merge-to-main without explicit validation. This project's history includes contradictory subagent commits and lost work from unsafe git operations - this skill exists to stop that from repeating.
 ---
 
 # sbox-git-safety
@@ -35,7 +35,7 @@ prevents the next version of that.
 
 ## Before integrating anything external
 
-1. **Checkpoint branch first.** Before merging in code from a [[sbox-source-auditor]]
+1. **Checkpoint branch first.** Before merging in code from a [[sbox-license-auditor]]
    ADOPTAR/ADAPTAR verdict:
    ```
    git branch checkpoint/pre-<dependency-name>-integration
@@ -47,7 +47,7 @@ prevents the next version of that.
    `git log --follow` history for any given file legible later (this project's own
    camera history was hard to audit specifically because unrelated changes were
    bundled together).
-3. **Never bulk-copy a repository.** Per [[sbox-source-auditor]], only the specific
+3. **Never bulk-copy a repository.** Per [[sbox-license-auditor]], only the specific
    audited files land in the tree, with an attribution comment or NOTICE entry
    pointing at source + license + commit/tag pinned in the fiche.
 
