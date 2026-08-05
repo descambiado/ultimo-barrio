@@ -38,22 +38,52 @@ namespace UltimoBarrio.Combat
         {
             if (Input.Pressed("Slot1"))
             {
-                if (CurrentType != HeldItemType.Melee)
-                    EquipWeapon(HeldItemType.Melee);
+                if (CurrentType != HeldItemType.Melee) EquipWeapon(HeldItemType.Melee);
             }
             else if (Input.Pressed("Slot2"))
             {
                 var inv = Components.GetInAncestorsOrSelf<UltimoBarrioPlayerInventory>();
                 if (inv != null && inv.GetCount("weapon_usp") > 0)
                 {
-                    if (CurrentType != HeldItemType.Pistol)
-                        EquipWeapon(HeldItemType.Pistol);
+                    if (CurrentType != HeldItemType.Pistol) EquipWeapon(HeldItemType.Pistol);
                 }
             }
             else if (Input.Pressed("Drop"))
             {
-                if (CurrentType != HeldItemType.None)
-                    EquipWeapon(HeldItemType.None);
+                if (CurrentType != HeldItemType.None) EquipWeapon(HeldItemType.None);
+            }
+
+            if (Input.Pressed("attack1") && ActiveWeaponId != Guid.Empty)
+            {
+                if (_activeWeapon != null)
+                {
+                    _activeWeapon.Fire();
+                }
+                else
+                {
+                    var wepObj = Scene.Directory.FindByGuid(ActiveWeaponId);
+                    var adapter = wepObj?.Components.GetInDescendantsOrSelf<UltimoBarrioWeaponAdapter>();
+                    if (adapter != null)
+                    {
+                        var ray = Scene.Camera.ScreenNormalToRay(0.5f);
+                        adapter.FireHitscan(ray.Position, ray.Forward, Connection.Local?.Id.ToString() ?? "");
+                    }
+                }
+            }
+            
+            if (Input.Pressed("reload") && ActiveWeaponId != Guid.Empty)
+            {
+                if (_activeWeapon != null)
+                {
+                    _activeWeapon.Reload();
+                }
+                else
+                {
+                    var wepObj = Scene.Directory.FindByGuid(ActiveWeaponId);
+                    var adapter = wepObj?.Components.GetInDescendantsOrSelf<UltimoBarrioWeaponAdapter>();
+                    var inv = Components.GetInAncestorsOrSelf<InventoryComponent>();
+                    adapter?.TryReload(inv);
+                }
             }
         }
 

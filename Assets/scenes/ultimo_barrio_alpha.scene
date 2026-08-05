@@ -2318,6 +2318,21 @@
           "Children": []
         }
       ]
+    },
+    {
+      "__guid": "99fb4f90-0ea7-4f55-b851-3ed61ebf85a1",
+      "Flags": 0,
+      "Name": "Crafting Station",
+      "Position": "0,200,25",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.PrefabScene",
+          "__guid": "e353c29f-7de9-4e5f-896c-4713decfdfb5",
+          "__enabled": true,
+          "Prefab": "prefabs/world/ub_crafting_station.prefab"
+        }
+      ]
     }
   ]
 }

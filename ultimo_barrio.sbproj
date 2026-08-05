@@ -23,6 +23,6 @@
     "PerMapRanking": false,
     "LeaderboardType": "None",
     "CsProjName": "",
-    "StartupScene": "scenes/main.scene"
+    "StartupScene": "scenes/ultimo_barrio_alpha.scene"
   }
 }

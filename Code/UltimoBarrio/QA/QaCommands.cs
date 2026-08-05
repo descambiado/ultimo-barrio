@@ -160,7 +160,7 @@ namespace UltimoBarrio.QA
             if (provider == null || !provider.TryResolve(player.Network.Owner, out var id)) return;
 
             var apt = Game.ActiveScene.GetAllComponents<ApartmentComponent>().FirstOrDefault(a => a.ApartmentId == apartmentId);
-            var stash = Game.ActiveScene.GetAllComponents<UltimoBarrio.Inventory.StashComponent>().FirstOrDefault(s => s.ApartmentId == apartmentId);
+            var stash = Game.ActiveScene.GetAllComponents<UltimoBarrio.StashComponent>().FirstOrDefault(s => s.ApartmentId == apartmentId);
             if (apt == null || stash == null) return;
 
             var req = new InteractionRequest { Identity = id, InteractorObject = player };
