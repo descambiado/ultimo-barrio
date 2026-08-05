@@ -14,6 +14,9 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 {
 	[Property] public string SaveSlotId { get; set; } = "prototype";
 
+	/// <summary>Ítem consumido al reclamar: el jugador debe fabricarlo e instalarlo en la entrada.</summary>
+	public const string DoorKitItemId = "apartment_door_kit";
+
 	/// <summary>
 	/// El radio mÃ¡ximo (en unidades) desde el cual el jugador puede reclamar el apartamento.
 	/// Evaluado desde la posiciÃ³n del <see cref="ApartmentComponent.SpawnReference"/>.
@@ -141,6 +144,14 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 				"The host could not resolve the caller's player." );
 		}
 
+		var inventory = player.GameObject.Components.GetInDescendantsOrSelf<InventoryComponent>();
+		if ( inventory is null || inventory.GetCount( DoorKitItemId ) < 1 )
+		{
+			return ApartmentClaimResult.Rejected(
+				ApartmentClaimFailure.MissingDoorKit,
+				"The player does not carry a door kit to install." );
+		}
+
 		var distanceSquared = (player.WorldPosition - apartment.DoorReference.WorldPosition).LengthSquared;
 		if ( distanceSquared > ClaimDistance * ClaimDistance )
 		{
@@ -176,12 +187,25 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 			_apartmentsInProgress.Add( apartment.ApartmentId );
 			_ownersInProgress.Add( ownerIdentity.CanonicalId );
 
+			// Re-verificar el kit dentro del gate: otro hilo pudo haberlo consumido
+			// entre la comprobación de arriba y aquí.
+			if ( !inventory.TryRemove( DoorKitItemId, 1 ) )
+			{
+				_apartmentsInProgress.Remove( apartment.ApartmentId );
+				_ownersInProgress.Remove( ownerIdentity.CanonicalId );
+				return ApartmentClaimResult.Rejected(
+					ApartmentClaimFailure.MissingDoorKit,
+					"The player does not carry a door kit to install." );
+			}
+
 			try
 			{
 				var candidate = _registry.CreateSnapshot( SaveSlotId, apartment.ApartmentId, ownerIdentity.CanonicalId );
 				var saveResult = _persistence.Save( candidate );
 				if ( !saveResult.Succeeded )
 				{
+					// Rollback: devolver el kit consumido.
+					inventory.TryAdd( DoorKitItemId, 1 );
 					return ApartmentClaimResult.Rejected(
 						ApartmentClaimFailure.PersistenceFailed,
 						saveResult.Error );

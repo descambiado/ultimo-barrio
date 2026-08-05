@@ -13,6 +13,7 @@ public enum ApartmentClaimFailure
 	ApartmentUnavailable,
 	PlayerAlreadyOwnsApartment,
 	ClaimInProgress,
+	MissingDoorKit,
 	PersistenceFailed
 }
 

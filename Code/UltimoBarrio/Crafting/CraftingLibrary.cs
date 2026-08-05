@@ -54,14 +54,28 @@ namespace UltimoBarrio.Crafting
                 {
                     RecipeId = "craft_barricade",
                     DisplayName = "Barricada",
-                    Description = "Madera + Chatarra → Barricada",
+                    Description = "Madera x6 + Chatarra metálica x3 → Barricada",
                     Ingredients =
                     {
-                        new CraftingIngredient { ItemId = "wood", Amount = 4 },
-                        new CraftingIngredient { ItemId = "chatarra", Amount = 3 }
+                        new CraftingIngredient { ItemId = "wood", Amount = 6 },
+                        new CraftingIngredient { ItemId = "scrap_metal", Amount = 3 }
                     },
                     Result = new CraftingResult { ItemId = "barricade", Amount = 1 },
                     CraftTime = 5f
+                },
+                new()
+                {
+                    RecipeId = "craft_apartment_door_kit",
+                    DisplayName = "Kit de puerta",
+                    Description = "Madera x8 + Chatarra metálica x6 + Componentes x2 → Kit de puerta",
+                    Ingredients =
+                    {
+                        new CraftingIngredient { ItemId = "wood", Amount = 8 },
+                        new CraftingIngredient { ItemId = "scrap_metal", Amount = 6 },
+                        new CraftingIngredient { ItemId = "components", Amount = 2 }
+                    },
+                    Result = new CraftingResult { ItemId = "apartment_door_kit", Amount = 1 },
+                    CraftTime = 6f
                 },
                 new()
                 {
