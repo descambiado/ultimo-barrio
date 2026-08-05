@@ -119,13 +119,14 @@ namespace UltimoBarrio.UI
                 resultLbl.Style.FontSize = 12;
                 resultLbl.Style.FontColor = new Color( 0.9f, 0.8f, 0.4f );
 
-                var craftButton = row.AddChild<ActionButton>(
+                var craftButton = new ActionButton(
                     canCraft ? "Fabricar" : "Falta material",
                     () =>
                     {
                         if ( TargetStation is not null && PlayerInventory is not null )
                             TargetStation.RequestCraft( PlayerInventory.GameObject.Id, recipe.RecipeId );
                     } );
+                row.AddChild( craftButton );
             }
         }
 

@@ -2,6 +2,7 @@ using Sandbox;
 using Sandbox.UI;
 using System;
 using System.Linq;
+using UltimoBarrio;
 
 namespace UltimoBarrio.UI
 {
@@ -60,7 +61,7 @@ namespace UltimoBarrio.UI
             
             Hotbar = GameObject.Components.Create<HotbarPanel>();
             Hotbar.TargetInventory = GameObject.Components.Get<InventoryComponent>();
-            Hotbar.HeldItemCtrl = GameObject.Components.Get<Combat.HeldItemController>();
+            Hotbar.HeldItemCtrl = GameObject.Components.Get<HeldItemController>();
 
             CraftingUI = GameObject.Components.Create<CraftingPanel>();
             

@@ -1,13 +1,14 @@
 using Sandbox;
 using Sandbox.UI;
 using System.Linq;
+using UltimoBarrio;
 
 namespace UltimoBarrio.UI
 {
     public class HotbarPanel : PanelComponent
     {
         [Property] public InventoryComponent TargetInventory { get; set; }
-        [Property] public Combat.HeldItemController HeldItemCtrl { get; set; }
+        [Property] public HeldItemController HeldItemCtrl { get; set; }
 
         private Panel _container;
 

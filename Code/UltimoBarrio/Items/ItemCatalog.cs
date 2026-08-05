@@ -51,12 +51,12 @@ namespace UltimoBarrio
                 worldPickup: "prefabs/items/pf_usp_pickup.prefab" );
 
             AddWeapon( "weapon_crowbar", "Palanca", "Para abrir cabezas", ItemCategory.Melee,
-                magazine: 0, damage: 25f, fireRate: 0.5f, meleeRange: 80f,
+                ammoType: "", magazine: 0, damage: 25f, fireRate: 0.5f, meleeRange: 80f,
                 viewModel: "prefabs/weapons/v_melee.prefab", worldModel: "prefabs/weapons/ub_melee.prefab",
                 worldPickup: "prefabs/items/pf_scrap_tools.prefab" );
 
             AddWeapon( "weapon_knife", "Cuchillo", "Arma blanca rápida", ItemCategory.Melee,
-                magazine: 0, damage: 18f, fireRate: 0.35f, meleeRange: 70f,
+                ammoType: "", magazine: 0, damage: 18f, fireRate: 0.35f, meleeRange: 70f,
                 viewModel: "prefabs/weapons/v_melee.prefab", worldModel: "prefabs/weapons/ub_melee.prefab",
                 worldPickup: "prefabs/items/pf_scrap_tools.prefab" );
         }

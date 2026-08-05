@@ -5,28 +5,13 @@ using UltimoBarrio.Audio;
 
 namespace UltimoBarrio.WorldTime
 {
-    public enum TimePhase
-    {
-        Day,
-        Preparation,
-        Night,
-        Aftermath
-    }
-
-    public interface IWorldClock
-    {
-        TimePhase CurrentPhase { get; }
-        float TimeRemainingInPhase { get; }
-        event Action<TimePhase> OnPhaseChanged;
-    }
-
     /// <summary>
     /// Ciclo del mundo: Día → Atardecer (Preparation) → Noche → Amanecer
     /// (Aftermath). El host avanza las fases ([Sync]) y todos los clientes
     /// suavizan la iluminación (DirectionalLight) según LightLevel.
     /// </summary>
     [Title( "World Clock" )]
-    [Category( "Último Barrio — World" )]
+    [Category( "Último Barrio - World" )]
     [Icon( "schedule" )]
     public class WorldClock : Component, IWorldClock
     {

@@ -144,7 +144,7 @@ namespace UltimoBarrio.QA
             // 2. Dump Player
             var hud = Game.ActiveScene.GetAllComponents<UI.PlayerHud>().FirstOrDefault();
             var invComp = player?.Components.Get<InventoryComponent>();
-            var held = player?.Components.Get<Combat.HeldItemController>();
+            var held = player?.Components.Get<HeldItemController>();
 
             Log.Info($"PlayerHud presente: {hud != null}");
             Log.Info($"HotbarPanel creado: {hud?.Hotbar != null}");

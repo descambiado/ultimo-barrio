@@ -43,7 +43,7 @@ namespace UltimoBarrio.Fortification
             DoorStructure = DoorReference.Components.GetOrCreate<DestructibleStructure>();
             DoorStructure.StructureId = $"{ApartmentId}-door";
             DoorStructure.MaxHealth = BaseDoorMaxHealth;
-            DoorStructure.Health = BaseDoorMaxHealth;
+            DoorStructure.SetHealth( BaseDoorMaxHealth );
         }
 
         private void ApplyUpgradeBonuses()
@@ -51,7 +51,7 @@ namespace UltimoBarrio.Fortification
             if ( DoorStructure is not null && DoorStructure.IsValid() )
             {
                 DoorStructure.MaxHealth = BaseDoorMaxHealth * FortificationMath.MaxHealthMultiplier( UpgradeLevel );
-                DoorStructure.Health = Math.Min( DoorStructure.Health, DoorStructure.MaxHealth );
+                DoorStructure.SetHealth( Math.Min( DoorStructure.Health, DoorStructure.MaxHealth ) );
             }
 
             // Ventanas: estructuras hijas con nombre "Window".
@@ -112,7 +112,7 @@ namespace UltimoBarrio.Fortification
             if ( DoorStructure is not null && DoorStructure.IsValid() && doorMaxHealth > 0f )
             {
                 DoorStructure.MaxHealth = doorMaxHealth;
-                DoorStructure.Health = Math.Clamp( doorHealth, 0f, doorMaxHealth );
+                DoorStructure.SetHealth( Math.Clamp( doorHealth, 0f, doorMaxHealth ) );
             }
         }
     }

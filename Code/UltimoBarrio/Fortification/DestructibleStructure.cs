@@ -22,6 +22,14 @@ namespace UltimoBarrio.Fortification
         [Sync] public float Health { get; protected set; }
 
         public bool IsDestroyed => Health <= 0;
+        public bool IsDead => IsDestroyed;
+
+        /// <summary>Host-only: sets Health directly, used during save-restore and upgrades.</summary>
+        public void SetHealth( float value )
+        {
+            if ( !Networking.IsHost ) return;
+            Health = Math.Clamp( value, 0f, MaxHealth );
+        }
 
         public event Action<float> OnDamaged;
         public event Action OnDestroyed;

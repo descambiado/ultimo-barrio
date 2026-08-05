@@ -54,8 +54,9 @@ namespace UltimoBarrio.QA
             var fake = new FakeInventory();
             fake.Add( "chatarra", 5 );
             bool removed = fake.Remove( "chatarra", 1 );
-            bool rolledBack = fake.Add( "chatarra", 1 ); // Reembolso tras fallo de spawn.
-            if ( removed && rolledBack && fake.Get( "chatarra" ) == 5 ) passed++;
+            fake.Add( "chatarra", 1 ); // Reembolso tras fallo de spawn.
+            bool rolledBack = fake.Get( "chatarra" ) == 5; // Verify rollback restored state.
+            if ( removed && rolledBack ) passed++;
             else { failed++; Log.Error( "[UBTest] FAIL: drop con rollback altera el inventario." ); }
 
             // ── Crafteo atómico (regla): consumir todo o nada ─────────────

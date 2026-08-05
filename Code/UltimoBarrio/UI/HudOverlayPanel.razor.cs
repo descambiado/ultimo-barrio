@@ -4,6 +4,7 @@ using Sandbox.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UltimoBarrio;
 using UltimoBarrio.Combat;
 using UltimoBarrio.Economy;
 using UltimoBarrio.WorldTime;
@@ -106,7 +107,7 @@ namespace UltimoBarrio.UI
         private HealthComponent HealthComp => PlayerObj?.Components.Get<HealthComponent>( FindMode.EverythingInSelfAndDescendants );
         private PlayerMovementModifier StaminaComp => PlayerObj?.Components.Get<PlayerMovementModifier>( FindMode.EverythingInSelfAndDescendants );
         private Wallet WalletComp => PlayerObj?.Components.Get<Wallet>( FindMode.EverythingInSelfAndDescendants );
-        private Combat.HeldItemController HeldItemCtrl => PlayerObj?.Components.Get<Combat.HeldItemController>( FindMode.EverythingInSelfAndDescendants );
+        private HeldItemController HeldItemCtrl => PlayerObj?.Components.Get<HeldItemController>( FindMode.EverythingInSelfAndDescendants );
         private Combat.BaseCombatWeapon ActiveWeapon
         {
             get
@@ -123,13 +124,14 @@ namespace UltimoBarrio.UI
             }
         }
 
-        protected override void OnLoad()
+        protected override void OnAfterTreeRender( bool firstTime )
         {
-            base.OnLoad();
-            PlayerFeedback.OnFeedback += OnPlayerFeedback;
+            base.OnAfterTreeRender( firstTime );
+            if ( firstTime )
+                PlayerFeedback.OnFeedback += OnPlayerFeedback;
         }
 
-        protected override void OnDeleted()
+        public override void OnDeleted()
         {
             PlayerFeedback.OnFeedback -= OnPlayerFeedback;
             base.OnDeleted();

@@ -136,7 +136,7 @@ namespace UltimoBarrio.Fortification
             barricade.ApartmentId = ApartmentId;
             barricade.AnchorId = AnchorId;
             barricade.MaxHealth = maxHealth > 0f ? maxHealth : 150f;
-            barricade.Health = health;
+            barricade.SetHealth( health );
 
             if ( Networking.IsActive )
                 barricadeGo.NetworkSpawn();

@@ -28,6 +28,13 @@ namespace UltimoBarrio.Combat
             }
         }
 
+        /// <summary>Host-only: restores magazine state from the inventory slot (survives equip/drop/pickup).</summary>
+        public void RestoreAmmo( int amount )
+        {
+            if ( !Networking.IsHost ) return;
+            CurrentAmmo = Math.Clamp( amount, 0, MaxAmmo );
+        }
+
         protected override void OnUpdate()
         {
             if (!IsProxy)

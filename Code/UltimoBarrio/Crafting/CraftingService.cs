@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using UltimoBarrio.Persistence;
 
 namespace UltimoBarrio.Crafting
 {
@@ -34,7 +35,7 @@ namespace UltimoBarrio.Crafting
             Vector3 stationPosition,
             float maxDistance,
             CraftingRecipe recipe,
-            Func<SaveResult> persist = null )
+            Func<PersistenceSaveResult> persist = null )
         {
             if ( !Networking.IsHost )
                 return CraftResult.NotHost;
@@ -90,7 +91,7 @@ namespace UltimoBarrio.Crafting
                 if ( persist is not null )
                 {
                     var saveResult = persist();
-                    if ( !saveResult.IsSuccess )
+                    if ( !saveResult.Succeeded )
                     {
                         // Rollback del resultado y de los ingredientes.
                         inventory.TryRemove( recipe.Result.ItemId, recipe.Result.Amount );

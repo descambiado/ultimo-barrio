@@ -219,7 +219,7 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 		_persistence ??= new LocalPersistenceProvider( FileSystem.Data );
 		_identityProvider ??= new SteamPlayerIdentityProvider();
 
-		PersistenceBridge.Register( TrySaveNow );
+		PersistenceBridge.Register( () => TrySaveNow().Succeeded );
 
 		var loadResult = _persistence.Load( SaveSlotId );
 		if ( !loadResult.Succeeded )

@@ -60,7 +60,7 @@ namespace UltimoBarrio.Combat
                 return false;
 
             if ( movement is not null )
-                movement.CurrentStamina = Math.Max( 0f, movement.CurrentStamina - StaminaCost );
+                movement.ConsumeStamina( StaminaCost );
 
             _timeSinceMeleeFire = 0;
             PerformTrace();

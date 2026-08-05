@@ -427,7 +427,7 @@ namespace UltimoBarrio
             newWeapon.Name = $"{definition.ItemId} (slot)";
 
             // Estadísticas desde el registro canónico (fuente de verdad).
-            var weaponComp = newWeapon.Components.GetInDescendantsOrSelf<BaseCombatWeapon>();
+            var weaponComp = newWeapon.Components.GetInDescendantsOrSelf<UltimoBarrio.Combat.BaseCombatWeapon>();
             weaponComp?.ApplyDefinitionStats( definition );
 
             // Attach por nombre de hueso (nunca por GUID).
@@ -460,7 +460,7 @@ namespace UltimoBarrio
         /// </summary>
         private void ApplyMagazineFromSlot( GameObject weaponGo, InventorySlot slot, ItemDefinition definition )
         {
-            var weapon = weaponGo.Components.GetInDescendantsOrSelf<BaseCombatWeapon>();
+            var weapon = weaponGo.Components.GetInDescendantsOrSelf<UltimoBarrio.Combat.BaseCombatWeapon>();
             if ( weapon is null )
                 return;
 
@@ -471,7 +471,7 @@ namespace UltimoBarrio
                 ? Math.Min( slot.AmmoInMag, weapon.MaxAmmo )
                 : weapon.MaxAmmo;
 
-            weapon.CurrentAmmo = mag;
+            weapon.RestoreAmmo( mag );
         }
 
         private void WriteBackMagazine()
@@ -497,7 +497,7 @@ namespace UltimoBarrio
             slot.AmmoInMag = weapon.CurrentAmmo;
         }
 
-        private BaseCombatWeapon GetActiveWeaponComponent()
+        private UltimoBarrio.Combat.BaseCombatWeapon GetActiveWeaponComponent()
         {
             if ( ActiveWeaponId == Guid.Empty )
                 return null;
@@ -506,7 +506,7 @@ namespace UltimoBarrio
             if ( weaponGo is null || !weaponGo.IsValid() )
                 return null;
 
-            return weaponGo.Components.GetInDescendantsOrSelf<BaseCombatWeapon>();
+            return weaponGo.Components.GetInDescendantsOrSelf<UltimoBarrio.Combat.BaseCombatWeapon>();
         }
 
         private void HideAllWeapons()
@@ -691,8 +691,8 @@ namespace UltimoBarrio
             {
                 if ( health is null || health.IsDead || health.Health >= health.MaxHealth )
                 {
-                    var hud = Components.GetInDescendantsOrSelf<PlayerHud>();
-                    hud?.ShowMessage( "No necesitas curarte ahora" );
+                    var hudInner = Components.GetInDescendantsOrSelf<PlayerHud>();
+                    hudInner?.ShowMessage( "No necesitas curarte ahora" );
                     return;
                 }
 

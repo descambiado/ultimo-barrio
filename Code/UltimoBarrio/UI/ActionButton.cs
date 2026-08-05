@@ -1,4 +1,5 @@
 using System;
+using Sandbox.UI;
 
 namespace UltimoBarrio.UI
 {
@@ -14,7 +15,7 @@ namespace UltimoBarrio.UI
 
             Style.BackgroundColor = new Color( 0.2f, 0.2f, 0.24f, 0.95f );
             Style.Padding = 6;
-            Style.BorderRadius = 4;
+            // Style.BorderRadius = 4; // Not available in current sbox PanelStyle API
             Style.FontSize = 14;
             Style.FontColor = Color.White;
             Style.Cursor = "pointer";

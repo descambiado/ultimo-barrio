@@ -17,6 +17,12 @@ namespace UltimoBarrio.Players
         public bool IsExhausted => CurrentStamina <= 0f;
         public bool IsSprinting { get; private set; }
 
+        public void ConsumeStamina( float amount )
+        {
+            if ( amount <= 0 || Profile == null ) return;
+            CurrentStamina = System.Math.Clamp( CurrentStamina - amount, 0f, Profile.MaxStamina );
+        }
+
         public float CurrentWeight { get; set; } = 0f; // For inventory integration later
 
         private bool _wasOnGround = true;
