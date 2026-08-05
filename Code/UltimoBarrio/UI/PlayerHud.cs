@@ -61,29 +61,35 @@ namespace UltimoBarrio.UI
             
             Hotbar = GameObject.Components.Create<HotbarPanel>();
             Hotbar.TargetInventory = GameObject.Components.Get<InventoryComponent>();
-            Hotbar.HeldItemCtrl = GameObject.Components.Get<HeldItemController>();
+            Hotbar.HeldItemCtrl = GameObject.Components.GetInDescendantsOrSelf<UltimoBarrio.HeldItemController>();
 
             CraftingUI = GameObject.Components.Create<CraftingPanel>();
             
             ChangeState(HudState.Gameplay);
         }
 
+        /// <summary>El cursor sólo se usa cuando hay una pantalla que pide puntero.</summary>
+        private bool WantsCursor => CurrentState != HudState.Gameplay && CurrentState != HudState.Dead;
+
+        /// <summary>
+        /// El HUD es el único propietario del cursor. Con Mouse.Visibility en Auto el motor
+        /// mantiene el cursor activo mientras haya UI clicable visible — la hotbar lo está
+        /// siempre — y entonces deja de entregar Input.AnalogLook: la cámara se queda clavada
+        /// aunque W/A/S/D sigan funcionando. Se aplica cada frame para que nada lo pise.
+        /// </summary>
+        private void ApplyCursorMode()
+        {
+            Mouse.Visibility = WantsCursor ? MouseVisibility.Auto : MouseVisibility.Hidden;
+        }
+
         public void ChangeState(HudState newState)
         {
             if (IsProxy) return;
             CurrentState = newState;
-            
-            // Toggle cursor
-            bool showCursor = (newState != HudState.Gameplay && newState != HudState.Dead);
-            // We can't directly lock mouse in UI easily without Scene.Camera or Input, 
-            // but we can set panel pointer events
-            Panel.Style.PointerEvents = showCursor ? PointerEvents.All : PointerEvents.None;
-            
-            if (showCursor)
-            {
-                Panel.Style.PointerEvents = PointerEvents.All;
-            }
-            
+
+            Panel.Style.PointerEvents = WantsCursor ? PointerEvents.All : PointerEvents.None;
+            ApplyCursorMode();
+
             // Manage UI visibility based on state
             if (PlayerInvUI.Panel != null)
                 PlayerInvUI.Panel.Style.Display = (newState == HudState.InventoryOnly || newState == HudState.InventoryAndStash || newState == HudState.Trader) ? DisplayMode.Flex : DisplayMode.None;
@@ -104,6 +110,8 @@ namespace UltimoBarrio.UI
         protected override void OnUpdate()
         {
             if (IsProxy) return;
+
+            ApplyCursorMode();
 
             // Apply styles if panels exist
             if (PlayerInvUI.Panel != null)
