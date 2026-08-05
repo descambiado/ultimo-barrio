@@ -1,75 +1,63 @@
-using Sandbox;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace UltimoBarrio
 {
+    /// <summary>
+    /// Punto de resolución único de definiciones de ítems.
+    /// Prioridad: 1) GameResources del editor (data-driven real), 2) catálogo
+    /// canónico de ItemCatalog. Nunca devuelve null para ids conocidos.
+    /// </summary>
     public static class ItemRegistry
     {
-        private static Dictionary<string, ItemDefinition> _fallbacks = new Dictionary<string, ItemDefinition>();
-
-        static ItemRegistry()
+        public static ItemDefinition GetDefinition( string itemId )
         {
-            InitializeFallbacks();
-        }
+            if ( string.IsNullOrEmpty( itemId ) )
+                return null;
 
-        private static void InitializeFallbacks()
-        {
-            // Registering the minimum viable items requested by the user
-            _fallbacks["chatarra"] = new ItemDefinition
-            {
-                ItemId = "chatarra", DisplayName = "Chatarra", Description = "Metal viejo",
-                Category = ItemCategory.Resource, StackSize = 99, WorldPrefab = null // Uses pf_scrap_pickup by default in RequestDrop
-            };
-            
-            _fallbacks["water"] = new ItemDefinition
-            {
-                ItemId = "water", DisplayName = "Agua", Description = "Agua purificada",
-                Category = ItemCategory.Consumable, StackSize = 5, Usable = true
-            };
-            
-            _fallbacks["medicine"] = new ItemDefinition
-            {
-                ItemId = "medicine", DisplayName = "Medicinas", Description = "Cura tus heridas",
-                Category = ItemCategory.Consumable, StackSize = 5, Usable = true
-            };
+            // 1) Recursos reales del editor (override del catálogo).
+            var asset = ResourceLibrary.GetAll<ItemDefinition>().FirstOrDefault( x => x.ItemId == itemId );
+            if ( asset != null )
+                return asset;
 
-            _fallbacks["ammo_9mm"] = new ItemDefinition
-            {
-                ItemId = "ammo_9mm", DisplayName = "Mun. 9mm", Description = "Balas calibre 9mm",
-                Category = ItemCategory.Ammo, StackSize = 120
-            };
-
-            _fallbacks["weapon_usp"] = new ItemDefinition
-            {
-                ItemId = "weapon_usp", DisplayName = "Pistola USP", Description = "Pistola estándar",
-                Category = ItemCategory.Firearm, StackSize = 1, AmmoType = "ammo_9mm",
-                EquipSlot = "Primary",
-                ViewModelPrefab = "prefabs/weapons/v_usp.prefab",
-                WorldModelPrefab = "prefabs/weapons/ub_usp.prefab"
-            };
-
-            _fallbacks["weapon_crowbar"] = new ItemDefinition
-            {
-                ItemId = "weapon_crowbar", DisplayName = "Palanca", Description = "Para abrir cabezas",
-                Category = ItemCategory.Melee, StackSize = 1, EquipSlot = "Melee",
-                ViewModelPrefab = "prefabs/weapons/v_melee.prefab",
-                WorldModelPrefab = "prefabs/weapons/ub_melee.prefab"
-            };
-        }
-
-        public static ItemDefinition GetDefinition(string itemId)
-        {
-            if (string.IsNullOrEmpty(itemId)) return null;
-
-            // Priority: Real s&box assets
-            var asset = ResourceLibrary.GetAll<ItemDefinition>().FirstOrDefault(x => x.ItemId == itemId);
-            if (asset != null) return asset;
-
-            // Fallback: Hardcoded
-            if (_fallbacks.TryGetValue(itemId, out var fb)) return fb;
+            // 2) Catálogo canónico.
+            if ( ItemCatalog.TryGet( itemId, out var fallback ) )
+                return fallback;
 
             return null;
+        }
+
+        public static bool Exists( string itemId ) => GetDefinition( itemId ) is not null;
+
+        /// <summary>Valida el catálogo canónico y reporta errores (ids duplicados, armas sin presentación, consumibles sin efecto).</summary>
+        public static List<string> ValidateCatalog()
+            => ItemCatalog.Validate();
+
+        /// <summary>
+        /// Comprueba que todos los ids referenciados desde listas externas
+        /// (recetas, loot, traders) existen en el registro. Devuelve la lista
+        /// de referencias rotas (vacía si todo es válido).
+        /// </summary>
+        public static List<string> ValidateReferences( IEnumerable<string> referencedIds )
+        {
+            var errors = new List<string>();
+
+            if ( referencedIds is null )
+                return errors;
+
+            foreach ( var id in referencedIds.Distinct() )
+            {
+                if ( string.IsNullOrWhiteSpace( id ) )
+                {
+                    errors.Add( "Referencia de ítem vacía." );
+                    continue;
+                }
+
+                if ( !Exists( id ) )
+                    errors.Add( $"Ítem referenciado inexistente: '{id}'." );
+            }
+
+            return errors;
         }
     }
 }
