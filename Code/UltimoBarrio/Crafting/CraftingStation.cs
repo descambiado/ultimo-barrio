@@ -16,20 +16,25 @@ namespace UltimoBarrio.Crafting
         [Property] public List<string> InputItems { get; set; } = new List<string> { "item-scrap" };
         [Property] public List<int> InputAmounts { get; set; } = new List<int> { 5 };
 
+        public string GetInteractionPrompt(InteractionRequest request)
+        {
+            return $"Craft {OutputAmount}x {OutputItemId} (Needs {InputAmounts[0]}x {InputItems[0]})";
+        }
+
         public bool CanInteract(InteractionRequest request)
         {
             return true;
         }
 
-        public InteractionResponse Interact(InteractionRequest request)
+        public void OnInteract(InteractionRequest request)
         {
-            if (!Networking.IsHost) return InteractionResponse.Handled;
+            if (!Networking.IsHost) return;
 
-            var interactor = Scene.Directory.FindByGuid(request.InteractorId);
-            if (interactor == null) return InteractionResponse.Failed("Player not found");
+            var interactor = request.InteractorObject;
+            if (interactor == null) return;
 
             var playerInv = interactor.Components.GetInDescendantsOrSelf<UltimoBarrioPlayerInventory>();
-            if (playerInv == null) return InteractionResponse.Failed("No inventory");
+            if (playerInv == null) return;
 
             // Check if player has all ingredients
             for (int i = 0; i < InputItems.Count; i++)
@@ -38,7 +43,7 @@ namespace UltimoBarrio.Crafting
                 if (playerInv.GetCount(InputItems[i]) < InputAmounts[i])
                 {
                     Log.Info($"[Crafting] Missing {InputAmounts[i]} of {InputItems[i]}");
-                    return InteractionResponse.Failed($"Need {InputAmounts[i]} {InputItems[i]}");
+                    return;
                 }
             }
 
@@ -53,8 +58,6 @@ namespace UltimoBarrio.Crafting
             playerInv.TryAdd(OutputItemId, OutputAmount);
 
             Log.Info($"[Crafting] Crafted {OutputAmount}x {OutputItemId}!");
-            
-            return InteractionResponse.Handled;
         }
     }
 }
