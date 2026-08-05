@@ -1,4 +1,4 @@
-{
+﻿{
   "RootObject": {
     "__guid": "737e7ae6-eedd-48da-aa6d-b91c3ec90880",
     "__version": 2,
@@ -19,7 +19,7 @@
         "__guid": "1e9face0-fd15-418b-8990-b49189bc115e",
         "__enabled": true,
         "__type": "UltimoBarrio.WorldItemPickup",
-        "ItemId": "item-scrap",
+        "ItemId": "ammo_9mm",
         "Amount": 12
       },
       {
@@ -39,3 +39,4 @@
     "Children": []
   }
 }
+
