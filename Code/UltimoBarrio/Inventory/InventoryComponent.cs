@@ -178,8 +178,27 @@ namespace UltimoBarrio
                 .FirstOrDefault( c => c.GameObject.Id == targetInventoryId );
             if ( targetInv == null ) return;
 
-            // Autorización: el stash valida propietario; aquí solo se transfiere
-            // si el destino acepta (atomicidad con reembolso).
+            // Validación host: distancia entre contenedores (anti-cheat).
+            if ( Vector3.DistanceBetween( GameObject.WorldPosition, targetInv.GameObject.WorldPosition ) > 400f )
+            {
+                Log.Warning( $"[Inventory] Transferencia rechazada por distancia: {GameObject.Name} → {targetInv.GameObject.Name}" );
+                return;
+            }
+
+            // Autorización del alijo: solo el propietario del apartamento transfiere.
+            var stash = targetInv.Components.Get<StashComponent>( FindMode.InSelf );
+            if ( stash is not null )
+            {
+                var identity = PlayerIdentity.FromGameObject( GameObject );
+                var policy = Scene.GetAllComponents<IApartmentAccessPolicy>().FirstOrDefault();
+                if ( policy is not null && !policy.CanAccessStash( stash.ApartmentId, identity.CanonicalId ) )
+                {
+                    Log.Warning( $"[Inventory] Transferencia al alijo '{stash.ApartmentId}' no autorizada para {identity.CanonicalId}." );
+                    return;
+                }
+            }
+
+            // Atomicidad con reembolso.
             if ( TryRemove( itemId, amount ) )
             {
                 if ( !targetInv.TryAdd( itemId, amount ) )
