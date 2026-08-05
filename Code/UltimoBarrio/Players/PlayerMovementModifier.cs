@@ -61,7 +61,7 @@ namespace UltimoBarrio.Players
             {
                 IsSprinting = true;
                 CurrentStamina -= Profile.StaminaDrainRate * Time.Delta;
-                if (CurrentStamina < 0f) CurrentStamina = 0f;
+                CurrentStamina = System.Math.Clamp(CurrentStamina, 0f, Profile.MaxStamina);
             }
             else
             {
