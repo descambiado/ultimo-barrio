@@ -23,46 +23,58 @@ namespace UltimoBarrio.Players
             CurrentStamina = System.Math.Clamp( CurrentStamina - amount, 0f, Profile.MaxStamina );
         }
 
-        private void ValidateSpawn()
+        /// <summary>
+        /// Asienta al jugador sobre el suelo más cercano bajo sus pies. El origen de
+        /// Sandbox.PlayerController está en los pies, así que trazamos desde poco por
+        /// encima (no desde 500 unidades: eso capturaba techos y azoteas) hacia abajo.
+        /// Devuelve false si todavía no hay geometría — MapInstance carga en diferido.
+        /// </summary>
+        private bool TryGroundPlayer( Vector3 pos )
         {
-            if ( !Networking.IsHost ) return;
-            
-            var pos = GameObject.WorldPosition;
-            // Trace desde muy alto para no quedarse atrapado bajo el mapa
-            var tr = Scene.Trace.Ray( pos.WithZ(pos.z + 500f), pos.WithZ(pos.z - 2000f) )
+            var tr = Scene.Trace.Ray( pos + Vector3.Up * 64f, pos + Vector3.Down * 2048f )
                 .IgnoreGameObjectHierarchy( GameObject )
                 .Run();
 
-            if ( tr.Hit )
+            if ( !tr.Hit ) return false;
+
+            GameObject.WorldPosition = tr.EndPosition + Vector3.Up * 4f;
+            return true;
+        }
+
+        private void ValidateSpawn()
+        {
+            // Sólo el host es autoritativo sobre la posición; los proxies se limitan
+            // a replicarla, así que no tienen nada que validar.
+            if ( !Networking.IsHost )
             {
-                // Mueve el origen al suelo + 5 unidades. Si el collider está centrado, podría necesitar más altura.
-                // S&box PlayerController suele tener el origen abajo, pero si cae, lo subimos 10f.
-                GameObject.WorldPosition = tr.EndPosition + Vector3.Up * 10f;
-                Log.Info($"Player spawned at valid floor: {GameObject.WorldPosition}");
+                _spawnValidated = true;
+                return;
             }
-            else
+
+            if ( TryGroundPlayer( GameObject.WorldPosition ) )
             {
-                Log.Warning($"Invalid spawn position {pos}. Searching for fallback SpawnPoint...");
-                var points = Scene.GetAllComponents<SpawnPoint>();
-                foreach (var p in points)
-                {
-                    var ptr = Scene.Trace.Ray( p.GameObject.WorldPosition.WithZ(p.GameObject.WorldPosition.z + 500f), p.GameObject.WorldPosition.WithZ(p.GameObject.WorldPosition.z - 2000f) ).Run();
-                    if ( ptr.Hit )
-                    {
-                        GameObject.WorldPosition = ptr.EndPosition + Vector3.Up * 10f;
-                        Log.Info($"Fallback spawn selected: {GameObject.WorldPosition}");
-                        return;
-                    }
-                }
-                
-                // Absolute fallback to a high point if map is missing entirely
-                GameObject.WorldPosition = new Vector3(0, 0, 1000f);
+                _spawnValidated = true;
+                Log.Info( $"Player grounded at {GameObject.WorldPosition}" );
+                return;
             }
+
+            foreach ( var p in Scene.GetAllComponents<SpawnPoint>() )
+            {
+                if ( !TryGroundPlayer( p.GameObject.WorldPosition ) ) continue;
+
+                _spawnValidated = true;
+                Log.Info( $"Fallback spawn selected: {GameObject.WorldPosition}" );
+                return;
+            }
+
+            // Sin suelo todavía (mapa aún cargando). No inventamos una posición:
+            // OnUpdate reintentará mientras el jugador no haya caído del mundo.
+            Log.Warning( "No ground found yet for player spawn; will retry." );
         }
 
         public float CurrentWeight { get; set; } = 0f; // For inventory integration later
 
-        private bool _wasOnGround = true;
+        private bool _spawnValidated;
         private float _defaultJumpSpeed = 300f;
 
         protected override void OnStart()
@@ -79,48 +91,21 @@ namespace UltimoBarrio.Players
             }
 
             ValidateSpawn();
-
-            // Fix Camera Hierarchy if Camera is on the root object
-            var rootCam = Components.Get<CameraComponent>();
-            if (rootCam != null)
-            {
-                var camGo = new GameObject(true, "HeadCamera");
-                camGo.SetParent(this.GameObject);
-                camGo.LocalPosition = Vector3.Up * 64f;
-                var newCam = camGo.Components.Create<CameraComponent>();
-                newCam.FieldOfView = rootCam.FieldOfView;
-                rootCam.Destroy();
-            }
-
-            // Desactivamos PlayerCameraEffects temporalmente porque interfiere con 
-            // el sistema nativo de tercera persona de Sandbox.PlayerController.
         }
 
         protected override void OnUpdate()
         {
-            if ( GameObject.WorldPosition.z < -2000f )
+            // Este componente NO toca cámara ni orientación: el look, el pitch y el
+            // conmutador primera/tercera persona son propiedad de Sandbox.PlayerController
+            // (UseLookControls / UseCameraControls / ToggleCameraModeButton), que actúa
+            // como ICameraModifier sobre la cámara principal de la escena.
+            if ( !_spawnValidated || GameObject.WorldPosition.z < -2000f )
             {
-                Log.Warning("Player fell below KillZ! Recovering...");
                 ValidateSpawn();
-                return;
+                if ( !_spawnValidated ) return;
             }
 
             if (Controller == null || Profile == null) return;
-            
-            if (!IsProxy)
-            {
-                var eyeAngles = Controller.EyeAngles;
-                eyeAngles.pitch += Input.AnalogLook.pitch;
-                eyeAngles.yaw += Input.AnalogLook.yaw;
-                eyeAngles.pitch = eyeAngles.pitch.Clamp(-89f, 89f);
-                Controller.EyeAngles = eyeAngles;
-                
-                // Ya no forzamos cam.LocalPosition = Vector3.Up * 64f;
-                // Dejamos que Sandbox.PlayerController mueva el objeto de la cámara.
-            }
-
-            // Landing detection
-            _wasOnGround = Controller.IsOnGround;
 
             // Sprinting & Stamina
             bool trySprint = Input.Down("run") && !IsExhausted && Controller.Velocity.Length > 10f && !Input.Down("duck") && Controller.IsOnGround;

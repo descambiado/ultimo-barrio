@@ -220,7 +220,8 @@
         "ZIndex": 100
       },
       {
-        "__type": "UltimoBarrio.Combat.HeldItemController",
+        "__type": "UltimoBarrio.HeldItemController",
+        "__guid": "0e7a8d21-5c44-4f2b-9f6d-2a1c7b904d18",
         "__enabled": true,
         "MeleePrefab": {
           "_type": "gameobject",
@@ -237,36 +238,11 @@
       },
       {
         "__type": "UltimoBarrio.Players.PlayerMovementModifier",
+        "__guid": "d4f1b9a6-3e57-4a08-b2c9-6d05e83f1147",
         "__enabled": true
-      },
+      }
     ],
     "Children": [
-      {
-        "__guid": "a4d87123-5f8a-4c2c-8a1a-4c2c8a1a4c2c",
-        "__version": 1,
-        "Flags": 0,
-        "Name": "HeadCamera",
-        "Position": "0,0,64",
-        "Rotation": "0,0,0,1",
-        "Scale": "1,1,1",
-        "Tags": "maincamera",
-        "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
-        "NetworkOrphaned": 0,
-        "OwnerTransfer": 1,
-        "Components": [
-          {
-            "__type": "Sandbox.CameraComponent",
-            "__guid": "b2c91834-6c3d-4c3e-8c3e-4c3e8c3e4c3e",
-            "__enabled": true,
-            "FieldOfView": 90,
-            "IsMainCamera": true,
-            "ZFar": 10000,
-            "ZNear": 10
-          }
-        ]
-      },
       {
         "__guid": "6b5cbc3e-e37c-4eb9-afa6-577469114047",
         "__version": 1,
