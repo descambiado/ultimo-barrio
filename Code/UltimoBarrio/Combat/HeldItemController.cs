@@ -53,17 +53,15 @@ namespace UltimoBarrio.Combat
                 if (CurrentType != HeldItemType.None)
                 {
                     string dropPrefab = CurrentType == HeldItemType.Melee ? "prefabs/weapons/ub_melee.prefab" : "prefabs/weapons/ub_usp.prefab";
-                    var tr = Scene.Trace.Ray(Transform.Position + Vector3.Up * 50f, Transform.Position + Transform.Rotation.Forward * 50f)
+                    var tr = Scene.Trace.Ray(WorldPosition + Vector3.Up * 50f, WorldPosition + WorldRotation.Forward * 50f)
                         .IgnoreGameObjectHierarchy(GameObject)
                         .Run();
                         
-                    var pickup = Scene.Directory.Create();
-                    pickup.WorldPosition = tr.Hit ? tr.HitPosition : tr.EndPosition;
-                    var clone = Scene.Directory.FindPrefab(dropPrefab).Clone(pickup.WorldPosition);
-                    clone.WorldPosition = pickup.WorldPosition;
+                    var pickupPos = tr.Hit ? tr.HitPosition : tr.EndPosition;
+                    var clone = GameObject.Clone(dropPrefab, new Transform(pickupPos));
                     
                     var phys = clone.Components.Get<Rigidbody>(FindMode.EnabledInSelfAndDescendants);
-                    if (phys != null) phys.Velocity = Transform.Rotation.Forward * 200f;
+                    if (phys != null) phys.Velocity = WorldRotation.Forward * 200f;
                     
                     EquipWeapon(HeldItemType.None);
                 }
