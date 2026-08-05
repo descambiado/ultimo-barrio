@@ -31,7 +31,6 @@ namespace UltimoBarrio.UI
         }
 
         private int _lastHash = 0;
-        private int _lastSelected = -1;
 
         protected override void OnUpdate()
         {
@@ -59,7 +58,6 @@ namespace UltimoBarrio.UI
                 return;
 
             _lastHash = currentHash;
-            _lastSelected = activeSlot;
 
             _container.DeleteChildren( true );
 

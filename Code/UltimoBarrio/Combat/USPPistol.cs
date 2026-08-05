@@ -35,7 +35,6 @@ namespace UltimoBarrio.Combat
         private TimeSince _sinceMuzzleFlash;
         private TimeSince _sinceMuzzleSmoke;
         private float _kickCurrent;
-        private float _kickTarget;
         private bool _initializedFx;
 
         protected override void OnStart()
@@ -219,8 +218,7 @@ namespace UltimoBarrio.Combat
                 controller.EyeAngles = angles;
             }
 
-            _kickTarget = CameraKick;
-            _kickCurrent = _kickTarget;
+            _kickCurrent = CameraKick;
 
             var camera = Scene.Camera;
             if ( camera is not null )
