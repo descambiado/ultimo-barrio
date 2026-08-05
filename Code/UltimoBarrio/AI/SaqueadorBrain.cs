@@ -1,91 +1,205 @@
 using Sandbox;
 using System;
+using System.Collections.Generic;
 
 namespace UltimoBarrio.AI
 {
+    /// <summary>
+    /// Cerebro del asaltante (Saqueador):
+    /// Idle → Patrol (rutas) → Investigate (ruido/objetivo de raid) →
+    /// Detect → Approach → Attack (melee) → Retreat → Idle.
+    /// Por la noche se spawna desde SpawnZones o por RaidManager.
+    /// </summary>
     public class SaqueadorBrain : AIBase
     {
         public enum SaqueadorState { Idle, Patrol, Investigate, Detect, Approach, Attack, Retreat }
-        
-        [Property, Sync(SyncFlags.FromHost)] public SaqueadorState CurrentState { get; private set; } = SaqueadorState.Idle;
-        
-        [Property, Sync(SyncFlags.FromHost)] public GameObject RaidTarget { get; set; }
-        
-        private TimeSince timeInState;
-        
+
+        [Property, Sync( SyncFlags.FromHost )]
+        public SaqueadorState CurrentState { get; private set; } = SaqueadorState.Idle;
+
+        [Property, Sync( SyncFlags.FromHost )]
+        public GameObject RaidTarget { get; set; }
+
+        private TimeSince _timeInState;
+        private PatrolRoute _route;
+        private int _waypointIndex;
+        private Vector3 _retreatPosition;
+
         protected override void OnStart()
         {
             base.OnStart();
-            ChangeState(SaqueadorState.Idle);
+            _route = Components.Get<PatrolRoute>( FindMode.EverythingInSelfAndDescendants );
+            _retreatPosition = WorldPosition;
+            ChangeState( SaqueadorState.Idle );
         }
 
         protected override void OnUpdate()
         {
-            if (IsDead) return;
-            
-            if (IsProxy) return;
+            if ( IsDead || IsProxy )
+                return;
 
-            switch (CurrentState)
+            if ( Agent is null || !Agent.IsValid() )
+            {
+                // Sin NavMesh no se puede mover; el FSM se mantiene en Idle.
+                return;
+            }
+
+            // Percepción.
+            var targets = Scene.GetAllComponents<Sandbox.PlayerController>();
+            GameObject nearestTarget = null;
+            float nearestDistance = float.MaxValue;
+            foreach ( var player in targets )
+            {
+                if ( !player.IsValid() || player.GameObject.IsProxy )
+                    continue;
+
+                Perception.UpdateTarget( player.GameObject );
+                if ( Perception.CurrentTarget is not null )
+                {
+                    var d = Vector3.DistanceBetween( WorldPosition, Perception.CurrentTarget.WorldPosition );
+                    if ( d < nearestDistance )
+                    {
+                        nearestDistance = d;
+                        nearestTarget = Perception.CurrentTarget;
+                    }
+                }
+            }
+
+            switch ( CurrentState )
             {
                 case SaqueadorState.Idle:
-                    if (timeInState > 2f) ChangeState(SaqueadorState.Patrol);
+                    if ( nearestTarget is not null )
+                        ChangeState( SaqueadorState.Detect );
+                    else if ( Perception.InvestigatePosition.HasValue )
+                        ChangeState( SaqueadorState.Investigate );
+                    else if ( _timeInState > 2f )
+                        ChangeState( _route is not null ? SaqueadorState.Patrol : SaqueadorState.Idle );
                     break;
+
                 case SaqueadorState.Patrol:
-                    if (Perception.CurrentTarget != null) ChangeState(SaqueadorState.Detect);
-                    else if (RaidTarget != null && timeInState > 2f) ChangeState(SaqueadorState.Investigate);
+                    if ( nearestTarget is not null )
+                    {
+                        ChangeState( SaqueadorState.Detect );
+                        break;
+                    }
+
+                    if ( Perception.InvestigatePosition.HasValue )
+                    {
+                        ChangeState( SaqueadorState.Investigate );
+                        break;
+                    }
+
+                    if ( RaidTarget.IsValid() )
+                    {
+                        Agent.MoveTo( RaidTarget.WorldPosition );
+                        if ( Vector3.DistanceBetween( WorldPosition, RaidTarget.WorldPosition ) < 150f )
+                            ChangeState( SaqueadorState.Investigate );
+                        break;
+                    }
+
+                    PatrolStep();
                     break;
+
                 case SaqueadorState.Investigate:
-                    if (RaidTarget != null)
+                    var destination = Perception.InvestigatePosition ?? ( RaidTarget.IsValid() ? RaidTarget.WorldPosition : (Vector3?)null );
+                    if ( destination.HasValue )
                     {
-                        if (Agent != null)
-                        {
-                            Agent.MoveTo(RaidTarget.WorldPosition);
-                        }
-                        if (Vector3.DistanceBetween(WorldPosition, RaidTarget.WorldPosition) < 150f)
-                        {
-                            ChangeState(SaqueadorState.Attack);
-                        }
+                        Agent.MoveTo( destination.Value );
+                        if ( Vector3.DistanceBetween( WorldPosition, destination.Value ) < 80f || _timeInState > 6f )
+                            ChangeState( nearestTarget is not null ? SaqueadorState.Detect : SaqueadorState.Idle );
                     }
-                    if (Perception.CurrentTarget != null) ChangeState(SaqueadorState.Detect);
+                    else
+                    {
+                        ChangeState( SaqueadorState.Idle );
+                    }
+
+                    if ( nearestTarget is not null )
+                        ChangeState( SaqueadorState.Detect );
                     break;
+
                 case SaqueadorState.Detect:
-                    if (timeInState > 1f) ChangeState(SaqueadorState.Approach);
+                    if ( _timeInState > 1f )
+                        ChangeState( SaqueadorState.Approach );
                     break;
+
                 case SaqueadorState.Approach:
-                    if (Perception.CurrentTarget != null)
+                    if ( nearestTarget is not null )
                     {
-                        if (Agent != null)
-                        {
-                            Agent.MoveTo(Perception.CurrentTarget.WorldPosition);
-                        }
-                        if (Vector3.DistanceBetween(WorldPosition, Perception.CurrentTarget.WorldPosition) < 100f)
-                        {
-                            ChangeState(SaqueadorState.Attack);
-                        }
+                        Agent.MoveTo( nearestTarget.WorldPosition );
+
+                        if ( Vector3.DistanceBetween( WorldPosition, nearestTarget.WorldPosition ) <= AttackRange )
+                            ChangeState( SaqueadorState.Attack );
                     }
-                    else if (timeInState > 5f)
+                    else if ( _timeInState > 5f )
                     {
-                        ChangeState(SaqueadorState.Investigate);
+                        ChangeState( Perception.InvestigatePosition.HasValue ? SaqueadorState.Investigate : SaqueadorState.Idle );
                     }
                     break;
+
                 case SaqueadorState.Attack:
-                    if (timeInState > 3f) ChangeState(SaqueadorState.Retreat);
+                    if ( nearestTarget is not null )
+                    {
+                        TryAttack( nearestTarget );
+
+                        if ( Vector3.DistanceBetween( WorldPosition, nearestTarget.WorldPosition ) > AttackRange * 1.6f )
+                            ChangeState( SaqueadorState.Approach );
+                        else if ( _timeInState > 8f )
+                            ChangeState( SaqueadorState.Retreat );
+                    }
+                    else
+                    {
+                        ChangeState( Perception.InvestigatePosition.HasValue ? SaqueadorState.Investigate : SaqueadorState.Idle );
+                    }
                     break;
+
                 case SaqueadorState.Retreat:
-                    if (timeInState > 5f) ChangeState(SaqueadorState.Idle);
+                    if ( Vector3.DistanceBetween( WorldPosition, _retreatPosition ) > 50f )
+                        Agent.MoveTo( _retreatPosition );
+                    else if ( _timeInState > 4f )
+                        ChangeState( SaqueadorState.Idle );
                     break;
             }
         }
-        
-        public void ChangeState(SaqueadorState newState)
+
+        private void PatrolStep()
         {
-            CurrentState = newState;
-            timeInState = 0f;
+            if ( _route is null )
+                return;
+
+            var waypoints = _route.ResolveWaypoints();
+            if ( waypoints.Count == 0 )
+                return;
+
+            if ( _waypointIndex >= waypoints.Count )
+                _waypointIndex = 0;
+
+            var waypoint = waypoints[_waypointIndex];
+            if ( waypoint is null || !waypoint.IsValid() )
+            {
+                _waypointIndex++;
+                return;
+            }
+
+            Agent.MoveTo( waypoint.WorldPosition );
+
+            if ( Vector3.DistanceBetween( WorldPosition, waypoint.WorldPosition ) < 80f )
+            {
+                _waypointIndex++;
+                if ( _waypointIndex >= waypoints.Count )
+                    _waypointIndex = 0;
+
+                // Pequeña pausa en cada waypoint.
+                _timeInState = 0f;
+            }
         }
 
-        protected override void Die()
+        public void ChangeState( SaqueadorState newState )
         {
-            base.Die();
+            if ( CurrentState == newState )
+                return;
+
+            CurrentState = newState;
+            _timeInState = 0f;
         }
     }
 }
