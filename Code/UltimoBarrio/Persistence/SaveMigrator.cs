@@ -30,6 +30,15 @@ public sealed class SaveMigrator
 			snapshot.Fortifications ??= [];
 			snapshot.Missions ??= [];
 			snapshot.PlayerStates ??= [];
+			
+			if (snapshot.Apartments != null)
+			{
+				foreach (var apt in snapshot.Apartments)
+				{
+					if (apt.SaveVersion == 1) apt.SaveVersion = 2;
+				}
+			}
+
 			snapshot.SaveVersion = 2;
 		}
 
