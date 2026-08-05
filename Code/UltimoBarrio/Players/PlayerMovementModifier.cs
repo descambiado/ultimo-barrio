@@ -80,14 +80,20 @@ namespace UltimoBarrio.Players
 
             ValidateSpawn();
 
-            // Ensure PlayerCameraEffects is present on the Camera
-            var cam = Components.GetInDescendantsOrSelf<CameraComponent>();
-            if (cam != null)
+            // Fix Camera Hierarchy if Camera is on the root object
+            var rootCam = Components.Get<CameraComponent>();
+            if (rootCam != null)
             {
-                var camFx = cam.Components.GetOrCreate<PlayerCameraEffects>();
-                camFx.Profile = Profile;
-                camFx.MovementModifier = this;
+                var camGo = new GameObject(true, "HeadCamera");
+                camGo.SetParent(this.GameObject);
+                camGo.LocalPosition = Vector3.Up * 64f;
+                var newCam = camGo.Components.Create<CameraComponent>();
+                newCam.FieldOfView = rootCam.FieldOfView;
+                rootCam.Destroy();
             }
+
+            // Desactivamos PlayerCameraEffects temporalmente porque interfiere con 
+            // el sistema nativo de tercera persona de Sandbox.PlayerController.
         }
 
         protected override void OnUpdate()
@@ -108,22 +114,12 @@ namespace UltimoBarrio.Players
                 eyeAngles.yaw += Input.AnalogLook.yaw;
                 eyeAngles.pitch = eyeAngles.pitch.Clamp(-89f, 89f);
                 Controller.EyeAngles = eyeAngles;
-
-                var cam = Components.GetInDescendantsOrSelf<CameraComponent>();
-                if (cam != null)
-                {
-                    cam.WorldRotation = Controller.EyeAngles.ToRotation();
-                    cam.LocalPosition = Vector3.Up * 64f;
-                }
+                
+                // Ya no forzamos cam.LocalPosition = Vector3.Up * 64f;
+                // Dejamos que Sandbox.PlayerController mueva el objeto de la cámara.
             }
 
-            // Landing detection for Camera Effects
-            if (!_wasOnGround && Controller.IsOnGround)
-            {
-                var cam = Components.GetInDescendantsOrSelf<CameraComponent>();
-                var camFx = cam?.Components.Get<PlayerCameraEffects>();
-                if (camFx != null) camFx.ApplyLandingDip();
-            }
+            // Landing detection
             _wasOnGround = Controller.IsOnGround;
 
             // Sprinting & Stamina
