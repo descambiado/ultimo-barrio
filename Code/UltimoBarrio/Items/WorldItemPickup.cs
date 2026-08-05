@@ -75,8 +75,16 @@ namespace UltimoBarrio
                 if ( definition is not null && definition.IsWeapon && magToRestore <= 0 )
                     slot.AmmoInMag = definition.MagazineSize;
 
+                var name = definition?.DisplayName ?? ItemId;
+                NotifyPickup( $"Recogido: {name} x{Amount}" );
                 GameObject.Destroy();
             }
+        }
+
+        [Rpc.Broadcast]
+        private void NotifyPickup( string message )
+        {
+            UI.PlayerFeedback.Push( message );
         }
     }
 }

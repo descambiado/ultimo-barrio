@@ -18,15 +18,51 @@
         </div>
     </div>
 
+    <div class="crosshair @(HasWeapon || IsReloading ? "" : "hidden")">
+        <div class="crosshair-dot"></div>
+    </div>
+
+    <div class="feedback-feed">
+        @foreach (var message in FeedbackMessages)
+        {
+            <div class="feedback-item">@message</div>
+        }
+    </div>
+
     <div class="bottom-bar">
         <div class="health-block">
+            <div class="bar health-bar">
+                <div class="bar-fill" style="width: @(HealthPercent * 100)%"></div>
+            </div>
             <label class="health-value">@HealthText</label>
             <label class="health-label">VIDA</label>
         </div>
-        
-        <div class="ammo-block">
-            <label class="ammo-value">@AmmoText</label>
-            <label class="ammo-label">MUNICIÓN</label>
+
+        <div class="stamina-block @(IsExhausted ? "exhausted" : "")">
+            <div class="bar stamina-bar">
+                <div class="bar-fill" style="width: @(StaminaPercent * 100)%"></div>
+            </div>
+            <label class="stamina-value">@StaminaText</label>
+            <label class="stamina-label">RESISTENCIA</label>
+        </div>
+
+        <div class="weapon-block">
+            <label class="weapon-name">@ActiveItemText</label>
+            <label class="ammo-value @(LowMag ? "low" : "")">
+                @if (HasWeapon)
+                {
+                    <text>@MagText / @MaxMagText</text>
+                }
+                else
+                {
+                    <text>--</text>
+                }
+            </label>
+            <label class="reserve-label">RESERVA: @ReserveText</label>
+            @if (IsReloading)
+            {
+                <label class="reload-label">RECARGANDO...</label>
+            }
         </div>
 
         <div class="money-block">

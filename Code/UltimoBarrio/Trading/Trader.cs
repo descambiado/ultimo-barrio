@@ -56,6 +56,7 @@ namespace UltimoBarrio.Trading
                     if (wallet.TryWithdraw(totalCost))
                     {
                         Log.Info($"[Trader] {buyer.Name} bought {amount} {itemId} for {totalCost}. Balance now: ${wallet.Balance}");
+                        NotifyTraderFeedback($"Comprado: {amount}x {itemId} por ${totalCost}");
                     }
                     else 
                     {
@@ -70,7 +71,14 @@ namespace UltimoBarrio.Trading
             else 
             {
                 Log.Info($"[Trader] {buyer.Name} cannot afford {totalCost} (Balance: ${wallet.Balance}).");
+                NotifyTraderFeedback("No tienes fondos suficientes");
             }
+        }
+
+        [Rpc.Broadcast]
+        private void NotifyTraderFeedback(string message)
+        {
+            UI.PlayerFeedback.Push(message);
         }
 
         [Rpc.Host]
