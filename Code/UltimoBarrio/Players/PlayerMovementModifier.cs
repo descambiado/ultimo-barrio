@@ -1,4 +1,4 @@
-using Sandbox;
+﻿using Sandbox;
 using UltimoBarrio.Combat;
 using System;
 
@@ -11,58 +11,106 @@ namespace UltimoBarrio.Players
         public Sandbox.PlayerController Controller { get; set; }
         public HeldItemController HeldItems { get; set; }
         
-        [Property] public float BaseWalkSpeed { get; set; } = 110f;
-        [Property] public float BaseRunSpeed { get; set; } = 320f;
-        [Property] public float BaseDuckedSpeed { get; set; } = 70f;
-        [Property] public float MaxStamina { get; set; } = 100f;
-        [Property] public float StaminaDrain { get; set; } = 20f;
-        [Property] public float StaminaRegen { get; set; } = 15f;
+        [Property] public MovementProfile Profile { get; set; }
 
         public float CurrentStamina { get; private set; }
         public bool IsExhausted => CurrentStamina <= 0f;
+        public bool IsSprinting { get; private set; }
+
+        public float CurrentWeight { get; set; } = 0f; // For inventory integration later
+
+        private bool _wasOnGround = true;
 
         protected override void OnStart()
         {
             Controller = Components.GetInAncestorsOrSelf<Sandbox.PlayerController>();
             HeldItems = Components.GetInDescendantsOrSelf<HeldItemController>();
-            CurrentStamina = MaxStamina;
 
-            if (Controller != null)
+            if (Profile != null)
             {
-                Controller.AccelerationTime = 0.15f;
-                Controller.DeaccelerationTime = 0.1f;
+                CurrentStamina = Profile.MaxStamina;
+            }
+
+            // Ensure PlayerCameraEffects is present on the Camera
+            var cam = Components.GetInDescendantsOrSelf<CameraComponent>();
+            if (cam != null)
+            {
+                var camFx = cam.Components.GetOrCreate<PlayerCameraEffects>();
+                camFx.Profile = Profile;
+                camFx.MovementModifier = this;
             }
         }
 
         protected override void OnUpdate()
         {
-            if (Controller == null) return;
+            if (Controller == null || Profile == null) return;
             
-            bool isSprinting = Input.Down("run") && !IsExhausted && Controller.Velocity.Length > 10f;
-            if (isSprinting)
+            // Landing detection for Camera Effects
+            if (!_wasOnGround && Controller.IsOnGround)
             {
-                CurrentStamina -= StaminaDrain * Time.Delta;
+                var cam = Components.GetInDescendantsOrSelf<CameraComponent>();
+                var camFx = cam?.Components.Get<PlayerCameraEffects>();
+                if (camFx != null) camFx.ApplyLandingDip();
+            }
+            _wasOnGround = Controller.IsOnGround;
+
+            // Sprinting & Stamina
+            bool trySprint = Input.Down("run") && !IsExhausted && Controller.Velocity.Length > 10f && !Controller.IsDucked && Controller.IsOnGround;
+            
+            if (trySprint)
+            {
+                IsSprinting = true;
+                CurrentStamina -= Profile.StaminaDrainRate * Time.Delta;
                 if (CurrentStamina < 0f) CurrentStamina = 0f;
             }
             else
             {
-                CurrentStamina += StaminaRegen * Time.Delta;
-                if (CurrentStamina > MaxStamina) CurrentStamina = MaxStamina;
+                IsSprinting = false;
+                CurrentStamina += Profile.StaminaRegenRate * Time.Delta;
+                if (CurrentStamina > Profile.MaxStamina) CurrentStamina = Profile.MaxStamina;
             }
 
+            // Jump Stamina logic (if we want to intercept, we'd need to check jump input or just deduct if we jumped)
+            // But since PlayerController handles jump internally based on its own logic, we can just detect jump if we can
+            // For now, if we detect an upward velocity burst while grounded was just lost, or intercept jump action.
+            if (Input.Pressed("jump") && Controller.IsOnGround && !IsExhausted)
+            {
+                if (CurrentStamina >= Profile.JumpStaminaCost)
+                {
+                    CurrentStamina -= Profile.JumpStaminaCost;
+                    // Actual jump is handled by PlayerController
+                }
+                else
+                {
+                    // Not enough stamina to jump - we might want to cancel the jump but PlayerController does it itself.
+                    // We can temporarily set JumpSpeed to 0 if we don't want them to jump?
+                    // Actually, modifying JumpSpeed dynamically:
+                }
+            }
+
+            // Calculate Multipliers
+            float weightRatio = MathX.Clamp(CurrentWeight / MathF.Max(1f, Profile.MaxWeight), 0f, 1f);
+            float weightMult = 1f - (weightRatio * Profile.MaxWeightSpeedPenalty);
+            
             float weaponMult = 1f;
             if (HeldItems != null)
             {
-                if (HeldItems.CurrentType == HeldItemType.Pistol) weaponMult = 0.9f;
+                if (HeldItems.CurrentType == HeldItemType.Pistol) weaponMult = 0.95f;
                 else if (HeldItems.CurrentType == HeldItemType.Melee) weaponMult = 1.05f;
             }
 
-            Controller.WalkSpeed = BaseWalkSpeed * weaponMult;
-            Controller.RunSpeed = isSprinting ? (BaseRunSpeed * weaponMult) : Controller.WalkSpeed;
-            Controller.DuckedSpeed = BaseDuckedSpeed * weaponMult;
+            float finalMult = weightMult * weaponMult;
 
-            // Simple Lean/Sway would be on the camera, so we skip complex math here for brevity, 
-            // but the movement dynamics are now handled with stamina.
+            // Apply to Controller
+            Controller.WalkSpeed = Profile.WalkSpeed * finalMult;
+            Controller.RunSpeed = IsSprinting ? (Profile.RunSpeed * finalMult) : Controller.WalkSpeed;
+            Controller.DuckedSpeed = Profile.DuckedSpeed * finalMult;
+
+            Controller.AccelerationTime = Profile.AccelerationTime;
+            Controller.DeaccelerationTime = Profile.DecelerationTime;
+            
+            // If exhausted, disable jumping or reduce speed
+            // Since we can't easily disable jump if PlayerController handles it, we can just let stamina be a deterrent.
         }
     }
 }
