@@ -7,8 +7,6 @@ namespace Editor.Mcp;
 [McpToolset( "ultimo_barrio", "Safe project-specific editor operations for Ultimo Barrio." )]
 public static class UltimoBarrioSceneTools
 {
-	private const string MainScenePath = "scenes/main.scene";
-
 	/// <summary>
 	/// Reload the active scene from its source file. Refuses to run during Play Mode or when the
 	/// editor has unsaved scene changes unless discarding them is requested explicitly.
@@ -29,9 +27,15 @@ public static class UltimoBarrioSceneTools
 				"The active scene has unsaved changes. Save or discard them explicitly before reloading." );
 		}
 
+		// Se recarga la escena que está realmente activa, no una ruta fija: el proyecto
+		// arranca en scenes/ultimo_barrio_alpha.scene y la constante anterior apuntaba a
+		// scenes/main.scene, así que limpiaba la copia en memoria equivocada.
+		var scenePath = session.Scene?.Source?.ResourcePath
+			?? throw new InvalidOperationException( "The active scene has no source asset on disk." );
+
 		var discardedChanges = session.HasUnsavedChanges;
-		var asset = AssetSystem.FindByPath( MainScenePath )
-			?? throw new InvalidOperationException( $"Asset '{MainScenePath}' was not found." );
+		var asset = AssetSystem.FindByPath( scenePath )
+			?? throw new InvalidOperationException( $"Asset '{scenePath}' was not found." );
 
 		asset.ClearInMemoryReplacement();
 		session.Reload();
@@ -40,7 +44,7 @@ public static class UltimoBarrioSceneTools
 		{
 			Reloaded = true,
 			DiscardedChanges = discardedChanges,
-			Asset = MainScenePath
+			Asset = scenePath
 		};
 	}
 }

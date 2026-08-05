@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.UI;
 using System.Linq;
 using UltimoBarrio.Apartments;
 using UltimoBarrio.Combat;
@@ -113,14 +114,111 @@ namespace UltimoBarrio.QA
         [ConCmd("ub_qa_movement_state")]
         public static void CheckMovementState()
         {
-            var mod = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault();
-            var cam = Game.ActiveScene.GetAllComponents<PlayerCameraEffects>().FirstOrDefault();
-            if (mod == null || cam == null) { Log.Error("Movement/Camera not found."); return; }
+            var scene = Game.ActiveScene;
+            var mod = scene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault();
+            if (mod == null) { Log.Error("PlayerMovementModifier not found."); return; }
 
             Log.Info("--- ub_qa_movement_state ---");
             Log.Info($"stamina actual: {mod.CurrentStamina}");
             Log.Info($"IsExhausted: {mod.IsExhausted}");
-            Log.Info($"camera local position: {cam.GameObject.LocalPosition}");
+            Log.Info($"IsSprinting: {mod.IsSprinting}");
+        }
+
+        /// <summary>
+        /// Estado real de cámara y controlador. Sandbox.PlayerController es un
+        /// ICameraModifier: la cámara principal vive en la escena y el controlador
+        /// le compone la vista cada frame, por eso el transform del GameObject y la
+        /// vista compuesta (View) no coinciden y hay que registrar ambos.
+        /// </summary>
+        [ConCmd("ub_qa_camera_state")]
+        public static void CheckCameraState()
+        {
+            var scene = Game.ActiveScene;
+            var controller = scene.GetAllComponents<Sandbox.PlayerController>().FirstOrDefault();
+            var cameras = scene.GetAllComponents<CameraComponent>().Where(c => c.Active).ToList();
+
+            Log.Info("--- ub_qa_camera_state ---");
+            Log.Info($"Active CameraComponent count: {cameras.Count}");
+
+            foreach (var c in cameras)
+            {
+                Log.Info($"  camera '{c.GameObject.Name}' parent='{c.GameObject.Parent?.Name ?? "<scene root>"}' IsMainCamera={c.IsMainCamera}");
+            }
+
+            if (controller == null) { Log.Error("No PlayerController in scene."); return; }
+
+            var player = controller.GameObject;
+            Log.Info($"Player.WorldPosition: {player.WorldPosition}");
+            Log.Info($"Player.WorldRotation: {player.WorldRotation.Angles()}");
+            Log.Info($"Controller.EyeAngles: {controller.EyeAngles}");
+            Log.Info($"Controller.EyePosition: {controller.EyePosition}");
+            Log.Info($"Current camera mode: {(controller.ThirdPerson ? "ThirdPerson" : "FirstPerson")}");
+            Log.Info($"UseCameraControls={controller.UseCameraControls} UseLookControls={controller.UseLookControls} CameraOffset={controller.CameraOffset}");
+
+            var main = scene.Camera;
+            if (main == null) { Log.Error("Scene.Camera is null."); return; }
+
+            Log.Info($"Camera GameObject: '{main.GameObject.Name}' parent='{main.GameObject.Parent?.Name ?? "<scene root>"}'");
+            Log.Info($"Camera.WorldPosition: {main.WorldPosition}");
+            Log.Info($"Camera.WorldRotation: {main.WorldRotation.Angles()}");
+            Log.Info($"Camera.View.Position (compuesta): {main.View.Position}");
+            Log.Info($"Camera.View.Rotation (compuesta): {main.View.Rotation.Angles()}");
+            Log.Info($"Camera.View.Forward: {main.View.Rotation.Forward}");
+
+            // Base de movimiento que Sandbox.PlayerController usa para convertir
+            // Input.AnalogMove en WishVelocity: los ejes de EyeAngles sin pitch.
+            var moveBasis = controller.EyeAngles.WithPitch(0f).ToRotation();
+            Log.Info($"Move basis Forward (W): {moveBasis.Forward}");
+            Log.Info($"Move basis Right (D): {moveBasis.Right}");
+            Log.Info($"dot(W, camForward.xy): {Vector3.Dot(moveBasis.Forward, main.View.Rotation.Forward.WithZ(0).Normal)}");
+        }
+
+        /// <summary>
+        /// QA: estado del cursor y del look. Si el cursor está visible, el motor no
+        /// entrega Input.AnalogLook y la cámara se queda clavada aunque WASD funcione.
+        /// </summary>
+        [ConCmd("ub_qa_input_state")]
+        public static void CheckInputState()
+        {
+            Log.Info("--- ub_qa_input_state ---");
+            Log.Info($"Mouse.Visibility: {Mouse.Visibility}");
+            Log.Info($"Mouse.Active: {Mouse.Active}");
+            Log.Info($"Input.MouseCursorVisible: {Input.MouseCursorVisible}");
+            Log.Info($"Input.Suppressed: {Input.Suppressed}");
+            Log.Info($"Input.AnalogLook: {Input.AnalogLook}");
+            Log.Info($"Input.AnalogMove: {Input.AnalogMove}");
+
+            var hud = Game.ActiveScene.GetAllComponents<UltimoBarrio.UI.PlayerHud>().FirstOrDefault();
+            Log.Info($"PlayerHud.CurrentState: {(hud == null ? "<no hud>" : hud.CurrentState.ToString())}");
+
+            foreach (var pc in Game.ActiveScene.GetAllComponents<PanelComponent>())
+            {
+                var p = pc.Panel;
+                if (p == null) { Log.Info($"  panel {pc.GetType().Name}: <null>"); continue; }
+                Log.Info($"  panel {pc.GetType().Name}: display={p.ComputedStyle?.Display} pointerEvents={p.ComputedStyle?.PointerEvents}");
+            }
+        }
+
+        /// <summary>QA: fija EyeAngles para comprobar que la cámara sigue al look.</summary>
+        [ConCmd("ub_qa_look")]
+        public static void SetLook(float yaw, float pitch)
+        {
+            var controller = Game.ActiveScene.GetAllComponents<Sandbox.PlayerController>().FirstOrDefault();
+            if (controller == null) { Log.Error("No PlayerController in scene."); return; }
+
+            controller.EyeAngles = new Angles(pitch, yaw, 0f);
+            Log.Info($"--- ub_qa_look --- EyeAngles set to {controller.EyeAngles}");
+        }
+
+        /// <summary>QA: fuerza el modo de cámara para capturar evidencia sin pulsar la tecla View.</summary>
+        [ConCmd("ub_qa_camera_mode")]
+        public static void SetCameraMode(int thirdPerson)
+        {
+            var controller = Game.ActiveScene.GetAllComponents<Sandbox.PlayerController>().FirstOrDefault();
+            if (controller == null) { Log.Error("No PlayerController in scene."); return; }
+
+            controller.ThirdPerson = thirdPerson != 0;
+            Log.Info($"--- ub_qa_camera_mode --- ThirdPerson={controller.ThirdPerson}");
         }
         [ConCmd("ub_qa_run_preflight")]
         public static void RunPreflight()
