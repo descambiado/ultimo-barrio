@@ -28,13 +28,16 @@ namespace UltimoBarrio.Players
             if ( !Networking.IsHost ) return;
             
             var pos = GameObject.WorldPosition;
-            var tr = Scene.Trace.Ray( pos + Vector3.Up * 20f, pos + Vector3.Down * 2000f )
+            // Trace desde muy alto para no quedarse atrapado bajo el mapa
+            var tr = Scene.Trace.Ray( pos.WithZ(pos.z + 500f), pos.WithZ(pos.z - 2000f) )
                 .IgnoreGameObjectHierarchy( GameObject )
                 .Run();
 
             if ( tr.Hit )
             {
-                GameObject.WorldPosition = tr.EndPosition + Vector3.Up * 5f;
+                // Mueve el origen al suelo + 5 unidades. Si el collider está centrado, podría necesitar más altura.
+                // S&box PlayerController suele tener el origen abajo, pero si cae, lo subimos 10f.
+                GameObject.WorldPosition = tr.EndPosition + Vector3.Up * 10f;
                 Log.Info($"Player spawned at valid floor: {GameObject.WorldPosition}");
             }
             else
@@ -43,10 +46,10 @@ namespace UltimoBarrio.Players
                 var points = Scene.GetAllComponents<SpawnPoint>();
                 foreach (var p in points)
                 {
-                    var ptr = Scene.Trace.Ray( p.GameObject.WorldPosition + Vector3.Up * 20f, p.GameObject.WorldPosition + Vector3.Down * 2000f ).Run();
+                    var ptr = Scene.Trace.Ray( p.GameObject.WorldPosition.WithZ(p.GameObject.WorldPosition.z + 500f), p.GameObject.WorldPosition.WithZ(p.GameObject.WorldPosition.z - 2000f) ).Run();
                     if ( ptr.Hit )
                     {
-                        GameObject.WorldPosition = ptr.EndPosition + Vector3.Up * 5f;
+                        GameObject.WorldPosition = ptr.EndPosition + Vector3.Up * 10f;
                         Log.Info($"Fallback spawn selected: {GameObject.WorldPosition}");
                         return;
                     }

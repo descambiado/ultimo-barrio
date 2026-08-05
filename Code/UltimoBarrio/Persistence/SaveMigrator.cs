@@ -36,6 +36,10 @@ public sealed class SaveMigrator
 				foreach (var apt in snapshot.Apartments)
 				{
 					if (apt.SaveVersion == 1) apt.SaveVersion = 2;
+					if (!string.IsNullOrEmpty(apt.OwnerId) && ulong.TryParse(apt.OwnerId, out _))
+					{
+						apt.OwnerId = $"steam:{apt.OwnerId}";
+					}
 				}
 			}
 

@@ -35,6 +35,15 @@ namespace UltimoBarrio.Raids
 
         protected override void OnStart()
         {
+            if ( !Core.FeatureFlags.EnableRaids )
+            {
+                isRaidActive = false;
+                currentRaidTime = 0f;
+                currentRaidTargetId = string.Empty;
+                Enabled = false; // Disable component entirely
+                return;
+            }
+
             if ( Clock != null && !IsProxy )
                 Clock.OnPhaseChanged += HandlePhaseChanged;
         }

@@ -2,7 +2,7 @@ HotbarPanel {
     position: absolute;
     bottom: 32px;
     left: 50%;
-    transform: translateX(-50%);
+    
     display: flex;
     flex-direction: row;
     gap: 8px;
@@ -23,7 +23,7 @@ HotbarPanel {
         justify-content: center;
         position: relative;
         cursor: pointer;
-        transition: all 0.1s ease-in-out;
+        
 
         &:hover {
             background-color: rgba(80, 80, 80, 0.9);
@@ -34,7 +34,7 @@ HotbarPanel {
             background-color: rgba(50, 50, 50, 0.9);
             border-color: #f39c12;
             box-shadow: 0 0 10px rgba(243, 156, 18, 0.6);
-            transform: translateY(-4px);
+            
         }
 
         .slot-index {
@@ -65,3 +65,4 @@ HotbarPanel {
         }
     }
 }
+

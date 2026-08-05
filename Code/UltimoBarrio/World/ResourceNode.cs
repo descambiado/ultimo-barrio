@@ -30,10 +30,8 @@ namespace UltimoBarrio.World
 
         protected override void OnStart()
         {
-            if (Networking.IsHost)
-            {
-                IsAvailable = true;
-            }
+            IsAvailable = false;
+            Enabled = false;
         }
 
         protected override void OnUpdate()
