@@ -65,3 +65,8 @@ TestResults/
 *.scene_d
 /poll_console*.ps1
 /run_sbox_restart.ps1
+
+# Research vendor clones: read-only reference for license/pattern audit,
+# never a real dependency of the build. Fiches in .research/*.md are
+# tracked; the cloned source under .research/vendor/ is not.
+.research/vendor/

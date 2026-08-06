@@ -1,6 +1,6 @@
 # Catálogo de reutilización — s&box / Último Barrio
 
-Investigación realizada siguiendo [[sbox-reuse-first]] y [[sbox-source-auditor]].
+Investigación realizada siguiendo [[sbox-integration-factory]] y [[sbox-license-auditor]].
 Motor instalado: **26.07.22** (`C:\Program Files (x86)\Steam\steamapps\common\sbox`).
 Fecha de investigación: 2026-08-05.
 
@@ -41,16 +41,20 @@ movimiento puro.
 ## Parte 2 — Repositorios comunitarios/oficiales investigados
 
 Ficha resumida por candidato. Fichas completas con el formato de
-[[sbox-source-auditor]] en `.research/<slug>.md`.
+[[sbox-license-auditor]] en `.research/<slug>.md`. Los repos con clon local viven en
+`.research/vendor/` (gitignored, solo para inspección — ver [[sbox-integration-factory]]).
 
 | Candidato | Fuente | Licencia | Veredicto | Por qué |
 |---|---|---|---|---|
-| Facepunch sbox-hc1 | github.com/Facepunch/sbox-hc1 | **Sin LICENSE** (404 en `/blob/main/LICENSE`) → All Rights Reserved por defecto | **SOLO REFERENCIA DE LECTURA** (no ADOPTAR/ADAPTAR) | FPS completo de Facepunch, útil para leer patrones de arma/red actuales, pero sin licencia no se puede copiar código. Ver [[sbox-reuse-first]] paso 5 — un repo público no es automáticamente reutilizable. |
-| timmybo5/simple-weapon-base | github.com/timmybo5/simple-weapon-base | MIT | **EXTRAER PATRÓN** | Weapon base madura (hitscan+físico, sway, attachments, offset editor) pero deliberadamente sin inventario — no encaja con el modelo de datos local (`ItemDefinition`/`InventorySlot.AmmoInMag`). Útil para ideas de sway/aim/attachment cuando se aborden las armas (bloque I), no para el bloque actual. |
-| matekdev/sbox-arcade-car-physics | github.com/matekdev/sbox-arcade-car-physics | MIT | **ADAPTAR (spike futuro)** | Multijugador listo de fábrica, autoridad del dueño sobre el coche, ruedas replicadas a todos los clientes. Candidato principal para el spike de vehículos — no se integra en este bloque (regla explícita: catalogar vehículos, no meterlos en el recorrido principal todavía). |
-| kurozael/sbox-inventory | github.com/kurozael/sbox-inventory | MIT | **EXTRAER PATRÓN (parcial)** | Inventario tipo Tetris con tamaños variables — más complejo de lo que Último Barrio necesita (slots simples de stack, no grid 2D). El patrón de sincronización host-autoritativa es válido como referencia; el modelo de datos no se adopta. |
-| Nebual/sandbox-plus | github.com/Nebual/sandbox-plus | MIT | **EXTRAER PATRÓN** | Fork comunitario del gamemode Sandbox con tool de constraints (weld/axis/rope/elastic/slider/ballsocket). Relevante para el patrón de "herramienta selecciona ancla → preview válido/inválido → coloca" que necesitan las barricadas — no se adopta el addon completo, se toma el patrón de interacción. |
-| Nolankicks/Fortwars y apetavern/sbox-fortwars | github.com/Nolankicks/Fortwars, github.com/apetavern/sbox-fortwars | No verificado en esta pasada (pendiente) | **PENDIENTE DE AUDITORÍA** | CTF con énfasis en construcción — relevante para barricadas/fortificación. La versión de apetavern está archivada (read-only desde 2024-05-30), preferir Nolankicks/Fortwars si se profundiza. No bloquea el bloque D-H actual. |
+| Facepunch sbox-hc1 | github.com/Facepunch/sbox-hc1 | **Sin LICENSE** (404 en `/blob/main/LICENSE`) → All Rights Reserved por defecto | **REFERENCIA** (no ADOPTAR/ADAPTAR) | FPS completo de Facepunch, útil para leer patrones de arma/red actuales, pero sin licencia no se puede copiar código. |
+| timmybo5/simple-weapon-base | github.com/timmybo5/simple-weapon-base | MIT | **EXTRAER PATRÓN** | Weapon base madura (hitscan+físico, sway, attachments, offset editor) pero deliberadamente sin inventario — no encaja con el modelo de datos local. Útil para sway/aim/attachment en el Bloque D, no ahora. |
+| matekdev/sbox-arcade-car-physics | github.com/matekdev/sbox-arcade-car-physics | MIT | **ADAPTAR (spike futuro)** | Multijugador listo de fábrica, autoridad del dueño sobre el coche. Candidato principal para el spike de vehículos (Bloque G) — no se integra en este bloque. |
+| kurozael/sbox-inventory | github.com/kurozael/sbox-inventory | MIT | **EXTRAER PATRÓN (parcial)** | Inventario tipo grid — más complejo de lo que Último Barrio necesita. El patrón de sincronización host-autoritativa ya está efectivamente presente en `InventoryComponent` local. |
+| Nebual/sandbox-plus | github.com/Nebual/sandbox-plus | MIT | **EXTRAER PATRÓN** | Fork del gamemode Sandbox con tool de constraints. Referencia de UX para colocación de barricadas — no se adopta el addon completo. |
+| echohello-dev/basebound | github.com/echohello-dev/basebound | MIT | **ADAPTAR (pendiente de archivos concretos)** | Base building con economía activa/idle, raids con warrant, contratos. Ficha: `.research/echohello-basebound.md`. |
+| Softsplit/sandbox-plus-plus | github.com/Softsplit/sandbox-plus-plus | **GPL-3.0** | **EXTRAER PATRÓN únicamente — no copiar código** | Copyleft: código derivado tendría que relicenciarse bajo GPL-3.0. Solo referencia de UX para constraints/placement. Ficha: `.research/softsplit-sandbox-plus-plus.md`. **No confundir con `Nebual/sandbox-plus` (MIT, repo distinto).** |
+| apetavern/sbox-fortwars | github.com/apetavern/sbox-fortwars | **Sin LICENSE** (confirmado tras clonar) | **DESCARTAR** | Archivado desde 2024-05-30, commit más reciente de 2022, sin archivo LICENSE. Ficha: `.research/apetavern-sbox-fortwars.md`. Si se necesita referencia de fortificación, auditar `Nolankicks/Fortwars` por separado. |
+| dxura/dxrp | github.com/dxura/dxrp | **Propietario, "todos los derechos reservados"** | **DESCARTAR — no clonar** | Prohíbe explícitamente redistribución y uso comercial sin permiso escrito. Ficha: `.research/dxura-dxrp.md` (verificación de licencia únicamente, sin clon). |
 
 ### Puertas y barricadas — decisión de arquitectura
 
@@ -65,12 +69,12 @@ construir la puerta de apartamento como:
   `HingeJoint` queda catalogado para si en el futuro se pide que la puerta se pueda
   abatir físicamente.
 - Estado (`DoorLevel`, `DoorHealth`) vive en el esquema de persistencia ya definido
-  en [[ultimo-barrio-gameplay]], no en un componente físico separado.
+  en [[ultimo-barrio-architect]], no en un componente físico separado.
 
 ## Parte 3 — Búsquedas que no dieron candidato
 
 Documentado explícitamente porque una búsqueda vacía es un resultado válido, no un
-fallo (ver [[sbox-reuse-first]] — "cuándo esta skill dice escribir código nuevo de
+fallo (ver [[sbox-integration-factory]] — "cuándo esta skill dice escribir código nuevo de
 todas formas"):
 
 - **Sistema de puertas nativo genérico**: no existe `Sandbox.Mapping.Door` ni

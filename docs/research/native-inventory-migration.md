@@ -16,7 +16,7 @@ funciona por uno que tendría que volver a aprender los mismos requisitos concre
 del proyecto (stash por apartamento, transferencias con anti-cheat de distancia,
 cargador persistente), sin evidencia de que resuelva algo que falte.
 
-Este es exactamente el caso que [[sbox-reuse-first]] contempla como salida válida:
+Este es exactamente el caso que [[sbox-integration-factory]] contempla como salida válida:
 la búsqueda no encontró un vacío que llenar, encontró un sistema ya construido que
 cubre el mismo terreno. La migración recomendada es **selectiva y de patrón**, no
 de reemplazo.
@@ -40,7 +40,7 @@ WorldItemPickup.OnInteract()
     inventory.AddItem(...), destruye el pickup, notifica por RPC broadcast
 ```
 
-Esto ya cumple el criterio de [[sbox-runtime-proof]] de "input físico real, no
+Esto ya cumple el criterio de [[ultimo-barrio-runtime-proof]] de "input físico real, no
 comando QA" — el flujo entero pasa por `Input.Pressed`, no por un `ConCmd`. Lo que
 falta **no es construir el sistema**, es:
 
@@ -159,7 +159,7 @@ sobre la base local existente, no para reemplazarla.
 
 ## Verificación pendiente (bloque D)
 
-Siguiendo [[sbox-runtime-proof]], antes de declarar "recogida con E" en estado
+Siguiendo [[ultimo-barrio-runtime-proof]], antes de declarar "recogida con E" en estado
 FUNCIONA EN RUNTIME:
 
 1. Colocar al menos un `WorldItemPickup` real en el mapa (`scrap_metal` con modelo

@@ -63,7 +63,7 @@ merge to main without validation
 ```
 
 "Validation" for a merge to `main` means the target has cleared the appropriate
-[[sbox-runtime-proof]] stages for whatever it contains — not just that it compiles.
+[[ultimo-barrio-runtime-proof]] stages for whatever it contains — not just that it compiles.
 
 ## Before any destructive command
 

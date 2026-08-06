@@ -2,8 +2,8 @@
 
 - **Nombre:** sbox-inventory (Conna)
 - **Fuente:** https://github.com/kurozael/sbox-inventory
-- **Commit/tag/revisión:** main @ 24 commits (SHA no fijado en esta pasada)
-- **Última actualización:** no confirmada en esta pasada
+- **Commit/tag/revisión:** `acbfc511d47e7703c6739f7d2c8d7cea0aee07a2` (confirmado tras clonar en `.research/vendor/sbox-inventory/`)
+- **Última actualización:** 2026-01-23
 - **Licencia:** MIT
 - **Código fuente disponible:** Sí — `BaseInventory`, `InventoryItem`,
   `NetworkedInventory` y ejemplos de UI con drag-and-drop

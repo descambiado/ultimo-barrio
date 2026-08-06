@@ -83,5 +83,5 @@ ver commit `a2d49eb`) aunque tenga los materiales.
    pendientes — no bloquean el recorrido mínimo de vivienda, se colocan cuando se
    aborde el ciclo día/noche y raids en profundidad.
 4. Cualquier colocación debe pasar por editor + captura visual antes de darse por
-   válida, según [[sbox-runtime-proof]] — coordenadas puestas a mano en este
+   válida, según [[ultimo-barrio-runtime-proof]] — coordenadas puestas a mano en este
    documento sin pasar por el editor no cuentan como colocación real.

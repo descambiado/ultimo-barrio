@@ -2,8 +2,8 @@
 
 - **Nombre:** Simple Weapon Base (SWB)
 - **Fuente:** https://github.com/timmybo5/simple-weapon-base
-- **Commit/tag/revisión:** master @ 619 commits (SHA no fijado en esta pasada)
-- **Última actualización:** no confirmada en esta pasada
+- **Commit/tag/revisión:** `51aace72afb4506700793fc3eae4e65ed5364fd0` (confirmado tras clonar en `.research/vendor/simple-weapon-base/`)
+- **Última actualización:** 2026-06-18
 - **Licencia:** MIT (confirmado en el footer del repo)
 - **Código fuente disponible:** Sí, completo
 - **Sistema que aporta:** Base de armas — hitscan y físico (balístico), recarga por

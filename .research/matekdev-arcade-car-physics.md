@@ -2,8 +2,8 @@
 
 - **Nombre:** s&box Arcade Car Physics
 - **Fuente:** https://github.com/matekdev/sbox-arcade-car-physics
-- **Commit/tag/revisión:** main @ 4 commits (SHA no fijado en esta pasada)
-- **Última actualización:** no confirmada en esta pasada
+- **Commit/tag/revisión:** `7541a30b76cee48d7b2b355c54c0aed1fb2e06d5` (confirmado tras clonar en `.research/vendor/sbox-arcade-car-physics/`)
+- **Última actualización:** 2025-09-14
 - **Licencia:** MIT
 - **Código fuente disponible:** Sí
 - **Sistema que aporta:** Física de vehículo arcade — simulación de raycast/física de
