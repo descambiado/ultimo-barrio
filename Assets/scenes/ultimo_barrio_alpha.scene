@@ -95,17 +95,29 @@
                   "__enabled": true,
                   "Flags": 0,
                   "ApartmentId": "apartment-a01",
-                  "DoorReference": null,
+                  "DoorReference": {
+                    "_type": "gameobject",
+                    "go": "0e12fdf7-7939-4033-9f4e-da63e7dd6826"
+                  },
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null,
-                  "RaidTargetReference": null,
-                  "SaveVersion": 1,
-                  "SpawnReference": null,
-                  "StashReference": null
+                  "RaidTargetReference": {
+                    "_type": "gameobject",
+                    "go": "0e12fdf7-7939-4033-9f4e-da63e7dd6826"
+                  },
+                  "SaveVersion": 2,
+                  "SpawnReference": {
+                    "_type": "gameobject",
+                    "go": "47e48310-13c4-4fd5-90cd-e119e3cf981d"
+                  },
+                  "StashReference": {
+                    "_type": "gameobject",
+                    "go": "0f9e7f86-36ad-4007-a0c2-313db56c774f"
+                  }
                 },
                 {
                   "__type": "UltimoBarrio.Fortification.ApartmentFortification",
@@ -115,7 +127,10 @@
                   "ApartmentId": "apartment-a01",
                   "BaseDoorMaxHealth": 250,
                   "BaseWindowMaxHealth": 150,
-                  "DoorReference": null,
+                  "DoorReference": {
+                    "_type": "gameobject",
+                    "go": "0e12fdf7-7939-4033-9f4e-da63e7dd6826"
+                  },
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -131,7 +146,10 @@
                   "ApartmentId": "apartment-a01",
                   "BaseDoorMaxHealth": 250,
                   "BaseWindowMaxHealth": 150,
-                  "DoorReference": null,
+                  "DoorReference": {
+                    "_type": "gameobject",
+                    "go": "0e12fdf7-7939-4033-9f4e-da63e7dd6826"
+                  },
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -147,7 +165,10 @@
                   "ApartmentId": "apartment-a01",
                   "BaseDoorMaxHealth": 250,
                   "BaseWindowMaxHealth": 150,
-                  "DoorReference": null,
+                  "DoorReference": {
+                    "_type": "gameobject",
+                    "go": "0e12fdf7-7939-4033-9f4e-da63e7dd6826"
+                  },
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -252,6 +273,20 @@
                       },
                       "RenderType": "On",
                       "Tint": "1,1,1,1"
+                    },
+                    {
+                      "__type": "UltimoBarrio.Fortification.DestructibleStructure",
+                      "__guid": "11d29d12-d5a8-4699-adb3-8ea52577ba2e",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "MaxHealth": 250,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "StructureId": "apartment-a01-door"
                     }
                   ],
                   "Children": []
@@ -468,17 +503,29 @@
                   "__enabled": true,
                   "Flags": 0,
                   "ApartmentId": "apartment-a02",
-                  "DoorReference": null,
+                  "DoorReference": {
+                    "_type": "gameobject",
+                    "go": "4b576305-275d-45e8-8ea1-bc77b02659a7"
+                  },
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null,
-                  "RaidTargetReference": null,
-                  "SaveVersion": 1,
-                  "SpawnReference": null,
-                  "StashReference": null
+                  "RaidTargetReference": {
+                    "_type": "gameobject",
+                    "go": "4b576305-275d-45e8-8ea1-bc77b02659a7"
+                  },
+                  "SaveVersion": 2,
+                  "SpawnReference": {
+                    "_type": "gameobject",
+                    "go": "1ede310e-13e1-4fb3-b3ed-5966f61fa254"
+                  },
+                  "StashReference": {
+                    "_type": "gameobject",
+                    "go": "ce094d8e-2843-4854-8177-7fe708302669"
+                  }
                 },
                 {
                   "__type": "UltimoBarrio.Fortification.ApartmentFortification",
@@ -488,7 +535,10 @@
                   "ApartmentId": "apartment-a02",
                   "BaseDoorMaxHealth": 250,
                   "BaseWindowMaxHealth": 150,
-                  "DoorReference": null,
+                  "DoorReference": {
+                    "_type": "gameobject",
+                    "go": "4b576305-275d-45e8-8ea1-bc77b02659a7"
+                  },
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -593,6 +643,20 @@
                       },
                       "RenderType": "On",
                       "Tint": "1,1,1,1"
+                    },
+                    {
+                      "__type": "UltimoBarrio.Fortification.DestructibleStructure",
+                      "__guid": "3a2019ec-01d6-4d6a-a91c-326900509004",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "MaxHealth": 250,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "StructureId": "apartment-a02-door"
                     }
                   ],
                   "Children": []
@@ -809,17 +873,29 @@
                   "__enabled": true,
                   "Flags": 0,
                   "ApartmentId": "apartment-a03",
-                  "DoorReference": null,
+                  "DoorReference": {
+                    "_type": "gameobject",
+                    "go": "a78a9d9f-c258-4d89-94d6-def202ce67e5"
+                  },
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null,
-                  "RaidTargetReference": null,
-                  "SaveVersion": 1,
-                  "SpawnReference": null,
-                  "StashReference": null
+                  "RaidTargetReference": {
+                    "_type": "gameobject",
+                    "go": "a78a9d9f-c258-4d89-94d6-def202ce67e5"
+                  },
+                  "SaveVersion": 2,
+                  "SpawnReference": {
+                    "_type": "gameobject",
+                    "go": "b2c33881-3d15-4246-be5b-eea47f14b6d8"
+                  },
+                  "StashReference": {
+                    "_type": "gameobject",
+                    "go": "150324e5-07ef-471d-8618-56e7d17e43ba"
+                  }
                 },
                 {
                   "__type": "UltimoBarrio.Fortification.ApartmentFortification",
@@ -829,7 +905,10 @@
                   "ApartmentId": "apartment-a03",
                   "BaseDoorMaxHealth": 250,
                   "BaseWindowMaxHealth": 150,
-                  "DoorReference": null,
+                  "DoorReference": {
+                    "_type": "gameobject",
+                    "go": "a78a9d9f-c258-4d89-94d6-def202ce67e5"
+                  },
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -934,6 +1013,20 @@
                       },
                       "RenderType": "On",
                       "Tint": "1,1,1,1"
+                    },
+                    {
+                      "__type": "UltimoBarrio.Fortification.DestructibleStructure",
+                      "__guid": "fe94bcab-2167-46d5-985e-eabafaa1e5c4",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "MaxHealth": 250,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "StructureId": "apartment-a03-door"
                     }
                   ],
                   "Children": []
@@ -1100,17 +1193,29 @@
                   "__enabled": true,
                   "Flags": 0,
                   "ApartmentId": "apartment-a04",
-                  "DoorReference": null,
+                  "DoorReference": {
+                    "_type": "gameobject",
+                    "go": "e488b8fd-47c9-4519-9928-39bbdb1c4155"
+                  },
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null,
-                  "RaidTargetReference": null,
-                  "SaveVersion": 1,
-                  "SpawnReference": null,
-                  "StashReference": null
+                  "RaidTargetReference": {
+                    "_type": "gameobject",
+                    "go": "e488b8fd-47c9-4519-9928-39bbdb1c4155"
+                  },
+                  "SaveVersion": 2,
+                  "SpawnReference": {
+                    "_type": "gameobject",
+                    "go": "3853fefa-26b8-4957-8713-6fa269486e8d"
+                  },
+                  "StashReference": {
+                    "_type": "gameobject",
+                    "go": "d18318f1-f660-452b-9e70-86116e85bbf1"
+                  }
                 },
                 {
                   "__type": "UltimoBarrio.Fortification.ApartmentFortification",
@@ -1120,7 +1225,10 @@
                   "ApartmentId": "apartment-a04",
                   "BaseDoorMaxHealth": 250,
                   "BaseWindowMaxHealth": 150,
-                  "DoorReference": null,
+                  "DoorReference": {
+                    "_type": "gameobject",
+                    "go": "e488b8fd-47c9-4519-9928-39bbdb1c4155"
+                  },
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -1225,6 +1333,20 @@
                       },
                       "RenderType": "On",
                       "Tint": "1,1,1,1"
+                    },
+                    {
+                      "__type": "UltimoBarrio.Fortification.DestructibleStructure",
+                      "__guid": "1af41a7d-7c18-470d-98c3-9add7b841e83",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "MaxHealth": 250,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "StructureId": "apartment-a04-door"
                     }
                   ],
                   "Children": []
@@ -1391,17 +1513,29 @@
                   "__enabled": true,
                   "Flags": 0,
                   "ApartmentId": "apartment-a05",
-                  "DoorReference": null,
+                  "DoorReference": {
+                    "_type": "gameobject",
+                    "go": "9afb1fff-8e7f-4cd6-a64b-aca8090359c9"
+                  },
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null,
-                  "RaidTargetReference": null,
-                  "SaveVersion": 1,
-                  "SpawnReference": null,
-                  "StashReference": null
+                  "RaidTargetReference": {
+                    "_type": "gameobject",
+                    "go": "9afb1fff-8e7f-4cd6-a64b-aca8090359c9"
+                  },
+                  "SaveVersion": 2,
+                  "SpawnReference": {
+                    "_type": "gameobject",
+                    "go": "f8bd5d8e-e2c5-41ee-aec1-1b8b469a75ae"
+                  },
+                  "StashReference": {
+                    "_type": "gameobject",
+                    "go": "4fac07bc-3053-4269-b278-6b7962bfd279"
+                  }
                 },
                 {
                   "__type": "UltimoBarrio.Fortification.ApartmentFortification",
@@ -1411,7 +1545,10 @@
                   "ApartmentId": "apartment-a05",
                   "BaseDoorMaxHealth": 250,
                   "BaseWindowMaxHealth": 150,
-                  "DoorReference": null,
+                  "DoorReference": {
+                    "_type": "gameobject",
+                    "go": "9afb1fff-8e7f-4cd6-a64b-aca8090359c9"
+                  },
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -1516,6 +1653,20 @@
                       },
                       "RenderType": "On",
                       "Tint": "1,1,1,1"
+                    },
+                    {
+                      "__type": "UltimoBarrio.Fortification.DestructibleStructure",
+                      "__guid": "07ac2be1-9323-4724-b44a-7503a62051c3",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "MaxHealth": 250,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "StructureId": "apartment-a05-door"
                     }
                   ],
                   "Children": []
@@ -1682,17 +1833,29 @@
                   "__enabled": true,
                   "Flags": 0,
                   "ApartmentId": "apartment-a06",
-                  "DoorReference": null,
+                  "DoorReference": {
+                    "_type": "gameobject",
+                    "go": "722c46a7-e9dc-465f-a094-f7a2f3638fa3"
+                  },
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null,
-                  "RaidTargetReference": null,
-                  "SaveVersion": 1,
-                  "SpawnReference": null,
-                  "StashReference": null
+                  "RaidTargetReference": {
+                    "_type": "gameobject",
+                    "go": "722c46a7-e9dc-465f-a094-f7a2f3638fa3"
+                  },
+                  "SaveVersion": 2,
+                  "SpawnReference": {
+                    "_type": "gameobject",
+                    "go": "e11742af-fc41-424c-b305-d6bcf9c666fc"
+                  },
+                  "StashReference": {
+                    "_type": "gameobject",
+                    "go": "e8299bf0-8c93-46b0-b899-b665600c8465"
+                  }
                 },
                 {
                   "__type": "UltimoBarrio.Fortification.ApartmentFortification",
@@ -1702,7 +1865,10 @@
                   "ApartmentId": "apartment-a06",
                   "BaseDoorMaxHealth": 250,
                   "BaseWindowMaxHealth": 150,
-                  "DoorReference": null,
+                  "DoorReference": {
+                    "_type": "gameobject",
+                    "go": "722c46a7-e9dc-465f-a094-f7a2f3638fa3"
+                  },
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -1807,6 +1973,20 @@
                       },
                       "RenderType": "On",
                       "Tint": "1,1,1,1"
+                    },
+                    {
+                      "__type": "UltimoBarrio.Fortification.DestructibleStructure",
+                      "__guid": "12373ecc-dfe2-4f07-8359-6131ebbb4bec",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "MaxHealth": 250,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "StructureId": "apartment-a06-door"
                     }
                   ],
                   "Children": []
@@ -7768,7 +7948,7 @@
         {
           "__type": "UltimoBarrio.Raids.RaidManager",
           "__guid": "ebb2be00-763f-44c0-a368-a93f974dc46b",
-          "__enabled": true,
+          "__enabled": false,
           "Flags": 0,
           "Clock": null,
           "currentRaidTargetId": "",
@@ -7818,7 +7998,7 @@
           "__version": 2,
           "Flags": 0,
           "Name": "Main Camera",
-          "Position": "-300,0,100",
+          "Position": "-1256,599.999939,68.0412445",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Tags": "",
@@ -7837,7 +8017,7 @@
               "BackgroundColor": "0.33333,0.46275,0.52157,1",
               "ClearFlags": "All",
               "EnablePostProcessing": true,
-              "FieldOfView": 60,
+              "FieldOfView": 90,
               "FovAxis": "Horizontal",
               "IsMainCamera": true,
               "OnComponentDestroy": null,
@@ -7850,7 +8030,7 @@
               "OrthographicHeight": 1204,
               "PostProcessAnchor": null,
               "Priority": 1,
-              "RenderExcludeTags": "",
+              "RenderExcludeTags": "viewer",
               "RenderTags": "",
               "RenderTexture": null,
               "TargetEye": "None",
@@ -8015,6 +8195,280 @@
           "Children": []
         }
       ]
+    },
+    {
+      "__guid": "e4b9220f-4815-4d0b-8150-5dd7031fbbaa",
+      "__version": 2,
+      "__Prefab": "prefabs/player.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [
+          {
+            "Id": {
+              "Type": "Component",
+              "IdValue": "ad09ae32-fcf9-4109-ba31-a772a7bacbdb"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
+            },
+            "PreviousElement": {
+              "Type": "Component",
+              "IdValue": "d4f1b9a6-3e57-4a08-b2c9-6d05e83f1147"
+            },
+            "ContainerProperty": "Components",
+            "IsContainerArray": true,
+            "Data": {
+              "__type": "UltimoBarrio.UI.InventoryUI",
+              "__guid": "ad09ae32-fcf9-4109-ba31-a772a7bacbdb",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "TargetInventory": null,
+              "Title": "Tu Mochila",
+              "TransferTarget": null
+            }
+          },
+          {
+            "Id": {
+              "Type": "Component",
+              "IdValue": "031440eb-fba2-4b98-851f-ff999a693cff"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
+            },
+            "PreviousElement": {
+              "Type": "Component",
+              "IdValue": "ad09ae32-fcf9-4109-ba31-a772a7bacbdb"
+            },
+            "ContainerProperty": "Components",
+            "IsContainerArray": true,
+            "Data": {
+              "__type": "UltimoBarrio.UI.InventoryUI",
+              "__guid": "031440eb-fba2-4b98-851f-ff999a693cff",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "TargetInventory": null,
+              "Title": "Alijo",
+              "TransferTarget": null
+            }
+          },
+          {
+            "Id": {
+              "Type": "Component",
+              "IdValue": "8b1c6f22-1430-4df8-869f-26dc921c0c37"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
+            },
+            "PreviousElement": {
+              "Type": "Component",
+              "IdValue": "031440eb-fba2-4b98-851f-ff999a693cff"
+            },
+            "ContainerProperty": "Components",
+            "IsContainerArray": true,
+            "Data": {
+              "__type": "UltimoBarrio.UI.HotbarPanel",
+              "__guid": "8b1c6f22-1430-4df8-869f-26dc921c0c37",
+              "__enabled": true,
+              "Flags": 0,
+              "HeldItemCtrl": {
+                "_type": "component",
+                "component_id": "0e7a8d21-5c44-4f2b-9f6d-2a1c7b904d18",
+                "go": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba",
+                "component_type": "HeldItemController"
+              },
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "TargetInventory": {
+                "_type": "component",
+                "component_id": "a959eeda-fa54-4e09-a6d2-aad00144bcb1",
+                "go": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba",
+                "component_type": "InventoryComponent"
+              }
+            }
+          },
+          {
+            "Id": {
+              "Type": "Component",
+              "IdValue": "210c84bc-25a5-47dd-9acd-4bb8dd5355fa"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
+            },
+            "PreviousElement": {
+              "Type": "Component",
+              "IdValue": "8b1c6f22-1430-4df8-869f-26dc921c0c37"
+            },
+            "ContainerProperty": "Components",
+            "IsContainerArray": true,
+            "Data": {
+              "__type": "UltimoBarrio.UI.CraftingPanel",
+              "__guid": "210c84bc-25a5-47dd-9acd-4bb8dd5355fa",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "PlayerInventory": null,
+              "TargetStation": null
+            }
+          },
+          {
+            "Id": {
+              "Type": "Component",
+              "IdValue": "1a77b8f6-877a-4e87-a09b-99594d00d0ef"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
+            },
+            "PreviousElement": {
+              "Type": "Component",
+              "IdValue": "210c84bc-25a5-47dd-9acd-4bb8dd5355fa"
+            },
+            "ContainerProperty": "Components",
+            "IsContainerArray": true,
+            "Data": {
+              "__type": "UltimoBarrio.Combat.FistsWeapon",
+              "__guid": "1a77b8f6-877a-4e87-a09b-99594d00d0ef",
+              "__enabled": true,
+              "Flags": 0,
+              "AmmoType": "ammo_9mm",
+              "BaseDamage": 25,
+              "FireRate": 0.5,
+              "FriendlyFire": false,
+              "HitSound": null,
+              "IsAutomatic": false,
+              "MaxAmmo": 1,
+              "MissSound": null,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "PushForce": 120,
+              "Range": 80,
+              "ReloadTime": 2,
+              "StaminaCost": 5,
+              "WallHitSound": null
+            }
+          }
+        ],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
+            },
+            "Property": "Name",
+            "Value": "Player - C. SATELITE | Descambiado"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
+            },
+            "Property": "Position",
+            "Value": "-999.999939,599.999939,-7.95874882"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
+            },
+            "Property": "NetworkMode",
+            "Value": 1
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "b3091a87-5492-4ba9-8aa8-6daa61c8ab13"
+            },
+            "Property": "Gravity",
+            "Value": false
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "b3091a87-5492-4ba9-8aa8-6daa61c8ab13"
+            },
+            "Property": "LinearDamping",
+            "Value": 10
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "b3091a87-5492-4ba9-8aa8-6daa61c8ab13"
+            },
+            "Property": "MassCenterOverride",
+            "Value": "0,0,0"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "f2b49a45-d5d0-4868-8e56-f85f9a989be6"
+            },
+            "Property": "MaterialGroup",
+            "Value": "default"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "ee640c43-fd61-4d0f-826e-5530c1cc9b27"
+            },
+            "Property": "Friction",
+            "Value": 81
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba": "e4b9220f-4815-4d0b-8150-5dd7031fbbaa",
+        "3ae1b3c4-14c5-4d68-be0a-1096ec3e2c8d": "054a781a-37e1-41ea-af8d-1429ed4f0676",
+        "b3091a87-5492-4ba9-8aa8-6daa61c8ab13": "ed76d21f-8277-4d78-a5fb-13685ffb4dae",
+        "c818a718-51a0-4f30-b561-3719718d81d4": "31e8e7d6-7176-4e2b-85ab-ef68ac377764",
+        "2f565d25-cbfa-4244-890f-d82931c0bdc1": "6ec74a47-4bb9-4e5a-94d8-f5dd4b3ebcd7",
+        "20be986f-7510-4bf5-ae9a-2935f448faff": "a8cb4ea3-e782-4986-8765-10f252c36768",
+        "50c8624c-ca50-48e3-951d-a189ae9f2de5": "dad57d64-2d4b-46de-805c-ab3b2c227953",
+        "a290bf70-2ada-484b-b1c4-309d20bf333b": "0e57c4d6-2b40-4e37-9c49-be4a2769ce54",
+        "a959eeda-fa54-4e09-a6d2-aad00144bcb1": "a017b351-5746-4849-8e8f-5af974572970",
+        "cfd92c85-7e62-48bd-90de-badab0794485": "81f3cd1f-b449-4c51-9f54-8782a5c57a91",
+        "8a51d0d6-2ff2-4b2e-9f3b-6b0e4e3d3d21": "9fc431a7-6c3a-4906-8924-12a779b5f040",
+        "c1860388-e203-4b6c-aaa0-c87299dff4ae": "f2c67b48-d279-496b-a152-72421b4e9837",
+        "831f293e-d324-4398-b98f-acc29eb5fb26": "3cd27cdd-742a-44a3-9243-9ca52f8693c8",
+        "7a1b2c3d-4e5f-6789-abcd-ef0123456789": "9fc0d85d-8629-4f44-a6a9-2437b1a321ae",
+        "c6cf0345-8b32-4003-8797-80253c109341": "20deeae7-debc-438f-8b0e-31b2fc3cee18",
+        "0e7a8d21-5c44-4f2b-9f6d-2a1c7b904d18": "c357c387-e098-49aa-85d1-732bc477bfc7",
+        "d4f1b9a6-3e57-4a08-b2c9-6d05e83f1147": "1dd6752f-3b27-4d14-a0d1-65eac6013f6b",
+        "6b5cbc3e-e37c-4eb9-afa6-577469114047": "e8e20912-4ccd-4138-8071-82df6a3aebf5",
+        "f2b49a45-d5d0-4868-8e56-f85f9a989be6": "9865f012-75a9-428b-a4fd-343e8e58b9e5",
+        "14c32c81-db65-4764-b235-8d1469a40438": "f83fce64-9974-4c1b-a40b-f60a59057caa",
+        "996337b2-679a-4b95-bced-979f20df922a": "2f8149d9-7435-483a-807d-52a95aa2a4f7",
+        "ee640c43-fd61-4d0f-826e-5530c1cc9b27": "39308472-e7e1-48cf-a2b6-7f7c0ef4ad22"
+      }
     }
   ],
   "SceneProperties": {
@@ -8039,7 +8493,8 @@
     "GameObjectSystems": {
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
-          "$blob": "fe946efb-d247-4d39-a6c9-945a9988f56a"
+          "$blob": "64db792e-5935-8fbc-8cfa-050cd49fa7fd",
+          "$refs": []
         }
       },
       "Sandbox.SelectionSetsSystem": {
