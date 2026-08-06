@@ -575,5 +575,89 @@ namespace UltimoBarrio.QA
             var journal = Missions.MissionJournal.Local;
             Log.Info($"--- ub_qa_test_missionjournal --- MissionJournal.Local presente: {journal != null} misionesActivas: {journal?.ActiveMissions.Count ?? -1}");
         }
+
+        /// <summary>
+        /// Coloca una barricada real en el anchor indicado y la deja intacta
+        /// (a diferencia de ub_qa_test_barricade, que la destruye al final para
+        /// probar el ciclo completo). Para preparar estado real que verificar
+        /// tras un Stop/Play.
+        /// </summary>
+        [ConCmd("ub_qa_place_barricade")]
+        public static void PlaceBarricadeKeepAlive(string anchorName = "")
+        {
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            if (player is null) { Log.Error("--- ub_qa_place_barricade --- No player found."); return; }
+
+            var inv = player.Components.Get<InventoryComponent>();
+            var anchor = Game.ActiveScene.GetAllComponents<Fortification.BarricadeAnchor>()
+                .FirstOrDefault(a => !a.HasBarricade && (string.IsNullOrEmpty(anchorName) || a.GameObject.Name.Contains(anchorName)));
+
+            if (anchor is null) { Log.Error("--- ub_qa_place_barricade --- No free anchor matching."); return; }
+
+            player.WorldPosition = anchor.WorldPosition;
+            inv?.TryAdd("barricade", 1);
+
+            var req = new InteractionRequest { Identity = PlayerIdentity.FromGameObject(player), InteractorObject = player };
+            anchor.OnInteract(req);
+
+            Log.Info($"--- ub_qa_place_barricade --- anchor={anchor.GameObject.Name} HasBarricade={anchor.HasBarricade} Health={anchor.BarricadeReference?.Health}/{anchor.BarricadeReference?.MaxHealth}");
+        }
+
+        /// <summary>
+        /// Diagnóstico de persistencia: vuelca el estado completo del jugador y de
+        /// su vivienda. Se ejecuta una vez antes de Stop y otra vez después de
+        /// Play — la consola de la sesión persiste entre reinicios de Play (no del
+        /// editor), así que ambas líneas quedan una junto a otra para comparar a
+        /// mano. No mide nada por sí solo: es una fotografía, la prueba real es
+        /// Stop→Play entre dos llamadas y diferenciar el texto.
+        /// </summary>
+        [ConCmd("ub_qa_snapshot_persistence")]
+        public static void SnapshotPersistence()
+        {
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            if (player is null) { Log.Error("--- ub_qa_snapshot_persistence --- No player found."); return; }
+
+            var inv = player.Components.Get<InventoryComponent>();
+            var wallet = player.Components.Get<Economy.Wallet>();
+
+            var apt = Game.ActiveScene.GetAllComponents<Apartments.ApartmentComponent>()
+                .FirstOrDefault(a => a.OwnerId == PlayerIdentity.FromGameObject(player).CanonicalId);
+
+            Log.Info("=== SNAPSHOT PERSISTENCIA ===");
+            Log.Info($"Inventario: chatarra={inv?.GetCount("chatarra")} wood={inv?.GetCount("wood")} scrap_metal={inv?.GetCount("scrap_metal")} components={inv?.GetCount("components")} apartment_door_kit={inv?.GetCount("apartment_door_kit")}");
+            Log.Info($"Wallet: {wallet?.Balance}");
+
+            if (apt is null)
+            {
+                Log.Info("Apartamento propio: ninguno.");
+                return;
+            }
+
+            var fort = apt.GameObject.Components.Get<Fortification.ApartmentFortification>();
+            Log.Info($"Apartamento propio: {apt.ApartmentId} ClaimState={apt.ClaimState}");
+            Log.Info($"Fortificación: UpgradeLevel={fort?.UpgradeLevel} DoorHealth={fort?.DoorStructure?.Health}/{fort?.DoorStructure?.MaxHealth}");
+
+            var anchors = apt.GameObject.Components.GetAll<Fortification.BarricadeAnchor>(FindMode.EverythingInSelfAndDescendants).ToList();
+            foreach (var anchor in anchors)
+            {
+                if (anchor.HasBarricade)
+                    Log.Info($"Barricada {anchor.AnchorId}: Health={anchor.BarricadeReference.Health}/{anchor.BarricadeReference.MaxHealth}");
+                else
+                    Log.Info($"Barricada {anchor.AnchorId}: ninguna colocada.");
+            }
+        }
+
+        /// <summary>
+        /// Activa/desactiva IA y raids para pruebas aisladas de Fase 13. Solo cambia
+        /// el flag en memoria del proceso actual — no persiste, no toca el default
+        /// de FeatureFlags.cs.
+        /// </summary>
+        [ConCmd("ub_qa_toggle_ai")]
+        public static void ToggleAi(bool enableAi = true, bool enableRaids = true)
+        {
+            Core.FeatureFlags.EnableAI = enableAi;
+            Core.FeatureFlags.EnableRaids = enableRaids;
+            Log.Info($"--- ub_qa_toggle_ai --- EnableAI={Core.FeatureFlags.EnableAI} EnableRaids={Core.FeatureFlags.EnableRaids}");
+        }
     }
 }

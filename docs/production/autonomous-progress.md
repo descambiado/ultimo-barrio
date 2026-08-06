@@ -1,7 +1,142 @@
 # Progreso de ejecución autónoma — Último Barrio
 
-Última actualización: 2026-08-06, durante la sesión de "toma el control" tras el
-reporte del usuario de que E no recogía nada.
+Última actualización: 2026-08-06, continuación autónoma de la sesión ("Continuamos.")
+tras cerrar Fase 10 (barricadas). Sección "Fase 11" reescrita abajo con el hallazgo
+real y el bloqueo actual del editor — el resto del documento (fases 1-10) sigue
+vigente sin cambios.
+
+## Bloqueador actual (segunda vez en esta sesión) — por qué se detiene esta pasada
+
+El editor de sbox volvió a dejar de responder al MCP (`127.0.0.1:7269`) justo
+después de añadir el componente `AutoSaveManager` a la escena (ver Fase 11 abajo).
+Mismo síntoma que la vez anterior: `Get-Process sbox-dev` = `Responding=True` a
+nivel de Windows, pero **tres** rondas de reintentos con backoff (10 intentos de
+10s, 15 intentos de 15s, más los 4 reintentos iniciales con backoff creciente)
+fallaron todas con timeout en la capa JSON-RPC del MCP — más de 5 minutos
+acumulados sin respuesta. La vez anterior esto se resolvió solo con un reinicio
+del editor entre sesiones (cerrar y volver a abrir el proyecto); no hay indicio
+de que se autorrecupere dentro de la misma sesión, y no hay ninguna herramienta
+en este entorno para reiniciar la GUI del editor de forma remota — es una
+aplicación interactiva del usuario, no un proceso que deba matarse/reiniciarse
+de forma autónoma sin que el usuario lo sepa. `dotnet build` (que no depende
+del MCP) sigue funcionando y confirma 0 errores/0 advertencias con todos los
+cambios de código actuales, incluido el nuevo `ub_qa_toggle_ai`.
+
+**Riesgo a tener en cuenta al reanudar**: el componente `AutoSaveManager`
+añadido a "Apartment Claims" solo existe en la escena cargada en memoria del
+editor — el `save_scene` que lo habría escrito a
+`Assets/scenes/ultimo_barrio_alpha.scene` es precisamente la llamada que colgó
+el MCP. Si el editor necesita reiniciarse (cerrar/reabrir el proyecto) antes de
+recuperar el MCP, ese cambio en memoria **se pierde** y hay que repetir el
+`add_component` de la Fase 11 desde cero (comando exacto más abajo) antes de
+guardar y volver a probar.
+
+**Todo el trabajo restante de esta pasada (Fases 11 verificación, 12, 13
+verificación en motor, 14 verificación J-key, 15) depende del editor/MCP — no
+hay más progreso de código posible sin él.** Se detiene aquí, no por decisión,
+sino por agotar toda vía de progreso autónomo disponible.
+
+**Siguiente acción exacta al reanudar** (no reinvestigar, ya está todo abajo):
+1. Comprobar `editor_status` vía MCP. Si responde:
+2. `save_scene` — el componente `AutoSaveManager` ya se añadió en memoria del
+   editor (ver Fase 11) pero **nunca se guardó a disco**; si el editor se
+   reinició entre sesiones, hay que repetir el `add_component` (ver comando
+   exacto abajo) antes de guardar.
+3. `play_start`, reconstruir estado real: `ub_qa_test_door apartment-a02`
+   (daña/repara/desbloquea/mejora la puerta) + `ub_qa_place_barricade a02`
+   (coloca barricada real vía `BarricadeAnchor.OnInteract`) + dar algo de
+   inventario si hace falta.
+4. `ub_qa_snapshot_persistence` (snapshot "antes").
+5. `play_stop` → `play_start`.
+6. `ub_qa_snapshot_persistence` otra vez (snapshot "después") y comparar a mano
+   los dos bloques de consola: inventario, wallet, ClaimState, UpgradeLevel,
+   DoorHealth, Health de la barricada.
+7. Si coincide: commit `feat(persistence): restore full housing progression`
+   (incluye el fix de `AutoSaveManager` en la escena + los 2 comandos QA nuevos
+   en `QASprintRunner.cs`) y seguir con Fase 12 sin pausar.
+8. Si no coincide del todo: investigar el campo concreto que falla (probable
+   candidato adicional: `ApartmentClaimService.OnUpdate` no llama a
+   `ProcessPendingRespawns`/carga en el momento correcto, o algún componente
+   captura/aplica en orden equivocado — pero el análisis de código ya hecho
+   abajo indica que `WorldSnapshotService.Capture/Apply` están completos y
+   correctos, así que lo más probable es que con `AutoSaveManager` presente
+   esto ya funcione sin más cambios).
+
+## Hallazgo de Fase 11 (persistencia) — causa raíz encontrada, fix aplicado a medias
+
+**Primera prueba real Stop→Play de esta pasada (antes del fix) confirmó que la
+persistencia estaba rota**, no "debería funcionar": se construyó estado real no
+trivial (puerta dañada 250→200→220 y mejorada a nivel 1 vía `ub_qa_test_door
+apartment-a02`; una barricada real colocada con `ub_qa_place_barricade a02`;
+inventario con chatarra=15 wood=15 components=20) y tras un ciclo real
+`play_stop`→`play_start` se comparó la consola:
+
+| Campo | Antes de Stop | Después de Play | ¿Persiste? |
+|---|---|---|---|
+| ClaimState apartment-a02 | Claimed | Claimed | Sí |
+| Inventario (chatarra/wood/components) | 15/15/20 | 0/0/0 | **No** |
+| Fortificación UpgradeLevel/DoorHealth | 1 / 220/312.5 | 0 / 250/250 | **No** |
+| Barricada apartment-a02-door | 150/150 | ninguna colocada | **No** |
+
+**Causa raíz** (leída directamente en el código, no supuesta): el sistema de
+guardado está completo y correctamente escrito —
+`Code/UltimoBarrio/Persistence/WorldSnapshotService.cs` tiene
+`Capture()`/`Apply()` totalmente implementados para economía, reloj,
+fortificación (con barricadas anidadas) y misiones, y
+`ApartmentClaimService.TrySaveNow()`/`TryInitialize()` ya los invocan
+correctamente. El inventario también se serializa bien en
+`ApartmentRegistry.CreateSnapshot`/`ApplySnapshot`, usando un `InventoryId`
+estable (`player:{steamid}:inventory`, mismo `IPlayerIdentityProvider` que usa
+el claim, que sí persiste). **El problema es el disparador**: todo el guardado
+inmediato pasa por `Persistence.PersistenceBridge.RequestSave(...)` — llamado
+desde `ApartmentFortification.TryUpgrade` (mejora), `BarricadeAnchor.OnInteract`
+(colocar/destruir barricada) y `FortificationService` (reparar) — pero
+**`AutoSaveManager`, el único suscriptor de `PersistenceBridge.OnSaveRequested`
+y el único disparador del autoguardado periódico de 90s, no estaba colocado en
+ninguna escena ni prefab** (`grep AutoSaveManager` en `Assets/` → 0 resultados).
+Es exactamente el mismo patrón de bug encontrado ya 3 veces antes en esta sesión
+(CraftingStation/BarricadeAnchor sin colocar, ApartmentFortification sin
+colocar, MissionJournal sin colocar): componente perfectamente escrito y
+enganchado a los call sites reales, pero nunca instanciado — así que
+`RequestSave()` se llamaba una y otra vez sin que nada lo escuchara, y el único
+guardado que llegó a ejecutarse alguna vez fue el guardado inline explícito
+dentro de `ApartmentClaimService` en el momento exacto del claim original (por
+eso `ClaimState` sí sobrevivía y todo lo demás no).
+
+**Fix aplicado (parcial — falta guardar a disco y re-verificar, ver bloqueador
+arriba)**: añadido el componente `AutoSaveManager` al GameObject "Apartment
+Claims" (`5d6c2a82-51f7-4ff1-af79-5d9cbd48d512`, el mismo objeto que ya tiene
+`ApartmentClaimService`) vía MCP:
+```
+add_component id=5d6c2a82-51f7-4ff1-af79-5d9cbd48d512 type=AutoSaveManager
+```
+Resultado: nuevo componente `Id=4439dd84-de71-4e65-83f0-2b04a5e99c86`. El
+siguiente `save_scene` para persistir esto a
+`Assets/scenes/ultimo_barrio_alpha.scene` fue el que colgó el editor — **no se
+sabe todavía si el cambio sobrevive un reinicio del editor sin guardar**, hay
+que repetir el `add_component` si al reanudar la escena en disco no lo tiene.
+
+También se añadieron a `Code/UltimoBarrio/QA/QASprintRunner.cs` (build limpio,
+sin commitear todavía):
+- `ub_qa_place_barricade(string anchorName = "")` — coloca una barricada real
+  vía `BarricadeAnchor.OnInteract()` sin destruirla (a diferencia de
+  `ub_qa_test_barricade`, que prueba y destruye en el mismo pase).
+- `ub_qa_snapshot_persistence()` — vuelca inventario, wallet, apartamento
+  propio, fortificación y barricadas del jugador local a consola, pensado para
+  compararse a mano antes/después de un ciclo `play_stop`/`play_start` real.
+
+## Auditoría completada esta pasada (no bloqueada por el editor)
+
+`Trading.Trader` (`Code/UltimoBarrio/Trading/Trader.cs`): `BuyItem` es atómico
+(comprueba fondos → añade al inventario → retira fondos, con rollback vía
+`inventory.TryRemove` si el retiro fallara tras el añadido). `SellItem` es
+atómico para su único camino realmente alcanzable (chatarra/scrap, que es lo
+único que `TraderUI.razor` ofrece vender). Hallazgo menor no bloqueante: la
+variable `targetItem` en `SellItem` se calcula pero nunca se usa — el método
+ignora el parámetro `itemId` real y solo vende chatarra pase lo que pase; hoy
+es inofensivo porque la única UI real solo pide vender "chatarra", pero si en
+el futuro se añade otro ítem vendible, `SellItem` lo ignorará en silencio. No
+se corrige ahora por estar fuera de alcance y no ser observable en producción.
 
 ## Rama y estado
 
