@@ -885,5 +885,63 @@ namespace UltimoBarrio.QA
             var pickupStillExists = Game.ActiveScene.GetAllComponents<WorldItemPickup>().Any(p => p == pickup);
             Log.Info($"--- ub_qa_physical_pickup_test --- After={itemId}:{after} PickupDestroyed={!pickupStillExists}");
         }
+
+        /// <summary>
+        /// Selecciona el slot de hotbar del ítem (mismo gateway público que
+        /// HeldItemController.SelectSlot llama al pulsar Slot1-6) y consume vía
+        /// UseActiveConsumable() -- el mismo método que dispara Input.Pressed("attack1")
+        /// en producción. No fabrica el consumo llamando a inventory.TryRemove directo.
+        /// </summary>
+        [ConCmd("ub_qa_physical_consume_test")]
+        public static void PhysicalConsumeTest(string itemId)
+        {
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            if (player is null) { Log.Error("--- ub_qa_physical_consume_test --- No player found."); return; }
+
+            var inv = player.Components.Get<InventoryComponent>();
+            var held = player.Components.Get<HeldItemController>();
+            if (inv is null || held is null) { Log.Error("--- ub_qa_physical_consume_test --- Missing InventoryComponent/HeldItemController."); return; }
+
+            var slotIndex = inv.Slots.ToList().FindIndex(s => s.ItemId == itemId);
+            if (slotIndex < 0) { Log.Error($"--- ub_qa_physical_consume_test --- {itemId} not found in inventory."); return; }
+
+            var before = inv.GetCount(itemId);
+            held.SelectSlot(slotIndex);
+            Log.Info($"--- ub_qa_physical_consume_test --- item={itemId} slot={slotIndex} ActiveItemId={held.ActiveItemId} Before={itemId}:{before}");
+
+            held.UseActiveConsumable();
+
+            var after = inv.GetCount(itemId);
+            Log.Info($"--- ub_qa_physical_consume_test --- After={itemId}:{after} Consumed={after < before}");
+        }
+
+        /// <summary>
+        /// Selecciona el slot y llama a DropActiveItem() -- el mismo método que
+        /// dispara Input.Pressed("Drop") en producción.
+        /// </summary>
+        [ConCmd("ub_qa_physical_drop_test")]
+        public static void PhysicalDropTest(string itemId)
+        {
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            if (player is null) { Log.Error("--- ub_qa_physical_drop_test --- No player found."); return; }
+
+            var inv = player.Components.Get<InventoryComponent>();
+            var held = player.Components.Get<HeldItemController>();
+            if (inv is null || held is null) { Log.Error("--- ub_qa_physical_drop_test --- Missing InventoryComponent/HeldItemController."); return; }
+
+            var slotIndex = inv.Slots.ToList().FindIndex(s => s.ItemId == itemId);
+            if (slotIndex < 0) { Log.Error($"--- ub_qa_physical_drop_test --- {itemId} not found in inventory."); return; }
+
+            var before = inv.GetCount(itemId);
+            held.SelectSlot(slotIndex);
+            Log.Info($"--- ub_qa_physical_drop_test --- item={itemId} slot={slotIndex} Before={itemId}:{before}");
+
+            var worldPickupsBefore = Game.ActiveScene.GetAllComponents<WorldItemPickup>().Count(p => p.ItemId == itemId);
+            held.DropActiveItem();
+
+            var after = inv.GetCount(itemId);
+            var worldPickupsAfter = Game.ActiveScene.GetAllComponents<WorldItemPickup>().Count(p => p.ItemId == itemId);
+            Log.Info($"--- ub_qa_physical_drop_test --- After={itemId}:{after} WorldPickups {worldPickupsBefore}->{worldPickupsAfter}");
+        }
     }
 }

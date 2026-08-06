@@ -109,7 +109,7 @@
                     "_type": "gameobject",
                     "go": "0e12fdf7-7939-4033-9f4e-da63e7dd6826"
                   },
-                  "SaveVersion": 3,
+                  "SaveVersion": 2,
                   "SpawnReference": {
                     "_type": "gameobject",
                     "go": "47e48310-13c4-4fd5-90cd-e119e3cf981d"
@@ -517,7 +517,7 @@
                     "_type": "gameobject",
                     "go": "4b576305-275d-45e8-8ea1-bc77b02659a7"
                   },
-                  "SaveVersion": 3,
+                  "SaveVersion": 2,
                   "SpawnReference": {
                     "_type": "gameobject",
                     "go": "1ede310e-13e1-4fb3-b3ed-5966f61fa254"
@@ -887,7 +887,7 @@
                     "_type": "gameobject",
                     "go": "a78a9d9f-c258-4d89-94d6-def202ce67e5"
                   },
-                  "SaveVersion": 3,
+                  "SaveVersion": 2,
                   "SpawnReference": {
                     "_type": "gameobject",
                     "go": "b2c33881-3d15-4246-be5b-eea47f14b6d8"
@@ -1207,7 +1207,7 @@
                     "_type": "gameobject",
                     "go": "e488b8fd-47c9-4519-9928-39bbdb1c4155"
                   },
-                  "SaveVersion": 3,
+                  "SaveVersion": 2,
                   "SpawnReference": {
                     "_type": "gameobject",
                     "go": "3853fefa-26b8-4957-8713-6fa269486e8d"
@@ -1527,7 +1527,7 @@
                     "_type": "gameobject",
                     "go": "9afb1fff-8e7f-4cd6-a64b-aca8090359c9"
                   },
-                  "SaveVersion": 3,
+                  "SaveVersion": 2,
                   "SpawnReference": {
                     "_type": "gameobject",
                     "go": "f8bd5d8e-e2c5-41ee-aec1-1b8b469a75ae"
@@ -1847,7 +1847,7 @@
                     "_type": "gameobject",
                     "go": "722c46a7-e9dc-465f-a094-f7a2f3638fa3"
                   },
-                  "SaveVersion": 3,
+                  "SaveVersion": 2,
                   "SpawnReference": {
                     "_type": "gameobject",
                     "go": "e11742af-fc41-424c-b305-d6bcf9c666fc"
@@ -7998,8 +7998,8 @@
           "__version": 2,
           "Flags": 0,
           "Name": "Main Camera",
-          "Position": "-743.999939,600.000427,68.0412445",
-          "Rotation": "0,0,-1,9.09962921E-07",
+          "Position": "-1256,599.999939,68.0412445",
+          "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Tags": "",
           "Enabled": true,
@@ -8433,192 +8433,6 @@
           "OwnerTransfer": 1,
           "Components": [],
           "Children": []
-        },
-        {
-          "__guid": "b5d5856c-e0b5-4512-8aef-7b7e8867baf7",
-          "__version": 2,
-          "Flags": 0,
-          "Name": "PropertyDoor_shell-01-door",
-          "Position": "30,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Enabled": true,
-          "NetworkMode": 1,
-          "NetworkFlags": 0,
-          "NetworkOrphaned": 0,
-          "NetworkTransmit": true,
-          "OwnerTransfer": 1,
-          "Components": [
-            {
-              "__type": "Sandbox.BoxCollider",
-              "__guid": "31f75234-a8ff-4532-9bc6-d3d10f00c81d",
-              "__enabled": true,
-              "Flags": 0,
-              "Center": "0,0,0",
-              "ColliderFlags": 0,
-              "Elasticity": null,
-              "Friction": null,
-              "IsTrigger": false,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OnObjectTriggerEnter": null,
-              "OnObjectTriggerExit": null,
-              "OnTriggerEnter": null,
-              "OnTriggerExit": null,
-              "RollingResistance": null,
-              "Scale": "50,50,50",
-              "Static": false,
-              "Surface": null,
-              "SurfaceVelocity": "0,0,0"
-            },
-            {
-              "__type": "Sandbox.Mapping.Door",
-              "__guid": "5991af50-e99e-4403-a08b-cd6ee98d3657",
-              "__enabled": true,
-              "Flags": 0,
-              "AnimationCurve": [
-                {
-                  "x": 0,
-                  "y": 0,
-                  "in": 0,
-                  "out": 0,
-                  "mode": "Mirrored"
-                },
-                {
-                  "x": 1,
-                  "y": 1,
-                  "in": 0,
-                  "out": 0,
-                  "mode": "Mirrored"
-                }
-              ],
-              "AutoClose": false,
-              "AutoCloseDelay": 4,
-              "CloseFinishedSound": null,
-              "CloseSound": null,
-              "CloseTooltipDescription": "",
-              "CloseTooltipIcon": "touch_app",
-              "CloseTooltipTitle": "Close",
-              "IsLocked": true,
-              "IsUsable": true,
-              "LinkedDoor": null,
-              "LockedSound": null,
-              "LockedTooltipDescription": "",
-              "LockedTooltipIcon": "lock",
-              "LockedTooltipTitle": "Locked",
-              "Mode": "Rotating",
-              "OnClose": null,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OnOpen": null,
-              "OpenAwayFromPlayer": true,
-              "OpenFinishedSound": null,
-              "OpenSound": null,
-              "OpenTooltipDescription": "",
-              "OpenTooltipIcon": "touch_app",
-              "OpenTooltipTitle": "Open",
-              "Pivot": null,
-              "SlideOffset": "0,0,100",
-              "Speed": 100,
-              "StartOpen": false,
-              "TargetAngle": 90
-            },
-            {
-              "__type": "UltimoBarrio.Properties.Doors.PropertyDoor",
-              "__guid": "134f93a1-38c3-4527-881b-cac72b6debb6",
-              "__enabled": true,
-              "Flags": 0,
-              "AnchorId": "shell-01-door",
-              "DoorId": "wooden_door",
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "PropertyId": "property-shell-01"
-            },
-            {
-              "__type": "UltimoBarrio.Properties.Doors.DoorLockComponent",
-              "__guid": "478b31fb-55ca-4bc7-b96c-4cd9aa510251",
-              "__enabled": true,
-              "Flags": 0,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null
-            }
-          ],
-          "Children": []
-        },
-        {
-          "__guid": "0e2489f0-9ae6-41f0-8694-a7fac019dcc7",
-          "__version": 2,
-          "Flags": 0,
-          "Name": "ClaimCabinet_property-shell-01",
-          "Position": "0,30,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Enabled": true,
-          "NetworkMode": 1,
-          "NetworkFlags": 0,
-          "NetworkOrphaned": 0,
-          "NetworkTransmit": true,
-          "OwnerTransfer": 1,
-          "Components": [
-            {
-              "__type": "Sandbox.BoxCollider",
-              "__guid": "20827e10-2a6b-43ac-9761-994891eb1f97",
-              "__enabled": true,
-              "Flags": 0,
-              "Center": "0,0,0",
-              "ColliderFlags": 0,
-              "Elasticity": null,
-              "Friction": null,
-              "IsTrigger": false,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OnObjectTriggerEnter": null,
-              "OnObjectTriggerExit": null,
-              "OnTriggerEnter": null,
-              "OnTriggerExit": null,
-              "RollingResistance": null,
-              "Scale": "50,50,50",
-              "Static": false,
-              "Surface": null,
-              "SurfaceVelocity": "0,0,0"
-            },
-            {
-              "__type": "UltimoBarrio.Properties.ClaimCabinetComponent",
-              "__guid": "2f7eeba3-78e4-4d3e-9ee1-c5a7821178e3",
-              "__enabled": true,
-              "Flags": 0,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "PropertyId": "property-shell-01"
-            }
-          ],
-          "Children": []
         }
       ]
     },
@@ -8825,18 +8639,6 @@
               "OnComponentStart": null,
               "OnComponentUpdate": null,
               "PropertyId": "property-rental-01"
-            },
-            {
-              "__type": "UltimoBarrio.Properties.Doors.DoorLockComponent",
-              "__guid": "ed337967-5e35-4876-8db1-683016e67c62",
-              "__enabled": true,
-              "Flags": 0,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null
             }
           ],
           "Children": []
@@ -8877,10 +8679,10 @@
       ]
     },
     {
-      "__guid": "548959d0-0f35-4879-b7bc-fee7d0ecb502",
+      "__guid": "c30afd76-333f-459e-b275-085691f4049b",
       "__version": 2,
       "Flags": 0,
-      "Name": "Wood Pickup Test",
+      "Name": "Starter Resource Zone",
       "Position": "-950,600,-4",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
@@ -8891,377 +8693,889 @@
       "NetworkOrphaned": 0,
       "NetworkTransmit": true,
       "OwnerTransfer": 1,
-      "Components": [
+      "Components": [],
+      "Children": [
         {
-          "__type": "UltimoBarrio.WorldItemPickup",
-          "__guid": "7036c9c6-5437-4d49-a15f-36014e8fb974",
-          "__enabled": true,
+          "__guid": "548959d0-0f35-4879-b7bc-fee7d0ecb502",
+          "__version": 2,
           "Flags": 0,
-          "AmmoInMag": 0,
-          "Amount": 1,
-          "ItemId": "wood",
-          "MaxInteractionDistance": 200,
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null
-        },
-        {
-          "__type": "Sandbox.BoxCollider",
-          "__guid": "1880571b-79ee-44a4-a65c-0ae2b2c8d58f",
-          "__enabled": true,
-          "Flags": 0,
-          "Center": "0,0,0",
-          "ColliderFlags": 0,
-          "Elasticity": null,
-          "Friction": null,
-          "IsTrigger": false,
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "OnObjectTriggerEnter": null,
-          "OnObjectTriggerExit": null,
-          "OnTriggerEnter": null,
-          "OnTriggerExit": null,
-          "RollingResistance": null,
-          "Scale": "16,16,16",
-          "Static": false,
-          "Surface": null,
-          "SurfaceVelocity": "0,0,0"
-        },
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "1d16da6c-bfc4-4f71-abc9-7d6929394811",
-          "__enabled": true,
-          "Flags": 0,
-          "BodyGroups": 18446744073709551615,
-          "CreateAttachments": false,
-          "LodOverride": null,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
-          "Materials": null,
-          "Model": "models/citizen_props/crate01.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "799c5adb-f4db-4bc0-98e4-a0915b78dd76",
-      "__version": 2,
-      "__Prefab": "prefabs/player.prefab",
-      "__PrefabInstancePatch": {
-        "AddedObjects": [
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "98c64f2a-c3a6-492c-8dcc-d4e6b452c1a2"
-            },
-            "Parent": {
-              "Type": "GameObject",
-              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
-            },
-            "PreviousElement": {
-              "Type": "Component",
-              "IdValue": "d4f1b9a6-3e57-4a08-b2c9-6d05e83f1147"
-            },
-            "ContainerProperty": "Components",
-            "IsContainerArray": true,
-            "Data": {
-              "__type": "UltimoBarrio.UI.InventoryUI",
-              "__guid": "98c64f2a-c3a6-492c-8dcc-d4e6b452c1a2",
+          "Name": "Wood Pickup",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "7036c9c6-5437-4d49-a15f-36014e8fb974",
               "__enabled": true,
               "Flags": 0,
+              "AmmoInMag": 0,
+              "Amount": 1,
+              "ItemId": "wood",
+              "MaxInteractionDistance": 200,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "1880571b-79ee-44a4-a65c-0ae2b2c8d58f",
+              "__enabled": true,
+              "Flags": 0,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "TargetInventory": null,
-              "Title": "Tu Mochila",
-              "TransferTarget": null
-            }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "7afe5b96-075b-4eea-b21d-c7f8d9decb63"
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "16,16,16",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
             },
-            "Parent": {
-              "Type": "GameObject",
-              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
-            },
-            "PreviousElement": {
-              "Type": "Component",
-              "IdValue": "98c64f2a-c3a6-492c-8dcc-d4e6b452c1a2"
-            },
-            "ContainerProperty": "Components",
-            "IsContainerArray": true,
-            "Data": {
-              "__type": "UltimoBarrio.UI.InventoryUI",
-              "__guid": "7afe5b96-075b-4eea-b21d-c7f8d9decb63",
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "1d16da6c-bfc4-4f71-abc9-7d6929394811",
               "__enabled": true,
               "Flags": 0,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/citizen_props/crate01.vmdl",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "TargetInventory": null,
-              "Title": "Alijo",
-              "TransferTarget": null
-            }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "b63f9c01-d7ee-402d-8651-3f4a58edfc0b"
-            },
-            "Parent": {
-              "Type": "GameObject",
-              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
-            },
-            "PreviousElement": {
-              "Type": "Component",
-              "IdValue": "7afe5b96-075b-4eea-b21d-c7f8d9decb63"
-            },
-            "ContainerProperty": "Components",
-            "IsContainerArray": true,
-            "Data": {
-              "__type": "UltimoBarrio.UI.HotbarPanel",
-              "__guid": "b63f9c01-d7ee-402d-8651-3f4a58edfc0b",
-              "__enabled": true,
-              "Flags": 0,
-              "HeldItemCtrl": {
-                "_type": "component",
-                "component_id": "0e7a8d21-5c44-4f2b-9f6d-2a1c7b904d18",
-                "go": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba",
-                "component_type": "HeldItemController"
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
               },
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "TargetInventory": {
-                "_type": "component",
-                "component_id": "a959eeda-fa54-4e09-a6d2-aad00144bcb1",
-                "go": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba",
-                "component_type": "InventoryComponent"
-              }
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
             }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "df7d8773-66f3-4811-88af-4fc231a34097"
-            },
-            "Parent": {
-              "Type": "GameObject",
-              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
-            },
-            "PreviousElement": {
-              "Type": "Component",
-              "IdValue": "b63f9c01-d7ee-402d-8651-3f4a58edfc0b"
-            },
-            "ContainerProperty": "Components",
-            "IsContainerArray": true,
-            "Data": {
-              "__type": "UltimoBarrio.UI.CraftingPanel",
-              "__guid": "df7d8773-66f3-4811-88af-4fc231a34097",
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "8b345427-ed4e-4983-a113-ab8977e6cc11",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Scrap Metal Pickup",
+          "Position": "40,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.5,0.5,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "3c50f44b-262f-473a-8507-9e47368a2204",
               "__enabled": true,
               "Flags": 0,
+              "AmmoInMag": 0,
+              "Amount": 1,
+              "ItemId": "scrap_metal",
+              "MaxInteractionDistance": 200,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "PlayerInventory": null,
-              "TargetStation": null
-            }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "537e095b-6089-4db1-a7e0-17028e849363"
+              "OnComponentUpdate": null
             },
-            "Parent": {
-              "Type": "GameObject",
-              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
-            },
-            "PreviousElement": {
-              "Type": "Component",
-              "IdValue": "df7d8773-66f3-4811-88af-4fc231a34097"
-            },
-            "ContainerProperty": "Components",
-            "IsContainerArray": true,
-            "Data": {
-              "__type": "UltimoBarrio.Combat.FistsWeapon",
-              "__guid": "537e095b-6089-4db1-a7e0-17028e849363",
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "2ec6446f-007c-4f8a-9bb5-43c9ddfee887",
               "__enabled": true,
               "Flags": 0,
-              "AmmoType": "ammo_9mm",
-              "BaseDamage": 25,
-              "FireRate": 0.5,
-              "FriendlyFire": false,
-              "HitSound": null,
-              "IsAutomatic": false,
-              "MaxAmmo": 1,
-              "MissSound": null,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "PushForce": 120,
-              "Range": 80,
-              "ReloadTime": 2,
-              "StaminaCost": 5,
-              "WallHitSound": null
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "20,20,20",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "d65d51aa-c1c4-4fa8-8791-5ced4dd6213d",
+              "__enabled": true,
+              "Flags": 0,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.5,0.5,0.5,1"
             }
-          }
-        ],
-        "RemovedObjects": [],
-        "PropertyOverrides": [
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "8c7ba49e-b52f-424d-b411-4cf8464525e1",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Components Pickup",
+          "Position": "0,40,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.400000006,0.400000006,0.400000006",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "625b6648-da2d-4bc1-a52c-20f2b16d4da3",
+              "__enabled": true,
+              "Flags": 0,
+              "AmmoInMag": 0,
+              "Amount": 1,
+              "ItemId": "components",
+              "MaxInteractionDistance": 200,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
             },
-            "Property": "Name",
-            "Value": "Player - C. SATELITE | Descambiado"
-          },
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "6762822c-4b44-48f4-a16e-6e26c3212330",
+              "__enabled": true,
+              "Flags": 0,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "12,12,12",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
             },
-            "Property": "Position",
-            "Value": "-999.999939,599.999939,-7.95874882"
-          },
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "3ec8630b-1746-4b82-a8e2-689f5c7f1386",
+              "__enabled": true,
+              "Flags": 0,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/citizen_props/cardboardbox01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.8,0.7,0.5,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "87ce1610-5cb7-42fd-8d3e-4b0e9de0620f",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Cloth Pickup",
+          "Position": "-40,40,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "c188f3cc-c7e8-4637-92ba-783720d259f5",
+              "__enabled": true,
+              "Flags": 0,
+              "AmmoInMag": 0,
+              "Amount": 1,
+              "ItemId": "cloth",
+              "MaxInteractionDistance": 200,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
             },
-            "Property": "NetworkMode",
-            "Value": 1
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "b3091a87-5492-4ba9-8aa8-6daa61c8ab13"
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "411b75df-93be-405e-9059-23ed05d66a37",
+              "__enabled": true,
+              "Flags": 0,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "14,14,14",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
             },
-            "Property": "Gravity",
-            "Value": false
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "b3091a87-5492-4ba9-8aa8-6daa61c8ab13"
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "32d4cf4d-074e-4f72-ad5c-4659e2b08e03",
+              "__enabled": true,
+              "Flags": 0,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/sbox_props/binbags/binbag_a2.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.9,0.9,0.85,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "92d088e2-a4f3-4d87-9212-ca5b0dd32fad",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Water Pickup",
+          "Position": "40,40,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "721230ac-26a0-4f42-989d-c8154306b72b",
+              "__enabled": true,
+              "Flags": 0,
+              "AmmoInMag": 0,
+              "Amount": 1,
+              "ItemId": "water",
+              "MaxInteractionDistance": 200,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
             },
-            "Property": "LinearDamping",
-            "Value": 10
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "b3091a87-5492-4ba9-8aa8-6daa61c8ab13"
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "b9128cd1-1c20-4c95-bb32-649274b7d185",
+              "__enabled": true,
+              "Flags": 0,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "10,10,10",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
             },
-            "Property": "MassCenterOverride",
-            "Value": "0,0,0"
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "a959eeda-fa54-4e09-a6d2-aad00144bcb1"
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "c0949e2a-f542-4d04-9c1b-100c74dd99be",
+              "__enabled": true,
+              "Flags": 0,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/citizen_props/beertankard01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.3,0.5,0.9,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "2c29ecae-f7ba-4734-91ca-a899229ada16",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Medicine Pickup",
+          "Position": "0,-40,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "d48be95d-3380-48a8-ba27-5c48bd77eef7",
+              "__enabled": true,
+              "Flags": 0,
+              "AmmoInMag": 0,
+              "Amount": 1,
+              "ItemId": "medicine",
+              "MaxInteractionDistance": 200,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
             },
-            "Property": "InventoryId",
-            "Value": "player:steam:76561198325899840:inventory"
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "cfd92c85-7e62-48bd-90de-badab0794485"
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "7e18762b-d817-43ea-b296-7dfd2af63c6b",
+              "__enabled": true,
+              "Flags": 0,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "8,8,8",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
             },
-            "Property": "Balance",
-            "Value": 437
-          },
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "6b5cbc3e-e37c-4eb9-afa6-577469114047"
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "a8caeb26-6169-471e-b9bd-5fe55e0b87cc",
+              "__enabled": true,
+              "Flags": 0,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/citizen_props/sodacan01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.9,0.9,0.9,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "71f67cac-267a-4bef-bebd-29cbe82c7bcb",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Ammo Pickup",
+          "Position": "-40,-40,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.400000006,0.400000006,0.400000006",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "646495b7-2ace-4b5c-8fc8-e731795bc8a1",
+              "__enabled": true,
+              "Flags": 0,
+              "AmmoInMag": 0,
+              "Amount": 12,
+              "ItemId": "ammo_9mm",
+              "MaxInteractionDistance": 200,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
             },
-            "Property": "Rotation",
-            "Value": "0,0,-1,9.09962921E-07"
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "f2b49a45-d5d0-4868-8e56-f85f9a989be6"
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "e9272f34-1075-41fd-bdae-0d4a4c33be3c",
+              "__enabled": true,
+              "Flags": 0,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "10,10,10",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
             },
-            "Property": "MaterialGroup",
-            "Value": "default"
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "ee640c43-fd61-4d0f-826e-5530c1cc9b27"
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "45ddf687-f16a-4e97-843d-77815a3e4281",
+              "__enabled": true,
+              "Flags": 0,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/citizen_props/crate01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.2,0.35,0.15,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "b54c3324-f339-4c41-ba8c-96caf062309a",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Food Pickup",
+          "Position": "40,-40,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "a0493b89-b22f-44bc-8d45-870bc3873589",
+              "__enabled": true,
+              "Flags": 0,
+              "AmmoInMag": 0,
+              "Amount": 1,
+              "ItemId": "food",
+              "MaxInteractionDistance": 200,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
             },
-            "Property": "Friction",
-            "Value": 81
-          }
-        ],
-        "MovedObjects": []
-      },
-      "__PrefabIdToInstanceId": {
-        "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba": "799c5adb-f4db-4bc0-98e4-a0915b78dd76",
-        "3ae1b3c4-14c5-4d68-be0a-1096ec3e2c8d": "dc88126d-48a3-4bfb-99c9-b77398fd0d27",
-        "b3091a87-5492-4ba9-8aa8-6daa61c8ab13": "3e71611d-0d53-4e0a-a357-12a5140a99d3",
-        "c818a718-51a0-4f30-b561-3719718d81d4": "8691cc29-1e98-4c1c-a416-22a153479a05",
-        "2f565d25-cbfa-4244-890f-d82931c0bdc1": "ab03d21e-b9bb-4096-ac75-d893e421f215",
-        "20be986f-7510-4bf5-ae9a-2935f448faff": "b6e0ba94-3d5a-444c-aa42-7e0ccd693927",
-        "50c8624c-ca50-48e3-951d-a189ae9f2de5": "22af1955-da1d-4245-98c1-335656a5e982",
-        "a290bf70-2ada-484b-b1c4-309d20bf333b": "f91f82eb-548d-4a23-9460-918dfe39a706",
-        "a959eeda-fa54-4e09-a6d2-aad00144bcb1": "ef592c09-7f7b-4456-8f75-77e3dcf06931",
-        "cfd92c85-7e62-48bd-90de-badab0794485": "e3a594b9-4261-4a8b-9979-1f77bccfdcd3",
-        "e6f2b9d1-4c7a-4a3e-9f0d-1a2b3c4d5e6f": "06f54d7b-0f46-4922-863e-79f043f3cb12",
-        "8a51d0d6-2ff2-4b2e-9f3b-6b0e4e3d3d21": "db0560a3-66af-4573-82a7-3b5be57d8b07",
-        "c1860388-e203-4b6c-aaa0-c87299dff4ae": "4fe4cde4-d25d-42f1-b675-f3cb8b34dbe9",
-        "831f293e-d324-4398-b98f-acc29eb5fb26": "69ee0d3c-f3f0-4a1a-855c-4f9f7ec70cd7",
-        "7a1b2c3d-4e5f-6789-abcd-ef0123456789": "231b4ad8-a739-4c9a-9211-548ca66ca62c",
-        "c6cf0345-8b32-4003-8797-80253c109341": "66c68060-26aa-4bea-9849-8087be99ce09",
-        "0e7a8d21-5c44-4f2b-9f6d-2a1c7b904d18": "76311a35-f1d6-4383-a097-1cddd916b1dd",
-        "d4f1b9a6-3e57-4a08-b2c9-6d05e83f1147": "3b529530-ac2b-46df-92a6-849412c4c0cb",
-        "6b5cbc3e-e37c-4eb9-afa6-577469114047": "34a7ddc4-9512-4ef2-bee1-94550543fc56",
-        "f2b49a45-d5d0-4868-8e56-f85f9a989be6": "47633ba2-a5fb-4d8f-9504-3fd2773c4cff",
-        "14c32c81-db65-4764-b235-8d1469a40438": "14f57476-7f0f-443f-a24f-6cf2dd9f2cca",
-        "996337b2-679a-4b95-bced-979f20df922a": "bfc2b78b-4772-4bab-b2d1-c35990d65965",
-        "ee640c43-fd61-4d0f-826e-5530c1cc9b27": "c0354b45-f8ca-4fb3-b13a-6f88b4723d29"
-      }
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "e85ca37c-fe9c-49bc-8a1d-c70e6e3d4299",
+              "__enabled": true,
+              "Flags": 0,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "8,8,8",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "da13a325-ff7d-4c22-ae57-f2835a6427df",
+              "__enabled": true,
+              "Flags": 0,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/citizen_props/sodacan01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.7,0.2,0.15,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "dac85590-4bce-4c78-a350-eafb7f88b233",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Fuel Pickup",
+          "Position": "-20,60,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.449999988,0.449999988,0.449999988",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "65ca3bd8-fd87-4fb0-ad6d-91ac4c9924c1",
+              "__enabled": true,
+              "Flags": 0,
+              "AmmoInMag": 0,
+              "Amount": 1,
+              "ItemId": "fuel",
+              "MaxInteractionDistance": 200,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "e4e2cb70-acdf-4c79-896f-65fa6e34c5ae",
+              "__enabled": true,
+              "Flags": 0,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "14,14,14",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "15a994f6-fc86-434e-af73-83929b3a151b",
+              "__enabled": true,
+              "Flags": 0,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/citizen_props/trashcan01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.8,0.35,0.1,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "32fe7f61-6a27-4e98-9ba5-d57050efd9d4",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Repair Parts Pickup",
+          "Position": "20,60,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.400000006,0.400000006,0.400000006",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.WorldItemPickup",
+              "__guid": "6748faa0-93a5-423c-9429-c846991ee9e8",
+              "__enabled": true,
+              "Flags": 0,
+              "AmmoInMag": 0,
+              "Amount": 1,
+              "ItemId": "repair_parts",
+              "MaxInteractionDistance": 200,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "9ea95fac-e270-4516-9e40-e065fe165d20",
+              "__enabled": true,
+              "Flags": 0,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "12,12,12",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "12396d00-ba64-4528-9b69-4691e83fda53",
+              "__enabled": true,
+              "Flags": 0,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/citizen_props/cardboardbox01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.6,0.6,0.65,1"
+            }
+          ],
+          "Children": []
+        }
+      ]
     }
   ],
   "SceneProperties": {

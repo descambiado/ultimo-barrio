@@ -30,6 +30,8 @@ namespace UltimoBarrio
             Add( "cloth", "Tela", "Retales y tejidos", ItemCategory.Resource, 40, weight: 0.3f );
             Add( "wood", "Madera", "Tablones y listones", ItemCategory.Resource, 40, weight: 2.5f );
             Add( "components", "Componentes", "Piezas de precisión", ItemCategory.Resource, 30, weight: 0.8f );
+            Add( "fuel", "Combustible", "Gasolina en garrafa, útil para generadores y vehículos", ItemCategory.Resource, 20, weight: 4f );
+            Add( "repair_parts", "Piezas de repuesto", "Recambios listos para reparar estructuras", ItemCategory.Resource, 40, weight: 1.2f );
 
             // ── Consumibles ──────────────────────────────────────────────────
             AddConsumable( "water", "Agua", "Agua purificada", 5, heal: 0, weight: 1f );
