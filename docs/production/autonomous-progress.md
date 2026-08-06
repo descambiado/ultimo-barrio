@@ -1,6 +1,54 @@
 # Progreso de ejecución autónoma — Último Barrio
 
-## VIVIENDA FÍSICA COMPLETA — leer esto primero (2026-08-06, continuación)
+## CHECKPOINT (formato fijo, ver instrucción del usuario) — 2026-08-07
+
+```
+Branch: integration/wizard-holy-grail
+HEAD: 8c6debe
+Clean/dirty: limpio salvo .omc/ (intencionalmente sin trackear) y 3 diffs
+  preexistentes fuera de alcance (ItemDefinition.cs, AutoSaveManager.cs,
+  MovementProfile.cs) dejados sin tocar toda la sesión
+Bloque completado: secciones 1 (stash/respawn/abandon) y 2 (decisión de
+  arquitectura de vivienda) del encargo de continuación del 2026-08-07
+Evidencia runtime: ver commits 8c6debe (stash lifecycle) y defbfa1
+  (decisión de arquitectura + corrección de "commits huérfanos")
+Evidencia de persistencia: stash wood:1 sobrevive Stop/Play; ClaimState/
+  OwnerId de apartment-a01 sobreviven Stop/Play (ver commit 8371f11 de la
+  pasada anterior)
+Regresiones conocidas: ninguna (ub_test_all 36/36 tras cada bloque)
+Archivo actual: ninguno a medias -- siguiente trabajo es BuildVolume,
+  archivos nuevos aún no creados
+Siguiente comando exacto: crear
+  Code/UltimoBarrio/Building/BuildVolume.cs (+ BuildAnchor, StructureComponent,
+  StructureHealth, PlacementController, PlacementPreview) siguiendo el
+  patrón ya usado por BarricadeAnchor/ApartmentFortification (mismo
+  proyecto, mismo estilo, reutilizar CraftingService.TryCraft como
+  referencia para la validación+consumo atómico)
+Siguiente prueba de aceptación: craft wooden_barricade_kit real → colocar
+  vía preview verde/rojo → host valida → consume kit → Stop/Play →
+  transform/nivel/salud persisten
+```
+
+**Corrección importante encontrada esta pasada**: los "commits huérfanos"
+que un checkpoint anterior daba por perdidos (Bruto/Merodeador, panel de
+misiones, e incluso el código base de armas USP/Fists/Melee) **ya están
+integrados en `HEAD`** -- ver `docs/research/orphaned-work-recovery.md`.
+Fase 12 (armas) tiene la lógica escrita y compilando; falta la capa de
+assets reales (prefabs actuales de 797-1056 bytes, sin modelo/animación) y
+verificación en motor, no arquitectura desde cero.
+
+**Nota de proceso**: durante esta pasada el usuario estuvo jugando en vivo
+en el mismo Play Mode que yo uso para verificación QA (confirmado por
+eventos `UB.Input UsePressed`/compras reales al Trader que yo no
+disparé). Cuando eso ocurre, se evita mover al jugador compartido vía
+QA hasta detectar una pausa real en el log, y se aprovecha su juego real
+como evidencia de "physical E" genuina cuando coincide con lo que se
+estaba verificando (ej.: abrió el stash con una pulsación real de E,
+confirmando `canInteract=True` de forma independiente al harness).
+
+---
+
+## VIVIENDA FÍSICA COMPLETA — pasada anterior (2026-08-06)
 
 **Rama**: `integration/wizard-holy-grail`. **HEAD**: `8371f11`. **Editor**: respondiendo.
 
