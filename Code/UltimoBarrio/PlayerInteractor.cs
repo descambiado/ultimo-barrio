@@ -60,10 +60,31 @@ namespace UltimoBarrio
 
         protected override void OnUpdate()
         {
-            ProcessInteraction(Input.Pressed("Use"));
+            var usePressed = Input.Pressed("Use");
+
+            // Se loguea solo cuando ocurre de verdad (nunca por frame) -- evidencia de que
+            // el evento físico de teclado llegó realmente a este componente, para la única
+            // prueba manual pendiente (mirar pickup -> pulsar E una vez).
+            if (usePressed)
+                Log.Info($"UB.Input UsePressed Player={GameObject.Id} State={_hud?.CurrentState} Cursor={Mouse.Visibility}");
+
+            ProcessInteraction(usePressed);
         }
 
-        /// <summary>Sustituye la pulsación física de E (imposible de simular desde MCP) reejecutando la misma resolución real. No fabrica CanInteract/OnInteract.</summary>
+        /// <summary>
+        /// HERRAMIENTA DE DESARROLLO/QA — nunca la llama código de producción, solo
+        /// QASprintRunner. Sustituye ÚNICAMENTE el evento físico de teclado (imposible
+        /// de simular desde MCP, confirmado sin herramienta de input en el toolset) y
+        /// reejecuta EXACTAMENTE ProcessInteraction — el mismo trace, la misma
+        /// resolución de IWorldInteractable, el mismo CanInteract, la misma RPC al
+        /// host, el mismo networking. No añade ítems, no toca wallet, no reclama, no
+        /// instala nada por su cuenta, no se salta CanInteract. Genérico a propósito:
+        /// sirve para pickups, puertas, armarios, estaciones de crafteo o cualquier
+        /// IWorldInteractable con solo apuntar al jugador hacia el objetivo antes de
+        /// llamarlo — no crear DebugForceCraft/DebugForceClaim/DebugForceDoor por
+        /// separado, este único método ya cubre todos esos casos porque toda la
+        /// lógica específica por tipo vive en ProcessInteraction, no aquí.
+        /// </summary>
         public void DebugForceUseAttempt()
         {
             ProcessInteraction(true);
