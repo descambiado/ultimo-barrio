@@ -157,8 +157,11 @@ namespace UltimoBarrio.WorldTime
         [Rpc.Broadcast]
         private void RpcNightStarted()
         {
-            var catalog = Scene.GetAllComponents<UltimoBarrioAudioCatalog>().FirstOrDefault();
-            catalog?.PlayEvent( AudioEvent.NightSiren );
+            // No hay ningún asset .sound real en el proyecto todavía (0 archivos
+            // bajo Assets/, confirmado por búsqueda) -- "raid.siren" nunca ha
+            // apuntado a un sonido real, solo al nombre de evento aspiracional.
+            // Omitido hasta que exista un asset de audio real registrado, en vez
+            // de dejar el warning del motor en cada inicio de noche.
         }
     }
 }
