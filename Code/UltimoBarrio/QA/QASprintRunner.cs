@@ -512,5 +512,46 @@ namespace UltimoBarrio.QA
                 }
             }
         }
+
+        /// <summary>
+        /// Diagnóstico: coloca una barricada real (BarricadeAnchor.OnInteract, el
+        /// mismo gateway que E) en el anchor más cercano, la daña, la repara y
+        /// confirma que destruirla libera el anchor.
+        /// </summary>
+        [ConCmd("ub_qa_test_barricade")]
+        public static void TestBarricade()
+        {
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            if (player is null) { Log.Error("--- ub_qa_test_barricade --- No player found."); return; }
+
+            var inv = player.Components.Get<InventoryComponent>();
+            if (inv is null) { Log.Error("--- ub_qa_test_barricade --- No InventoryComponent."); return; }
+
+            var anchors = Game.ActiveScene.GetAllComponents<Fortification.BarricadeAnchor>().ToList();
+            var anchor = anchors.FirstOrDefault(a => !a.HasBarricade);
+            if (anchor is null) { Log.Error("--- ub_qa_test_barricade --- No free BarricadeAnchor in scene."); return; }
+
+            player.WorldPosition = anchor.WorldPosition;
+            inv.TryAdd("reinforced_barricade_kit", 1);
+
+            var req = new InteractionRequest { Identity = PlayerIdentity.FromGameObject(player), InteractorObject = player };
+            Log.Info($"--- ub_qa_test_barricade --- anchor={anchor.GameObject.Name} HasBarricadeAntes={anchor.HasBarricade} CanInteract={anchor.CanInteract(req)}");
+
+            anchor.OnInteract(req);
+            Log.Info($"--- ub_qa_test_barricade --- Tras colocar: HasBarricade={anchor.HasBarricade}");
+            if (!anchor.HasBarricade) return;
+
+            var barricade = anchor.BarricadeReference;
+            Log.Info($"--- ub_qa_test_barricade --- Health inicial: {barricade.Health}/{barricade.MaxHealth}");
+
+            barricade.TakeDamage(new DamageEvent { Amount = 60f, Position = barricade.WorldPosition });
+            Log.Info($"--- ub_qa_test_barricade --- Tras 60 de daño: {barricade.Health}/{barricade.MaxHealth}");
+
+            barricade.Repair(10f);
+            Log.Info($"--- ub_qa_test_barricade --- Tras reparar 10: {barricade.Health}/{barricade.MaxHealth}");
+
+            barricade.TakeDamage(new DamageEvent { Amount = 500f, Position = barricade.WorldPosition });
+            Log.Info($"--- ub_qa_test_barricade --- Tras daño letal: destruida={barricade.IsDestroyed} anchorLibre={!anchor.HasBarricade}");
+        }
     }
 }

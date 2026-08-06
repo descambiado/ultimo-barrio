@@ -24,13 +24,30 @@ namespace UltimoBarrio.Fortification
 
         private Barricade _barricade;
 
+        /// <summary>Tiers colocables aquí, en orden de preferencia (mejor primero).</summary>
+        private static readonly (string ItemId, float MaxHealth)[] _tiers =
+        {
+            ( "reinforced_barricade_kit", 300f ),
+            ( "barricade", 150f )
+        };
+
         public string GetInteractionPrompt( InteractionRequest request )
         {
             if ( HasBarricade )
                 return "Barricada colocada (revisa su salud)";
 
-            int count = request.InteractorObject?.Components.GetInDescendantsOrSelf<InventoryComponent>()?.GetCount( "barricade" ) ?? 0;
-            return count > 0 ? $"Colocar barricada (tienes {count})" : "Barricada (no llevas ninguna)";
+            var inv = request.InteractorObject?.Components.GetInDescendantsOrSelf<InventoryComponent>();
+            foreach ( var (itemId, _) in _tiers )
+            {
+                int count = inv?.GetCount( itemId ) ?? 0;
+                if ( count > 0 )
+                {
+                    var def = ItemRegistry.GetDefinition( itemId );
+                    return $"Colocar {def?.DisplayName ?? itemId} (tienes {count})";
+                }
+            }
+
+            return "Barricada (no llevas ninguna)";
         }
 
         public bool CanInteract( InteractionRequest request )
@@ -72,11 +89,25 @@ namespace UltimoBarrio.Fortification
                 return;
 
             var inventory = interactor.Components.GetInDescendantsOrSelf<InventoryComponent>();
-            if ( inventory is null || inventory.GetCount( "barricade" ) < 1 )
+            if ( inventory is null )
                 return;
 
-            // Consumir el ítem; si el spawn falla, rollback.
-            if ( !inventory.TryRemove( "barricade", 1 ) )
+            string placedItemId = null;
+            float maxHealth = 150f;
+            foreach ( var (itemId, tierHealth) in _tiers )
+            {
+                if ( inventory.GetCount( itemId ) < 1 )
+                    continue;
+
+                if ( !inventory.TryRemove( itemId, 1 ) )
+                    continue;
+
+                placedItemId = itemId;
+                maxHealth = tierHealth;
+                break;
+            }
+
+            if ( placedItemId is null )
                 return;
 
             var barricadeGo = new GameObject( true, $"Barricade_{AnchorId}" );
@@ -86,7 +117,7 @@ namespace UltimoBarrio.Fortification
 
             var renderer = barricadeGo.Components.Create<ModelRenderer>();
             renderer.Model = Model.Load( "models/dev/box.vmdl" );
-            renderer.Tint = new Color( 0.45f, 0.3f, 0.15f );
+            renderer.Tint = placedItemId == "reinforced_barricade_kit" ? new Color( 0.5f, 0.5f, 0.55f ) : new Color( 0.45f, 0.3f, 0.15f );
             barricadeGo.LocalScale = new Vector3( 40f, 10f, 70f );
 
             var collider = barricadeGo.Components.Create<BoxCollider>();
@@ -94,6 +125,15 @@ namespace UltimoBarrio.Fortification
             var barricade = barricadeGo.Components.Create<Barricade>();
             barricade.ApartmentId = ApartmentId;
             barricade.AnchorId = AnchorId;
+
+            // Component.OnStart() no se garantiza síncrono tras Create<T>() (puede
+            // diferirse al siguiente tick) — sin esto la barricada nace con
+            // Health=0/MaxHealth=200 (los valores por defecto de
+            // DestructibleStructure) hasta que OnStart corre, y con Health<=0,
+            // IsDestroyed ya es true: cualquier daño real en esa ventana no hace
+            // nada porque TakeDamage descarta las estructuras ya destruidas.
+            barricade.MaxHealth = maxHealth;
+            barricade.SetHealth( maxHealth );
 
             if ( Networking.IsActive )
                 barricadeGo.NetworkSpawn();

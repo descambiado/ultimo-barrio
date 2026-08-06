@@ -17,11 +17,13 @@ namespace UltimoBarrio.Fortification
         [Property] public string ApartmentId { get; set; } = string.Empty;
         [Property] public string AnchorId { get; set; } = string.Empty;
 
-        protected override void OnStart()
-        {
-            MaxHealth = 150f;
-            base.OnStart();
-        }
+        // Sin override de OnStart a propósito: BarricadeAnchor.ProcessPlace y
+        // RestoreBarricade ya fijan MaxHealth/Health explícitamente según el
+        // tier colocado (barricade=150, reinforced_barricade_kit=300) justo
+        // tras Create<Barricade>(). Un OnStart que hardcodee MaxHealth=150 aquí
+        // pisaría ese valor cuando el motor por fin ejecute OnStart (no es
+        // síncrono con Create<T>()), bajando de nivel cualquier barricada
+        // reforzada en cuanto arrancara.
 
         protected override void OnStructureDestroyed()
         {
