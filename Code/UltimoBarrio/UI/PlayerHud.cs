@@ -13,6 +13,7 @@ namespace UltimoBarrio.UI
         InventoryAndStash,
         Trader,
         Crafting,
+        MissionJournal,
         Dead
     }
 
@@ -24,6 +25,7 @@ namespace UltimoBarrio.UI
         private InteractionPromptPanel _promptPanel;
         private HudOverlayPanel _hudOverlay;
         private TraderUI _traderUI;
+        private MissionJournalPanel _missionJournalPanel;
         
         public InventoryUI PlayerInvUI { get; private set; }
         public InventoryUI StashInvUI { get; private set; }
@@ -51,6 +53,11 @@ namespace UltimoBarrio.UI
             _traderUI = new TraderUI();
             _traderUI.PlayerObj = GameObject;
             Panel.AddChild( _traderUI );
+
+            _missionJournalPanel = new MissionJournalPanel();
+            _missionJournalPanel.Journal = GameObject.Components.GetInDescendantsOrSelf<Missions.MissionJournal>()
+                ?? Missions.MissionJournal.Local;
+            Panel.AddChild( _missionJournalPanel );
 
             // Dynamically add the inventory UIs
             PlayerInvUI = GameObject.Components.Create<InventoryUI>();
@@ -99,7 +106,16 @@ namespace UltimoBarrio.UI
                 
             if (_traderUI != null)
                 _traderUI.Style.Display = (newState == HudState.Trader) ? DisplayMode.Flex : DisplayMode.None;
-                
+
+            if (_missionJournalPanel != null)
+            {
+                _missionJournalPanel.Style.Display = (newState == HudState.MissionJournal) ? DisplayMode.Flex : DisplayMode.None;
+                if (newState == HudState.MissionJournal)
+                    _missionJournalPanel.Open();
+                else
+                    _missionJournalPanel.Close();
+            }
+
             if (CraftingUI != null && CraftingUI.Panel != null)
                 CraftingUI.Panel.Style.Display = (newState == HudState.Crafting) ? DisplayMode.Flex : DisplayMode.None;
                 
@@ -179,6 +195,15 @@ namespace UltimoBarrio.UI
                     ChangeState(HudState.Gameplay);
                 }
             }
+
+            // Toggle diario de misiones (tecla J)
+            if (Input.Pressed("Missions"))
+            {
+                if (CurrentState == HudState.Gameplay)
+                    ChangeState(HudState.MissionJournal);
+                else if (CurrentState == HudState.MissionJournal)
+                    ChangeState(HudState.Gameplay);
+            }
         }
 
         public void OpenTrader(UltimoBarrio.Trading.Trader trader)
@@ -231,6 +256,11 @@ namespace UltimoBarrio.UI
             {
                 _traderUI.Delete();
                 _traderUI = null;
+            }
+            if ( _missionJournalPanel != null )
+            {
+                _missionJournalPanel.Delete();
+                _missionJournalPanel = null;
             }
             if ( PlayerInvUI != null )
             {

@@ -1,0 +1,38 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits Panel
+@namespace UltimoBarrio.UI
+@attribute [StyleSheet]
+
+<root class="@(IsOpen ? "visible" : "")">
+    <div class="journal-window">
+        <div class="header">
+            <label class="title">DIARIO DE MISIONES</label>
+            <button class="close-btn" onclick=@Close>X</button>
+        </div>
+        <div class="content">
+            @if ( Journal is null || Journal.ActiveMissions.Count == 0 )
+            {
+                <label class="empty">Sin misiones activas.</label>
+            }
+            else
+            {
+                @foreach ( var mission in Journal.ActiveMissions )
+                {
+                    <div class="mission">
+                        <label class="mission-title">@mission.Title</label>
+                        <label class="mission-desc">@mission.Description</label>
+                        <div class="objectives">
+                            @foreach ( var objective in mission.Objectives )
+                            {
+                                <div class="objective @(objective.IsCompleted ? "completed" : "")">
+                                    <label>@objective.Description (@objective.CurrentProgress/@objective.TargetAmount)</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</root>
