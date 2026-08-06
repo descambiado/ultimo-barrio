@@ -1002,26 +1002,197 @@ namespace UltimoBarrio.QA
             var interactor = player.Components.Get<PlayerInteractor>();
             if (interactor is null) { Log.Error("--- ub_qa_physical_interact --- Player has no PlayerInteractor."); return; }
 
+            var controller = player.Components.Get<Sandbox.PlayerController>();
+
             // Solo se usa el plano horizontal para calcular el punto de aproximación --
             // usar la dirección 3D completa (incluyendo Z) puede dejar al jugador muy
             // por encima o por debajo del objetivo si la posición previa del jugador
             // tenía una altura muy distinta, lo que inclina la cámara hacia el suelo
             // y el trace impacta el terreno antes de llegar al objetivo real.
             var toTargetFlat = (target.WorldPosition - player.WorldPosition).WithZ(0).Normal;
-            var approach = target.WorldPosition - toTargetFlat * 80f;
+            if (!TryApproachAndAim(player, target, toTargetFlat, 80f, controller, out var tr) || tr.GameObject != target)
+            {
+                // El ángulo por defecto (heredado de la posición previa del jugador) puede
+                // caer en un lado bloqueado por una pared/mueble -- igual que un jugador
+                // real, se prueban los 4 lados cardinales antes de rendirse. No fabrica el
+                // resultado: solo busca un punto de partida con línea de visión limpia, el
+                // propio DebugForceUseAttempt/CanInteract sigue siendo el real.
+                bool found = false;
+                for (int i = 0; i < 4 && !found; i++)
+                {
+                    var angle = i * 90f;
+                    var dir = new Vector3(System.MathF.Cos(angle * System.MathF.PI / 180f), System.MathF.Sin(angle * System.MathF.PI / 180f), 0f);
+                    if (TryApproachAndAim(player, target, dir, 80f, controller, out tr) && tr.GameObject == target)
+                        found = true;
+                }
+
+                if (!found)
+                    Log.Warning($"--- ub_qa_physical_interact --- No se encontró línea de visión limpia a '{targetName}' desde ningún lado cardinal (80u) -- probando con el último intento igualmente.");
+            }
+
+            Log.Info($"--- ub_qa_physical_interact --- target={targetName} playerPos={player.WorldPosition} targetPos={target.WorldPosition}");
+
+            interactor.DebugForceUseAttempt();
+        }
+
+        /// <summary>
+        /// Sin un segundo cliente real conectado no se puede probar la denegación a
+        /// un "desconocido" con una conexión distinta de verdad -- así que se
+        /// construye una PlayerIdentity sintética (steamId=1, nunca el dueño real) y
+        /// se llama exactamente a CanInteract() del IWorldInteractable real del
+        /// objetivo, el mismo método que PlayerInteractor.ProcessInteraction
+        /// consultaría para cualquier jugador. No fabrica el resultado: es la
+        /// autorización de producción real evaluada con una identidad distinta.
+        /// </summary>
+        [ConCmd("ub_qa_test_stranger_denied")]
+        public static void TestStrangerDenied(string targetName)
+        {
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            if (player is null) { Log.Error("--- ub_qa_test_stranger_denied --- No player found."); return; }
+
+            GameObject target = null;
+            if (System.Guid.TryParse(targetName, out var targetGuid))
+                target = Game.ActiveScene.Directory.FindByGuid(targetGuid);
+            target ??= Game.ActiveScene.GetAllComponents<Component>()
+                .Select(c => c.GameObject)
+                .FirstOrDefault(go => go.Name.Contains(targetName, System.StringComparison.OrdinalIgnoreCase));
+
+            if (target is null) { Log.Error($"--- ub_qa_test_stranger_denied --- No GameObject matching '{targetName}' found."); return; }
+
+            var interactable = target.Components.Get<IWorldInteractable>();
+            if (interactable is null) { Log.Error($"--- ub_qa_test_stranger_denied --- '{targetName}' has no IWorldInteractable."); return; }
+
+            var strangerReq = new InteractionRequest
+            {
+                Identity = Core.PlayerIdentity.FromSteamId(1),
+                InteractorObject = player
+            };
+            var ownerReq = new InteractionRequest
+            {
+                Identity = Core.PlayerIdentity.FromGameObject(player),
+                InteractorObject = player
+            };
+
+            var strangerCan = interactable.CanInteract(strangerReq);
+            var ownerCan = interactable.CanInteract(ownerReq);
+            Log.Info($"--- ub_qa_test_stranger_denied --- target={targetName} strangerCanInteract={strangerCan} ownerCanInteract={ownerCan}");
+        }
+
+        /// <summary>
+        /// Llama a InventoryComponent.RequestTransfer() -- la misma RPC que el botón
+        /// de transferencia de InventoryUI/StashUI invoca en producción. Sirve para
+        /// las dos direcciones (jugador->alijo y alijo->jugador) según qué inventario
+        /// se pase como origen en `sourceName` ("player" para el jugador local).
+        /// </summary>
+        [ConCmd("ub_qa_physical_transfer")]
+        public static void PhysicalTransfer(string sourceName, string itemId, int amount, string targetGuid)
+        {
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            if (player is null) { Log.Error("--- ub_qa_physical_transfer --- No player found."); return; }
+
+            InventoryComponent source = string.Equals(sourceName, "player", System.StringComparison.OrdinalIgnoreCase)
+                ? player.Components.Get<InventoryComponent>()
+                : Game.ActiveScene.Directory.FindByGuid(System.Guid.Parse(sourceName))?.Components.Get<InventoryComponent>();
+
+            if (source is null) { Log.Error($"--- ub_qa_physical_transfer --- No source inventory '{sourceName}' found."); return; }
+
+            System.Guid targetInvId;
+            if (string.Equals(targetGuid, "player", System.StringComparison.OrdinalIgnoreCase))
+                targetInvId = player.Id;
+            else if (!System.Guid.TryParse(targetGuid, out targetInvId)) { Log.Error("--- ub_qa_physical_transfer --- targetGuid inválido."); return; }
+
+            var before = source.GetCount(itemId);
+            Log.Info($"--- ub_qa_physical_transfer --- source={sourceName} item={itemId} amount={amount} Before={before}");
+            source.RequestTransfer(itemId, amount, targetInvId);
+            var after = source.GetCount(itemId);
+            Log.Info($"--- ub_qa_physical_transfer --- After={after}");
+        }
+
+        /// <summary>Coloca al jugador a `distance` de `target` en la dirección horizontal
+        /// `awayDir` (desde el objetivo), a la misma Z, orientado hacia el objetivo, y
+        /// devuelve el trace resultante -- mismo trace que ProcessInteraction usaría.</summary>
+        private static bool TryApproachAndAim(GameObject player, GameObject target, Vector3 awayDir, float distance, Sandbox.PlayerController controller, out SceneTraceResult tr)
+        {
+            var approach = target.WorldPosition - awayDir.WithZ(0).Normal * distance;
             player.WorldPosition = approach.WithZ(target.WorldPosition.z);
 
             var eyePos = player.WorldPosition + Vector3.Up * 64f;
             var lookDir = (target.WorldPosition - eyePos).Normal;
-            var controller = player.Components.Get<Sandbox.PlayerController>();
             if (controller != null)
                 controller.EyeAngles = Rotation.LookAt(lookDir).Angles();
             else
                 player.WorldRotation = Rotation.LookAt(lookDir);
 
-            Log.Info($"--- ub_qa_physical_interact --- target={targetName} playerPos={player.WorldPosition} targetPos={target.WorldPosition}");
+            tr = Game.ActiveScene.Trace.Ray(eyePos, eyePos + lookDir * (distance + 40f))
+                .IgnoreGameObjectHierarchy(player)
+                .Run();
+            return tr.Hit;
+        }
 
-            interactor.DebugForceUseAttempt();
+        /// <summary>
+        /// Diagnóstico puro (no interactúa, no muta nada): prueba 8 direcciones
+        /// alrededor del objetivo a la distancia dada, igual que un jugador real
+        /// aproximándose desde cada lado, y registra qué trace llega limpio al
+        /// objetivo y cuál choca antes con geometría del mapa. No usa
+        /// DebugForceUseAttempt -- solo Scene.Trace.Ray, igual que
+        /// ProcessInteraction. Sirve para demostrar si un anchor es alcanzable
+        /// desde una posición de jugador normal, no solo desde el ángulo que el
+        /// harness eligiera por defecto.
+        /// </summary>
+        [ConCmd("ub_qa_probe_approach")]
+        public static void ProbeApproach(string targetName, float distance = 80f)
+        {
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            if (player is null) { Log.Error("--- ub_qa_probe_approach --- No player found."); return; }
+
+            GameObject target = null;
+            if (System.Guid.TryParse(targetName, out var targetGuid))
+                target = Game.ActiveScene.Directory.FindByGuid(targetGuid);
+
+            target ??= Game.ActiveScene.GetAllComponents<Component>()
+                .Select(c => c.GameObject)
+                .FirstOrDefault(go => go.Name.Contains(targetName, System.StringComparison.OrdinalIgnoreCase));
+
+            if (target is null) { Log.Error($"--- ub_qa_probe_approach --- No GameObject matching '{targetName}' found."); return; }
+
+            var originalPos = player.WorldPosition;
+            var originalRot = player.WorldRotation;
+            var controller = player.Components.Get<Sandbox.PlayerController>();
+
+            Log.Info($"--- ub_qa_probe_approach --- target={targetName} at={target.WorldPosition} distance={distance}");
+
+            for (int i = 0; i < 8; i++)
+            {
+                var angle = i * 45f;
+                var dir = new Vector3(System.MathF.Cos(angle * System.MathF.PI / 180f), System.MathF.Sin(angle * System.MathF.PI / 180f), 0f);
+                var approachPos = target.WorldPosition + dir * distance;
+                approachPos = approachPos.WithZ(target.WorldPosition.z);
+
+                player.WorldPosition = approachPos;
+                var eyePos = approachPos + Vector3.Up * 64f;
+                var lookDir = (target.WorldPosition - eyePos).Normal;
+
+                if (controller != null)
+                    controller.EyeAngles = Rotation.LookAt(lookDir).Angles();
+                else
+                    player.WorldRotation = Rotation.LookAt(lookDir);
+
+                var tr = Game.ActiveScene.Trace.Ray(eyePos, eyePos + lookDir * (distance + 40f))
+                    .IgnoreGameObjectHierarchy(player)
+                    .Run();
+
+                var reachedTarget = tr.Hit && tr.GameObject == target;
+                Log.Info($"--- ub_qa_probe_approach --- angle={angle:0} from={approachPos} hit={tr.Hit} " +
+                    $"hitObject={tr.GameObject?.Name ?? "none"} distance={tr.Distance:0.0} reachedTarget={reachedTarget}");
+            }
+
+            player.WorldPosition = originalPos;
+            if (controller != null)
+                controller.EyeAngles = originalRot.Angles();
+            else
+                player.WorldRotation = originalRot;
+
+            Log.Info("--- ub_qa_probe_approach --- done, player restored to original position");
         }
 
         /// <summary>
