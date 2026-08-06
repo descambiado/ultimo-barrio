@@ -1,6 +1,68 @@
 # Progreso de ejecución autónoma — Último Barrio
 
-## E-PICKUP Y LLAVERO — leer esto primero (2026-08-06, continuación tras aviso del usuario)
+## CRAFTING FÍSICO COMPLETO — leer esto primero (2026-08-06, continuación)
+
+**Rama**: `integration/wizard-holy-grail`. **HEAD**: `6fbf611`. **Editor**: respondiendo
+(MCP activo, `play_stop` confirmado tras esta pasada).
+
+**Bloque completado**: sección 5 del encargo (recursos reales + inventario/hotbar/drop +
+crafting), sección 3-4 ya cerradas en pasadas anteriores de esta continuación.
+
+**Commits de esta pasada** (en orden): `9f22dcc` (10 pickups reales con modelos
+verificados vía `asset_search`, nunca `box.vmdl`/dev — Starter Resource Zone),
+`b86557c` (fix de raíz: `ApartmentRegistry.ApplySnapshot` nunca se llamaba desde
+`TryReapplyPlayerState`, igual que el bug ya arreglado del llavero pero en la otra
+mitad del apply — wood/scrap ahora sobreviven Stop/Play byte a byte), `bea5861`
+(aislamiento del harness QA: `DebugForceUseAttempt` documentado como único sustituto
+del evento de teclado, prohibidos los `DebugForceX` por feature), `6fbf611` (recetas
+`craft_ammo_9mm`/`craft_bandage` corregidas al spec exacto del usuario + harness QA
+genérico `ub_qa_physical_interact`/`ub_qa_physical_craft`).
+
+**Prueba real (no QA que fabrica el resultado)**: E real → trace → `OpenCrafting` →
+UI real → `CraftingStation.RequestCraft` (mismo método que el botón "Fabricar") →
+`craft_apartment_door_kit`: wood 10→2 (-8), scrap_metal 9→3 (-6), components 3→1 (-2),
+apartment_door_kit 0→1. Consumo exacto según receta, atómico, sin comando `give`.
+Cursor visible/oculto en abrir/cerrar UI y rollback en ingredientes insuficientes
+confirmados por lectura de código (`PlayerHud.ChangeState`/`CraftingService.TryCraft`
+— pre-valida todo antes de mutar nada, rollback parcial si falla a mitad). `ub_test_all`:
+36/36, sin regresiones.
+
+**Estado runtime**: Play Mode detenido limpiamente (`play_stop` tras `ub_test_all`),
+sin guardar escena durante Play, editor respondiendo con normalidad.
+
+**Fallo restante**: ninguno bloqueante para crafting. Pendiente real: sección 6
+(reconectar `apartment_door_kit` con el claim físico de vivienda) todavía sin
+re-verificar con el mismo rigor `DebugForceUseAttempt` de esta pasada — la
+arquitectura `PropertyClaimService`/`DoorAnchor`/`ClaimCabinetAnchor` ya existe
+(pivote de arquitectura, ver sección "SISTEMA DE PROPIEDADES" más abajo) pero
+solo se verificó con gateways reales *antes* de que existiera este patrón de
+harness genérico — hay que repetirlo con `ub_qa_physical_interact` sobre el
+`DoorAnchor`/`ClaimCabinetAnchor` reales, sin usar ningún atajo `ub_qa_claim_*`.
+
+**Nota sobre commits huérfanos encontrados esta pasada**: `git log --all` muestra
+`e0bb0db` (Bruto/Merodeador) y `49595a4` (panel de misiones) en el historial del
+repo pero NO como ancestros de `integration/wizard-holy-grail` — quedaron en la
+rama previa al pivote de arquitectura de propiedades (`b1bf9fa` y siguientes) y
+nunca se re-aplicaron sobre la nueva base. No están perdidos (siguen en el repo,
+alcanzables desde algún `checkpoint/*`), pero el trabajo real de Fase 13/14 hay
+que rehacerlo sobre la arquitectura actual, no recuperarlo — coincide con que el
+tracker de tareas ya los marca `in_progress`, no `completed`.
+
+**Archivo siguiente**: `Code/UltimoBarrio/Properties/Doors/DoorAnchor.cs` y
+`Code/UltimoBarrio/Properties/ClaimCabinetAnchor.cs` (o su equivalente exacto),
+vía `ub_qa_physical_interact <guid-o-nombre>`.
+
+**Siguiente comando exacto al reanudar**: colocar/confirmar un `PropertyComponent`
+tipo `AbandonedShell` con `DoorAnchor` en escena, fabricar `apartment_door_kit`
+con inventario real, `ub_qa_physical_interact` sobre el `DoorAnchor` para
+instalar la puerta, repetir con `claim_cabinet` sobre el `ClaimCabinetAnchor`,
+confirmar el claim atómico real (sin `ub_qa_claim_*`), verificar rekey/keyring/
+stash/respawn, Stop/Play, y solo entonces commit
+`feat(housing): connect crafted door kit to property claim`.
+
+---
+
+## E-PICKUP Y LLAVERO — pasada anterior (2026-08-06)
 
 **Rama**: `integration/wizard-holy-grail`. **HEAD**: `fae32d7`.
 **Commits de esta pasada**: `fae32d7` (fix físico de E-pickup + fix raíz de
