@@ -96,6 +96,9 @@ public static class WorldSnapshotService
                 DefenseScore = property.DefenseScore
             };
 
+            data.HasClaimCabinet = scene.GetAllComponents<ClaimCabinetAnchor>()
+                .Any( a => a.PropertyId == property.PropertyId && a.HasCabinet );
+
             foreach ( var anchor in scene.GetAllComponents<DoorAnchor>().Where( a => a.PropertyId == property.PropertyId ) )
             {
                 if ( !anchor.HasDoor || !anchor.DoorReference.IsValid() )
@@ -305,6 +308,14 @@ public static class WorldSnapshotService
                     .FirstOrDefault( a => a.PropertyId == data.PropertyId && a.AnchorId == doorData.AnchorId );
 
                 anchor?.RestoreDoor( doorData.Health, doorData.MaxHealth, doorData.UpgradeLevel, doorData.LockId, doorData.KeyRevision, doorData.IsLocked );
+            }
+
+            if ( data.HasClaimCabinet )
+            {
+                var cabinetAnchor = scene.GetAllComponents<ClaimCabinetAnchor>()
+                    .FirstOrDefault( a => a.PropertyId == data.PropertyId );
+
+                cabinetAnchor?.RestoreCabinet();
             }
         }
     }

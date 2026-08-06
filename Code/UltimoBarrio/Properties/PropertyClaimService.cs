@@ -27,9 +27,6 @@ namespace UltimoBarrio.Properties;
 [Icon( "real_estate_agent" )]
 public sealed class PropertyClaimService : Component, IPropertyAccessPolicy
 {
-	/// <summary>Ítem consumido al reclamar un habitáculo abandonado (mismo que ApartmentClaimService).</summary>
-	public const string DoorKitItemId = "apartment_door_kit";
-
 	[Property] public float ClaimDistance { get; set; } = 150f;
 
 	private readonly object _claimGate = new();
@@ -126,14 +123,24 @@ public sealed class PropertyClaimService : Component, IPropertyAccessPolicy
 		if ( !player.IsValid() )
 			return PropertyClaimResult.Rejected( PropertyClaimFailure.PlayerNotFound, "The host could not resolve the caller's player." );
 
-		var inventory = player.GameObject.Components.GetInDescendantsOrSelf<InventoryComponent>();
-		if ( inventory is null || inventory.GetCount( DoorKitItemId ) < 1 )
-			return PropertyClaimResult.Rejected( PropertyClaimFailure.MissingDoorKit, "The player does not carry a door kit to install." );
-
 		var anchor = property.RespawnAnchor.IsValid() ? property.RespawnAnchor : property.GameObject;
 		var distanceSquared = (player.WorldPosition - anchor.WorldPosition).LengthSquared;
 		if ( distanceSquared > ClaimDistance * ClaimDistance )
 			return PropertyClaimResult.Rejected( PropertyClaimFailure.OutOfRange, "The host-resolved player is outside claim range." );
+
+		// El kit de puerta ya se consumió al instalar la puerta física (DoorAnchor.ProcessInstall) —
+		// el claim en sí no consume nada, solo exige que puerta y armario ya estén instalados.
+		var door = Game.ActiveScene.GetAllComponents<DoorAnchor>()
+			.Where( a => a.PropertyId == propertyId && a.HasDoor )
+			.Select( a => a.DoorReference )
+			.FirstOrDefault();
+		if ( door is null )
+			return PropertyClaimResult.Rejected( PropertyClaimFailure.DoorNotInstalled, "No door has been installed on this property yet." );
+
+		var cabinetAnchor = Game.ActiveScene.GetAllComponents<ClaimCabinetAnchor>()
+			.FirstOrDefault( a => a.PropertyId == propertyId && a.HasCabinet );
+		if ( cabinetAnchor is null )
+			return PropertyClaimResult.Rejected( PropertyClaimFailure.CabinetNotInstalled, "No claim cabinet has been installed on this property yet." );
 
 		lock ( _claimGate )
 		{
@@ -148,17 +155,26 @@ public sealed class PropertyClaimService : Component, IPropertyAccessPolicy
 
 			try
 			{
-				// Re-verificar el kit dentro del gate: otro hilo pudo haberlo consumido entre arriba y aquí.
-				if ( !inventory.TryRemove( DoorKitItemId, 1 ) )
-					return PropertyClaimResult.Rejected( PropertyClaimFailure.MissingDoorKit, "The player does not carry a door kit to install." );
-
 				property.ApplyOwnership( claimantIdentity.CanonicalId, PropertyClaimState.Claimed );
+
+				// Puerta y cerradura: rekey para el nuevo propietario — invalida cualquier
+				// credencial que hubiera quedado de antes del reclamo.
+				door.Rekey();
+				door.SetLocked( true );
+
+				// Habilitar build volume, stash y respawn ahora que la propiedad tiene dueño.
+				if ( property.BuildVolume.IsValid() ) property.BuildVolume.Enabled = true;
+				if ( property.Stash.IsValid() ) property.Stash.Enabled = true;
+				if ( property.RespawnAnchor.IsValid() ) property.RespawnAnchor.Enabled = true;
 
 				if ( !CommitSave() )
 				{
-					// Rollback completo: devolver el kit y revertir el estado en memoria.
-					inventory.TryAdd( DoorKitItemId, 1 );
+					// Rollback completo: revertir el estado en memoria (la puerta/armario siguen
+					// instalados — reclamarlos de nuevo no requiere gastar otro kit).
 					property.ApplyOwnership( string.Empty, PropertyClaimState.Unclaimed );
+					if ( property.BuildVolume.IsValid() ) property.BuildVolume.Enabled = false;
+					if ( property.Stash.IsValid() ) property.Stash.Enabled = false;
+					if ( property.RespawnAnchor.IsValid() ) property.RespawnAnchor.Enabled = false;
 					return PropertyClaimResult.Rejected( PropertyClaimFailure.PersistenceFailed, "Failed to persist the claim." );
 				}
 

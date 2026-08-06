@@ -13,6 +13,8 @@ public enum PropertyClaimFailure
 	PropertyUnavailable,
 	WrongPropertyType,
 	MissingDoorKit,
+	DoorNotInstalled,
+	CabinetNotInstalled,
 	InsufficientFunds,
 	ClaimInProgress,
 	PersistenceFailed

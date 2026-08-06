@@ -37,6 +37,8 @@ public sealed class PropertySaveData
 
 	public List<PropertyDoorSaveData> Doors { get; set; } = new();
 
+	public bool HasClaimCabinet { get; set; }
+
 	public int SaveVersion { get; set; } = SaveSnapshot.CurrentVersion;
 }
 

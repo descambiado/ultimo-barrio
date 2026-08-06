@@ -79,6 +79,20 @@ namespace UltimoBarrio.Crafting
                 },
                 new()
                 {
+                    RecipeId = "craft_claim_cabinet",
+                    DisplayName = "Armario de reclamo",
+                    Description = "Madera x10 + Chatarra metálica x4 + Componentes x3 → Armario de reclamo",
+                    Ingredients =
+                    {
+                        new CraftingIngredient { ItemId = "wood", Amount = 10 },
+                        new CraftingIngredient { ItemId = "scrap_metal", Amount = 4 },
+                        new CraftingIngredient { ItemId = "components", Amount = 3 }
+                    },
+                    Result = new CraftingResult { ItemId = "claim_cabinet", Amount = 1 },
+                    CraftTime = 8f
+                },
+                new()
+                {
                     RecipeId = "craft_reinforced_barricade_kit",
                     DisplayName = "Barricada reforzada",
                     Description = "Chatarra metálica x8 + Componentes x3 → Barricada reforzada",
