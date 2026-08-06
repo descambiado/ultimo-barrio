@@ -1,9 +1,149 @@
 # Progreso de ejecución autónoma — Último Barrio
 
-Última actualización: 2026-08-06, continuación autónoma de la sesión ("Continuamos.")
-tras cerrar Fase 10 (barricadas). Sección "Fase 11" reescrita abajo con el hallazgo
-real y el bloqueo actual del editor — el resto del documento (fases 1-10) sigue
-vigente sin cambios.
+Última actualización: 2026-08-06, pivote de arquitectura pedido por el usuario:
+"Antes de continuar con armas, IA o el ciclo nocturno, corrige la arquitectura de
+vivienda." Sustituye el modelo de 6 ApartmentComponent hardcodeados por un
+sistema general de propiedades (alquiler, habitáculos abandonados reclamables,
+parcelas, llaves/permisos, fortificación). Ver "SISTEMA DE PROPIEDADES (V1,
+en curso)" más abajo para el estado exacto. El resto del documento (fases 1-11
+del housing loop original) sigue vigente como historial — no se ha borrado nada
+de lo ya verificado, ver regla "A01-A06 como fixtures de migración".
+
+## SISTEMA DE PROPIEDADES (V1, en curso) — leer esto primero al reanudar
+
+Rama: `integration/wizard-holy-grail`. Commits de esta pasada, en orden:
+`cf197c8` (scene: referencias de puerta/stash/spawn ya verificadas antes del
+cuelgue del editor, solo faltaba commitear), `9239434` (fundación: PropertyComponent,
+PropertySaveData v3, WorldSnapshotService, adapter, PropertyClaimService,
+PropertyDoor/DoorAnchor/DoorDefinition/DoorLockComponent sobre Sandbox.Mapping.Door),
+`1d08e2f` (Keyring/AccessCredential + PropertyDoor interactuable).
+
+**Todo lo de abajo es solo COMPILA (`dotnet build` 0 errores/0 warnings tras
+cada paso) — cero verificación en motor.** El editor de sbox se cerró por
+completo a mitad de la Fase 11 anterior (no solo colgado: el proceso ya no
+aparece en `Get-Process` y el puerto 7269 no acepta conexiones) y no ha vuelto
+a responder en ningún momento de esta pasada pese a comprobarlo repetidamente.
+No hay forma de reabrir su GUI de forma autónoma sin que sea una acción
+invasiva sobre el escritorio del usuario, así que no se ha intentado.
+
+### Decisión de alcance para esta pasada
+
+La petición completa (11 secciones: PropertyComponent, puertas, llaves,
+alquiler, habitáculos abandonados, construcción modular, herramienta de
+autoría, primer distrito, migración, pruebas) es multi-sesión por tamaño real.
+Regla dura del proyecto: *"Confirma que el cambio cabe en una sola PR"* — así
+que en vez de intentarlo todo de una vez sin poder probar nada, se secuenció en
+pasos pequeños, cada uno compilando en verde antes de seguir al siguiente, con
+commits atómicos separados. Se completaron las secciones 2 (modelo de datos),
+3 (puertas sobre `Sandbox.Mapping.Door`, API real confirmada por compilación de
+prueba — no adivinada), 4 (llaves/credenciales) y la mitad segura de 1/10
+(adapter aditivo, sin tocar la lógica ya probada de `ApartmentClaimService`).
+
+### Por qué no se tocó `ApartmentClaimService` por dentro
+
+El plan pide *"ApartmentClaimService como adapter temporal"*. Reescribir su
+lógica interna de claim/save (ya verificada físicamente esta sesión: recogida,
+crafting, puerta, barricadas) para que delegue de verdad en
+`PropertyClaimService` es exactamente el tipo de cambio de comportamiento que,
+en esta misma sesión, ha escondido bugs reales en cada ocasión anterior
+(recogida con E, salud de barricada al nacer, guardado nunca disparado) — y
+esos bugs solo se encontraron con Play Mode real, nunca con build limpio. Sin
+capacidad de probar Stop/Play ahora mismo, arriesgar la única vivienda que ya
+funciona no es razonable. En su lugar: `ApartmentClaimService` implementa
+`IPropertyAccessPolicy` como delegador puro hacia su propia lógica intacta —
+es un adapter real, pero de solo lectura sobre lo ya probado, cero riesgo de
+regresión. La reescritura interna real queda para cuando haya editor vivo.
+
+### Hecho (build-verified, no engine-verified)
+
+- **PropertyComponent** (`Code/UltimoBarrio/Properties/PropertyComponent.cs`):
+  entidad canónica completa según el spec — ownership, tenancy, co-owners/
+  guests, rental state, claim state, anchors de autoría (puertas, ventanas,
+  build volume, claim cabinet, stash, respawn), progresión (upgrade/security/
+  defense).
+- **PropertySaveData + SaveSnapshot v3**: nueva sección `Properties` (con
+  `Doors` anidado) y `Keyrings`, compatibles con saves antiguos (deserializan
+  con listas vacías). `WorldSnapshotService.Capture/Apply` las escribe/lee
+  automáticamente — reutiliza el pipeline de guardado ya arreglado esta
+  sesión (mismo punto donde vive el fix de `AutoSaveManager`, ver más abajo).
+- **PropertyClaimService**: servicio nativo nuevo para propiedades reales
+  (no las 6 fixture). Claim atómico de `AbandonedShell` (consume
+  `apartment_door_kit`, con rollback) y alquiler de `Rental` (retira depósito+
+  renta del `Wallet`, con rollback), mismo patrón de `_claimGate`/rollback que
+  `ApartmentClaimService.TryClaim` ya tiene probado. Fuerza guardado síncrono
+  vía `ApartmentClaimService.TrySaveNow()` en el momento del éxito, no solo un
+  `RequestSave` async.
+- **PropertyDoor/DoorAnchor/DoorDefinition/DoorLockComponent**
+  (`Code/UltimoBarrio/Properties/Doors/`): comportamiento físico sobre
+  `Sandbox.Mapping.Door` — **confirmado real por compilación de prueba contra
+  el DLL del motor** (no por strings/reflexión, que resultó poco fiable en
+  este entorno): `IsLocked` (get/set), `Open()/Close()/Toggle()`, `State`
+  (`DoorState.Open/Closed/Opening/Closing`), `LinkedDoor`, sonidos. Salud/
+  mejora/daño/reparación/breach son capa propia (mismo modelo que
+  `ApartmentFortification`). `PropertyDoor` ahora es `IWorldInteractable`: con
+  cerradura, exige owner/tenant/co-owner/guest directo o una
+  `AccessCredential` vigente antes de desbloquear y abrir; sin cerradura, abre
+  y cierra libre para cualquiera.
+- **Keyring/AccessCredential** (`Code/UltimoBarrio/Properties/Keys/`):
+  `AccessCredential` (PropertyId/LockId/KeyRevision/AccessLevel/Issuer/
+  Expiry/Stealable), `KeyringItem` (componente host, ítem "keyring" ya en
+  `ItemCatalog`), `KeyringService` (RPCs host: entregar/revocar/duplicar/
+  cambiar cerradura — entregar/revocar/rekey exigen ser
+  `PropertyComponent.OwnerPersistentId` real, nunca basta con la credencial
+  misma; duplicar exige tener ya una credencial válida, no ser el owner).
+
+### Gaps conocidos y explícitamente documentados (no ocultos)
+
+1. **`AutoSaveManager` no está guardado en el `.scene` en disco.** Se añadió
+   vía MCP `add_component` a "Apartment Claims" (`5d6c2a82-51f7-4ff1-af79-5d9cbd48d512`)
+   justo antes de que el editor se cerrara del todo — el `save_scene` que lo
+   habría persistido nunca llegó a ejecutarse. **Casi seguro que se perdió**
+   (el editor no solo colgó, el proceso murió). Repetir el `add_component` en
+   cuanto el editor responda, ANTES de re-probar persistencia — sin esto, todo
+   lo de esta pasada (Properties, Doors, Keyrings) tampoco se autoguardará por
+   la misma razón raíz que rompía la Fase 11 original.
+2. **`KeyringItem` no está en `player.prefab`.** Mismo patrón de bug ya
+   encontrado 4 veces esta sesión (componente escrito y enganchado a call
+   sites reales pero nunca colocado). Se crea on-demand vía `GetOrCreate` en
+   el primer `RequestGrantAccess`, así que otorgar acceso SÍ funciona en una
+   sesión en curso — pero `ApplyKeyrings` no puede restaurar un llavero
+   guardado en un jugador que aún no lo tiene al cargar la escena. Añadirlo
+   junto a `Wallet` en `player.prefab`.
+3. **Nada de esto se ha visto en pantalla.** Ni una puerta física, ni un
+   claim de `AbandonedShell`, ni un alquiler, ni una credencial otorgada. Es
+   arquitectura real y compilable, no arquitectura probada.
+
+### Siguiente acción exacta al reanudar (en orden)
+
+1. `editor_status` — si responde, seguir; si no, otra ronda de espera/backoff
+   antes de asumir que necesita un reinicio manual.
+2. Repetir `add_component id=5d6c2a82-51f7-4ff1-af79-5d9cbd48d512 type=AutoSaveManager`
+   (gap #1) y `save_scene`.
+3. Añadir `KeyringItem` a `player.prefab` junto a `Wallet` (gap #2), guardar.
+4. Colocar en la escena, vía MCP, al menos: 1 `PropertyComponent` tipo
+   `AbandonedShell` con su `DoorAnchor` (para probar Tarea #25/claim real por
+   primera vez) y 1 `PropertyComponent` tipo `Rental` con una `PropertyDoor`
+   ya instalada (para probar Tarea #22/23: abrir con credencial, denegar sin
+   ella, rekey invalida). Esto es autoría mínima de prueba, no el primer
+   distrito completo (Tarea #28, con sus 11 propiedades, sigue pendiente y es
+   más grande).
+5. Recorrido físico real: fabricar `apartment_door_kit` → instalar en el
+   `DoorAnchor` del AbandonedShell → colocar `ClaimCabinet` (Tarea #25,
+   pendiente de implementar) → reclamar → `KeyringService.RequestGrantAccess`
+   a un segundo jugador de prueba → confirmar que abre con credencial y no sin
+   ella → `RequestRekeyDoor` → confirmar que la credencial vieja ya no sirve →
+   Stop/Play → confirmar que todo (incluida la propiedad, la puerta y el
+   llavero) sobrevive.
+6. Solo tras cerrar 1-5: continuar con Tarea #24 (flujo de alquiler completo:
+   `RentSign` interactable, renovación, impago, desahucio — el primitivo
+   `TryRentProperty` ya existe pero el flujo de UI/cartel no), Tarea #26
+   (BuildVolume + colección de 12 piezas), Tarea #27 (Property Authoring
+   Tool), Tarea #28 (mapear el primer distrito real: 4 Rental + 4
+   AbandonedShell + 1 Garage + 1 Shop + 1 BuildPlot + 1 GroupBase).
+7. Solo entonces retomar armas/IA nocturna/economía-misiones/vehículo (las
+   fases originales 12-15), como pidió el usuario explícitamente al abrir
+   este bloque: *"Antes de continuar con armas, IA o el ciclo nocturno,
+   corrige la arquitectura de vivienda."*
 
 ## Bloqueador actual (segunda vez en esta sesión) — por qué se detiene esta pasada
 
