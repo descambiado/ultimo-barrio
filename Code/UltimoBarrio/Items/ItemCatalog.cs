@@ -142,8 +142,12 @@ namespace UltimoBarrio
         }
 
         /// <summary>
-        /// Valida el catálogo canónico: ids vacíos, ids duplicados, armas sin
-        /// presentación (worldmodel/viewmodel) y consumibles sin efecto.
+        /// Valida el catálogo canónico: ids vacíos, ids duplicados y armas sin
+        /// presentación (worldmodel/viewmodel). No exige que todo consumible
+        /// cure — HeldItemController.UseConsumableOnHost ya soporta
+        /// consumibles sin curación (agua: "consumir y dar feedback", sin
+        /// tocar Health), así que ConsumeHeal=0 es un valor válido, no un dato
+        /// incompleto.
         /// Devuelve una lista vacía si todo es válido.
         /// </summary>
         public static List<string> Validate()
@@ -177,8 +181,6 @@ namespace UltimoBarrio
                         errors.Add( $"Arma de fuego '{definition.ItemId}' sin AmmoType." );
                 }
 
-                if ( definition.Usable && definition.Category == ItemCategory.Consumable && definition.ConsumeHeal <= 0 )
-                    errors.Add( $"Consumible '{definition.ItemId}' sin efecto de curación (ConsumeHeal <= 0)." );
             }
 
             return errors;
