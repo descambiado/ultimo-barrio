@@ -34,7 +34,32 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 	private bool _initializationAttempted;
 	private bool _isReady;
 
+	/// <summary>
+	/// Última instantánea cargada, retenida (no solo aplicada una vez) para poder
+	/// reaplicarla cuando un jugador concreto todavía no tenía su InventoryId listo
+	/// en el momento del Apply original (Apply corre una sola vez al arrancar el
+	/// servicio, en un GameObject distinto del jugador — no hay garantía de orden
+	/// entre ambos OnStart). Ver TryReapplyPlayerState.
+	/// </summary>
+	private SaveSnapshot _loadedSnapshot;
+
 	public bool IsReady => _isReady;
+
+	/// <summary>
+	/// Reaplica la instantánea cargada (economía, llavero, hotbar) para todos los
+	/// jugadores actuales. Idempotente — WorldSnapshotService.Apply solo toca lo que
+	/// encuentra por InventoryId, así que llamarlo de nuevo tras spawnear/inicializar
+	/// un jugador nuevo no altera a los que ya se aplicaron correctamente. Condición
+	/// explícita, no delay: se llama desde PlayerInteractor.OnStart() justo después
+	/// de fijar su InventoryId, nunca antes.
+	/// </summary>
+	public void TryReapplyPlayerState()
+	{
+		if ( _loadedSnapshot is null )
+			return;
+
+		WorldSnapshotService.Apply( _loadedSnapshot, Scene );
+	}
 
 	/// <summary>
 	/// Guardado general (host): snapshot completo con apartamentos, inventarios,
@@ -254,6 +279,7 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 
 		if ( loadResult.Snapshot is not null )
 		{
+			_loadedSnapshot = loadResult.Snapshot;
 			_registry.ApplySnapshot( loadResult.Snapshot );
 			WorldSnapshotService.Apply( loadResult.Snapshot, Scene );
 		}

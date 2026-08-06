@@ -837,5 +837,53 @@ namespace UltimoBarrio.QA
             foreach (var c in keyring?.Credentials ?? Enumerable.Empty<AccessCredential>())
                 Log.Info($"  Credencial: Property={c.PropertyId} Level={c.AccessLevel} LockId={c.LockId} KeyRevision={c.KeyRevision}");
         }
+
+        /// <summary>
+        /// Sitúa al jugador junto al pickup real (por ItemId) y lo orienta para mirarlo,
+        /// luego dispara PlayerInteractor.DebugForceUseAttempt() -- el mismo trace +
+        /// resolución de IWorldInteractable + CanInteract + OnInteract que ejecuta un E
+        /// real, sustituyendo únicamente el evento de teclado (imposible de simular
+        /// desde MCP). No llama a AddItem/OnInteract directamente.
+        /// </summary>
+        [ConCmd("ub_qa_physical_pickup_test")]
+        public static void PhysicalPickupTest(string itemId)
+        {
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            if (player is null) { Log.Error("--- ub_qa_physical_pickup_test --- No player found."); return; }
+
+            var pickup = Game.ActiveScene.GetAllComponents<WorldItemPickup>().FirstOrDefault(p => p.ItemId == itemId);
+            if (pickup is null) { Log.Error($"--- ub_qa_physical_pickup_test --- No WorldItemPickup with ItemId={itemId} found."); return; }
+
+            var interactor = player.Components.Get<PlayerInteractor>();
+            if (interactor is null) { Log.Error("--- ub_qa_physical_pickup_test --- Player has no PlayerInteractor."); return; }
+
+            var inv = player.Components.Get<InventoryComponent>();
+            var before = inv?.GetCount(itemId) ?? -1;
+
+            // Colocar al jugador a 80u del pickup y mirarlo -- equivale a "acercarse y mirar madera".
+            // ProcessInteraction usa PlayerController.EyeAngles.Forward (no WorldRotation) cuando
+            // hay un PlayerController -- si solo se fija WorldRotation, el trace sigue apuntando
+            // hacia donde miraba antes (bug real de esta prueba detectado al primer intento: el
+            // trace falló con hit=False porque EyeAngles no se había tocado).
+            var toPickup = (pickup.WorldPosition - player.WorldPosition).Normal;
+            player.WorldPosition = pickup.WorldPosition - toPickup * 80f;
+            // El trace parte de WorldPosition + Up*64 (altura de ojos), no de la base del jugador --
+            // mirar desde la base subestimaba el pitch y el trace pasaba por encima del pickup.
+            var eyePos = player.WorldPosition + Vector3.Up * 64f;
+            var lookDir = (pickup.WorldPosition - eyePos).Normal;
+            var controller = player.Components.Get<Sandbox.PlayerController>();
+            if (controller != null)
+                controller.EyeAngles = Rotation.LookAt(lookDir).Angles();
+            else
+                player.WorldRotation = Rotation.LookAt(lookDir);
+
+            Log.Info($"--- ub_qa_physical_pickup_test --- item={itemId} playerPos={player.WorldPosition} pickupPos={pickup.WorldPosition} Before={itemId}:{before}");
+
+            interactor.DebugForceUseAttempt();
+
+            var after = inv?.GetCount(itemId) ?? -1;
+            var pickupStillExists = Game.ActiveScene.GetAllComponents<WorldItemPickup>().Any(p => p == pickup);
+            Log.Info($"--- ub_qa_physical_pickup_test --- After={itemId}:{after} PickupDestroyed={!pickupStillExists}");
+        }
     }
 }

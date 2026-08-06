@@ -14,6 +14,9 @@ namespace UltimoBarrio
         /// <summary>Cargador del arma soltada (persistencia del drop → repickup).</summary>
         [Property] public int AmmoInMag { get; set; }
 
+        /// <summary>Id de intento asignado por PlayerInteractor para instrumentación temporal (UB.Pickup). No persiste, no afecta la lógica.</summary>
+        public int DebugAttemptId { get; set; }
+
         public string GetInteractionPrompt( InteractionRequest request )
         {
             var definition = ItemRegistry.GetDefinition( ItemId );
@@ -50,12 +53,21 @@ namespace UltimoBarrio
 
         private void ProcessPickup( GameObject interactorGo )
         {
-            if ( interactorGo == null ) return;
+            var attemptId = DebugAttemptId;
+            if ( attemptId != 0 )
+                Log.Info( $"UB.Pickup Attempt={attemptId} HostReceived=True item={ItemId} interactor={interactorGo?.Name}" );
+
+            if ( interactorGo == null )
+            {
+                if ( attemptId != 0 ) Log.Info( $"UB.Pickup Attempt={attemptId} AddItem=Rejected reason=NoInteractorGameObject" );
+                return;
+            }
 
             // Validación de distancia en servidor (anti-cheat).
             if ( Vector3.DistanceBetween( interactorGo.WorldPosition, GameObject.WorldPosition ) > MaxInteractionDistance )
             {
                 Log.Warning( $"[WorldItemPickup] Player {interactorGo.Name} intentó recoger desde demasiado lejos." );
+                if ( attemptId != 0 ) Log.Info( $"UB.Pickup Attempt={attemptId} AddItem=Rejected reason=OutOfRange" );
                 return;
             }
 
@@ -63,8 +75,12 @@ namespace UltimoBarrio
             if ( inventory == null )
             {
                 Log.Warning( $"[WorldItemPickup] Interactor sin InventoryComponent: {interactorGo.Name}" );
+                if ( attemptId != 0 ) Log.Info( $"UB.Pickup Attempt={attemptId} AddItem=Rejected reason=NoInventoryComponent" );
                 return;
             }
+
+            if ( attemptId != 0 )
+                Log.Info( $"UB.Pickup Attempt={attemptId} InventoryFound={inventory.InventoryId} Before={ItemId}:{inventory.GetCount( ItemId )}" );
 
             // Nodo de recurso: la recolección lo agota y respawnea; el pickup
             // NO se destruye (vive en el mismo GameObject que el nodo).
@@ -72,12 +88,20 @@ namespace UltimoBarrio
             if ( node is not null )
             {
                 if ( !node.IsAvailable )
+                {
+                    if ( attemptId != 0 ) Log.Info( $"UB.Pickup Attempt={attemptId} AddItem=Rejected reason=NodeNotAvailable" );
                     return;
+                }
 
                 if ( !node.TryHarvest( interactorGo, out _ ) )
+                {
+                    if ( attemptId != 0 ) Log.Info( $"UB.Pickup Attempt={attemptId} AddItem=Rejected reason=TryHarvestFailed" );
                     return;
+                }
 
                 DeliverTo( inventory, node.ResolvedHarvestItemId, Amount, 0 );
+                if ( attemptId != 0 )
+                    Log.Info( $"UB.Pickup Attempt={attemptId} After={node.ResolvedHarvestItemId}:{inventory.GetCount( node.ResolvedHarvestItemId )} Consumed=False (nodo respawnea)" );
                 return;
             }
 
@@ -85,6 +109,9 @@ namespace UltimoBarrio
             int magToRestore = definition is not null && definition.IsWeapon ? AmmoInMag : 0;
 
             var slot = inventory.AddItem( ItemId, Amount, magToRestore );
+            if ( attemptId != 0 )
+                Log.Info( $"UB.Pickup Attempt={attemptId} AddItem={(slot is not null ? "Succeeded" : "Failed")}" );
+
             if ( slot is not null )
             {
                 // Si el arma no traía cargador, dejamos el del ítem tal cual.
@@ -93,6 +120,10 @@ namespace UltimoBarrio
 
                 var name = definition?.DisplayName ?? ItemId;
                 NotifyPickup( $"Recogido: {name} x{Amount}" );
+
+                if ( attemptId != 0 )
+                    Log.Info( $"UB.Pickup Attempt={attemptId} After={ItemId}:{inventory.GetCount( ItemId )} Consumed=True" );
+
                 GameObject.Destroy();
             }
         }
