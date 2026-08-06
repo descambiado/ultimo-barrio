@@ -1,8 +1,11 @@
 // SPDX-License-Identifier: MPL-2.0
 
 using System;
+using System.Linq;
 using Sandbox;
 using UltimoBarrio.Core;
+using UltimoBarrio.Players;
+using UltimoBarrio.Properties.Keys;
 
 namespace UltimoBarrio.Properties.Doors;
 
@@ -15,7 +18,7 @@ namespace UltimoBarrio.Properties.Doors;
 [Title( "Property Door" )]
 [Category( "Último Barrio — Properties" )]
 [Icon( "door_front" )]
-public sealed class PropertyDoor : Component, IDamageable
+public sealed class PropertyDoor : Component, IDamageable, IWorldInteractable, IInteractable
 {
 	[Property] public string PropertyId { get; set; } = string.Empty;
 
@@ -58,6 +61,86 @@ public sealed class PropertyDoor : Component, IDamageable
 	internal void SetLocked( bool locked ) => _lock?.SetLocked( locked );
 
 	internal void Rekey() => _lock?.Rekey();
+
+	// ── IWorldInteractable ─────────────────────────────────────────────────
+	// E: si está bloqueada, exige acceso (owner/co-owner/tenant/guest directo
+	// en PropertyComponent, o una AccessCredential vigente en el llavero del
+	// interactor) y desbloquea antes de abrir; si ya está desbloqueada, abre o
+	// cierra libremente — igual que una puerta real una vez tiene la llave echada.
+
+	public string GetInteractionPrompt( InteractionRequest request )
+	{
+		if ( !IsLocked )
+			return "Abrir/cerrar puerta";
+
+		return HasAccess( request.InteractorObject, AccessLevel.Guest )
+			? "Desbloquear y abrir"
+			: "Puerta bloqueada";
+	}
+
+	public bool CanInteract( InteractionRequest request ) => request.InteractorObject is not null;
+
+	public void OnInteract( InteractionRequest request )
+	{
+		if ( IsProxy )
+		{
+			RequestInteractOnHost( request.InteractorObject?.Id ?? Guid.Empty );
+			return;
+		}
+
+		ProcessInteract( request.InteractorObject );
+	}
+
+	[Rpc.Host]
+	private void RequestInteractOnHost( Guid interactorObjectId )
+	{
+		var interactor = Scene.Directory.FindByGuid( interactorObjectId );
+		ProcessInteract( interactor );
+	}
+
+	private void ProcessInteract( GameObject interactor )
+	{
+		if ( interactor is null || !Networking.IsHost )
+			return;
+
+		if ( !IsLocked )
+		{
+			Toggle();
+			return;
+		}
+
+		if ( !HasAccess( interactor, AccessLevel.Guest ) )
+		{
+			UI.PlayerFeedback.Push( "No tienes acceso a esta propiedad" );
+			return;
+		}
+
+		SetLocked( false );
+		Open();
+	}
+
+	private bool HasAccess( GameObject interactor, AccessLevel minLevel )
+	{
+		if ( interactor is null )
+			return false;
+
+		var property = Scene.GetAllComponents<PropertyComponent>().FirstOrDefault( p => p.PropertyId == PropertyId );
+		if ( property is null )
+			return false;
+
+		var identity = PlayerIdentity.FromGameObject( interactor );
+		if ( identity.IsValid )
+		{
+			if ( property.OwnerPersistentId == identity.CanonicalId || property.TenantPersistentId == identity.CanonicalId )
+				return true;
+
+			if ( property.CoOwners.Contains( identity.CanonicalId ) || property.Guests.Contains( identity.CanonicalId ) )
+				return true;
+		}
+
+		var keyring = interactor.Components.GetInDescendantsOrSelf<KeyringItem>();
+		return keyring is not null && keyring.HasAccess( PropertyId, LockId, KeyRevision, minLevel );
+	}
 
 	public void TakeDamage( DamageEvent damageEvent )
 	{

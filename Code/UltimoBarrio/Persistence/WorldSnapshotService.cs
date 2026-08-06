@@ -9,6 +9,7 @@ using UltimoBarrio.Fortification;
 using UltimoBarrio.Missions;
 using UltimoBarrio.Properties;
 using UltimoBarrio.Properties.Doors;
+using UltimoBarrio.Properties.Keys;
 using UltimoBarrio.WorldTime;
 
 namespace UltimoBarrio.Persistence;
@@ -34,6 +35,40 @@ public static class WorldSnapshotService
         CaptureMissions( snapshot, scene );
         CapturePlayerStates( snapshot, scene );
         CaptureProperties( snapshot, scene );
+        CaptureKeyrings( snapshot, scene );
+    }
+
+    private static void CaptureKeyrings( SaveSnapshot snapshot, Scene scene )
+    {
+        snapshot.Keyrings ??= [];
+
+        foreach ( var keyring in scene.GetAllComponents<KeyringItem>() )
+        {
+            var playerKey = ResolvePlayerKey( keyring.GameObject );
+            if ( string.IsNullOrEmpty( playerKey ) || keyring.Credentials.Count == 0 )
+                continue;
+
+            var data = new KeyringSaveData { PlayerKey = playerKey };
+            foreach ( var credential in keyring.Credentials )
+            {
+                data.Credentials.Add( new AccessCredentialSaveData
+                {
+                    PropertyId = credential.PropertyId,
+                    LockId = credential.LockId,
+                    KeyRevision = credential.KeyRevision,
+                    AccessLevel = credential.AccessLevel,
+                    IssuerPersistentId = credential.IssuerPersistentId,
+                    ExpiresAt = credential.ExpiresAt,
+                    Stealable = credential.Stealable
+                } );
+            }
+
+            var existing = snapshot.Keyrings.FirstOrDefault( k => k.PlayerKey == playerKey );
+            if ( existing is not null )
+                snapshot.Keyrings.Remove( existing );
+
+            snapshot.Keyrings.Add( data );
+        }
     }
 
     private static void CaptureProperties( SaveSnapshot snapshot, Scene scene )
@@ -205,6 +240,37 @@ public static class WorldSnapshotService
         ApplyMissions( snapshot, scene );
         ApplyPlayerStates( snapshot, scene );
         ApplyProperties( snapshot, scene );
+        ApplyKeyrings( snapshot, scene );
+    }
+
+    private static void ApplyKeyrings( SaveSnapshot snapshot, Scene scene )
+    {
+        if ( snapshot.Keyrings is null )
+            return;
+
+        foreach ( var data in snapshot.Keyrings )
+        {
+            var keyring = scene.GetAllComponents<KeyringItem>()
+                .FirstOrDefault( k => ResolvePlayerKey( k.GameObject ) == data.PlayerKey );
+
+            if ( keyring is null )
+                continue;
+
+            keyring.Credentials.Clear();
+            foreach ( var credentialData in data.Credentials ?? [] )
+            {
+                keyring.Credentials.Add( new AccessCredential
+                {
+                    PropertyId = credentialData.PropertyId,
+                    LockId = credentialData.LockId,
+                    KeyRevision = credentialData.KeyRevision,
+                    AccessLevel = credentialData.AccessLevel,
+                    IssuerPersistentId = credentialData.IssuerPersistentId,
+                    ExpiresAt = credentialData.ExpiresAt,
+                    Stealable = credentialData.Stealable
+                } );
+            }
+        }
     }
 
     private static void ApplyProperties( SaveSnapshot snapshot, Scene scene )

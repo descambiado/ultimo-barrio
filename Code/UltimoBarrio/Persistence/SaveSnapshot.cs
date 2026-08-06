@@ -39,4 +39,7 @@ public sealed class SaveSnapshot
 	/// con lista vacía por defecto, sin romperse.
 	/// </summary>
 	public List<PropertySaveData> Properties { get; set; } = [];
+
+	/// <summary>Llaveros de jugador (v3): credenciales de acceso a propiedades.</summary>
+	public List<KeyringSaveData> Keyrings { get; set; } = [];
 }
