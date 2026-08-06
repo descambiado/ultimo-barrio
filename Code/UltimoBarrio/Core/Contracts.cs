@@ -71,6 +71,18 @@ public interface IApartmentAccessPolicy
     bool CanAccessStash(string apartmentId, string playerId);
 }
 
+/// <summary>
+/// Política de acceso del sistema general de propiedades. ApartmentClaimService
+/// la implementa como adapter temporal (delega en su propia lógica ya probada
+/// para los 6 apartamentos fixture); PropertyClaimService la implementa de
+/// forma nativa para propiedades nuevas.
+/// </summary>
+public interface IPropertyAccessPolicy
+{
+    bool CanEnterProperty(string propertyId, string playerId);
+    bool CanAccessPropertyStash(string propertyId, string playerId);
+}
+
 // Removed IPersistenceProvider as it lives in UltimoBarrio.Persistence
 
 public interface IWallet

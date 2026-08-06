@@ -6,7 +6,7 @@ namespace UltimoBarrio.Persistence;
 
 public sealed class SaveSnapshot
 {
-	public const int CurrentVersion = 2;
+	public const int CurrentVersion = 3;
 
 	public int SaveVersion { get; set; } = CurrentVersion;
 
@@ -31,4 +31,12 @@ public sealed class SaveSnapshot
 
 	/// <summary>Selección de hotbar por jugador (v2).</summary>
 	public List<PlayerStateSaveData> PlayerStates { get; set; } = [];
+
+	/// <summary>
+	/// Propiedades bajo el sistema general (v3): alquileres, habitáculos
+	/// reclamables, parcelas y bases de grupo. Convive con Apartments durante
+	/// la migración incremental — un save antiguo sin esta sección deserializa
+	/// con lista vacía por defecto, sin romperse.
+	/// </summary>
+	public List<PropertySaveData> Properties { get; set; } = [];
 }

@@ -10,7 +10,7 @@ namespace UltimoBarrio.Apartments;
 [Title( "Apartment Claim Service" )]
 [Category( "Ultimo Barrio" )]
 [Icon( "real_estate_agent" )]
-public sealed class ApartmentClaimService : Component, Component.INetworkListener, IApartmentAccessPolicy
+public sealed class ApartmentClaimService : Component, Component.INetworkListener, IApartmentAccessPolicy, IPropertyAccessPolicy
 {
 	[Property] public string SaveSlotId { get; set; } = "prototype";
 
@@ -326,8 +326,17 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 	{
 		if ( _registry == null || !_registry.TryGet( apartmentId, out var apartment ) ) return true;
 		if ( apartment.ClaimState != ApartmentClaimState.Claimed ) return true;
-		
+
 		// playerId is the domain PlayerId (e.g. SteamId or QA ID)
 		return apartment.OwnerId == playerId;
 	}
+
+	// ── IPropertyAccessPolicy (adapter temporal) ──────────────────────────
+	// Los 6 apartamentos fixture (A01-A06) siguen viviendo en ApartmentComponent
+	// mientras dura la migración; esto solo expone esa misma lógica ya probada
+	// bajo la forma que espera el sistema general de propiedades, sin tocarla.
+
+	public bool CanEnterProperty( string propertyId, string playerId ) => CanEnter( propertyId, playerId );
+
+	public bool CanAccessPropertyStash( string propertyId, string playerId ) => CanAccessStash( propertyId, playerId );
 }

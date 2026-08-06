@@ -7,6 +7,8 @@ using UltimoBarrio.Combat;
 using UltimoBarrio.Economy;
 using UltimoBarrio.Fortification;
 using UltimoBarrio.Missions;
+using UltimoBarrio.Properties;
+using UltimoBarrio.Properties.Doors;
 using UltimoBarrio.WorldTime;
 
 namespace UltimoBarrio.Persistence;
@@ -31,6 +33,58 @@ public static class WorldSnapshotService
         CaptureFortifications( snapshot, scene );
         CaptureMissions( snapshot, scene );
         CapturePlayerStates( snapshot, scene );
+        CaptureProperties( snapshot, scene );
+    }
+
+    private static void CaptureProperties( SaveSnapshot snapshot, Scene scene )
+    {
+        snapshot.Properties ??= [];
+
+        foreach ( var property in scene.GetAllComponents<PropertyComponent>() )
+        {
+            if ( string.IsNullOrEmpty( property.PropertyId ) )
+                continue;
+
+            var data = new PropertySaveData
+            {
+                PropertyId = property.PropertyId,
+                PropertyType = property.PropertyType,
+                OwnerPersistentId = property.OwnerPersistentId,
+                TenantPersistentId = property.TenantPersistentId,
+                CoOwners = property.CoOwners.ToList(),
+                Guests = property.Guests.ToList(),
+                RentalState = property.RentalState,
+                NextRentAt = property.NextRentAt,
+                ClaimState = property.ClaimState,
+                UpgradeLevel = property.UpgradeLevel,
+                SecurityLevel = property.SecurityLevel,
+                DefenseScore = property.DefenseScore
+            };
+
+            foreach ( var anchor in scene.GetAllComponents<DoorAnchor>().Where( a => a.PropertyId == property.PropertyId ) )
+            {
+                if ( !anchor.HasDoor || !anchor.DoorReference.IsValid() )
+                    continue;
+
+                var door = anchor.DoorReference;
+                data.Doors.Add( new PropertyDoorSaveData
+                {
+                    AnchorId = anchor.AnchorId,
+                    Health = door.Health,
+                    MaxHealth = door.MaxHealth,
+                    UpgradeLevel = door.UpgradeLevel,
+                    LockId = door.LockId,
+                    KeyRevision = door.KeyRevision,
+                    IsLocked = door.IsLocked
+                } );
+            }
+
+            var existing = snapshot.Properties.FirstOrDefault( p => p.PropertyId == property.PropertyId );
+            if ( existing is not null )
+                snapshot.Properties.Remove( existing );
+
+            snapshot.Properties.Add( data );
+        }
     }
 
     private static void CaptureEconomy( SaveSnapshot snapshot, Scene scene )
@@ -150,6 +204,43 @@ public static class WorldSnapshotService
         ApplyFortifications( snapshot, scene );
         ApplyMissions( snapshot, scene );
         ApplyPlayerStates( snapshot, scene );
+        ApplyProperties( snapshot, scene );
+    }
+
+    private static void ApplyProperties( SaveSnapshot snapshot, Scene scene )
+    {
+        if ( snapshot.Properties is null )
+            return;
+
+        var sceneProperties = scene.GetAllComponents<PropertyComponent>()
+            .Where( p => !string.IsNullOrEmpty( p.PropertyId ) )
+            .ToDictionary( p => p.PropertyId );
+
+        foreach ( var data in snapshot.Properties )
+        {
+            if ( !sceneProperties.TryGetValue( data.PropertyId, out var property ) )
+                continue;
+
+            property.ApplyOwnership( data.OwnerPersistentId, data.ClaimState );
+            property.ApplyTenancy( data.TenantPersistentId, data.RentalState, data.NextRentAt );
+            property.ApplyProgression( data.UpgradeLevel, data.SecurityLevel, data.DefenseScore );
+
+            property.CoOwners.Clear();
+            foreach ( var coOwner in data.CoOwners ?? [] )
+                property.CoOwners.Add( coOwner );
+
+            property.Guests.Clear();
+            foreach ( var guest in data.Guests ?? [] )
+                property.Guests.Add( guest );
+
+            foreach ( var doorData in data.Doors ?? [] )
+            {
+                var anchor = scene.GetAllComponents<DoorAnchor>()
+                    .FirstOrDefault( a => a.PropertyId == data.PropertyId && a.AnchorId == doorData.AnchorId );
+
+                anchor?.RestoreDoor( doorData.Health, doorData.MaxHealth, doorData.UpgradeLevel, doorData.LockId, doorData.KeyRevision, doorData.IsLocked );
+            }
+        }
     }
 
     private static void ApplyEconomy( SaveSnapshot snapshot, Scene scene )
