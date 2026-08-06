@@ -113,6 +113,38 @@ regresión. La reescritura interna real queda para cuando haya editor vivo.
    claim de `AbandonedShell`, ni un alquiler, ni una credencial otorgada. Es
    arquitectura real y compilable, no arquitectura probada.
 
+### Tercera pasada (mismo bloqueo, más trabajo solo-código completado)
+
+Editor confirmado seguir sin proceso ni puerto abierto en esta comprobación
+también. En vez de seguir sondeando, se avanzó con lo que sí es seguro sin
+motor: **Tarea #24 (alquiler) y Tarea #25 (ClaimCabinet) completas**, commits
+`14089d2` y `50fc5bd`. Resumen:
+
+- `RentSign` (interactuable físico, dispara `RequestRentProperty`) +
+  `RentalService` (tick cada 5s: `Rented`→`GracePeriod`→desahucio si no se
+  paga; `RequestRenewRental`/`RequestAbandonRental` con reembolso parcial de
+  depósito). `TryRentProperty` ahora también emite una credencial Resident
+  (aunque el acceso directo por `TenantPersistentId` ya funciona sin ella —
+  la credencial es fidelidad al spec, no la única vía).
+- `ClaimCabinetAnchor`/`ClaimCabinetComponent` + ítem `claim_cabinet` y su
+  receta. **Corregido un error de modelado real**: `TryClaimAbandonedShell`
+  consumía `apartment_door_kit` él mismo, duplicando lo que `DoorAnchor.
+  ProcessInstall` ya hace como paso separado anterior — ahora el claim no
+  consume nada, exige que puerta Y armario ya estén instalados
+  (`DoorNotInstalled`/`CabinetNotInstalled` si no), y al reclamar hace rekey
+  de la puerta (invalida credenciales previas al reclamo) y habilita
+  BuildVolume/Stash/RespawnAnchor.
+
+**Parada deliberada aquí, no por agotar ideas.** La Tarea #26 (BuildVolume +
+12 piezas: preview, snapping, validación de colisión) es fundamentalmente
+distinta a todo lo anterior — placement/preview/snapping es lógica espacial
+que depende de feedback visual real para no estar simplemente equivocada; el
+resto del sistema (máquinas de estado de claim/alquiler/credenciales) se pudo
+razonar con precisión sin motor porque es lógica de datos, no geometría. Sin
+poder ver un solo frame, seguir apilando código espacial no verificable tiene
+más riesgo de arquitectura torcida que valor real. Mismos gaps pendientes que
+antes (`AutoSaveManager` y `KeyringItem` en player.prefab).
+
 ### Segunda comprobación (30 min después, vía wakeup programado)
 
 `sbox-dev` sigue sin proceso (`Get-Process` vacío) y el puerto 7269 sigue sin
