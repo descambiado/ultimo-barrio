@@ -144,6 +144,43 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 		Log.Warning( $"UB.Apartment ClaimRejected apartment={knownApartmentId} reason={result.Failure}" );
 	}
 
+	/// <summary>
+	/// Renuncia a la vivienda propia: libera el apartamento (vuelve a Unclaimed,
+	/// sin OwnerId) para que el jugador (u otro) pueda reclamar de nuevo. No
+	/// devuelve el kit de puerta ya consumido -- es una decisión de diseño, no un
+	/// bug: renunciar no es lo mismo que cancelar la instalación.
+	/// </summary>
+	[Rpc.Host]
+	public void RequestAbandonApartment()
+	{
+		if ( !Networking.IsHost || !TryInitialize() )
+			return;
+
+		if ( !_identityProvider.TryResolve( Rpc.Caller, out var ownerIdentity ) )
+			return;
+
+		var apartment = _registry.FindByOwner( ownerIdentity.CanonicalId );
+		if ( !apartment.IsValid() )
+		{
+			Log.Warning( $"UB.Apartment AbandonRejected reason=NoOwnedApartment" );
+			return;
+		}
+
+		lock ( _claimGate )
+		{
+			if ( _apartmentsInProgress.Contains( apartment.ApartmentId ) || _ownersInProgress.Contains( ownerIdentity.CanonicalId ) )
+			{
+				Log.Warning( $"UB.Apartment AbandonRejected apartment={apartment.ApartmentId} reason=ClaimInProgress" );
+				return;
+			}
+
+			apartment.ApplyState( string.Empty, ApartmentClaimState.Unclaimed );
+			TrySaveNow();
+		}
+
+		Log.Info( $"UB.Apartment AbandonSucceeded apartment={apartment.ApartmentId}" );
+	}
+
 	internal ApartmentClaimResult TryClaim( Connection caller, string apartmentId )
 	{
 		if ( !Networking.IsHost || !TryInitialize() )

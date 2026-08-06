@@ -826,6 +826,21 @@ namespace UltimoBarrio.QA
             Log.Info($"--- ub_qa_force_save --- Succeeded={result.Succeeded} Error={result.Error}");
         }
 
+        /// <summary>
+        /// Llama a RequestAbandonApartment() -- la RPC de producción real, sin
+        /// UI todavía (no aporta atajo: es exactamente el método que un botón de
+        /// "renunciar" llamaría). Existe para poder liberar una vivienda de
+        /// prueba y volver a ejercitar el flujo de reclamo completo en la misma
+        /// sesión de Play, sin tocar OwnerId/ClaimState directamente.
+        /// </summary>
+        [ConCmd("ub_qa_request_abandon")]
+        public static void RequestAbandon()
+        {
+            var claimService = Game.ActiveScene.GetAllComponents<ApartmentClaimService>().FirstOrDefault();
+            if (claimService is null) { Log.Error("--- ub_qa_request_abandon --- No ApartmentClaimService found."); return; }
+            claimService.RequestAbandonApartment();
+        }
+
         [ConCmd("ub_qa_snapshot_properties")]
         public static void SnapshotProperties()
         {
@@ -987,8 +1002,14 @@ namespace UltimoBarrio.QA
             var interactor = player.Components.Get<PlayerInteractor>();
             if (interactor is null) { Log.Error("--- ub_qa_physical_interact --- Player has no PlayerInteractor."); return; }
 
-            var toTarget = (target.WorldPosition - player.WorldPosition).Normal;
-            player.WorldPosition = target.WorldPosition - toTarget * 80f;
+            // Solo se usa el plano horizontal para calcular el punto de aproximación --
+            // usar la dirección 3D completa (incluyendo Z) puede dejar al jugador muy
+            // por encima o por debajo del objetivo si la posición previa del jugador
+            // tenía una altura muy distinta, lo que inclina la cámara hacia el suelo
+            // y el trace impacta el terreno antes de llegar al objetivo real.
+            var toTargetFlat = (target.WorldPosition - player.WorldPosition).WithZ(0).Normal;
+            var approach = target.WorldPosition - toTargetFlat * 80f;
+            player.WorldPosition = approach.WithZ(target.WorldPosition.z);
 
             var eyePos = player.WorldPosition + Vector3.Up * 64f;
             var lookDir = (target.WorldPosition - eyePos).Normal;
