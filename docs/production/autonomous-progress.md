@@ -98,14 +98,21 @@ solo se verificó con gateways reales *antes* de que existiera este patrón de
 harness genérico — hay que repetirlo con `ub_qa_physical_interact` sobre el
 `DoorAnchor`/`ClaimCabinetAnchor` reales, sin usar ningún atajo `ub_qa_claim_*`.
 
-**Nota sobre commits huérfanos encontrados esta pasada**: `git log --all` muestra
-`e0bb0db` (Bruto/Merodeador) y `49595a4` (panel de misiones) en el historial del
-repo pero NO como ancestros de `integration/wizard-holy-grail` — quedaron en la
-rama previa al pivote de arquitectura de propiedades (`b1bf9fa` y siguientes) y
-nunca se re-aplicaron sobre la nueva base. No están perdidos (siguen en el repo,
-alcanzables desde algún `checkpoint/*`), pero el trabajo real de Fase 13/14 hay
-que rehacerlo sobre la arquitectura actual, no recuperarlo — coincide con que el
-tracker de tareas ya los marca `in_progress`, no `completed`.
+**CORRECCIÓN sobre "commits huérfanos"**: la nota anterior en este mismo archivo
+decía que `e0bb0db` (Bruto/Merodeador) y `49595a4` (panel de misiones) habían
+quedado fuera de la rama tras el pivote de arquitectura. Eso era **incorrecto**
+— verificado ahora con `git merge-base --is-ancestor e0bb0db HEAD` /
+`...49595a4 HEAD`, ambos devuelven true: SÍ son ancestros de HEAD, ya
+integrados, con trabajo posterior encima (`aa059e6 fix(missions): wire
+MissionJournal onto the player, verify panel renders`, `5733a22 test(qa): add
+persistence/AI-flag QA tooling`). `MissionJournalPanel.razor`/`.cs`/`.scss` y
+`BrutoBrain.cs`/`MerodeadorBrain.cs` ya existen en el árbol de trabajo actual,
+idénticos a esos commits. El error vino de leer mal el orden del reflog en la
+pasada anterior sin verificar con `merge-base`. Detalle completo y estado real
+en `docs/research/orphaned-work-recovery.md`. `FeatureFlags.EnableAI`/
+`EnableRaids` siguen en `false` por defecto — el código está integrado pero el
+spawn/comportamiento en motor sigue sin verificarse (coincide con que Fase 13
+sigue `in_progress`, no `completed`).
 
 **Archivo siguiente**: `Code/UltimoBarrio/Properties/Doors/DoorAnchor.cs` y
 `Code/UltimoBarrio/Properties/ClaimCabinetAnchor.cs` (o su equivalente exacto),
