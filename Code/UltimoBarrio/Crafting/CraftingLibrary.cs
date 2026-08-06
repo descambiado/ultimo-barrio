@@ -19,8 +19,12 @@ namespace UltimoBarrio.Crafting
                 {
                     RecipeId = "craft_ammo_9mm",
                     DisplayName = "Munición 9mm",
-                    Description = "Chatarra x5 → Munición 9mm x12",
-                    Ingredients = { new CraftingIngredient { ItemId = "chatarra", Amount = 5 } },
+                    Description = "Chatarra metálica x2 + Componentes x1 → Munición 9mm x12",
+                    Ingredients =
+                    {
+                        new CraftingIngredient { ItemId = "scrap_metal", Amount = 2 },
+                        new CraftingIngredient { ItemId = "components", Amount = 1 }
+                    },
                     Result = new CraftingResult { ItemId = "ammo_9mm", Amount = 12 },
                     CraftTime = 3f
                 },
@@ -28,11 +32,11 @@ namespace UltimoBarrio.Crafting
                 {
                     RecipeId = "craft_bandage",
                     DisplayName = "Vendaje",
-                    Description = "Medicina + Tela → Vendaje",
+                    Description = "Tela x2 + Medicina x1 → Vendaje",
                     Ingredients =
                     {
-                        new CraftingIngredient { ItemId = "medicine", Amount = 1 },
-                        new CraftingIngredient { ItemId = "cloth", Amount = 1 }
+                        new CraftingIngredient { ItemId = "cloth", Amount = 2 },
+                        new CraftingIngredient { ItemId = "medicine", Amount = 1 }
                     },
                     Result = new CraftingResult { ItemId = "bandage", Amount = 1 },
                     CraftTime = 2f

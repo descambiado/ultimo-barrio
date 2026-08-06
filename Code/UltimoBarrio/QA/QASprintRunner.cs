@@ -959,5 +959,78 @@ namespace UltimoBarrio.QA
             var worldPickupsAfter = Game.ActiveScene.GetAllComponents<WorldItemPickup>().Count(p => p.ItemId == itemId);
             Log.Info($"--- ub_qa_physical_drop_test --- After={itemId}:{after} WorldPickups {worldPickupsBefore}->{worldPickupsAfter}");
         }
+
+        /// <summary>
+        /// Generaliza ub_qa_physical_pickup_test a CUALQUIER IWorldInteractable por
+        /// nombre de GameObject (puerta, armario, estación de crafteo, ...), no solo
+        /// pickups -- así no hace falta un DebugForceX distinto por sistema. Posiciona
+        /// y orienta al jugador (equivalente a "acercarse y mirar") y dispara
+        /// PlayerInteractor.DebugForceUseAttempt(), el mismo trace+CanInteract+OnInteract
+        /// real que un E físico.
+        /// </summary>
+        [ConCmd("ub_qa_physical_interact")]
+        public static void PhysicalInteract(string targetName)
+        {
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            if (player is null) { Log.Error("--- ub_qa_physical_interact --- No player found."); return; }
+
+            GameObject target = null;
+            if (System.Guid.TryParse(targetName, out var targetGuid))
+                target = Game.ActiveScene.Directory.FindByGuid(targetGuid);
+
+            target ??= Game.ActiveScene.GetAllComponents<Component>()
+                .Select(c => c.GameObject)
+                .FirstOrDefault(go => go.Name.Contains(targetName, System.StringComparison.OrdinalIgnoreCase));
+
+            if (target is null) { Log.Error($"--- ub_qa_physical_interact --- No GameObject matching '{targetName}' found."); return; }
+
+            var interactor = player.Components.Get<PlayerInteractor>();
+            if (interactor is null) { Log.Error("--- ub_qa_physical_interact --- Player has no PlayerInteractor."); return; }
+
+            var toTarget = (target.WorldPosition - player.WorldPosition).Normal;
+            player.WorldPosition = target.WorldPosition - toTarget * 80f;
+
+            var eyePos = player.WorldPosition + Vector3.Up * 64f;
+            var lookDir = (target.WorldPosition - eyePos).Normal;
+            var controller = player.Components.Get<Sandbox.PlayerController>();
+            if (controller != null)
+                controller.EyeAngles = Rotation.LookAt(lookDir).Angles();
+            else
+                player.WorldRotation = Rotation.LookAt(lookDir);
+
+            Log.Info($"--- ub_qa_physical_interact --- target={targetName} playerPos={player.WorldPosition} targetPos={target.WorldPosition}");
+
+            interactor.DebugForceUseAttempt();
+        }
+
+        /// <summary>
+        /// Llama a CraftingStation.RequestCraft() -- el mismo método exacto que el
+        /// botón "Fabricar" de CraftingPanel invoca en producción (CraftingPanel.cs
+        /// línea ~127). No fabrica el resultado: la propia estación valida
+        /// ingredientes, reserva, consume y entrega de forma atómica.
+        /// </summary>
+        [ConCmd("ub_qa_physical_craft")]
+        public static void PhysicalCraft(string recipeId)
+        {
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            if (player is null) { Log.Error("--- ub_qa_physical_craft --- No player found."); return; }
+
+            var station = Game.ActiveScene.GetAllComponents<Crafting.CraftingStation>().FirstOrDefault();
+            if (station is null) { Log.Error("--- ub_qa_physical_craft --- No CraftingStation found."); return; }
+
+            var recipe = station.GetRecipe(recipeId);
+            if (recipe is null) { Log.Error($"--- ub_qa_physical_craft --- Recipe {recipeId} not on this station."); return; }
+
+            var inv = player.Components.Get<InventoryComponent>();
+            var before = inv?.GetCount(recipe.Result.ItemId) ?? -1;
+            var ingredientsBefore = string.Join(", ", recipe.Ingredients.Select(i => $"{i.ItemId}:{inv?.GetCount(i.ItemId)}"));
+            Log.Info($"--- ub_qa_physical_craft --- recipe={recipeId} Before result={recipe.Result.ItemId}:{before} ingredients=[{ingredientsBefore}]");
+
+            station.RequestCraft(player.Id, recipeId);
+
+            var after = inv?.GetCount(recipe.Result.ItemId) ?? -1;
+            var ingredientsAfter = string.Join(", ", recipe.Ingredients.Select(i => $"{i.ItemId}:{inv?.GetCount(i.ItemId)}"));
+            Log.Info($"--- ub_qa_physical_craft --- After result={recipe.Result.ItemId}:{after} ingredients=[{ingredientsAfter}]");
+        }
     }
 }
