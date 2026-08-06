@@ -7,7 +7,7 @@ reporte del usuario de que E no recogía nada.
 
 ```
 Rama:  integration/wizard-holy-grail
-SHA:   e0bb0db  feat(ai): add Bruto and Merodeador enemy archetypes (code only, unverified in engine)
+SHA:   49595a4  feat(missions): add mission journal panel (code only, unverified in engine)
 ```
 
 Checkpoints creados en esta sesión (no cambiar a ellos, son red de seguridad):
@@ -80,10 +80,18 @@ nunca al inventario. Arreglado eliminando el `OnStart` (commit `edbf2d4`).
   1 `BrutoBrain` + 1 `MerodeadorBrain` + el `SaqueadorBrain` ya existente, y
   verificar con capturas + `read_console` que patrullan/detectan/persiguen/atacan
   antes de dar la fase por buena.
-- **Fase 14 (economía/misiones)**: sin empezar. `MissionJournal` UI no existe
-  (`UIShell.OpenScreen(ActiveScreen.MissionJournal)` cambia de estado pero no hay
-  panel). `MissionSystem.cs` ya modela `ObjectiveType.SurviveNight`. `Trading.Trader`
-  no auditado todavía para confirmar atomicidad real de compra/venta.
+- **Fase 14 (economía/misiones)**: `MissionJournalPanel` escrito (commit `49595a4`),
+  siguiendo el patrón exacto de `TraderUI` (Razor + code-behind), conectado a
+  `PlayerHud` (nuevo `HudState.MissionJournal`, tecla `J` — nueva acción `Missions`
+  en `Input.config`, no había ninguna libre). **Solo COMPILA** — y con un matiz
+  extra sobre Bruto/Merodeador: `dotnet build` valida el C# pero no necesariamente
+  la sintaxis del `.razor` de la misma forma que el compilador Razor propio del
+  editor de sbox. Se copió muy de cerca la sintaxis ya probada de `TraderUI.razor`
+  para minimizar riesgo, pero **no está confirmado que renderice**. Siguiente
+  acción exacta: con el editor vivo, `play_start`, pulsar J, `camera_screenshot`
+  para confirmar que el panel aparece y no rompe la consola.
+  `Trading.Trader` sigue sin auditar para confirmar atomicidad real de compra/venta
+  (parte de Fase 14 sin empezar).
 - **Fase 15 (vehículo)**: sin empezar, spike aislado con
   `matekdev/sbox-arcade-car-physics` (ya fichado, MIT, verificado).
 
