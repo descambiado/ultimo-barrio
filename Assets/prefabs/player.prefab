@@ -195,6 +195,11 @@
         "__enabled": true
       },
       {
+        "__type": "UltimoBarrio.Missions.MissionJournal",
+        "__guid": "8a51d0d6-2ff2-4b2e-9f3b-6b0e4e3d3d21",
+        "__enabled": true
+      },
+      {
         "__type": "UltimoBarrio.UI.PlayerHud",
         "__guid": "c1860388-e203-4b6c-aaa0-c87299dff4ae",
         "__enabled": true

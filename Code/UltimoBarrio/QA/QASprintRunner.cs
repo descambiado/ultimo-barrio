@@ -7,6 +7,7 @@ using UltimoBarrio.Inventory;
 using UltimoBarrio.Players;
 using UltimoBarrio.Economy;
 using UltimoBarrio.Core;
+using UltimoBarrio.UI;
 
 namespace UltimoBarrio.QA
 {
@@ -552,6 +553,27 @@ namespace UltimoBarrio.QA
 
             barricade.TakeDamage(new DamageEvent { Amount = 500f, Position = barricade.WorldPosition });
             Log.Info($"--- ub_qa_test_barricade --- Tras daño letal: destruida={barricade.IsDestroyed} anchorLibre={!anchor.HasBarricade}");
+        }
+
+        /// <summary>
+        /// Diagnóstico: fuerza HudState.MissionJournal para confirmar que
+        /// MissionJournalPanel.razor carga y renderiza de verdad (CARGA/VISIBLE) —
+        /// escrito a ciegas mientras el editor no respondía. No sustituye pulsar J
+        /// físicamente (eso prueba INTERACTUABLE), solo aísla si el Razor en sí
+        /// tiene un fallo de sintaxis/enlace que dotnet build no detecta.
+        /// </summary>
+        [ConCmd("ub_qa_test_missionjournal")]
+        public static void TestMissionJournal()
+        {
+            var hud = Game.ActiveScene.GetAllComponents<PlayerHud>().FirstOrDefault();
+            if (hud is null) { Log.Error("--- ub_qa_test_missionjournal --- No PlayerHud found."); return; }
+
+            Log.Info($"--- ub_qa_test_missionjournal --- Estado antes: {hud.CurrentState}");
+            hud.ChangeState(HudState.MissionJournal);
+            Log.Info($"--- ub_qa_test_missionjournal --- Estado tras ChangeState: {hud.CurrentState}");
+
+            var journal = Missions.MissionJournal.Local;
+            Log.Info($"--- ub_qa_test_missionjournal --- MissionJournal.Local presente: {journal != null} misionesActivas: {journal?.ActiveMissions.Count ?? -1}");
         }
     }
 }
