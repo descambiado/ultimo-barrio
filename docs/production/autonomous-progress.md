@@ -113,6 +113,16 @@ regresión. La reescritura interna real queda para cuando haya editor vivo.
    claim de `AbandonedShell`, ni un alquiler, ni una credencial otorgada. Es
    arquitectura real y compilable, no arquitectura probada.
 
+### Segunda comprobación (30 min después, vía wakeup programado)
+
+`sbox-dev` sigue sin proceso (`Get-Process` vacío) y el puerto 7269 sigue sin
+aceptar conexiones (`Test-NetConnection` = False). Confirma que no es un
+cuelgue transitorio: el editor necesita que el usuario lo reabra manualmente.
+Se detiene el sondeo automático aquí — no tiene sentido seguir comprobando
+cada 30 min sin que el usuario sepa que hace falta su acción. Cuando el
+usuario reabra el proyecto en el editor, retomar directamente por la lista de
+abajo, sin reinvestigar nada.
+
 ### Siguiente acción exacta al reanudar (en orden)
 
 1. `editor_status` — si responde, seguir; si no, otra ronda de espera/backoff
