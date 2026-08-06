@@ -7,7 +7,7 @@ namespace UltimoBarrio.Fortification
 {
     /// <summary>
     /// Punto de construcción: un anchor del editor donde el propietario puede
-    /// colocar una barricada (ítem "barricade"). Host-autoritativo vía RPC.
+    /// colocar una barricada (ítem "wooden_barricade_kit"). Host-autoritativo vía RPC.
     /// </summary>
     [Title( "Barricade Anchor" )]
     [Category( "Último Barrio — Fortification" )]
@@ -28,8 +28,11 @@ namespace UltimoBarrio.Fortification
         private static readonly (string ItemId, float MaxHealth)[] _tiers =
         {
             ( "reinforced_barricade_kit", 300f ),
-            ( "barricade", 150f )
+            ( "wooden_barricade_kit", 150f )
         };
+
+        /// <summary>Porcentaje de los materiales originales devueltos al desmontar.</summary>
+        public const float DismantleRefundFraction = 0.5f;
 
         public string GetInteractionPrompt( InteractionRequest request )
         {
@@ -110,41 +113,56 @@ namespace UltimoBarrio.Fortification
             if ( placedItemId is null )
                 return;
 
-            var barricadeGo = new GameObject( true, $"Barricade_{AnchorId}" );
-            barricadeGo.Parent = GameObject.Parent ?? GameObject;
-            barricadeGo.WorldPosition = GameObject.WorldPosition;
-            barricadeGo.WorldRotation = GameObject.WorldRotation;
+            try
+            {
+                var barricadeGo = new GameObject( true, $"Barricade_{AnchorId}" );
+                barricadeGo.Parent = GameObject.Parent ?? GameObject;
+                barricadeGo.WorldPosition = GameObject.WorldPosition;
+                barricadeGo.WorldRotation = GameObject.WorldRotation;
 
-            var renderer = barricadeGo.Components.Create<ModelRenderer>();
-            renderer.Model = Model.Load( "models/dev/box.vmdl" );
-            renderer.Tint = placedItemId == "reinforced_barricade_kit" ? new Color( 0.5f, 0.5f, 0.55f ) : new Color( 0.45f, 0.3f, 0.15f );
-            barricadeGo.LocalScale = new Vector3( 40f, 10f, 70f );
+                var renderer = barricadeGo.Components.Create<ModelRenderer>();
+                // Reutiliza modelos reales ya verificados esta sesión (crate01/
+                // metal_wheely_bin) en vez de models/dev/box.vmdl -- diferenciados por
+                // tint, mismo patrón ya aceptado para la Starter Resource Zone.
+                renderer.Model = Model.Load( placedItemId == "reinforced_barricade_kit"
+                    ? "models/citizen_props/metal_wheely_bin.vmdl"
+                    : "models/citizen_props/crate01.vmdl" );
+                renderer.Tint = placedItemId == "reinforced_barricade_kit" ? new Color( 0.5f, 0.5f, 0.55f ) : new Color( 0.45f, 0.3f, 0.15f );
+                barricadeGo.LocalScale = new Vector3( 1.4f, 1.4f, 1.8f );
 
-            var collider = barricadeGo.Components.Create<BoxCollider>();
+                var collider = barricadeGo.Components.Create<BoxCollider>();
+                collider.Scale = new Vector3( 40f, 10f, 70f );
 
-            var barricade = barricadeGo.Components.Create<Barricade>();
-            barricade.ApartmentId = ApartmentId;
-            barricade.AnchorId = AnchorId;
+                var barricade = barricadeGo.Components.Create<Barricade>();
+                barricade.ApartmentId = ApartmentId;
+                barricade.AnchorId = AnchorId;
+                barricade.PlacedKitItemId = placedItemId;
 
-            // Component.OnStart() no se garantiza síncrono tras Create<T>() (puede
-            // diferirse al siguiente tick) — sin esto la barricada nace con
-            // Health=0/MaxHealth=200 (los valores por defecto de
-            // DestructibleStructure) hasta que OnStart corre, y con Health<=0,
-            // IsDestroyed ya es true: cualquier daño real en esa ventana no hace
-            // nada porque TakeDamage descarta las estructuras ya destruidas.
-            barricade.MaxHealth = maxHealth;
-            barricade.SetHealth( maxHealth );
+                // Component.OnStart() no se garantiza síncrono tras Create<T>() (puede
+                // diferirse al siguiente tick) — sin esto la barricada nace con
+                // Health=0/MaxHealth=200 (los valores por defecto de
+                // DestructibleStructure) hasta que OnStart corre, y con Health<=0,
+                // IsDestroyed ya es true: cualquier daño real en esa ventana no hace
+                // nada porque TakeDamage descarta las estructuras ya destruidas.
+                barricade.MaxHealth = maxHealth;
+                barricade.SetHealth( maxHealth );
 
-            if ( Networking.IsActive )
-                barricadeGo.NetworkSpawn();
+                if ( Networking.IsActive )
+                    barricadeGo.NetworkSpawn();
 
-            _barricade = barricade;
+                _barricade = barricade;
 
-            // Persistir la colocación.
-            Persistence.PersistenceBridge.RequestSave();
+                // Persistir la colocación.
+                Persistence.PersistenceBridge.RequestSave();
 
-            UI.PlayerFeedback.Push( "Barricada colocada" );
-            Log.Info( $"UB.Fortification BarricadaColocada apartment={ApartmentId} anchor={AnchorId}" );
+                UI.PlayerFeedback.Push( "Barricada colocada" );
+                Log.Info( $"UB.Fortification BarricadaColocada apartment={ApartmentId} anchor={AnchorId}" );
+            }
+            catch ( System.Exception ex )
+            {
+                Log.Error( $"UB.Building ProcessPlace.Diag EXCEPTION: {ex}" );
+                inventory.TryAdd( placedItemId, 1 );
+            }
         }
 
         internal void OnBarricadeDestroyed()
@@ -165,17 +183,24 @@ namespace UltimoBarrio.Fortification
             barricadeGo.WorldPosition = GameObject.WorldPosition;
             barricadeGo.WorldRotation = GameObject.WorldRotation;
 
-            var renderer = barricadeGo.Components.Create<ModelRenderer>();
-            renderer.Model = Model.Load( "models/dev/box.vmdl" );
-            renderer.Tint = new Color( 0.45f, 0.3f, 0.15f );
-            barricadeGo.LocalScale = new Vector3( 40f, 10f, 70f );
+            var restoredMaxHealth = maxHealth > 0f ? maxHealth : 150f;
+            var restoredItemId = restoredMaxHealth > 150f ? "reinforced_barricade_kit" : "wooden_barricade_kit";
 
-            barricadeGo.Components.Create<BoxCollider>();
+            var renderer = barricadeGo.Components.Create<ModelRenderer>();
+            renderer.Model = Model.Load( restoredItemId == "reinforced_barricade_kit"
+                ? "models/citizen_props/metal_wheely_bin.vmdl"
+                : "models/citizen_props/crate01.vmdl" );
+            renderer.Tint = restoredItemId == "reinforced_barricade_kit" ? new Color( 0.5f, 0.5f, 0.55f ) : new Color( 0.45f, 0.3f, 0.15f );
+            barricadeGo.LocalScale = new Vector3( 1.4f, 1.4f, 1.8f );
+
+            var restoredCollider = barricadeGo.Components.Create<BoxCollider>();
+            restoredCollider.Scale = new Vector3( 40f, 10f, 70f );
 
             var barricade = barricadeGo.Components.Create<Barricade>();
             barricade.ApartmentId = ApartmentId;
             barricade.AnchorId = AnchorId;
-            barricade.MaxHealth = maxHealth > 0f ? maxHealth : 150f;
+            barricade.PlacedKitItemId = restoredItemId;
+            barricade.MaxHealth = restoredMaxHealth;
             barricade.SetHealth( health );
 
             if ( Networking.IsActive )

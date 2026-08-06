@@ -45,26 +45,26 @@ namespace UltimoBarrio.Crafting
                 {
                     RecipeId = "craft_repair_kit",
                     DisplayName = "Kit de reparación",
-                    Description = "Chatarra + Componentes → Kit de reparación",
+                    Description = "Madera x4 + Componentes x1 → Kit de reparación",
                     Ingredients =
                     {
-                        new CraftingIngredient { ItemId = "chatarra", Amount = 5 },
-                        new CraftingIngredient { ItemId = "components", Amount = 2 }
+                        new CraftingIngredient { ItemId = "wood", Amount = 4 },
+                        new CraftingIngredient { ItemId = "components", Amount = 1 }
                     },
                     Result = new CraftingResult { ItemId = "repair_kit", Amount = 1 },
                     CraftTime = 4f
                 },
                 new()
                 {
-                    RecipeId = "craft_barricade",
-                    DisplayName = "Barricada",
-                    Description = "Madera x6 + Chatarra metálica x3 → Barricada",
+                    RecipeId = "craft_wooden_barricade_kit",
+                    DisplayName = "Barricada de madera",
+                    Description = "Madera x6 + Chatarra metálica x3 → Barricada de madera",
                     Ingredients =
                     {
                         new CraftingIngredient { ItemId = "wood", Amount = 6 },
                         new CraftingIngredient { ItemId = "scrap_metal", Amount = 3 }
                     },
-                    Result = new CraftingResult { ItemId = "barricade", Amount = 1 },
+                    Result = new CraftingResult { ItemId = "wooden_barricade_kit", Amount = 1 },
                     CraftTime = 5f
                 },
                 new()
@@ -120,6 +120,19 @@ namespace UltimoBarrio.Crafting
                     },
                     Result = new CraftingResult { ItemId = "reinforced_door_upgrade", Amount = 1 },
                     CraftTime = 8f
+                },
+                new()
+                {
+                    RecipeId = "craft_storage_crate_kit",
+                    DisplayName = "Cofre de almacenaje",
+                    Description = "Madera x5 + Chatarra metálica x2 → Cofre de almacenaje",
+                    Ingredients =
+                    {
+                        new CraftingIngredient { ItemId = "wood", Amount = 5 },
+                        new CraftingIngredient { ItemId = "scrap_metal", Amount = 2 }
+                    },
+                    Result = new CraftingResult { ItemId = "storage_crate_kit", Amount = 1 },
+                    CraftTime = 4f
                 },
                 new()
                 {

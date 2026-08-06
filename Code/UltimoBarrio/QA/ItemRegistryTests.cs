@@ -23,7 +23,7 @@ namespace UltimoBarrio.QA
             {
                 "chatarra", "water", "medicine", "ammo_9mm", "weapon_crowbar", "weapon_usp",
                 "scrap_metal", "scrap_electronics", "scrap_tools", "scrap_parts", "scrap_cable",
-                "cloth", "wood", "components", "bandage", "repair_kit", "barricade", "weapon_knife"
+                "cloth", "wood", "components", "bandage", "repair_kit", "wooden_barricade_kit", "weapon_knife"
             };
 
             foreach ( var id in canonical )

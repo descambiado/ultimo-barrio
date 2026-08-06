@@ -34,7 +34,7 @@ namespace UltimoBarrio.Fortification
         public event Action<float> OnDamaged;
         public event Action OnDestroyed;
 
-        public string GetInteractionPrompt( InteractionRequest request )
+        public virtual string GetInteractionPrompt( InteractionRequest request )
         {
             if ( IsDestroyed )
                 return "Estructura destruida";
@@ -44,7 +44,7 @@ namespace UltimoBarrio.Fortification
                 : "Estructura en buen estado";
         }
 
-        public bool CanInteract( InteractionRequest request )
+        public virtual bool CanInteract( InteractionRequest request )
         {
             if ( request.InteractorObject == null )
                 return false;
@@ -53,7 +53,7 @@ namespace UltimoBarrio.Fortification
                 && Vector3.DistanceBetween( request.InteractorObject.WorldPosition, GameObject.WorldPosition ) <= 200f;
         }
 
-        public void OnInteract( InteractionRequest request )
+        public virtual void OnInteract( InteractionRequest request )
         {
             if ( IsProxy )
             {

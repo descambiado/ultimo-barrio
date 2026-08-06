@@ -598,7 +598,7 @@ namespace UltimoBarrio.QA
             if (anchor is null) { Log.Error("--- ub_qa_place_barricade --- No free anchor matching."); return; }
 
             player.WorldPosition = anchor.WorldPosition;
-            inv?.TryAdd("barricade", 1);
+            inv?.TryAdd("wooden_barricade_kit", 1);
 
             var req = new InteractionRequest { Identity = PlayerIdentity.FromGameObject(player), InteractorObject = player };
             anchor.OnInteract(req);

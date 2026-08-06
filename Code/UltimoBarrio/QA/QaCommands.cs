@@ -94,6 +94,26 @@ namespace UltimoBarrio.QA
             }
         }
 
+        /// <summary>
+        /// Añade un ítem cualquiera al jugador local -- solo para desbloquear
+        /// pruebas cuando la única fuente real de un recurso en el mundo se
+        /// agota (p.ej. "Wood Pickup" en la Starter Resource Zone es un
+        /// WorldItemPickup de un solo uso, sin ResourceNode/respawn, y ya se
+        /// recolectó esta sesión). No sustituye a TryCraft/TryClaim/etc. --
+        /// solo llena el inventario, exactamente como ub_qa_give_scrap ya
+        /// hacía para chatarra.
+        /// </summary>
+        [ConCmd("ub_qa_give_item")]
+        public static void GiveItem(string itemId, int amount)
+        {
+            if (!Networking.IsHost) return;
+            var player = Game.ActiveScene.GetAllComponents<Players.PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            var inv = player?.Components.Get<InventoryComponent>();
+            if (inv is null) { Log.Error("--- ub_qa_give_item --- No player inventory found."); return; }
+            inv.TryAdd(itemId, amount);
+            Log.Info($"[QA] Added {amount} {itemId} to local player.");
+        }
+
         [ConCmd("ub_qa_give_money")]
         public static void GiveMoney(int amount)
         {

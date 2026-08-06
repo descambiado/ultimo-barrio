@@ -250,6 +250,11 @@
         "__type": "UltimoBarrio.Players.PlayerMovementModifier",
         "__guid": "d4f1b9a6-3e57-4a08-b2c9-6d05e83f1147",
         "__enabled": true
+      },
+      {
+        "__type": "UltimoBarrio.Building.PlacementController",
+        "__guid": "f4a1c8e2-9b6d-4a3f-8e1c-2d5b7a9f0c34",
+        "__enabled": true
       }
     ],
     "Children": [
