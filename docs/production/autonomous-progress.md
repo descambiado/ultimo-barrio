@@ -7,7 +7,7 @@ reporte del usuario de que E no recogía nada.
 
 ```
 Rama:  integration/wizard-holy-grail
-SHA:   0ff94c0  feat(fortification): place repair and upgrade apartment defenses
+SHA:   e0bb0db  feat(ai): add Bruto and Merodeador enemy archetypes (code only, unverified in engine)
 ```
 
 Checkpoints creados en esta sesión (no cambiar a ellos, son red de seguridad):
@@ -70,11 +70,16 @@ nunca al inventario. Arreglado eliminando el `OnStart` (commit `edbf2d4`).
   `ub_melee.prefab`/`v_melee.prefab` siguen siendo placeholders (~800-980 bytes).
   Necesita `find_packages`/Library Manager (MCP `package` toolset) para localizar
   `facepunch/sboxweapons` real — bloqueado por el mismo cuelgue del editor.
-- **Fase 13 (enemigos nocturnos)**: sin empezar. `FeatureFlags.EnableAI`/
-  `EnableRaids` siguen en `false`. Faltan `BrutoBrain`/`MerodeadorBrain` (extender
-  `AIBase` con el mismo patrón que `SaqueadorBrain`, ya audit ado en la fase de
-  investigación). Se puede escribir el código sin el editor, pero no verificar spawn
-  real sin Play Mode.
+- **Fase 13 (enemigos nocturnos)**: `BrutoBrain`/`MerodeadorBrain` escritos
+  (commit `e0bb0db`), **solo COMPILA** — 0 errores en `dotnet build`, cero
+  verificación en motor (el editor llevaba caído desde mitad de Fase 10). No se
+  activaron `FeatureFlags.EnableAI`/`EnableRaids` a propósito: hacerlo sin poder
+  probar spawn/comportamiento en Play Mode sería exactamente el mismo error que
+  causó el bug de recogida con E de esta sesión. Siguiente acción exacta: cuando
+  el editor responda, activar los dos flags, colocar un `SpawnZone` de prueba con
+  1 `BrutoBrain` + 1 `MerodeadorBrain` + el `SaqueadorBrain` ya existente, y
+  verificar con capturas + `read_console` que patrullan/detectan/persiguen/atacan
+  antes de dar la fase por buena.
 - **Fase 14 (economía/misiones)**: sin empezar. `MissionJournal` UI no existe
   (`UIShell.OpenScreen(ActiveScreen.MissionJournal)` cambia de estado pero no hay
   panel). `MissionSystem.cs` ya modela `ObjectiveType.SurviveNight`. `Trading.Trader`
