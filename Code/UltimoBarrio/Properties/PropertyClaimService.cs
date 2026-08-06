@@ -7,6 +7,8 @@ using Sandbox;
 using UltimoBarrio.Core;
 using UltimoBarrio.Economy;
 using UltimoBarrio.Players;
+using UltimoBarrio.Properties.Doors;
+using UltimoBarrio.Properties.Keys;
 
 namespace UltimoBarrio.Properties;
 
@@ -216,11 +218,13 @@ public sealed class PropertyClaimService : Component, IPropertyAccessPolicy
 				// aquí solo se fija el primer vencimiento a un ciclo de juego completo.
 				const float firstRentCycleSeconds = 1800f;
 				property.ApplyTenancy( tenantIdentity.CanonicalId, RentalState.Rented, firstRentCycleSeconds );
+				IssueResidentCredential( property, player.GameObject, tenantIdentity.CanonicalId );
 
 				if ( !CommitSave() )
 				{
 					wallet.Deposit( totalCost );
 					property.ApplyTenancy( string.Empty, RentalState.Vacant, 0f );
+					player.GameObject.Components.GetInDescendantsOrSelf<KeyringItem>()?.Revoke( propertyId );
 					return PropertyClaimResult.Rejected( PropertyClaimFailure.PersistenceFailed, "Failed to persist the rental." );
 				}
 
@@ -231,6 +235,36 @@ public sealed class PropertyClaimService : Component, IPropertyAccessPolicy
 				_propertiesInProgress.Remove( propertyId );
 			}
 		}
+	}
+
+	/// <summary>
+	/// Otorga una credencial Resident para el arrendatario. No es la única vía
+	/// de acceso (PropertyDoor.HasAccess ya concede paso directo a
+	/// TenantPersistentId sin credencial) — esto es fidelidad al flujo del
+	/// spec ("emitir credencial") y deja al inquilino con un ítem físico de
+	/// llave, útil si algún día se separa el registro de tenancy del acceso
+	/// físico. Si la propiedad aún no tiene puerta instalada, no falla el
+	/// alquiler — simplemente no hay nada que abrir todavía.
+	/// </summary>
+	private static void IssueResidentCredential( PropertyComponent property, GameObject tenant, string tenantId )
+	{
+		var door = Game.ActiveScene.GetAllComponents<DoorAnchor>()
+			.Where( a => a.PropertyId == property.PropertyId && a.HasDoor )
+			.Select( a => a.DoorReference )
+			.FirstOrDefault();
+
+		if ( door is null )
+			return;
+
+		var keyring = tenant.Components.GetInDescendantsOrSelf<KeyringItem>() ?? tenant.Components.GetOrCreate<KeyringItem>();
+		keyring.Grant( new AccessCredential
+		{
+			PropertyId = property.PropertyId,
+			LockId = door.LockId,
+			KeyRevision = door.KeyRevision,
+			AccessLevel = AccessLevel.Resident,
+			IssuerPersistentId = tenantId
+		} );
 	}
 
 	private bool CommitSave()
