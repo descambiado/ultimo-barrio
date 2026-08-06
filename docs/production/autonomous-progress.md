@@ -1,6 +1,97 @@
 # Progreso de ejecución autónoma — Último Barrio
 
-## CHECKPOINT (formato fijo, ver instrucción del usuario) — 2026-08-07
+## BLOQUEADOR REAL: reinicio de editor necesario — 2026-08-07 (leer primero)
+
+```
+Branch: integration/wizard-holy-grail
+HEAD: c271eda
+Clean/dirty: limpio salvo .omc/ (sin trackear a propósito) y los 3 diffs
+  preexistentes fuera de alcance (ItemDefinition.cs, AutoSaveManager.cs,
+  MovementProfile.cs)
+Bloque completado: sección 3 (BuildVolume/fortificación, vertical slice) y
+  sección 4 (autoría de apartment-a01/a02) del encargo de continuación
+Evidencia runtime: BuildVolume/StructureAuthorization/FurnitureAnchor
+  compilan y son añadibles vía add_component. Pipeline completo de
+  colocación de barricada (distancia -> inventario -> tier -> spawn ->
+  persistir) confirmado end-to-end con logging de diagnóstico -- ver
+  bloqueador abajo, es el MISMO bloqueador el que impide la prueba final
+  con el item renombrado
+Evidencia de persistencia: no verificada esta pasada para
+  barricada/mueble (bloqueada por el mismo motivo)
+Regresiones conocidas: ninguna (ub_test_all 36/36)
+Archivo actual: Code/UltimoBarrio/Fortification/BarricadeAnchor.cs
+  (_tiers, línea ~28) -- ya corregido en el código fuente, funciona en
+  producción, solo pendiente de que el editor recoja la recompilación
+Siguiente comando exacto: PASO 0 antes de cualquier otra cosa -- pedir al
+  usuario que cierre y reabra el editor de s&box (no basta con Stop/Play,
+  probado 6+ veces con esperas de hasta 30s). Luego: play_start,
+  ub_qa_physical_interact <CraftingStation guid ya conocido:
+  182a1209-481b-4ec6-9fcc-20e2a163afa2>, ub_qa_physical_craft
+  craft_wooden_barricade_kit (debería funcionar ya, antes fallaba con
+  "not on this station"), luego ub_qa_physical_interact
+  7e87baf2-34d7-4356-a065-aac65355193b (Barricade Anchor - a01 Door) y
+  confirmar en consola "UB.Fortification BarricadaColocada" con el kit
+  correcto consumido
+Siguiente prueba de aceptación: el recorrido completo de la sección 3 del
+  encargo (craft -> preview verde/rojo -> colocar -> dañar -> reparar ->
+  desmontar con reembolso -> Stop/Play) con los items renombrados
+  ("wooden_barricade_kit"/"storage_crate_kit"), no con los nombres viejos
+```
+
+### Diagnóstico exacto del bloqueador (para no reinvestigar)
+
+`CraftingLibrary.AllRecipes` y `BarricadeAnchor._tiers` son ambos campos
+`static readonly` inicializados una vez. El código fuente en disco ya
+tiene los nombres correctos (`craft_wooden_barricade_kit`,
+`"wooden_barricade_kit"`) — confirmado con `grep` directo sobre el
+archivo. `dotnet build` externo compila 0 errores. El editor de s&box
+(`editor_status`) reporta `IsCompiling=false, LastCompileSucceeded=true`.
+Pese a esto, en motor:
+
+- `ub_qa_give_item wooden_barricade_kit 1` **funciona** (confirma que
+  `ItemCatalog` sí se refrescó).
+- `ub_qa_physical_craft craft_wooden_barricade_kit` **falla** con "Recipe
+  ... not on this station" (CraftingLibrary stale).
+- Con el kit `wooden_barricade_kit` en inventario, `ProcessPlace` de
+  `BarricadeAnchor` recorre `_tiers` y **no encuentra ningún tier** (log
+  de diagnóstico temporal: `placedItemId=null`), pese a que
+  `inventory.GetCount("wooden_barricade_kit")` (comprobado con un string
+  literal en el propio diagnóstico, no vía `_tiers`) devuelve el valor
+  correcto.
+- **Prueba concluyente**: dando el item con el ID viejo
+  (`ub_qa_give_item barricade 1`), la colocación funciona perfectamente
+  de principio a fin (`spawnedOk`, `BarricadaColocada`) — confirma que
+  `_tiers` sigue con el valor **anterior al rename**, congelado desde
+  antes de este bloque de trabajo.
+
+Es la limitación conocida de .NET hot-reload: los cuerpos de método se
+intercambian en caliente, pero los inicializadores de campos
+`static readonly` no siempre se re-ejecutan. Se probó reiniciar Play Mode
+6+ veces con esperas de hasta 30s sin resultado — no es un problema de
+timing, es que el editor no vuelve a ejecutar esos inicializadores sin un
+reinicio completo del proceso del editor. Este es exactamente el tipo de
+bloqueador externo real que justifica detenerse aquí en vez de seguir
+intentando: no hay más progreso de verificación en motor posible sin la
+acción del usuario (reiniciar el editor), aunque el código en sí ya está
+demostrado correcto.
+
+### Qué SÍ se completó y verificó pese al bloqueador
+
+- `BuildVolume`/`StructureAuthorization`/`FurnitureAnchor`: nuevos tipos,
+  añadidos con éxito vía `add_component` en el editor (esto SÍ refrescó
+  correctamente — son tipos completamente nuevos, no campos estáticos
+  modificados en un tipo ya cargado, que es precisamente la distinción
+  que explica por qué unas cosas se refrescan y otras no).
+- Modelos reales (`crate01`/`metal_wheely_bin`) sustituyendo
+  `models/dev/box.vmdl` en `BarricadeAnchor` — código verificado correcto
+  (la colocación con el item viejo lo probó end-to-end, incluida la carga
+  del modelo).
+- Autorización denegada a extraños en Stash (ya verificado en la pasada
+  anterior, sección 1).
+- `apartment-a01`/`apartment-a02` tienen ahora `BuildVolume` +
+  `FurnitureAnchor` en escena, guardado fuera de Play Mode.
+
+## CHECKPOINT (formato fijo, ver instrucción del usuario) — 2026-08-07 (pasada anterior, vivienda)
 
 ```
 Branch: integration/wizard-holy-grail
