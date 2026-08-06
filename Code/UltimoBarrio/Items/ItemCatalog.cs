@@ -44,6 +44,8 @@ namespace UltimoBarrio
             Add( "repair_kit", "Kit de reparación", "Repara puertas, ventanas y barricadas", ItemCategory.Utility, 5, weight: 3f, usable: false );
             Add( "barricade", "Barricada", "Refuerzo colocable para puertas y ventanas", ItemCategory.Utility, 10, weight: 8f );
             Add( "apartment_door_kit", "Kit de puerta", "Instálalo en la entrada de una vivienda libre para reclamarla", ItemCategory.Utility, 5, weight: 5f );
+            Add( "reinforced_barricade_kit", "Barricada reforzada", "Barricada de mayor resistencia para puertas y ventanas", ItemCategory.Utility, 10, weight: 12f );
+            Add( "reinforced_door_upgrade", "Kit de refuerzo de puerta", "Mejora la puerta de una vivienda reclamada a nivel reforzado", ItemCategory.Utility, 5, weight: 10f );
 
             // ── Armas ────────────────────────────────────────────────────────
             AddWeapon( "weapon_usp", "Pistola USP", "Pistola estándar", ItemCategory.Firearm,

@@ -79,6 +79,32 @@ namespace UltimoBarrio.Crafting
                 },
                 new()
                 {
+                    RecipeId = "craft_reinforced_barricade_kit",
+                    DisplayName = "Barricada reforzada",
+                    Description = "Chatarra metálica x8 + Componentes x3 → Barricada reforzada",
+                    Ingredients =
+                    {
+                        new CraftingIngredient { ItemId = "scrap_metal", Amount = 8 },
+                        new CraftingIngredient { ItemId = "components", Amount = 3 }
+                    },
+                    Result = new CraftingResult { ItemId = "reinforced_barricade_kit", Amount = 1 },
+                    CraftTime = 7f
+                },
+                new()
+                {
+                    RecipeId = "craft_reinforced_door_upgrade",
+                    DisplayName = "Kit de refuerzo de puerta",
+                    Description = "Chatarra metálica x12 + Componentes x5 → Kit de refuerzo de puerta",
+                    Ingredients =
+                    {
+                        new CraftingIngredient { ItemId = "scrap_metal", Amount = 12 },
+                        new CraftingIngredient { ItemId = "components", Amount = 5 }
+                    },
+                    Result = new CraftingResult { ItemId = "reinforced_door_upgrade", Amount = 1 },
+                    CraftTime = 8f
+                },
+                new()
+                {
                     RecipeId = "craft_crowbar",
                     DisplayName = "Palanca",
                     Description = "Chatarra + Piezas → Palanca",

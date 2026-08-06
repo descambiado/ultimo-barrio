@@ -320,5 +320,122 @@ namespace UltimoBarrio.QA
             var after = inv.GetCount(pickup.ItemId);
             Log.Info($"--- ub_qa_test_pickup --- countAfter={after} delta={after - before} pickupStillValid={pickup.GameObject.IsValid()}");
         }
+
+        /// <summary>
+        /// Diagnóstico: ejercita drop -> spawn de pickup real -> re-recogida por el
+        /// mismo gateway OnInteract, y el consumo de un consumible sin curación
+        /// (agua). Usa InventoryComponent.RequestDrop y HeldItemController
+        /// (los gateways reales), no atajos que fabriquen el resultado.
+        /// </summary>
+        [ConCmd("ub_qa_test_drop_repickup")]
+        public static void TestDropRepickup()
+        {
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            if (player is null) { Log.Error("--- ub_qa_test_drop_repickup --- No player found."); return; }
+
+            var inv = player.Components.Get<InventoryComponent>();
+            if (inv is null) { Log.Error("--- ub_qa_test_drop_repickup --- No InventoryComponent."); return; }
+
+            // Setup: aseguramos que hay algo que soltar (no es lo que se está probando).
+            if (inv.GetCount("chatarra") < 2)
+                inv.TryAdd("chatarra", 2);
+
+            var beforeDrop = inv.GetCount("chatarra");
+            inv.RequestDrop("chatarra", 1);
+
+            var afterDrop = inv.GetCount("chatarra");
+            Log.Info($"--- ub_qa_test_drop_repickup --- drop beforeDrop={beforeDrop} afterDrop={afterDrop}");
+
+            var dropped = Game.ActiveScene.GetAllComponents<UltimoBarrio.WorldItemPickup>()
+                .Where(p => p.GameObject.IsValid() && p.ItemId == "chatarra")
+                .OrderBy(p => Vector3.DistanceBetween(p.WorldPosition, player.WorldPosition))
+                .FirstOrDefault();
+
+            if (dropped is null) { Log.Error("--- ub_qa_test_drop_repickup --- No dropped pickup found nearby."); return; }
+
+            player.WorldPosition = dropped.WorldPosition + Vector3.Up * 10f;
+
+            var req = new InteractionRequest { Identity = PlayerIdentity.FromGameObject(player), InteractorObject = player };
+            bool can = dropped.CanInteract(req);
+            dropped.OnInteract(req);
+
+            var afterRepickup = inv.GetCount("chatarra");
+            Log.Info($"--- ub_qa_test_drop_repickup --- repickup can={can} afterRepickup={afterRepickup} restored={afterRepickup == beforeDrop}");
+
+            // Consumible sin curación (agua) por el gateway real de HeldItemController.
+            var held = player.Components.Get<HeldItemController>();
+            if (held is null) { Log.Error("--- ub_qa_test_drop_repickup --- No HeldItemController."); return; }
+
+            inv.TryAdd("water", 1);
+            var waterBefore = inv.GetCount("water");
+
+            var health = player.Components.GetInDescendantsOrSelf<Combat.HealthComponent>();
+            if (health is not null && health.Health >= health.MaxHealth)
+                health.TakeDamage(new DamageEvent { Amount = 10f });
+
+            // UseActiveConsumable usa ActiveItemId; forzamos la selección del slot con agua.
+            var waterSlotIndex = inv.Slots.ToList().FindIndex(s => s.ItemId == "water" && s.Amount > 0);
+            if (waterSlotIndex >= 0)
+            {
+                held.SelectSlot(waterSlotIndex);
+                held.UseActiveConsumable();
+            }
+
+            var waterAfter = inv.GetCount("water");
+            Log.Info($"--- ub_qa_test_drop_repickup --- water waterBefore={waterBefore} waterAfter={waterAfter} consumed={waterAfter < waterBefore}");
+        }
+
+        /// <summary>
+        /// Diagnóstico: ejercita CraftingStation.RequestCraft (el mismo gateway
+        /// [Rpc.Host] que la UI real invoca al pulsar "Fabricar") para la receta
+        /// del kit de puerta, dos veces: una con ingredientes suficientes (debe
+        /// consumir atómicamente y añadir el resultado) y otra sin ellos (debe
+        /// rechazar sin tocar el inventario — rollback implícito al no mutar nada).
+        /// </summary>
+        [ConCmd("ub_qa_test_craft")]
+        public static void TestCraft()
+        {
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            if (player is null) { Log.Error("--- ub_qa_test_craft --- No player found."); return; }
+
+            var inv = player.Components.Get<InventoryComponent>();
+            if (inv is null) { Log.Error("--- ub_qa_test_craft --- No InventoryComponent."); return; }
+
+            var station = Game.ActiveScene.GetAllComponents<Crafting.CraftingStation>().FirstOrDefault();
+            if (station is null) { Log.Error("--- ub_qa_test_craft --- No CraftingStation in scene."); return; }
+
+            // Caso B primero (sin ingredientes) para no contaminarlo con el setup del caso A.
+            inv.TryRemove("wood", inv.GetCount("wood"));
+            inv.TryRemove("scrap_metal", inv.GetCount("scrap_metal"));
+            inv.TryRemove("components", inv.GetCount("components"));
+            inv.TryRemove("apartment_door_kit", inv.GetCount("apartment_door_kit"));
+
+            player.WorldPosition = station.WorldPosition;
+
+            var beforeFail = inv.GetCount("apartment_door_kit");
+            station.RequestCraft(player.Id, "craft_apartment_door_kit");
+            var afterFail = inv.GetCount("apartment_door_kit");
+            Log.Info($"--- ub_qa_test_craft --- sin ingredientes: kitBefore={beforeFail} kitAfter={afterFail} rechazadoCorrectamente={afterFail == beforeFail}");
+
+            // Caso A: con ingredientes suficientes.
+            inv.TryAdd("wood", 8);
+            inv.TryAdd("scrap_metal", 6);
+            inv.TryAdd("components", 2);
+
+            var woodBefore = inv.GetCount("wood");
+            var scrapBefore = inv.GetCount("scrap_metal");
+            var compBefore = inv.GetCount("components");
+            var kitBefore = inv.GetCount("apartment_door_kit");
+
+            station.RequestCraft(player.Id, "craft_apartment_door_kit");
+
+            var woodAfter = inv.GetCount("wood");
+            var scrapAfter = inv.GetCount("scrap_metal");
+            var compAfter = inv.GetCount("components");
+            var kitAfter = inv.GetCount("apartment_door_kit");
+
+            Log.Info($"--- ub_qa_test_craft --- con ingredientes: wood {woodBefore}->{woodAfter} scrap {scrapBefore}->{scrapAfter} components {compBefore}->{compAfter} kit {kitBefore}->{kitAfter}");
+            Log.Info($"--- ub_qa_test_craft --- exito={kitAfter > kitBefore && woodAfter == woodBefore - 8 && scrapAfter == scrapBefore - 6 && compAfter == compBefore - 2}");
+        }
     }
 }
