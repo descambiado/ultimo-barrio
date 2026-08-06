@@ -810,6 +810,22 @@ namespace UltimoBarrio.QA
             rentalService.RequestAbandonRental(propertyId);
         }
 
+        /// <summary>
+        /// Fuerza el guardado ya mismo llamando a ApartmentClaimService.TrySaveNow() --
+        /// el mismo método que AutoSaveManager ya llama cada 90s o al recibir un
+        /// PersistenceBridge.RequestSave real. Solo evita esperar el intervalo
+        /// completo en las pruebas; no fabrica el resultado del guardado.
+        /// </summary>
+        [ConCmd("ub_qa_force_save")]
+        public static void ForceSave()
+        {
+            var claimService = Game.ActiveScene.GetAllComponents<ApartmentClaimService>().FirstOrDefault();
+            if (claimService is null) { Log.Error("--- ub_qa_force_save --- No ApartmentClaimService found."); return; }
+
+            var result = claimService.TrySaveNow();
+            Log.Info($"--- ub_qa_force_save --- Succeeded={result.Succeeded} Error={result.Error}");
+        }
+
         [ConCmd("ub_qa_snapshot_properties")]
         public static void SnapshotProperties()
         {

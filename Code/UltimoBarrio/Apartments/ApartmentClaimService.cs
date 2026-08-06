@@ -46,18 +46,24 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 	public bool IsReady => _isReady;
 
 	/// <summary>
-	/// Reaplica la instantánea cargada (economía, llavero, hotbar) para todos los
-	/// jugadores actuales. Idempotente — WorldSnapshotService.Apply solo toca lo que
-	/// encuentra por InventoryId, así que llamarlo de nuevo tras spawnear/inicializar
-	/// un jugador nuevo no altera a los que ya se aplicaron correctamente. Condición
-	/// explícita, no delay: se llama desde PlayerInteractor.OnStart() justo después
-	/// de fijar su InventoryId, nunca antes.
+	/// Reaplica la instantánea cargada (inventarios, economía, llavero, hotbar) para
+	/// todos los jugadores actuales. Idempotente — tanto ApartmentRegistry.ApplySnapshot
+	/// como WorldSnapshotService.Apply solo tocan lo que encuentran por InventoryId, así
+	/// que llamarlo de nuevo tras spawnear/inicializar un jugador nuevo no altera a los
+	/// que ya se aplicaron correctamente. Condición explícita, no delay: se llama desde
+	/// PlayerInteractor.OnStart() justo después de fijar su InventoryId, nunca antes.
+	/// Incluye ApplySnapshot (inventarios/apartamentos) además de WorldSnapshotService.Apply
+	/// (economía/llavero/misiones/fortificación/reloj) — el primer intento de este fix solo
+	/// cubría el segundo, así que el inventario del jugador (madera, chatarra, ...) seguía
+	/// sin sobrevivir Stop/Play por la misma causa raíz que ya se había arreglado para el
+	/// llavero, pero en la mitad del código que no se tocó entonces.
 	/// </summary>
 	public void TryReapplyPlayerState()
 	{
 		if ( _loadedSnapshot is null )
 			return;
 
+		_registry?.ApplySnapshot( _loadedSnapshot );
 		WorldSnapshotService.Apply( _loadedSnapshot, Scene );
 	}
 
