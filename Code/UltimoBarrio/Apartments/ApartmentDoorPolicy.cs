@@ -13,6 +13,23 @@ namespace UltimoBarrio.Apartments
         [Property] public string ApartmentId { get; set; } = "apartment-a01";
         [Property] public bool IsLocked { get; set; } = true;
 
+        protected override void OnStart()
+        {
+            ApplyPhysicalState();
+        }
+
+        /// <summary>
+        /// La puerta bloquea de verdad: mientras está cerrada, su Collider es
+        /// sólido (IsTrigger=false) y detiene el movimiento; al abrirla se
+        /// vuelve trigger, dejando pasar sin dejar de ser el objetivo del
+        /// trace de interacción (Scene.Trace sigue impactando triggers).
+        /// </summary>
+        private void ApplyPhysicalState()
+        {
+            var col = Components.Get<Collider>();
+            if (col != null) col.IsTrigger = !IsLocked;
+        }
+
         public string GetInteractionPrompt(InteractionRequest request)
         {
             var apt = Scene.GetAllComponents<ApartmentComponent>().FirstOrDefault(a => a.ApartmentId == ApartmentId);
@@ -38,6 +55,7 @@ namespace UltimoBarrio.Apartments
             if (!CanInteract(request)) return;
 
             IsLocked = !IsLocked;
+            ApplyPhysicalState();
             Log.Info($"[DoorPolicy] Door {ApartmentId} is now {(IsLocked ? "Locked" : "Unlocked")}");
         }
     }

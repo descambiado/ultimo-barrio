@@ -106,6 +106,54 @@
                   "SaveVersion": 1,
                   "SpawnReference": null,
                   "StashReference": null
+                },
+                {
+                  "__type": "UltimoBarrio.Fortification.ApartmentFortification",
+                  "__guid": "208996cc-e43c-42c2-912e-0dacace4fbd4",
+                  "__enabled": true,
+                  "Flags": 0,
+                  "ApartmentId": "apartment-a01",
+                  "BaseDoorMaxHealth": 250,
+                  "BaseWindowMaxHealth": 150,
+                  "DoorReference": null,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null
+                },
+                {
+                  "__type": "UltimoBarrio.Fortification.ApartmentFortification",
+                  "__guid": "9718fb60-1d76-4237-b017-2d0de424fccf",
+                  "__enabled": true,
+                  "Flags": 0,
+                  "ApartmentId": "apartment-a01",
+                  "BaseDoorMaxHealth": 250,
+                  "BaseWindowMaxHealth": 150,
+                  "DoorReference": null,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null
+                },
+                {
+                  "__type": "UltimoBarrio.Fortification.ApartmentFortification",
+                  "__guid": "8100e214-7e92-4f19-8a5e-e8fce3417e4b",
+                  "__enabled": true,
+                  "Flags": 0,
+                  "ApartmentId": "apartment-a01",
+                  "BaseDoorMaxHealth": 250,
+                  "BaseWindowMaxHealth": 150,
+                  "DoorReference": null,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null
                 }
               ],
               "Children": [
@@ -431,6 +479,22 @@
                   "SaveVersion": 1,
                   "SpawnReference": null,
                   "StashReference": null
+                },
+                {
+                  "__type": "UltimoBarrio.Fortification.ApartmentFortification",
+                  "__guid": "1e8b2427-ba45-469f-b1b9-711e8e1374ee",
+                  "__enabled": true,
+                  "Flags": 0,
+                  "ApartmentId": "apartment-a02",
+                  "BaseDoorMaxHealth": 250,
+                  "BaseWindowMaxHealth": 150,
+                  "DoorReference": null,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null
                 }
               ],
               "Children": [
@@ -756,6 +820,22 @@
                   "SaveVersion": 1,
                   "SpawnReference": null,
                   "StashReference": null
+                },
+                {
+                  "__type": "UltimoBarrio.Fortification.ApartmentFortification",
+                  "__guid": "a30052f1-0c90-448e-8648-e0e6ebfabfea",
+                  "__enabled": true,
+                  "Flags": 0,
+                  "ApartmentId": "apartment-a03",
+                  "BaseDoorMaxHealth": 250,
+                  "BaseWindowMaxHealth": 150,
+                  "DoorReference": null,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null
                 }
               ],
               "Children": [
@@ -1031,6 +1111,22 @@
                   "SaveVersion": 1,
                   "SpawnReference": null,
                   "StashReference": null
+                },
+                {
+                  "__type": "UltimoBarrio.Fortification.ApartmentFortification",
+                  "__guid": "3554c1c4-2c2a-4f45-9813-6c48eafb45b1",
+                  "__enabled": true,
+                  "Flags": 0,
+                  "ApartmentId": "apartment-a04",
+                  "BaseDoorMaxHealth": 250,
+                  "BaseWindowMaxHealth": 150,
+                  "DoorReference": null,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null
                 }
               ],
               "Children": [
@@ -1306,6 +1402,22 @@
                   "SaveVersion": 1,
                   "SpawnReference": null,
                   "StashReference": null
+                },
+                {
+                  "__type": "UltimoBarrio.Fortification.ApartmentFortification",
+                  "__guid": "b9f6a3c8-089f-43e3-a7a3-d5f53766aa74",
+                  "__enabled": true,
+                  "Flags": 0,
+                  "ApartmentId": "apartment-a05",
+                  "BaseDoorMaxHealth": 250,
+                  "BaseWindowMaxHealth": 150,
+                  "DoorReference": null,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null
                 }
               ],
               "Children": [
@@ -1581,6 +1693,22 @@
                   "SaveVersion": 1,
                   "SpawnReference": null,
                   "StashReference": null
+                },
+                {
+                  "__type": "UltimoBarrio.Fortification.ApartmentFortification",
+                  "__guid": "16924ce6-e2ea-4cb1-94c9-3ccc1c4f538d",
+                  "__enabled": true,
+                  "Flags": 0,
+                  "ApartmentId": "apartment-a06",
+                  "BaseDoorMaxHealth": 250,
+                  "BaseWindowMaxHealth": 150,
+                  "DoorReference": null,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null
                 }
               ],
               "Children": [

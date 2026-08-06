@@ -437,5 +437,80 @@ namespace UltimoBarrio.QA
             Log.Info($"--- ub_qa_test_craft --- con ingredientes: wood {woodBefore}->{woodAfter} scrap {scrapBefore}->{scrapAfter} components {compBefore}->{compAfter} kit {kitBefore}->{kitAfter}");
             Log.Info($"--- ub_qa_test_craft --- exito={kitAfter > kitBefore && woodAfter == woodBefore - 8 && scrapAfter == scrapBefore - 6 && compAfter == compBefore - 2}");
         }
+
+        /// <summary>
+        /// Diagnóstico: la puerta física de un apartamento — DestructibleStructure
+        /// autocreada por ApartmentFortification sobre la Claim Portal, daño,
+        /// reparación y el bloqueo físico real de ApartmentDoorPolicy (Collider
+        /// IsTrigger). No sustituye la reclamación real (ya probada por
+        /// ApartmentClaimService + ub_test_all); aísla si la puerta resultante
+        /// tiene vida/daño/reparación/bloqueo reales.
+        /// </summary>
+        [ConCmd("ub_qa_test_door")]
+        public static void TestDoor(string apartmentId = "apartment-a01")
+        {
+            var apt = Game.ActiveScene.GetAllComponents<Apartments.ApartmentComponent>().FirstOrDefault(a => a.ApartmentId == apartmentId);
+            if (apt is null) { Log.Error($"--- ub_qa_test_door --- Apartamento '{apartmentId}' no encontrado."); return; }
+
+            var fort = apt.GameObject.Components.Get<Fortification.ApartmentFortification>();
+            Log.Info($"--- ub_qa_test_door --- ApartmentFortification presente: {fort != null}");
+            if (fort is null) return;
+
+            var doorStructure = fort.DoorStructure;
+            Log.Info($"--- ub_qa_test_door --- DoorReference resuelto: {fort.DoorReference?.Name} DoorStructure: {doorStructure != null}");
+            if (doorStructure is null) return;
+
+            Log.Info($"--- ub_qa_test_door --- Health inicial: {doorStructure.Health}/{doorStructure.MaxHealth}");
+
+            doorStructure.TakeDamage(new DamageEvent { Amount = 50f, Position = doorStructure.WorldPosition });
+            Log.Info($"--- ub_qa_test_door --- Tras 50 de daño: {doorStructure.Health}/{doorStructure.MaxHealth} dañoAplicado={doorStructure.Health < doorStructure.MaxHealth}");
+
+            doorStructure.Repair(20f);
+            Log.Info($"--- ub_qa_test_door --- Tras reparar 20: {doorStructure.Health}/{doorStructure.MaxHealth}");
+
+            var doorPolicy = fort.DoorReference?.Components.Get<Apartments.ApartmentDoorPolicy>();
+            var col = fort.DoorReference?.Components.Get<Collider>();
+            if (doorPolicy is null || col is null) { Log.Error("--- ub_qa_test_door --- Falta ApartmentDoorPolicy o Collider."); return; }
+
+            Log.Info($"--- ub_qa_test_door --- IsLocked={doorPolicy.IsLocked} Collider.IsTrigger={col.IsTrigger} (bloqueando={!col.IsTrigger})");
+
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            if (player is not null)
+            {
+                var req = new InteractionRequest { Identity = PlayerIdentity.FromGameObject(player), InteractorObject = player };
+                bool canBeforeOwnership = doorPolicy.CanInteract(req);
+                Log.Info($"--- ub_qa_test_door --- CanInteract (jugador de prueba, probablemente no propietario)={canBeforeOwnership}");
+
+                // Si el apartamento sigue libre, reclamarlo de verdad (kit real +
+                // gateway real IPressable.Press) para poder probar el resto del
+                // ciclo (toggle de puerta, upgrade) como propietario real.
+                if (apt.ClaimState == Apartments.ApartmentClaimState.Unclaimed)
+                {
+                    var invClaim = player.Components.Get<InventoryComponent>();
+                    invClaim?.TryAdd("apartment_door_kit", 1);
+                    player.WorldPosition = fort.DoorReference.WorldPosition;
+
+                    var claimInteractable = fort.DoorReference.Components.Get<Apartments.ApartmentClaimInteractable>();
+                    var pressable = claimInteractable as Component.IPressable;
+                    pressable?.Press(new Component.IPressable.Event());
+                    Log.Info($"--- ub_qa_test_door --- Claim intentado: ClaimState={apt.ClaimState} OwnerId={apt.OwnerId}");
+                }
+
+                if (apt.OwnerId == req.Identity.CanonicalId)
+                {
+                    doorPolicy.OnInteract(req);
+                    Log.Info($"--- ub_qa_test_door --- Tras toggle: IsLocked={doorPolicy.IsLocked} Collider.IsTrigger={col.IsTrigger}");
+
+                    var maxHealthBefore = doorStructure.MaxHealth;
+                    var levelBefore = fort.UpgradeLevel;
+                    var invUp = player.Components.Get<InventoryComponent>();
+                    invUp?.TryAdd("wood", 20);
+                    invUp?.TryAdd("chatarra", 20);
+                    invUp?.TryAdd("components", 20);
+                    bool upgraded = fort.TryUpgrade(player);
+                    Log.Info($"--- ub_qa_test_door --- TryUpgrade={upgraded} nivel {levelBefore}->{fort.UpgradeLevel} maxHealth {maxHealthBefore}->{doorStructure.MaxHealth}");
+                }
+            }
+        }
     }
 }

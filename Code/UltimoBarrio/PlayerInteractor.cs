@@ -89,8 +89,33 @@ namespace UltimoBarrio
                         var apt = Scene.GetAllComponents<ApartmentComponent>().FirstOrDefault(a => a.ApartmentId == claimable.ApartmentId);
                         if (apt != null)
                         {
-                            string prompt = apt.ClaimState == ApartmentClaimState.Unclaimed ? "Este piso está disponible" : "Este piso ya tiene dueño";
-                            _hud?.ShowPrompt(prompt, apt.ClaimState == ApartmentClaimState.Unclaimed ? "Pulsa E para reclamarlo" : "");
+                            // Ya reclamada: la puerta pasa a comportarse como puerta real
+                            // (ApartmentDoorPolicy, abrir/cerrar), no como portal de claim.
+                            // Sin esto, Get<IWorldInteractable>() siempre resolvía a
+                            // ApartmentClaimInteractable (mismo GameObject, cast primero)
+                            // y el propietario nunca podía llegar a abrir/cerrar su puerta.
+                            if (apt.ClaimState != ApartmentClaimState.Unclaimed)
+                            {
+                                var doorPolicy = tr.GameObject.Components.Get<Apartments.ApartmentDoorPolicy>();
+                                if (doorPolicy != null)
+                                {
+                                    string doorPrompt = doorPolicy.GetInteractionPrompt(req);
+                                    bool doorCan = doorPolicy.CanInteract(req);
+                                    _hud?.ShowPrompt(doorPrompt, doorCan ? "Pulsa E" : "");
+
+                                    if (Input.Pressed("Use") && doorCan)
+                                    {
+                                        Log.Info($"[Interact] DoorPolicy: {claimable.ApartmentId}");
+                                        doorPolicy.OnInteract(req);
+                                    }
+                                    return;
+                                }
+
+                                _hud?.ShowPrompt("Este piso ya tiene dueño", "");
+                                return;
+                            }
+
+                            _hud?.ShowPrompt("Este piso está disponible", "Pulsa E para reclamarlo");
 
                             if (Input.Pressed("Use"))
                             {

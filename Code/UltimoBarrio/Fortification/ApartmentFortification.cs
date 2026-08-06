@@ -29,9 +29,25 @@ namespace UltimoBarrio.Fortification
         {
             if ( Networking.IsHost )
             {
+                ResolveDoorReference();
                 EnsureDoorStructure();
                 ApplyUpgradeBonuses();
             }
+        }
+
+        /// <summary>
+        /// Resuelve DoorReference si no viene fijado en el editor — mismo patrón
+        /// que ApartmentComponent.TryValidateConfiguration: busca el hijo con
+        /// ApartmentClaimInteractable o cuyo nombre contenga "Claim"/"Door". Evita
+        /// depender de wiring manual de referencias GameObject en la escena.
+        /// </summary>
+        private void ResolveDoorReference()
+        {
+            if ( DoorReference.IsValid() )
+                return;
+
+            DoorReference = GameObject.Components.GetAll<Apartments.ApartmentClaimInteractable>( FindMode.EverythingInSelfAndDescendants ).FirstOrDefault()?.GameObject
+                ?? GameObject.Children.FirstOrDefault( c => c.Name.Contains( "Claim" ) || c.Name.Contains( "Door" ) );
         }
 
         /// <summary>Localiza/crea la estructura de la puerta sobre DoorReference.</summary>
