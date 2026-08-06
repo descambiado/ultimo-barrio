@@ -17,6 +17,15 @@ namespace UltimoBarrio.QA
             var failed = 0;
 
             // Reglas de transición de la FSM del saqueador (tabla pura).
+            //
+            // AVISO: SaqueadorBrain.ChangeState() no valida transiciones — acepta
+            // cualquier estado sin comprobar el origen. Esta tabla documenta el
+            // diseño previsto, pero no está enlazada al código real de OnUpdate();
+            // por tanto solo puede comprobar que la tabla es internamente
+            // consistente (cada fila "legal=true" aparece en el set derivado de
+            // filas legales, cada fila "legal=false" no aparece en él), no que
+            // SaqueadorBrain la respete en runtime. Si se necesita esa garantía,
+            // añadir un guard real a ChangeState() y comprobarlo aquí en su lugar.
             var rules = new List<(AI.SaqueadorBrain.SaqueadorState from, AI.SaqueadorBrain.SaqueadorState to, bool legal)>
             {
                 ( AI.SaqueadorBrain.SaqueadorState.Idle, AI.SaqueadorBrain.SaqueadorState.Patrol, true ),
@@ -31,14 +40,17 @@ namespace UltimoBarrio.QA
                 ( AI.SaqueadorBrain.SaqueadorState.Retreat, AI.SaqueadorBrain.SaqueadorState.Attack, false )
             };
 
+            var declaredLegal = new HashSet<(AI.SaqueadorBrain.SaqueadorState, AI.SaqueadorBrain.SaqueadorState)>(
+                rules.Where( r => r.legal ).Select( r => (r.from, r.to) ) );
+
             foreach ( var (from, to, legal) in rules )
             {
-                bool passes = legal; // La FSM solo permite las transiciones declaradas.
-                if ( passes ) passed++;
+                bool isInLegalSet = declaredLegal.Contains( (from, to) );
+                if ( isInLegalSet == legal ) passed++;
                 else
                 {
                     failed++;
-                    Log.Error( $"[UBTest] FAIL: transición ilegal declarada {from}→{to}." );
+                    Log.Error( $"[UBTest] FAIL: tabla de transiciones inconsistente para {from}→{to}." );
                 }
             }
 
