@@ -1,5 +1,129 @@
 # Progreso de ejecución autónoma — Último Barrio
 
+## E-PICKUP Y LLAVERO — leer esto primero (2026-08-06, continuación tras aviso del usuario)
+
+**Rama**: `integration/wizard-holy-grail`. **HEAD**: `fae32d7`.
+**Commits de esta pasada**: `fae32d7` (fix físico de E-pickup + fix raíz de
+persistencia de llavero).
+
+El usuario señaló correctamente que el informe anterior confundía QA (comandos
+que invocan servicios directamente) con verificación física real (input →
+trace → prompt → RPC → inventario). Se auditó la cadena completa y se
+encontraron dos bugs reales:
+
+### Bug 1 — no era el pickup, era el método de verificación anterior
+
+La lógica de recogida (`ResourceNode`, `WorldItemPickup`, `InventoryComponent.
+AddItem`) seguía intacta y correcta. Lo que nunca se había probado de verdad
+era la cadena `Input.Pressed("Use")` → trace desde cámara → resolución de
+`IWorldInteractable` → RPC al host. No hay ninguna herramienta MCP capaz de
+simular una tecla física (confirmado con `search_tools`, 0 resultados) — así
+que se refactorizó `PlayerInteractor.OnUpdate()` en `ProcessInteraction(bool
+pressed)` y se añadió `DebugForceUseAttempt()`, que llama exactamente al mismo
+método con `pressed=true`. Sustituye solo el evento de teclado; el trace, el
+`CanInteract`, la RPC al host y el `AddItem` son el código de producción real,
+no un atajo.
+
+Se creó un pickup determinista real (`Wood Pickup Test`, `models/citizen_props/
+crate01.vmdl`, no `box.vmdl`) y `ub_qa_physical_pickup_test`, que solo
+posiciona/orienta al jugador (equivalente a "acercarse y mirar") y dispara
+`DebugForceUseAttempt` — no toca inventario directamente.
+
+**Dos bugs reales de la propia prueba** (documentados en el código porque
+volverán a morder la próxima vez): `ProcessInteraction` usa
+`PlayerController.EyeAngles`, no `WorldRotation`, para la dirección del trace
+— fijar solo `WorldRotation` no mueve la cámara. Y el trace parte de
+`WorldPosition + Up*64` (altura de ojos), no de la base del jugador — mirar
+desde la base subestima el pitch necesario para apuntar a un ítem en el suelo.
+
+**Resultado real, con log completo**: trace hit=True → `CanInteract=True` →
+`HostReceived=True` → `AddItem=Succeeded` → `wood:0`→`wood:1` →
+`Consumed=True`. Instrumentación `UB.Pickup Attempt=<id> ...` añadida, solo se
+loguea al pulsar (real o forzado), nunca por frame.
+
+### Bug 2 — causa raíz real de "el llavero no sobrevive Stop/Play"
+
+`SteamPlayerIdentityProvider` es una clase normal, nunca se registra como
+`Component` de escena. `PlayerInteractor.OnStart()` la buscaba con
+`Scene.GetAllComponents<IPlayerIdentityProvider>()` — que SIEMPRE devolvía
+null, así que el bloque entero que fija `InventoryComponent.InventoryId`
+nunca llegaba a ejecutarse: el `InventoryId` de cualquier jugador se quedaba
+en `""` para siempre. Confirmado leyendo el valor real en memoria
+(`get_game_object` con `includeComponentProperties`). Todos los demás
+servicios (`ApartmentClaimService`, `PropertyClaimService`, `RentalService`,
+`KeyringService`) ya evitaban este mismo problema instanciando el proveedor
+localmente — `PlayerInteractor` era el único sitio que no lo hacía.
+
+Esto explica el gap directamente: `WorldSnapshotService` indexa el estado del
+jugador por `InventoryId`; en blanco, `Capture`/`Apply` nunca podían
+correlacionar credenciales guardadas con el jugador real.
+
+**Fix**: `PlayerInteractor.OnStart()` instancia el proveedor localmente (igual
+que el resto). Además, `ApartmentClaimService.TryReapplyPlayerState()`
+(idempotente, reaplica `WorldSnapshotService.Apply` sobre la instantánea ya
+cargada y cacheada) se llama desde `PlayerInteractor.OnStart()` justo después
+de fijar `InventoryId` — condición explícita (jugador válido + InventoryId
+recién fijado + `KeyringItem` presente + snapshot cargado), no un delay,
+cubriendo los dos órdenes posibles de inicialización entre
+`ApartmentClaimService` y el jugador.
+
+**Verificado real**: credencial Resident otorgada vía el flujo de alquiler
+real, Stop→Play, snapshot antes/después — PropertyId/LockId/KeyRevision/
+AccessLevel idénticos. `ub_test_all`: 36/36, sin regresiones.
+
+### Bloqueo al cerrar esta pasada
+
+El editor volvió a colgarse tras esta ronda de ciclos Stop/Play (mismo síntoma
+ya documentado antes en este archivo). El `save_scene` que capturó el fixture
+`Wood Pickup Test` sí se completó antes del cuelgue (confirmado por el diff
+real en `Assets/scenes/ultimo_barrio_alpha.scene`, 88 líneas añadidas). No se
+pudo confirmar `editor_status` después de eso.
+
+### PROGRESO JUGABLE REAL
+
+| Sistema | Estado |
+|---|---|
+| E pickup (input→trace→RPC→inventario) | **FUNCIONA** (verificado real, ver arriba) |
+| Input físico (tecla E literal) | No simulable desde MCP — sustituido por `DebugForceUseAttempt` (mismo código real, distinto disparador) |
+| Prompt | INTERACTUABLE (se ejecuta cada frame) — no capturado en pantalla esta pasada |
+| Trace | FUNCIONA |
+| Host validation | FUNCIONA |
+| Inventory | FUNCIONA |
+| Hotbar | IMPLEMENTADO (afirmado funcionando en una pasada anterior a esta auditoría; no reverificado ahora) |
+| Drop/re-pickup | IMPLEMENTADO (no reverificado esta pasada) |
+| Crafting físico | NO INICIADO esta pasada (pendiente, viene después de E según el propio orden pedido) |
+| Door kit físico / Claim físico | FUNCIONA vía gateway real (`DoorAnchor.OnInteract`/`ClaimCabinetAnchor.OnInteract`/`PropertyClaimService.TryClaimAbandonedShell`) pero no vía el mismo patrón `DebugForceUseAttempt` que ahora se exige — pendiente de re-verificar con ese rigor exacto |
+| Stash | IMPLEMENTADO, no reverificado esta pasada |
+| Keyring Stop/Play | **PERSISTE** (verificado real, ver arriba) |
+| Barricade placement | IMPLEMENTADO (verificado con gateway real en pasadas anteriores, no con `DebugForceUseAttempt`) |
+| Barricade persistence | PERSISTE (verificado en pasadas anteriores) |
+| Armas | NO INICIADO |
+| Enemigos | IMPLEMENTADO (Bruto/Merodeador escritos, `FeatureFlags` apagados, sin spawn probado) |
+| Primera noche | NO INICIADO |
+| Economía | COMPILA (Trader auditado, no reverificado físico) |
+| Misiones | VISIBLE (panel confirmado renderizando en pasada anterior) |
+| Vehículo | NO INICIADO |
+
+### Siguiente comando exacto al reanudar
+
+1. `editor_status` — si sigue colgado, reintentos con backoff (ya documentado
+   más abajo en este archivo el patrón que funcionó la vez anterior: a veces
+   requiere que el usuario reabra el proyecto).
+2. Extender el mismo patrón `DebugForceUseAttempt` (ya construido y probado
+   para pickups) a los demás flujos por E que el usuario pidió re-verificar
+   con ese rigor: `DoorAnchor`/`ClaimCabinetAnchor`/`CraftingStation`/
+   `BarricadeAnchor` — todos ya implementan `IWorldInteractable`, así que el
+   mismo mecanismo aplica sin más refactor.
+3. Recoger scrap_metal/components (crear fixtures deterministas como con
+   wood), fabricar `apartment_door_kit` con la UI real de `CraftingPanel`
+   (no `ub_qa_test_craft`), luego repetir el recorrido de vivienda completo
+   (instalar puerta → armario → reclamar → stash) con el mismo rigor.
+4. Solo entonces: BuildVolume orientado al loop jugable, luego armas/
+   enemigos/primera noche/economía/misiones/vehículo, en ese orden, sin
+   parar a preguntar (instrucción ya vigente).
+
+---
+
 ## VERIFICADO EN MOTOR (2026-08-06, editor recuperado) — leer esto primero
 
 El editor volvió a responder. Se cerró el checklist de reanudación de la
