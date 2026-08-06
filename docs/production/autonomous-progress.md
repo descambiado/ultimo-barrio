@@ -1,5 +1,43 @@
 # Progreso de ejecución autónoma — Último Barrio
 
+## VERIFICADO EN MOTOR (2026-08-06, editor recuperado) — leer esto primero
+
+El editor volvió a responder. Se cerró el checklist de reanudación de la
+sección "SISTEMA DE PROPIEDADES" de abajo y se verificó físicamente con
+`ub_qa_test_property_claim`, `ub_qa_test_property_credential`,
+`ub_qa_test_property_rent` y ciclos reales `play_stop`/`play_start`
+(commit `c6e5d14`).
+
+**Dos bugs reales encontrados y arreglados, ninguno detectable con dotnet
+build**: (1) `SaveMigrator` migraba `SaveSnapshot.SaveVersion` 2→3 pero no
+`ApartmentSaveData.SaveVersion` de cada registro — `TryValidateSnapshot`
+rechazaba TODO save real como corrupto, bloqueando toda persistencia, no solo
+la de propiedades. (2) `LocalPersistenceProvider.CloneForSave` (lo que
+realmente se escribe a disco) nunca copiaba Clock/Fortifications/Missions/
+PlayerStates — bug preexistente a esta sesión, invisible hasta ahora.
+
+**Confirmado funcionando de verdad**: reclamo de AbandonedShell (instalar
+puerta → instalar armario → claim atómico → rekey automático), alquiler de
+Rental (pagar → tenant → credencial), y las 4 reglas de Cliente B del spec
+(sin credencial deniega, con credencial abre, revocar deniega, rekey invalida
+la llave vieja) — todo vía los gateways reales, con estado de
+`property-shell-01`/`property-rental-01` sobreviviendo Stop→Play
+byte a byte. `ub_test_all`: 36/36 sin fallos.
+
+**Gap conocido, no perseguido más**: la lista de credenciales del llavero no
+sobrevive Stop→Play (probablemente `ApplyKeyrings` corre antes de que
+`PlayerInteractor.OnStart` fije el `InventoryId` canónico del jugador — mismo
+patrón de bug de orden-de-init ya visto varias veces esta sesión). No bloquea
+a jugadores reales: el acceso directo owner/tenant sobre PropertyComponent sí
+persiste y es la vía principal.
+
+**Pendiente real** (Tarea #26+): BuildVolume/construcción, Property
+Authoring Tool, mapear el primer distrito (11 propiedades reales, no las 2
+fixtures de prueba en `-2200,1800/2000,216`), y solo después retomar
+armas/IA/economía/vehículo per la instrucción original del usuario.
+
+---
+
 Última actualización: 2026-08-06, pivote de arquitectura pedido por el usuario:
 "Antes de continuar con armas, IA o el ciclo nocturno, corrige la arquitectura de
 vivienda." Sustituye el modelo de 6 ApartmentComponent hardcodeados por un
