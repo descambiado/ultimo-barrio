@@ -264,10 +264,11 @@ public sealed class PropertyClaimService : Component, IPropertyAccessPolicy
 	/// </summary>
 	private static void IssueResidentCredential( PropertyComponent property, GameObject tenant, string tenantId )
 	{
-		var door = Game.ActiveScene.GetAllComponents<DoorAnchor>()
-			.Where( a => a.PropertyId == property.PropertyId && a.HasDoor )
-			.Select( a => a.DoorReference )
-			.FirstOrDefault();
+		// Las propiedades Rental normalmente ya vienen con la puerta instalada de fábrica
+		// (no pasan por el flujo de instalación de AbandonedShell), así que se busca la
+		// PropertyDoor directamente por PropertyId en vez de depender de un DoorAnchor.
+		var door = Game.ActiveScene.GetAllComponents<PropertyDoor>()
+			.FirstOrDefault( d => d.PropertyId == property.PropertyId );
 
 		if ( door is null )
 			return;

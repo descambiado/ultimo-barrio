@@ -164,6 +164,7 @@ public sealed class LocalPersistenceProvider : IPersistenceProvider
 				|| !Json.TryDeserialize<SaveEnvelope>( envelopeJson, out var envelope )
 				|| envelope is null )
 			{
+				Log.Warning( $"UB.Save DIAG_EnvelopeParseFailed path={path} empty={string.IsNullOrWhiteSpace( envelopeJson )}" );
 				return EnvelopeReadResult.Invalid();
 			}
 
@@ -172,12 +173,14 @@ public sealed class LocalPersistenceProvider : IPersistenceProvider
 				|| string.IsNullOrEmpty( envelope.PayloadJson )
 				|| CalculateContentCrc( envelope ) != envelope.ContentCrc64 )
 			{
+				Log.Warning( $"UB.Save DIAG_EnvelopeInvalid gen={envelope.Generation}/{expectedGeneration} slot={envelope.SlotId}/{expectedSlotId} emptyPayload={string.IsNullOrEmpty( envelope.PayloadJson )} crc={CalculateContentCrc( envelope )}/{envelope.ContentCrc64}" );
 				return EnvelopeReadResult.Invalid();
 			}
 
 			if ( envelope.EnvelopeVersion > SaveEnvelope.CurrentVersion
 				|| envelope.SaveVersion > SaveSnapshot.CurrentVersion )
 			{
+				Log.Warning( $"UB.Save DIAG_FutureVersion envVer={envelope.EnvelopeVersion}/{SaveEnvelope.CurrentVersion} saveVer={envelope.SaveVersion}/{SaveSnapshot.CurrentVersion}" );
 				return EnvelopeReadResult.FutureVersion();
 			}
 
@@ -185,24 +188,42 @@ public sealed class LocalPersistenceProvider : IPersistenceProvider
 				|| !Json.TryDeserialize<SaveSnapshot>( envelope.PayloadJson, out var snapshot )
 				|| snapshot is null )
 			{
+				Log.Warning( $"UB.Save DIAG_PayloadParseFailed envVer={envelope.EnvelopeVersion}/{SaveEnvelope.CurrentVersion}" );
 				return EnvelopeReadResult.Invalid();
 			}
 
 			if ( snapshot.SaveVersion > SaveSnapshot.CurrentVersion )
 				return EnvelopeReadResult.FutureVersion();
 
-			if ( envelope.SaveVersion != snapshot.SaveVersion
-				|| !_migrator.TryMigrate( snapshot, out var migrated, out _ )
-				|| migrated.Generation != expectedGeneration
-				|| !TryValidateSnapshot( migrated, expectedSlotId, out _ ) )
+			if ( envelope.SaveVersion != snapshot.SaveVersion )
 			{
+				Log.Warning( $"UB.Save DIAG_VersionMismatch envelopeSaveVer={envelope.SaveVersion} snapshotSaveVer={snapshot.SaveVersion}" );
+				return EnvelopeReadResult.Invalid();
+			}
+
+			if ( !_migrator.TryMigrate( snapshot, out var migrated, out var migrateError ) )
+			{
+				Log.Warning( $"UB.Save DIAG_MigrateFailed error={migrateError}" );
+				return EnvelopeReadResult.Invalid();
+			}
+
+			if ( migrated.Generation != expectedGeneration )
+			{
+				Log.Warning( $"UB.Save DIAG_GenerationMismatch migrated={migrated.Generation} expected={expectedGeneration}" );
+				return EnvelopeReadResult.Invalid();
+			}
+
+			if ( !TryValidateSnapshot( migrated, expectedSlotId, out var validateError ) )
+			{
+				Log.Warning( $"UB.Save DIAG_ValidateFailed error={validateError}" );
 				return EnvelopeReadResult.Invalid();
 			}
 
 			return EnvelopeReadResult.Valid( migrated );
 		}
-		catch ( Exception )
+		catch ( Exception ex )
 		{
+			Log.Warning( $"UB.Save DIAG_Exception {ex.GetType().Name}: {ex.Message}" );
 			return EnvelopeReadResult.Invalid();
 		}
 	}
@@ -321,6 +342,13 @@ public sealed class LocalPersistenceProvider : IPersistenceProvider
 		return true;
 	}
 
+	/// <summary>
+	/// Construye la instantánea exacta que se serializa a disco — cualquier
+	/// campo de SaveSnapshot que no se copie aquí explícitamente se pierde en
+	/// cada guardado sin ningún error visible, sin importar lo bien que
+	/// WorldSnapshotService.Capture lo haya rellenado en memoria. Al añadir un
+	/// campo nuevo a SaveSnapshot, hay que añadirlo aquí también.
+	/// </summary>
 	private static SaveSnapshot CloneForSave( SaveSnapshot source, long generation )
 	{
 		return new SaveSnapshot
@@ -350,7 +378,86 @@ public sealed class LocalPersistenceProvider : IPersistenceProvider
 					ItemId = s.ItemId,
 					Amount = s.Amount
 				} ).ToList()
-			} ).ToList() ?? new List<InventorySaveData>()
+			} ).ToList() ?? new List<InventorySaveData>(),
+			Clock = source.Clock is null ? null : new ClockSaveData
+			{
+				Phase = source.Clock.Phase,
+				RemainingSeconds = source.Clock.RemainingSeconds,
+				LightLevel = source.Clock.LightLevel,
+				SaveVersion = source.Clock.SaveVersion
+			},
+			Fortifications = source.Fortifications?.Select( f => new FortificationSaveData
+			{
+				ApartmentId = f.ApartmentId,
+				UpgradeLevel = f.UpgradeLevel,
+				DoorHealth = f.DoorHealth,
+				DoorMaxHealth = f.DoorMaxHealth,
+				SaveVersion = f.SaveVersion,
+				Barricades = f.Barricades?.Select( b => new BarricadeSaveData
+				{
+					AnchorId = b.AnchorId,
+					Health = b.Health,
+					MaxHealth = b.MaxHealth
+				} ).ToList() ?? new List<BarricadeSaveData>()
+			} ).ToList() ?? new List<FortificationSaveData>(),
+			Missions = source.Missions?.Select( m => new MissionSaveData
+			{
+				MissionId = m.MissionId,
+				SaveVersion = m.SaveVersion,
+				Objectives = m.Objectives?.Select( o => new ObjectiveSaveData
+				{
+					Id = o.Id,
+					Progress = o.Progress,
+					Completed = o.Completed
+				} ).ToList() ?? new List<ObjectiveSaveData>()
+			} ).ToList() ?? new List<MissionSaveData>(),
+			PlayerStates = source.PlayerStates?.Select( p => new PlayerStateSaveData
+			{
+				PlayerKey = p.PlayerKey,
+				SelectedHotbarSlot = p.SelectedHotbarSlot,
+				SaveVersion = p.SaveVersion
+			} ).ToList() ?? new List<PlayerStateSaveData>(),
+			Properties = source.Properties?.Select( p => new PropertySaveData
+			{
+				PropertyId = p.PropertyId,
+				PropertyType = p.PropertyType,
+				OwnerPersistentId = p.OwnerPersistentId,
+				TenantPersistentId = p.TenantPersistentId,
+				CoOwners = p.CoOwners?.ToList() ?? new List<string>(),
+				Guests = p.Guests?.ToList() ?? new List<string>(),
+				RentalState = p.RentalState,
+				NextRentAt = p.NextRentAt,
+				ClaimState = p.ClaimState,
+				UpgradeLevel = p.UpgradeLevel,
+				SecurityLevel = p.SecurityLevel,
+				DefenseScore = p.DefenseScore,
+				HasClaimCabinet = p.HasClaimCabinet,
+				SaveVersion = p.SaveVersion,
+				Doors = p.Doors?.Select( d => new PropertyDoorSaveData
+				{
+					AnchorId = d.AnchorId,
+					Health = d.Health,
+					MaxHealth = d.MaxHealth,
+					UpgradeLevel = d.UpgradeLevel,
+					LockId = d.LockId,
+					KeyRevision = d.KeyRevision,
+					IsLocked = d.IsLocked
+				} ).ToList() ?? new List<PropertyDoorSaveData>()
+			} ).ToList() ?? new List<PropertySaveData>(),
+			Keyrings = source.Keyrings?.Select( k => new KeyringSaveData
+			{
+				PlayerKey = k.PlayerKey,
+				Credentials = k.Credentials?.Select( c => new AccessCredentialSaveData
+				{
+					PropertyId = c.PropertyId,
+					LockId = c.LockId,
+					KeyRevision = c.KeyRevision,
+					AccessLevel = c.AccessLevel,
+					IssuerPersistentId = c.IssuerPersistentId,
+					ExpiresAt = c.ExpiresAt,
+					Stealable = c.Stealable
+				} ).ToList() ?? new List<AccessCredentialSaveData>()
+			} ).ToList() ?? new List<KeyringSaveData>()
 		};
 	}
 

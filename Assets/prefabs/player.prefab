@@ -195,6 +195,11 @@
         "__enabled": true
       },
       {
+        "__type": "UltimoBarrio.Properties.Keys.KeyringItem",
+        "__guid": "e6f2b9d1-4c7a-4a3e-9f0d-1a2b3c4d5e6f",
+        "__enabled": true
+      },
+      {
         "__type": "UltimoBarrio.Missions.MissionJournal",
         "__guid": "8a51d0d6-2ff2-4b2e-9f3b-6b0e4e3d3d21",
         "__enabled": true

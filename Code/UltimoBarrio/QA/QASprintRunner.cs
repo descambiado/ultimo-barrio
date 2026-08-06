@@ -8,6 +8,9 @@ using UltimoBarrio.Players;
 using UltimoBarrio.Economy;
 using UltimoBarrio.Core;
 using UltimoBarrio.UI;
+using UltimoBarrio.Properties;
+using UltimoBarrio.Properties.Doors;
+using UltimoBarrio.Properties.Keys;
 
 namespace UltimoBarrio.QA
 {
@@ -658,6 +661,181 @@ namespace UltimoBarrio.QA
             Core.FeatureFlags.EnableAI = enableAi;
             Core.FeatureFlags.EnableRaids = enableRaids;
             Log.Info($"--- ub_qa_toggle_ai --- EnableAI={Core.FeatureFlags.EnableAI} EnableRaids={Core.FeatureFlags.EnableRaids}");
+        }
+
+        /// <summary>
+        /// Recorrido de habitáculo abandonado: fabricar->instalar puerta->instalar
+        /// armario->claim atómico, vía los gateways reales (DoorAnchor.OnInteract,
+        /// ClaimCabinetAnchor.OnInteract, PropertyClaimService.TryClaimAbandonedShell).
+        /// </summary>
+        [ConCmd("ub_qa_test_property_claim")]
+        public static void TestPropertyClaim(string propertyId = "property-shell-01")
+        {
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            if (player is null) { Log.Error("--- ub_qa_test_property_claim --- No player found."); return; }
+
+            var inv = player.Components.Get<InventoryComponent>();
+            inv?.TryAdd("apartment_door_kit", 1);
+            inv?.TryAdd("claim_cabinet", 1);
+
+            var doorAnchor = Game.ActiveScene.GetAllComponents<DoorAnchor>().FirstOrDefault(a => a.PropertyId == propertyId);
+            var cabinetAnchor = Game.ActiveScene.GetAllComponents<ClaimCabinetAnchor>().FirstOrDefault(a => a.PropertyId == propertyId);
+            var property = Game.ActiveScene.GetAllComponents<PropertyComponent>().FirstOrDefault(p => p.PropertyId == propertyId);
+            if (doorAnchor is null || cabinetAnchor is null || property is null)
+            {
+                Log.Error("--- ub_qa_test_property_claim --- Fixture anchors/property not found.");
+                return;
+            }
+
+            var req = new InteractionRequest { Identity = PlayerIdentity.FromGameObject(player), InteractorObject = player };
+
+            player.WorldPosition = doorAnchor.WorldPosition;
+            doorAnchor.OnInteract(req);
+            Log.Info($"--- ub_qa_test_property_claim --- Puerta instalada: {doorAnchor.HasDoor}");
+
+            player.WorldPosition = cabinetAnchor.WorldPosition;
+            cabinetAnchor.OnInteract(req);
+            Log.Info($"--- ub_qa_test_property_claim --- Armario instalado: {cabinetAnchor.HasCabinet}");
+
+            player.WorldPosition = property.RespawnAnchor.IsValid() ? property.RespawnAnchor.WorldPosition : property.WorldPosition;
+
+            var claimService = Game.ActiveScene.GetAllComponents<PropertyClaimService>().FirstOrDefault();
+            if (claimService is null) { Log.Error("--- ub_qa_test_property_claim --- No PropertyClaimService found."); return; }
+
+            var connLocal = Connection.Local;
+            var resolvedPlayer = Game.ActiveScene.GetAllComponents<PlayerController>().FirstOrDefault(p => p.GameObject.Network.OwnerId == connLocal.Id);
+            Log.Info($"--- ub_qa_test_property_claim --- DIAG qaPlayer.Pos={player.WorldPosition} qaPlayer.Id={player.Id} connLocal.Id={connLocal?.Id} resolvedPlayer={resolvedPlayer?.GameObject.Id} resolvedPlayer.Pos={resolvedPlayer?.WorldPosition} property.Pos={property.WorldPosition}");
+
+            var result = claimService.TryClaimAbandonedShell(Connection.Local, propertyId);
+            Log.Info($"--- ub_qa_test_property_claim --- Claim: Succeeded={result.Succeeded} Failure={result.Failure} Message={result.Message}");
+            Log.Info($"--- ub_qa_test_property_claim --- Propiedad: ClaimState={property.ClaimState} Owner={property.OwnerPersistentId}");
+
+            var door = doorAnchor.DoorReference;
+            Log.Info($"--- ub_qa_test_property_claim --- Puerta tras claim: IsLocked={door?.IsLocked} LockId={door?.LockId} KeyRevision={door?.KeyRevision}");
+            Log.Info($"--- ub_qa_test_property_claim --- BuildVolume habilitado: {property.BuildVolume?.Enabled} Stash habilitado: {property.Stash?.Enabled}");
+        }
+
+        /// <summary>
+        /// Recorrido de credenciales sobre el habitáculo ya reclamado por
+        /// ub_qa_test_property_claim: otorgar, aislar el camino de la credencial
+        /// (limpiando el match directo de owner), revocar, y cambio de cerradura
+        /// invalidando la credencial vieja. Todo vía los gateways reales
+        /// (KeyringService RPCs, PropertyDoor.OnInteract, KeyringItem.HasAccess).
+        /// </summary>
+        [ConCmd("ub_qa_test_property_credential")]
+        public static void TestPropertyCredential(string propertyId = "property-shell-01")
+        {
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            if (player is null) { Log.Error("--- ub_qa_test_property_credential --- No player found."); return; }
+
+            var property = Game.ActiveScene.GetAllComponents<PropertyComponent>().FirstOrDefault(p => p.PropertyId == propertyId);
+            var door = Game.ActiveScene.GetAllComponents<PropertyDoor>().FirstOrDefault(d => d.PropertyId == propertyId);
+            var keyringService = Game.ActiveScene.GetAllComponents<KeyringService>().FirstOrDefault();
+            var keyring = player.Components.Get<KeyringItem>() ?? player.Components.GetOrCreate<KeyringItem>();
+            if (property is null || door is null || keyringService is null)
+            {
+                Log.Error("--- ub_qa_test_property_credential --- Fixture/service not found.");
+                return;
+            }
+
+            var identity = PlayerIdentity.FromGameObject(player);
+            if (property.OwnerPersistentId != identity.CanonicalId)
+            {
+                Log.Error($"--- ub_qa_test_property_credential --- El jugador no es owner de {propertyId} (ejecuta ub_qa_test_property_claim primero).");
+                return;
+            }
+
+            var req = new InteractionRequest { Identity = identity, InteractorObject = player };
+            var ownerId = property.OwnerPersistentId;
+
+            // KeyringItem.HasAccess exige llevar el ítem físico "keyring" en el inventario
+            // (mismo patrón que Wallet) -- sin él, ninguna credencial sirve aunque exista.
+            var inv = player.Components.Get<InventoryComponent>();
+            inv?.TryAdd("keyring", 1);
+
+            keyringService.RequestGrantAccess(player, propertyId, AccessLevel.Guest, 0f);
+            Log.Info($"--- ub_qa_test_property_credential --- Credencial otorgada: {keyring.FindCredential(propertyId) != null}");
+
+            // Aislar el camino de la credencial: quitar el match directo de owner
+            // para confirmar que la credencial por sí sola abre la puerta.
+            property.ApplyOwnership(string.Empty, PropertyClaimState.Claimed);
+            door.SetLocked(true);
+            door.OnInteract(req);
+            Log.Info($"--- ub_qa_test_property_credential --- Solo credencial (sin match directo): IsLocked={door.IsLocked} (esperado false)");
+
+            // Sin credencial ni match directo: debe denegar.
+            property.ApplyOwnership(string.Empty, PropertyClaimState.Claimed);
+            keyring.Revoke(propertyId);
+            door.SetLocked(true);
+            door.OnInteract(req);
+            Log.Info($"--- ub_qa_test_property_credential --- Sin credencial ni match directo: IsLocked={door.IsLocked} (esperado true)");
+
+            // Restaurar ownership para poder ejercer las RPCs de owner (grant/rekey).
+            property.ApplyOwnership(ownerId, PropertyClaimState.Claimed);
+
+            keyringService.RequestGrantAccess(player, propertyId, AccessLevel.Guest, 0f);
+            var oldLockId = door.LockId;
+            var oldKeyRevision = door.KeyRevision;
+            Log.Info($"--- ub_qa_test_property_credential --- Credencial re-otorgada, cerradura actual: LockId={oldLockId} KeyRevision={oldKeyRevision}");
+
+            keyringService.RequestRekeyDoor(propertyId);
+            Log.Info($"--- ub_qa_test_property_credential --- Tras rekey: LockId={door.LockId} KeyRevision={door.KeyRevision} (debe cambiar)");
+
+            // Aislar de nuevo el camino de la credencial para confirmar que la vieja ya no sirve
+            // (PruneStaleRevisions ya la habrá quitado del llavero — RequestRekeyDoor lo hace solo).
+            property.ApplyOwnership(string.Empty, PropertyClaimState.Claimed);
+            door.SetLocked(true);
+            door.OnInteract(req);
+            Log.Info($"--- ub_qa_test_property_credential --- Credencial vieja tras rekey (sin match directo): IsLocked={door.IsLocked} (esperado true, la RequestRekeyDoor ya podó la credencial vieja)");
+
+            property.ApplyOwnership(ownerId, PropertyClaimState.Claimed);
+            Log.Info($"--- ub_qa_test_property_credential --- Estado final restaurado: Owner={property.OwnerPersistentId}");
+        }
+
+        [ConCmd("ub_qa_test_property_rent")]
+        public static void TestPropertyRent(string propertyId = "property-rental-01")
+        {
+            var claimService = Game.ActiveScene.GetAllComponents<PropertyClaimService>().FirstOrDefault();
+            if (claimService is null) { Log.Error("--- ub_qa_test_property_rent --- No PropertyClaimService found."); return; }
+
+            var result = claimService.TryRentProperty(Connection.Local, propertyId);
+            Log.Info($"--- ub_qa_test_property_rent --- Rent: Succeeded={result.Succeeded} Failure={result.Failure} Message={result.Message}");
+        }
+
+        [ConCmd("ub_qa_test_property_abandon_rental")]
+        public static void TestPropertyAbandonRental(string propertyId = "property-rental-01")
+        {
+            var rentalService = Game.ActiveScene.GetAllComponents<RentalService>().FirstOrDefault();
+            if (rentalService is null) { Log.Error("--- ub_qa_test_property_abandon_rental --- No RentalService found."); return; }
+            rentalService.RequestAbandonRental(propertyId);
+        }
+
+        [ConCmd("ub_qa_snapshot_properties")]
+        public static void SnapshotProperties()
+        {
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            var keyring = player?.Components.Get<KeyringItem>();
+
+            Log.Info("=== SNAPSHOT PROPERTIES ===");
+            foreach (var property in Game.ActiveScene.GetAllComponents<PropertyComponent>().OrderBy(p => p.PropertyId))
+            {
+                Log.Info($"{property.PropertyId}: Type={property.PropertyType} ClaimState={property.ClaimState} Owner={property.OwnerPersistentId} Tenant={property.TenantPersistentId} RentalState={property.RentalState}");
+
+                var doorAnchor = Game.ActiveScene.GetAllComponents<DoorAnchor>().FirstOrDefault(a => a.PropertyId == property.PropertyId);
+                if (doorAnchor != null)
+                {
+                    var d = doorAnchor.DoorReference;
+                    Log.Info($"  Puerta {doorAnchor.AnchorId}: HasDoor={doorAnchor.HasDoor} IsLocked={d?.IsLocked} LockId={d?.LockId} KeyRevision={d?.KeyRevision} Health={d?.Health}/{d?.MaxHealth}");
+                }
+
+                var cabinetAnchor = Game.ActiveScene.GetAllComponents<ClaimCabinetAnchor>().FirstOrDefault(a => a.PropertyId == property.PropertyId);
+                if (cabinetAnchor != null)
+                    Log.Info($"  Armario: HasCabinet={cabinetAnchor.HasCabinet}");
+            }
+
+            Log.Info($"Llavero del jugador: {keyring?.Credentials.Count ?? 0} credenciales");
+            foreach (var c in keyring?.Credentials ?? Enumerable.Empty<AccessCredential>())
+                Log.Info($"  Credencial: Property={c.PropertyId} Level={c.AccessLevel} LockId={c.LockId} KeyRevision={c.KeyRevision}");
         }
     }
 }

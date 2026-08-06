@@ -8107,6 +8107,60 @@
               "OnComponentStart": null,
               "OnComponentUpdate": null,
               "SaveSlotId": "ultimo_barrio_alpha"
+            },
+            {
+              "__type": "UltimoBarrio.Persistence.AutoSaveManager",
+              "__guid": "c9f1d3cc-0f68-4bf8-bda1-c3b86550404a",
+              "__enabled": true,
+              "Flags": 0,
+              "Enabled": true,
+              "IntervalSeconds": 90,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            },
+            {
+              "__type": "UltimoBarrio.Properties.PropertyClaimService",
+              "__guid": "b1e5ab90-1fe7-4f73-98eb-33f89657901f",
+              "__enabled": true,
+              "Flags": 0,
+              "ClaimDistance": 150,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            },
+            {
+              "__type": "UltimoBarrio.Properties.Keys.KeyringService",
+              "__guid": "bbba3023-7328-47ba-8d01-c1da3d17402b",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            },
+            {
+              "__type": "UltimoBarrio.Properties.RentalService",
+              "__guid": "229e818d-df2b-4da5-8dd9-b32e1a5af266",
+              "__enabled": true,
+              "Flags": 0,
+              "GracePeriodSeconds": 300,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RentCycleSeconds": 1800,
+              "VoluntaryAbandonRefundFraction": 0.5
             }
           ],
           "Children": []
@@ -8197,278 +8251,432 @@
       ]
     },
     {
-      "__guid": "e4b9220f-4815-4d0b-8150-5dd7031fbbaa",
+      "__guid": "5b159c64-d1a1-4e1c-b178-7e7b7115b820",
       "__version": 2,
-      "__Prefab": "prefabs/player.prefab",
-      "__PrefabInstancePatch": {
-        "AddedObjects": [
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "ad09ae32-fcf9-4109-ba31-a772a7bacbdb"
-            },
-            "Parent": {
-              "Type": "GameObject",
-              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
-            },
-            "PreviousElement": {
-              "Type": "Component",
-              "IdValue": "d4f1b9a6-3e57-4a08-b2c9-6d05e83f1147"
-            },
-            "ContainerProperty": "Components",
-            "IsContainerArray": true,
-            "Data": {
-              "__type": "UltimoBarrio.UI.InventoryUI",
-              "__guid": "ad09ae32-fcf9-4109-ba31-a772a7bacbdb",
+      "Flags": 0,
+      "Name": "Property Shell 01",
+      "Position": "-2200,1800,216",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "UltimoBarrio.Properties.PropertyComponent",
+          "__guid": "903c8a9f-4d6c-406b-a5f7-4cd6a596d21a",
+          "__enabled": true,
+          "Flags": 0,
+          "Bounds": {
+            "Mins": "-128,-128,-128",
+            "Maxs": "128,128,128"
+          },
+          "BuildVolume": null,
+          "ClaimCabinet": null,
+          "Deposit": 25,
+          "DisplayName": "Habitaculo Prueba 01",
+          "DoorSlots": [],
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "PropertyId": "property-shell-01",
+          "PropertyType": "AbandonedShell",
+          "RentPrice": 50,
+          "RespawnAnchor": null,
+          "Stash": null,
+          "Structures": [],
+          "WindowSlots": []
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "5d18802c-ff30-429c-9e04-5c59d5af36a3",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Door Anchor",
+          "Position": "30,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.Properties.Doors.DoorAnchor",
+              "__guid": "3356fc58-362c-4e6f-9c21-8f9349e26f31",
               "__enabled": true,
               "Flags": 0,
+              "AnchorId": "shell-01-door",
+              "DoorId": "wooden_door",
+              "MaxInteractionDistance": 150,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "TargetInventory": null,
-              "Title": "Tu Mochila",
-              "TransferTarget": null
-            }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "031440eb-fba2-4b98-851f-ff999a693cff"
+              "PropertyId": "property-shell-01"
             },
-            "Parent": {
-              "Type": "GameObject",
-              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
-            },
-            "PreviousElement": {
-              "Type": "Component",
-              "IdValue": "ad09ae32-fcf9-4109-ba31-a772a7bacbdb"
-            },
-            "ContainerProperty": "Components",
-            "IsContainerArray": true,
-            "Data": {
-              "__type": "UltimoBarrio.UI.InventoryUI",
-              "__guid": "031440eb-fba2-4b98-851f-ff999a693cff",
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "70dedc97-9451-403d-bf05-214cb367c762",
               "__enabled": true,
               "Flags": 0,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "TargetInventory": null,
-              "Title": "Alijo",
-              "TransferTarget": null
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
             }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "8b1c6f22-1430-4df8-869f-26dc921c0c37"
-            },
-            "Parent": {
-              "Type": "GameObject",
-              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
-            },
-            "PreviousElement": {
-              "Type": "Component",
-              "IdValue": "031440eb-fba2-4b98-851f-ff999a693cff"
-            },
-            "ContainerProperty": "Components",
-            "IsContainerArray": true,
-            "Data": {
-              "__type": "UltimoBarrio.UI.HotbarPanel",
-              "__guid": "8b1c6f22-1430-4df8-869f-26dc921c0c37",
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "beceefb7-73a5-45a0-af82-b7ca3590400d",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Cabinet Anchor",
+          "Position": "0,30,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.Properties.ClaimCabinetAnchor",
+              "__guid": "e8cbda65-46e3-49c4-b569-94f3a7bec73c",
               "__enabled": true,
               "Flags": 0,
-              "HeldItemCtrl": {
-                "_type": "component",
-                "component_id": "0e7a8d21-5c44-4f2b-9f6d-2a1c7b904d18",
-                "go": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba",
-                "component_type": "HeldItemController"
-              },
+              "MaxInteractionDistance": 150,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "TargetInventory": {
-                "_type": "component",
-                "component_id": "a959eeda-fa54-4e09-a6d2-aad00144bcb1",
-                "go": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba",
-                "component_type": "InventoryComponent"
-              }
-            }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "210c84bc-25a5-47dd-9acd-4bb8dd5355fa"
+              "PropertyId": "property-shell-01"
             },
-            "Parent": {
-              "Type": "GameObject",
-              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
-            },
-            "PreviousElement": {
-              "Type": "Component",
-              "IdValue": "8b1c6f22-1430-4df8-869f-26dc921c0c37"
-            },
-            "ContainerProperty": "Components",
-            "IsContainerArray": true,
-            "Data": {
-              "__type": "UltimoBarrio.UI.CraftingPanel",
-              "__guid": "210c84bc-25a5-47dd-9acd-4bb8dd5355fa",
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "1024749e-38c3-4fc5-bdae-13c4c393fb5d",
               "__enabled": true,
               "Flags": 0,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "PlayerInventory": null,
-              "TargetStation": null
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
             }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "329a34ae-3724-4eb4-8831-279ec9d208e3",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Respawn",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [],
+          "Children": []
+        }
+      ]
+    },
+    {
+      "__guid": "d34fa340-b7cd-4466-91ed-6e9e2af5da6a",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Property Rental 01",
+      "Position": "-2200,2000,216",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "UltimoBarrio.Properties.PropertyComponent",
+          "__guid": "a1d1ff33-8dd0-40b7-97c1-05298f05bf81",
+          "__enabled": true,
+          "Flags": 0,
+          "Bounds": {
+            "Mins": "-128,-128,-128",
+            "Maxs": "128,128,128"
           },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "1a77b8f6-877a-4e87-a09b-99594d00d0ef"
-            },
-            "Parent": {
-              "Type": "GameObject",
-              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
-            },
-            "PreviousElement": {
-              "Type": "Component",
-              "IdValue": "210c84bc-25a5-47dd-9acd-4bb8dd5355fa"
-            },
-            "ContainerProperty": "Components",
-            "IsContainerArray": true,
-            "Data": {
-              "__type": "UltimoBarrio.Combat.FistsWeapon",
-              "__guid": "1a77b8f6-877a-4e87-a09b-99594d00d0ef",
+          "BuildVolume": null,
+          "ClaimCabinet": null,
+          "Deposit": 25,
+          "DisplayName": "Piso Alquiler Prueba 01",
+          "DoorSlots": [],
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "PropertyId": "property-rental-01",
+          "PropertyType": "Rental",
+          "RentPrice": 50,
+          "RespawnAnchor": null,
+          "Stash": null,
+          "Structures": [],
+          "WindowSlots": []
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "2c417fd8-67d3-4d53-a03c-718e3e66d9fd",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Rental Door",
+          "Position": "30,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "d35168b6-edc1-466d-80d6-2bb0e3660db7",
               "__enabled": true,
               "Flags": 0,
-              "AmmoType": "ammo_9mm",
-              "BaseDamage": 25,
-              "FireRate": 0.5,
-              "FriendlyFire": false,
-              "HitSound": null,
-              "IsAutomatic": false,
-              "MaxAmmo": 1,
-              "MissSound": null,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "PushForce": 120,
-              "Range": 80,
-              "ReloadTime": 2,
-              "StaminaCost": 5,
-              "WallHitSound": null
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
             }
-          }
-        ],
-        "RemovedObjects": [],
-        "PropertyOverrides": [
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "6107ed33-0b3a-47a2-8fa6-d532709383fe",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Rental Door",
+          "Position": "30,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "175a1c60-b648-48bd-93d6-41db8398e48a",
+              "__enabled": true,
+              "Flags": 0,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
             },
-            "Property": "Name",
-            "Value": "Player - C. SATELITE | Descambiado"
-          },
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
+            {
+              "__type": "Sandbox.Mapping.Door",
+              "__guid": "11a42169-aa02-4cd8-b59d-37ce0eae264c",
+              "__enabled": true,
+              "Flags": 0,
+              "AnimationCurve": [
+                {
+                  "x": 0,
+                  "y": 0,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
+                },
+                {
+                  "x": 1,
+                  "y": 1,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
+                }
+              ],
+              "AutoClose": false,
+              "AutoCloseDelay": 4,
+              "CloseFinishedSound": null,
+              "CloseSound": null,
+              "CloseTooltipDescription": "",
+              "CloseTooltipIcon": "touch_app",
+              "CloseTooltipTitle": "Close",
+              "IsLocked": false,
+              "IsUsable": true,
+              "LinkedDoor": null,
+              "LockedSound": null,
+              "LockedTooltipDescription": "",
+              "LockedTooltipIcon": "lock",
+              "LockedTooltipTitle": "Locked",
+              "Mode": "Rotating",
+              "OnClose": null,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnOpen": null,
+              "OpenAwayFromPlayer": true,
+              "OpenFinishedSound": null,
+              "OpenSound": null,
+              "OpenTooltipDescription": "",
+              "OpenTooltipIcon": "touch_app",
+              "OpenTooltipTitle": "Open",
+              "Pivot": null,
+              "SlideOffset": "0,0,100",
+              "Speed": 100,
+              "StartOpen": false,
+              "TargetAngle": 90
             },
-            "Property": "Position",
-            "Value": "-999.999939,599.999939,-7.95874882"
-          },
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba"
-            },
-            "Property": "NetworkMode",
-            "Value": 1
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "b3091a87-5492-4ba9-8aa8-6daa61c8ab13"
-            },
-            "Property": "Gravity",
-            "Value": false
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "b3091a87-5492-4ba9-8aa8-6daa61c8ab13"
-            },
-            "Property": "LinearDamping",
-            "Value": 10
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "b3091a87-5492-4ba9-8aa8-6daa61c8ab13"
-            },
-            "Property": "MassCenterOverride",
-            "Value": "0,0,0"
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "f2b49a45-d5d0-4868-8e56-f85f9a989be6"
-            },
-            "Property": "MaterialGroup",
-            "Value": "default"
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "ee640c43-fd61-4d0f-826e-5530c1cc9b27"
-            },
-            "Property": "Friction",
-            "Value": 81
-          }
-        ],
-        "MovedObjects": []
-      },
-      "__PrefabIdToInstanceId": {
-        "9464ebe1-1ad1-4c43-9e29-46e2e03bb4ba": "e4b9220f-4815-4d0b-8150-5dd7031fbbaa",
-        "3ae1b3c4-14c5-4d68-be0a-1096ec3e2c8d": "054a781a-37e1-41ea-af8d-1429ed4f0676",
-        "b3091a87-5492-4ba9-8aa8-6daa61c8ab13": "ed76d21f-8277-4d78-a5fb-13685ffb4dae",
-        "c818a718-51a0-4f30-b561-3719718d81d4": "31e8e7d6-7176-4e2b-85ab-ef68ac377764",
-        "2f565d25-cbfa-4244-890f-d82931c0bdc1": "6ec74a47-4bb9-4e5a-94d8-f5dd4b3ebcd7",
-        "20be986f-7510-4bf5-ae9a-2935f448faff": "a8cb4ea3-e782-4986-8765-10f252c36768",
-        "50c8624c-ca50-48e3-951d-a189ae9f2de5": "dad57d64-2d4b-46de-805c-ab3b2c227953",
-        "a290bf70-2ada-484b-b1c4-309d20bf333b": "0e57c4d6-2b40-4e37-9c49-be4a2769ce54",
-        "a959eeda-fa54-4e09-a6d2-aad00144bcb1": "a017b351-5746-4849-8e8f-5af974572970",
-        "cfd92c85-7e62-48bd-90de-badab0794485": "81f3cd1f-b449-4c51-9f54-8782a5c57a91",
-        "8a51d0d6-2ff2-4b2e-9f3b-6b0e4e3d3d21": "9fc431a7-6c3a-4906-8924-12a779b5f040",
-        "c1860388-e203-4b6c-aaa0-c87299dff4ae": "f2c67b48-d279-496b-a152-72421b4e9837",
-        "831f293e-d324-4398-b98f-acc29eb5fb26": "3cd27cdd-742a-44a3-9243-9ca52f8693c8",
-        "7a1b2c3d-4e5f-6789-abcd-ef0123456789": "9fc0d85d-8629-4f44-a6a9-2437b1a321ae",
-        "c6cf0345-8b32-4003-8797-80253c109341": "20deeae7-debc-438f-8b0e-31b2fc3cee18",
-        "0e7a8d21-5c44-4f2b-9f6d-2a1c7b904d18": "c357c387-e098-49aa-85d1-732bc477bfc7",
-        "d4f1b9a6-3e57-4a08-b2c9-6d05e83f1147": "1dd6752f-3b27-4d14-a0d1-65eac6013f6b",
-        "6b5cbc3e-e37c-4eb9-afa6-577469114047": "e8e20912-4ccd-4138-8071-82df6a3aebf5",
-        "f2b49a45-d5d0-4868-8e56-f85f9a989be6": "9865f012-75a9-428b-a4fd-343e8e58b9e5",
-        "14c32c81-db65-4764-b235-8d1469a40438": "f83fce64-9974-4c1b-a40b-f60a59057caa",
-        "996337b2-679a-4b95-bced-979f20df922a": "2f8149d9-7435-483a-807d-52a95aa2a4f7",
-        "ee640c43-fd61-4d0f-826e-5530c1cc9b27": "39308472-e7e1-48cf-a2b6-7f7c0ef4ad22"
-      }
+            {
+              "__type": "UltimoBarrio.Properties.Doors.PropertyDoor",
+              "__guid": "e29179d5-b870-4063-8211-e4c429f80062",
+              "__enabled": true,
+              "Flags": 0,
+              "AnchorId": "rental-01-door",
+              "DoorId": "wooden_door",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "PropertyId": "property-rental-01"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "4b7a95f8-361b-4066-9407-f0ad2e0eff31",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Rent Sign",
+          "Position": "10,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.Properties.RentSign",
+              "__guid": "57a41e2f-82e1-4a7a-8624-aa0bc0f125ba",
+              "__enabled": true,
+              "Flags": 0,
+              "MaxInteractionDistance": 150,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "PropertyId": "property-rental-01"
+            }
+          ],
+          "Children": []
+        }
+      ]
     }
   ],
   "SceneProperties": {
