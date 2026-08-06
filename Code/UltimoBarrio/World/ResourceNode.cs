@@ -28,12 +28,12 @@ namespace UltimoBarrio.World
 
         private TimeSince timeSinceCollected;
 
-        protected override void OnStart()
-        {
-            IsAvailable = false;
-            Enabled = false;
-        }
-
+        // No hay OnStart aquí a propósito: un OnStart anterior forzaba
+        // Enabled = false incondicionalmente, lo que impedía que OnUpdate
+        // (el único código que reactiva IsAvailable tras RespawnTime) llegara
+        // a ejecutarse nunca — todo nodo quedaba recogible en el prompt pero
+        // TryHarvest fallaba en silencio para siempre. Los nodos deben nacer
+        // disponibles (el valor por defecto de IsAvailable ya es true).
         protected override void OnUpdate()
         {
             if (!Networking.IsHost) return;

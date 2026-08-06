@@ -273,5 +273,52 @@ namespace UltimoBarrio.QA
                 }
             }
         }
+
+        /// <summary>
+        /// Diagnóstico: invoca el mismo gateway público (IWorldInteractable.OnInteract)
+        /// que PlayerInteractor llama al pulsar E, sobre el ResourceNode/pickup más
+        /// cercano al jugador. Esto NO valida el input físico (eso ya lo prueba el
+        /// propio jugador) — solo aísla si el fallo está en la cadena de interacción
+        /// o después de ella (host, inventario, etc).
+        /// </summary>
+        [ConCmd("ub_qa_test_pickup")]
+        public static void TestNearestPickup()
+        {
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            if (player is null) { Log.Error("--- ub_qa_test_pickup --- No player found."); return; }
+
+            var inv = player.Components.Get<InventoryComponent>();
+            if (inv is null) { Log.Error("--- ub_qa_test_pickup --- Player has no InventoryComponent."); return; }
+
+            var pickup = Game.ActiveScene.GetAllComponents<UltimoBarrio.WorldItemPickup>()
+                .Where(p => p.GameObject.IsValid())
+                .OrderBy(p => Vector3.DistanceBetween(p.WorldPosition, player.WorldPosition))
+                .FirstOrDefault();
+
+            if (pickup is null) { Log.Error("--- ub_qa_test_pickup --- No WorldItemPickup found in scene."); return; }
+
+            // Acercamos al jugador como si hubiera caminado hasta el pickup — no
+            // fabrica el resultado de la interacción, solo el requisito de distancia
+            // que CanInteract comprobará de todas formas.
+            player.WorldPosition = pickup.WorldPosition + Vector3.Up * 10f;
+
+            var before = inv.GetCount(pickup.ItemId);
+            Log.Info($"--- ub_qa_test_pickup --- target={pickup.GameObject.Name} itemId={pickup.ItemId} distance={Vector3.DistanceBetween(pickup.WorldPosition, player.WorldPosition):F1} countBefore={before}");
+
+            var req = new InteractionRequest
+            {
+                Identity = PlayerIdentity.FromGameObject(player),
+                InteractorObject = player
+            };
+
+            bool can = pickup.CanInteract(req);
+            Log.Info($"--- ub_qa_test_pickup --- CanInteract={can}");
+            if (!can) return;
+
+            pickup.OnInteract(req);
+
+            var after = inv.GetCount(pickup.ItemId);
+            Log.Info($"--- ub_qa_test_pickup --- countAfter={after} delta={after - before} pickupStillValid={pickup.GameObject.IsValid()}");
+        }
     }
 }
