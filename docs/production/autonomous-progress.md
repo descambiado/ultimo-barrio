@@ -1,6 +1,65 @@
 # Progreso de ejecución autónoma — Último Barrio
 
-## CRAFTING FÍSICO COMPLETO — leer esto primero (2026-08-06, continuación)
+## VIVIENDA FÍSICA COMPLETA — leer esto primero (2026-08-06, continuación)
+
+**Rama**: `integration/wizard-holy-grail`. **HEAD**: `8371f11`. **Editor**: respondiendo.
+
+**Bloque completado**: sección 6 (reconectar `apartment_door_kit` con el claim físico
+de vivienda), sobre el sistema de apartamentos original (`ApartmentComponent`,
+apartment-a01..a06) — el sistema `PropertyComponent`/`DoorAnchor`/`ClaimCabinetAnchor`
+más nuevo (pivote de arquitectura) sigue con 0 instancias en escena, ver más abajo.
+
+**Commit**: `8371f11`. Añadido `ApartmentClaimService.RequestAbandonApartment()`
+(RPC de producción real y permanente, no solo de prueba — necesaria para que un
+jugador pueda renunciar y volver a reclamar). Corregido un bug real en el propio
+harness QA (`QASprintRunner.PhysicalInteract`): la dirección de aproximación se
+calculaba con la posición previa completa del jugador (incluida Z), lo que a veces
+dejaba la cámara muy por encima del objetivo y el trace chocaba con el suelo antes
+de llegar al interactable — ahora se aproxima en el plano horizontal y a la Z del
+objetivo, igual que caminaría un jugador real.
+
+**Prueba real (cadena completa, sin atajo `ub_qa_claim_*`)**: craft real de
+`apartment_door_kit` → `ub_qa_request_abandon` (libera apartment-a02, ya reclamado
+en una pasada anterior) → E real sobre "Claim Portal" de apartment-a01 → trace
+hit=Claim Portal → `[Interact] Claimable: apartment-a01` → `RequestClaim` →
+`TryClaim` → `ClaimSucceeded` (kit 1→0, ClaimState Unclaimed→Claimed) → E real
+otra vez sobre el mismo Claim Portal ahora enruta a `ApartmentDoorPolicy` en vez
+de reintentar el claim (`[DoorPolicy] Door apartment-a01 is now Unlocked`) →
+Stop/Play: `OwnerRespawned apartment=apartment-a01`, `ClaimState=Claimed`
+persisten. `ub_test_all`: 36/36.
+
+**Gap no perseguido, documentado**: el Stash Anchor de apartment-a01 (confirmado
+con `StashComponent`+`InventoryComponent`+`BoxCollider` reales vía
+`get_game_object`) no se re-verificó con `ub_qa_physical_interact` — el trace
+chocó con el suelo antes de llegar al collider (objetivo muy bajo, mismo tipo de
+problema de ángulo de cámara que el ya corregido, pero no vale la pena perseguir
+más geometría de prueba ad-hoc para un solo anchor). No es un bug de producción
+confirmado, solo no reverificado con este rigor exacto.
+
+**Rekey/credencial de llavero**: el flujo de `KeyringService`/`AccessCredential`
+pertenece al sistema `PropertyComponent` nuevo (para invitados en Rental/
+AbandonedShell), no al sistema de 6 apartamentos original que sí se verificó aquí
+(acceso por `OwnerId` directo, sin credencial). No aplica a esta prueba — aplicará
+cuando se autore al menos 1 `PropertyComponent` en escena (Tarea #26+).
+
+**Archivo siguiente**: sección 7 del encargo — BuildVolume/fortificación como
+sistema de juego real (preview, snapping, colisión, límites de apartamento,
+coste, host-authoritative, salud/daño/reparación/dismantle/upgrade,
+persistencia). Ya existe `BarricadeAnchor`/`ApartmentFortification` para
+barricadas de puerta (verificado en pasadas anteriores), pero BuildVolume en sí
+(piezas colocables dentro del volumen del apartamento) no tiene ninguna
+implementación todavía — es geometría/espacial nueva, no una extensión trivial.
+
+**Siguiente comando exacto al reanudar**: leer `Code/UltimoBarrio/Fortification/`
+completo para confirmar qué existe realmente (¿solo `BarricadeAnchor` en el marco
+de la puerta, o hay algo más?), diseñar `BuildVolume`/`FurnitureAnchor` mínimo,
+colocarlo en al menos 1 apartamento ya reclamado (apartment-a01, recién probado),
+verificar preview/snap/placement con captura de pantalla real antes de dar la
+fase por buena.
+
+---
+
+## CRAFTING FÍSICO COMPLETO — pasada anterior (2026-08-06)
 
 **Rama**: `integration/wizard-holy-grail`. **HEAD**: `6fbf611`. **Editor**: respondiendo
 (MCP activo, `play_stop` confirmado tras esta pasada).
