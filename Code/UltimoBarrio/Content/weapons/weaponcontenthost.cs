@@ -18,6 +18,7 @@ namespace UltimoBarrio.Content.Weapons
 	{
 		[Property] public string DefinitionId { get; set; } = "";
 		[Property] public bool AutoHandleInput { get; set; } = true;
+		[Property] public bool DebugLog { get; set; } = false;
 
 		public WeaponContentDefinition Definition { get; private set; }
 
@@ -74,10 +75,20 @@ namespace UltimoBarrio.Content.Weapons
 			}
 		}
 
-		/// <summary>Devuelve el modelo primario si está verificado; si no, el fallback.</summary>
+		/// <summary>
+		/// Resuelve el modelo primario. Orden: Cloud ident → ruta local → fallback.
+		/// Cloud.Model() exige string literal en el call site (CloudAssetProvider de
+		/// compile-time), por eso el mapeo ident→literal vive aquí y no en datos.
+		/// </summary>
 		private Model ResolveModel()
 		{
-			if ( !string.IsNullOrEmpty( Definition.WorldModel ) && Definition.AssetsVerified )
+			if ( Definition.AssetsVerified )
+			{
+				var cloud = ResolveCloudModel();
+				if ( cloud != null ) return cloud;
+			}
+
+			if ( !string.IsNullOrEmpty( Definition.WorldModel ) )
 			{
 				return ResourceLibrary.Get<Model>( Definition.WorldModel );
 			}
@@ -88,6 +99,17 @@ namespace UltimoBarrio.Content.Weapons
 			}
 
 			return null;
+		}
+
+		private Model ResolveCloudModel()
+		{
+			switch ( Definition.Id )
+			{
+				case "ub_weapon_usp":
+					return Cloud.Model( "facepunch.w_usp" );
+				default:
+					return null;
+			}
 		}
 
 		private void HandleInput()
@@ -133,6 +155,7 @@ namespace UltimoBarrio.Content.Weapons
 		public void DryFire()
 		{
 			_lastFired = 0f;
+			if ( DebugLog ) Log.Info( $"[Content.Weapon] {Definition.Id} dry fire (sin munición)" );
 			RpcDryFireEffects();
 		}
 
@@ -170,6 +193,8 @@ namespace UltimoBarrio.Content.Weapons
 				CurrentAmmo--;
 			}
 
+			if ( DebugLog ) Log.Info( $"[Content.Weapon] {Definition.Id} disparo (ammo {CurrentAmmo})" );
+
 			PerformTrace();
 		}
 
@@ -177,12 +202,14 @@ namespace UltimoBarrio.Content.Weapons
 		{
 			IsReloading = true;
 			_reloadComplete = Definition.ReloadTime;
+			if ( DebugLog ) Log.Info( $"[Content.Weapon] {Definition.Id} recargando ({Definition.ReloadTime}s)" );
 		}
 
 		private void FinishReload()
 		{
 			IsReloading = false;
 			CurrentAmmo = Definition.MagazineSize;
+			if ( DebugLog ) Log.Info( $"[Content.Weapon] {Definition.Id} recarga completa (ammo {CurrentAmmo})" );
 			// Nota: el consumo de munición del inventario lo hará el adaptador del core nuevo.
 		}
 
@@ -203,7 +230,17 @@ namespace UltimoBarrio.Content.Weapons
 
 				var tr = Scene.Trace.Ray( traceRay, range )
 					.IgnoreGameObjectHierarchy( GameObject.Root )
+					.IgnoreGameObjectHierarchy( Scene.Camera.GameObject.Root ) // viewmodel montado en la cámara
 					.Run();
+
+				if ( DebugLog )
+				{
+					Log.Info( $"[Content.Weapon] {Definition.Id} trace: orig={traceRay.Position} dir={traceRay.Forward} range={range} hit={tr.Hit}" );
+					if ( tr.Hit )
+					{
+						Log.Info( $"[Content.Weapon] hit en {tr.HitPosition} objeto '{tr.GameObject?.Name}'" );
+					}
+				}
 
 				if ( !tr.Hit ) continue;
 
@@ -218,6 +255,8 @@ namespace UltimoBarrio.Content.Weapons
 						SourceId = Definition.Id,
 						AttackerId = Connection.Local?.Id.ToString() ?? ""
 					} );
+
+					if ( DebugLog ) Log.Info( $"[Content.Weapon] {Definition.Id} impacto en '{target.GetType().Name}' ({Definition.Damage} dmg)" );
 				}
 
 				RpcHitEffects( tr.HitPosition, tr.Normal );

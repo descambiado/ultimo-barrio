@@ -46,18 +46,20 @@ namespace UltimoBarrio.Content.Weapons
 				DisplayName = "USP",
 				Category = WeaponContentCategory.Firearm,
 
-				WorldModel = "facepunch.w_usp", // PENDING_VERIFY
+				CloudWorldId = "facepunch.w_usp", // resuelve via Cloud.Model() (paquete facepunch)
+				CloudViewId = "facepunch.v_usp",
+				WorldModel = "models/weapons/sbox_pistol_usp/w_usp.vmdl", // ruta local del paquete (fallback)
 				WorldModelFallback = "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl", // VERIFIED
-				ViewModel = "prefabs/content/weapons/v_usp_content.prefab",
-				AmmoModel = "facepunch.ammo_9mm", // PENDING_VERIFY
-				CasingModel = "",                 // PENDING_VERIFY (casquillo 9mm)
+				ViewModel = "prefabs/content/weapons/v_usp_content.prefab", // viewmodel con modelo real v_usp.vmdl
+				AmmoModel = "models/weapons/sbox_ammo/9mm_ammobox/ammobox_9mm.vmdl", // VERIFIED (facepunch.ammobox9mm)
+				CasingModel = "models/props/casings/casing_scatter_9mm_01.vmdl", // VERIFIED (facepunch.casingscatter9mm01)
 
-				FireSound = "weapon.usp.fire",    // PENDING_VERIFY (SoundEvent a crear)
-				ReloadSound = "weapon.usp.reload",
-				DryFireSound = "weapon.usp.dryfire",
-				MuzzleEffect = "",                // PENDING_VERIFY (.vpcf)
+				FireSound = "", // PENDING (SoundEvent real tras verificar audio; no usar nombres inventados)
+				ReloadSound = "",
+				DryFireSound = "",
+				MuzzleEffect = "", // PENDING (.vpcf)
 
-				AnimGraph = "models/citizen/citizen.animgraph", // PENDING_VERIFY
+				AnimGraph = "models/citizen/citizen.vmdl", // animgraph embebido en el modelo (citizen.vmdl VERIFIED)
 				HoldTypeParam = "holdtype",
 				DrawTime = 0.5f,
 
@@ -73,8 +75,8 @@ namespace UltimoBarrio.Content.Weapons
 				AmmoType = "ammo_9mm",
 				EquipSlot = "Primary",
 
-				AssetsVerified = false,
-				VerificationNotes = "WorldModel: ruta canonica reportada por research = models/weapons/sbox_pistol_usp/w_usp.vmdl (dentro de facepunch/sboxweapons). Confirmar en Cloud Browser y actualizar AssetsVerified. Fallback metal_wheely_bin ya verificado."
+				AssetsVerified = true,
+				VerificationNotes = "Verificado en editor 26.08.05 (2026-08-07): w_usp.vmdl, v_usp.vmdl (+v_usp.vanmgrph), usp_magazine(.empty), ammobox_9mm.vmdl, casing_scatter_9mm_01.vmdl. Paquetes facepunch instalados via install_package. Sonidos PENDIENTES (SoundEvents a crear; campos vacios para no inventar nombres)."
 			};
 		}
 

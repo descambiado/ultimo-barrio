@@ -18,14 +18,15 @@
         "__type": "Sandbox.ModelRenderer",
         "__guid": "5f8b2c1a-7a4e-4d90-9b11-1c2d3e4f5a02",
         "__enabled": true,
-        "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl"
+        "Model": "models/weapons/sbox_pistol_usp/w_usp.vmdl"
       },
       {
         "__type": "UltimoBarrio.Content.Weapons.WeaponContentHost",
         "__guid": "5f8b2c1a-7a4e-4d90-9b11-1c2d3e4f5a03",
         "__enabled": true,
         "DefinitionId": "ub_weapon_usp",
-        "AutoHandleInput": true
+        "AutoHandleInput": true,
+        "DebugLog": true
       }
     ],
     "Children": []

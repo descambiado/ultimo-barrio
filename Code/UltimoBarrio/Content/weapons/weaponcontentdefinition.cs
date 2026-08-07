@@ -25,6 +25,10 @@ namespace UltimoBarrio.Content.Weapons
 		public WeaponContentCategory Category { get; set; } = WeaponContentCategory.Firearm;
 
 		// Modelos
+		// Cloud idents (p.ej. "facepunch.w_usp"): resuelven via Cloud.Model() sin depender
+		// de una ruta montada en esta sesión. Si el ident no resuelve, se usa WorldModel.
+		public string CloudWorldId { get; set; } = "";
+		public string CloudViewId { get; set; } = "";
 		public string WorldModel { get; set; } = "";
 		public string WorldModelFallback { get; set; } = "";
 		public string ViewModel { get; set; } = "";

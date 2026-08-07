@@ -47,15 +47,98 @@ assets:
     author: Facepunch
     source_url: https://sbox.game/facepunch/sboxweapons
     package_type: package-asset
+    asset_type: model
+    cloud_ident: facepunch.w_usp
     license: pending-package-verification
     license_verified: false
-    integration_mode: content-pack-candidate
+    integration_mode: content-pack-verified
+    resolution: Cloud.Model(cloud_ident) -- API oficial; persistente tras reinicio del editor, sin install manual
     version_or_checked_at: "2026-08-07"
+    editor_verified: true
+    verification_status: VERIFIED (resuelto via Cloud.Model en weapon_lab)
+    asset_path: models/weapons/sbox_pistol_usp/w_usp.vmdl
     used_by:
       - content:Weapons/ub_weapon_usp
     fallback: models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl
     notes: >
-      Confirmar ruta montada del paquete y términos antes de activar AssetsVerified.
+      Resuelto por Cloud.Model() en WeaponContentHost.ResolveModel (orden: cloud ident →
+      ruta local → fallback). La ruta local solo existe como fallback si el paquete está
+      montado; el camino principal no depende de ello. Colección oficial Facepunch.
+
+  - id: facepunch.v_usp
+    name: USP viewmodel + animgraph
+    author: Facepunch
+    source_url: https://sbox.game/facepunch/sboxweapons
+    package_type: package-asset
+    asset_type: model
+    cloud_ident: facepunch.v_usp
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    resolution: Cloud.Model(cloud_ident) -- API oficial; aplicado por WeaponTestRig (Dev) al viewmodel
+    version_or_checked_at: "2026-08-07"
+    editor_verified: true
+    verification_status: VERIFIED (resuelto via Cloud.Model en weapon_lab)
+    asset_path: models/weapons/sbox_pistol_usp/v_usp.vmdl
+    animgraph_path: models/weapons/sbox_pistol_usp/v_usp.vanmgrph
+    used_by:
+      - content:Weapons/ub_weapon_usp (viewmodel)
+    fallback: models/dev/box.vmdl
+    notes: >
+      ViewModel con rig y animaciones; trae su propio Animation Graph (v_usp.vanmgrph).
+      El prefab del pack mantiene su ruta como fallback; el camino principal resuelve
+      por ident cloud.
+
+  - id: facepunch.uspmagazine
+    name: USP magazine (+empty)
+    author: Facepunch
+    source_url: https://sbox.game/facepunch/sboxweapons
+    package_type: package-asset
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-07"
+    editor_verified: true
+    asset_path: models/weapons/sbox_pistol_usp/usp_magazine.vmdl
+    used_by:
+      - content:Weapons/ub_weapon_usp (magazine)
+    fallback: none
+    notes: >
+      Variante vacía: models/weapons/sbox_pistol_usp/usp_magazine_empty.vmdl.
+
+  - id: facepunch.ammobox9mm
+    name: 9mm ammo box
+    author: Facepunch
+    source_url: https://sbox.game/facepunch/sboxweapons
+    package_type: package-asset
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-07"
+    editor_verified: true
+    asset_path: models/weapons/sbox_ammo/9mm_ammobox/ammobox_9mm.vmdl
+    used_by:
+      - content:Weapons/ub_weapon_usp (ammo model)
+    fallback: models/sbox_props/cardboard_box/cardboard_box_open.vmdl
+    notes: >
+      Sustituye al candidato facepunch.ammo_9mm (no existía como paquete instalable).
+
+  - id: facepunch.casingscatter9mm01
+    name: 9mm casings scatter
+    author: Facepunch
+    source_url: https://sbox.game/facepunch/sboxweapons
+    package_type: package-asset
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-07"
+    editor_verified: true
+    asset_path: models/props/casings/casing_scatter_9mm_01.vmdl
+    used_by:
+      - content:Weapons/ub_weapon_usp (casing)
+    fallback: none
+    notes: >
+      Casquillos 9mm para efectos de expulsión.
 
   - id: facepunch.w_crowbar
     name: Crowbar world model
@@ -104,37 +187,57 @@ assets:
       Confirmar existencia real del asset.
 
   - id: facepunch.ammo_9mm
-    name: 9mm ammo model
+    name: 9mm ammo model (SUPERSEDED by facepunch.ammobox9mm)
     author: Facepunch (candidato)
     source_url: https://sbox.game/facepunch/sboxweapons
     package_type: package-asset
     license: pending-package-verification
     license_verified: false
-    integration_mode: content-pack-candidate
+    integration_mode: superseded
     version_or_checked_at: "2026-08-07"
-    used_by:
-      - content:Weapons/ub_weapon_usp (ammo model)
-    fallback: models/sbox_props/cardboard_box/cardboard_box_open.vmdl
+    used_by: []
+    fallback: models/weapons/sbox_ammo/9mm_ammobox/ammobox_9mm.vmdl
     notes: >
-      Confirmar existencia real del asset.
+      No existía como paquete instalable; reemplazado por facepunch.ammobox9mm (verificado).
 
   - id: facepunch.citizen-model
-    name: Citizen base model + animgraph
+    name: Citizen base model (+animgraph embebido)
     author: Facepunch
     source_url: https://sbox.game/facepunch
     package_type: engine-content
     license: pending-package-verification
     license_verified: false
-    integration_mode: content-pack-candidate
+    integration_mode: content-pack-verified
     version_or_checked_at: "2026-08-07"
+    editor_verified: true
+    asset_path: models/citizen/citizen.vmdl
     used_by:
       - content:Enemies/ub_enemy_saqueador
       - content:Enemies/ub_enemy_bruto
       - content:Enemies/ub_enemy_merodeador
     fallback: models/citizen_props/crate01.vmdl
     notes: >
-      Ruta candidata models/citizen/citizen.vmdl + citizen.animgraph.
-      Confirmar en Cloud Browser; validar términos de uso de contenido humano.
+      citizen.vmdl verificado en el asset system (568 modelos citizen instalados).
+      El animgraph va embebido en el modelo (no hay citizen.animgraph suelto en assets).
+      Validar términos de uso de contenido humano antes de standalone (T5).
+
+  - id: engine.citizen_props_crowbar01
+    name: Crowbar prop (engine content)
+    author: Facepunch (engine)
+    source_url: null
+    package_type: engine-content
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-07"
+    editor_verified: true
+    asset_path: models/citizen_props/crowbar01.vmdl
+    used_by:
+      - content:Weapons/ub_weapon_crowbar (candidato primario real)
+    fallback: models/citizen_props/crate01.vmdl
+    notes: >
+      Modelo de palanca del engine verificado; sustituye al fallback crate01 cuando
+      se valide el crowbar en el lab (fase posterior a USP).
 
   - id: sound/content-pack-events
     name: SoundEvents del content pack (weapon.usp.fire, build.wood.place, ...)
