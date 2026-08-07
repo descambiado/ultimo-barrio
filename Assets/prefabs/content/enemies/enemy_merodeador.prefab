@@ -1,0 +1,32 @@
+{
+  "RootObject": {
+    "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c07",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "Enemy Merodeador",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "0.95,0.95,0.95",
+    "Tags": "enemy",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Sandbox.ModelRenderer",
+        "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c08",
+        "__enabled": true,
+        "Model": "models/citizen_props/crate01.vmdl"
+      },
+      {
+        "__type": "UltimoBarrio.Content.Enemies.EnemyContentHost",
+        "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c09",
+        "__enabled": true,
+        "DefinitionId": "ub_enemy_merodeador"
+      }
+    ],
+    "Children": []
+  }
+}
