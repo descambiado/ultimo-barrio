@@ -5,13 +5,15 @@
 **Propósito:** decidir el stack de contenido definitivo de Último Barrio. Todo lo que se elija aquí debe ser **portable por cherry-pick / copia selectiva** sobre `integration/wizard-holy-grail` cuando se publique. Nada de este documento asume que el STATE.md remoto refleje el estado real del juego.
 **Fuentes:** 7 informes de investigación en `docs/research/workers/` (armas, NPC/AI, building, inventario/UI, vehículos, mundo/assets, audio) — ~110 búsquedas. Cada candidato tiene su ficha completa (revisión, licencias, dependencias, API generation) en esos archivos; aquí solo las decisiones.
 
+**Correcciones de investigación (2026-08-07):** tres candidatos marcados DISCARD por "no verificables" se han reinvestigado contra la API de GitHub (URL exacta, rama por defecto, último push, LICENSE, árbol de archivos). Resultado: `echohello-dev/basebound` = **ADAPT (referencia), MIT**; `Softsplit/sandbox-plus-plus` = **EXTRACT PATTERN, GPL-3.0** (el "Sandbox++" real); `Small-Fish-Dev/In-This-House` = **EXTRACT PATTERN, MIT, API legacy**. Celdas corregidas en §B y §C.
+
 ---
 
 ## §0 — Decisiones transversales (afectan a todo el stack)
 
 | # | Decisión | Evidencia / fuente | Implicación |
 |---|---|---|---|
-| T1 | **La API de inventario/arma/municiones de primera parte (update 26.07.08) es el cimiento del inventario nuevo.** No reimplementar sincronización de slots. | [inventory-ui.md](workers/inventory-ui.md) §1 — sbox.game/news/update-26-07-08 | El inventario viejo de la rama (InventoryComponent) queda obsoleto; el core nuevo debe construirse sobre `Sandbox.Inventory` / `BaseInventoryItem` (host-authoritative). **No tocar el inventario viejo en este nodo.** |
+| T1 | **La API de inventario/arma/municiones de primera parte (update 26.07.08) es el cimiento del inventario nuevo.** No reimplementar sincronización de slots. | [inventory-ui.md](workers/inventory-ui.md) §1 — sbox.game/news/update-26-07-08 | **CANDIDATE ARCHITECTURE — REQUIRES MIGRATION SPIKE:** `Sandbox.Inventory` / `BaseInventoryItem` (update 26.07.08) es candidata a sustituir al `InventoryComponent` de la rama, pero la migración NO está decidida: requiere spike de comparación (`docs/research/native-inventory-migration-spike.md`) antes de tocar pickup/stack/drop/stash/crafting/persistencia/housing del core. **No tocar el inventario viejo en este nodo.** |
 | T2 | **El gamemode Sandbox de Facepunch es open source (2026-04-08) y el motor es MIT (2025-11-26).** Es la referencia de código oficial: WeaponBase, Npc, Prop, Mapping.Door, Toolgun. | [weapons.md](workers/weapons.md) §3, [npc-ai.md](workers/npc-ai.md) §1, [building.md](workers/building.md) §1 | Antes de escribir cualquier sistema, consultar el código oficial. Clonar `Facepunch/sandbox` y `Facepunch/sbox-public`. |
 | T3 | **Colecciones oficiales de assets Facepunch = fuente primaria de contenido** (uso libre declarado en proyectos s&box): `facepunch.sboxassets` (props urbanos), `facepunch.sboxweapons` (armas+attachments), `facepunch.v_first_person_arms_citizen` (brazos FP), Citizen Characters (rig humano + 73 clothing), `facepunch.door_single_dev`. | [world-content.md](workers/world-content.md) §0 | Cero fricción legal para el contenido del barrio. Registrar cada paquete en `Assets/asset-registry.yml`. |
 | T4 | **asset.party/sbox.game NO estandariza licencias** (issue sbox-public #5130). Solo usar packs con licencia explícita (CC0/CC-BY) o autorización escrita. | [world-content.md](workers/world-content.md) §0.6 | Regla dura: un pack sin licencia clara = DISCARD. |
@@ -64,7 +66,7 @@
 | AI Unit Control (percepción LOS + decisión + persistencia) | ADAPT | MEDIA |
 | Shrimple Ragdolls (modos de ragdoll, reserva) | ADAPT | MEDIA |
 | NPC Zombie / Zombie Horde (Gvarados), Cut Them Down, Zombie Mod | PATTERN (diseño horda/melee) | MEDIA |
-| In This House | **DISCARD** (no localizable) | BAJA |
+| In This House (`Small-Fish-Dev/In-This-House`) | **EXTRACT PATTERN** — MIT, branch `main`, último push 2025-02-24. API **legacy** (jam 2023, era entity pre-scene). Archivos útiles: `Entities/NPC/NPC.Navigation.cs` (A* sobre grid propio con retrace y LOS directa), `Entities/NPC/NPC.Controller.cs`, `Entities/Loot/` (LootSpawner, LootPresets, LootRarity, LootContainer), `Components/LockedComponent.cs`, `Entities/Door.cs`. Patrones transferibles (pathfinding por celdas, loot data-driven, puerta con candado); el código NO se porta (API antigua). | MEDIA-ALTA |
 
 ### Decisión
 
@@ -72,7 +74,7 @@
 - **ALTERNATIVA 1:** SbokuBot para el Merodeador armado (percepción/combate a distancia).
 - **ALTERNATIVA 2:** AI Unit Control como cerebro de estados (patrullar/perseguir/atacar/retirarse) si la nuestra se queda corta.
 - **ALTERNATIVA 3:** Shrimple Ragdolls si el Ragdoll oficial WIP falla en la build objetivo.
-- **REJECT:** In This House (sin evidencia), packs sin licencia declarada.
+- **REJECT:** packs sin licencia declarada. ~~In This House~~ → corregido arriba: MIT, EXTRACT PATTERN (A* grid propio + loot system).
 
 **Qué portar:** `Code/UltimoBarrio/Content/Enemies/*` (arquetipos + loot tables + host con NavMeshAgent) y `Assets/prefabs/content/enemies/*` — ya creados. `IEnemyContentAdapter` es la frontera con el core nuevo.
 
@@ -91,15 +93,15 @@
 | BaseWars (economía recursos → muros/torretas) | PATTERN (diseño) | MEDIA |
 | wiremod/wirebox + WireLib (electricidad/lógica) | PATTERN (solo si hace falta electricidad) | MEDIA |
 | Nolankicks/Fortwars, themasterminds/sbox-fortwars | PATTERN (legacy) | BAJA |
-| Basebound | **DISCARD** (no verificable) | BAJA |
-| "Sandbox++" (nombre) | **DISCARD** → es Nebual/sandbox-plus | BAJA |
+| Basebound (`echohello-dev/basebound`) | **ADAPT (referencia)** — MIT, branch `main`, push 2026-07-24 (último commit: "chore: add license"). Plantilla de gamemode sobre API scene ACTUAL: `Code/Player.cs`, `Code/MyComponent.cs`, `Assets/scenes/minimal.scene`, `Docs/{architecture,networking,gameplay,setup}.md` y **skills de agente** (`.github/skills/`: sbox-gamemode-dev, sbox-triggers-collisions, sbox-ui-razor). Valor como scaffold y workflow agentizado; código de gameplay mínimo (5 .cs). | MEDIA-ALTA |
+| Softsplit/sandbox-plus-plus (el "Sandbox++" real, sucesor comunitario de GMod Sandbox) | **EXTRACT PATTERN** — **GPL-3.0** (copyleft: NO compatible con MPL-2.0 del repo → no copiar código), branch `main`, push 2026-06-28, 2.620 entradas, API scene ACTUAL. Arquitectura de referencia: `Code/Game/Weapon/` (BaseWeapon, BaseBulletWeapon, BaseCarryable con ViewModel/WorldModel, MeleeWeapon, IronSightsWeapon, AmmoInventory/AmmoResource), `Code/Components/Ownable.cs`, `IPhysgunEvent/IToolgunEvent`, `Code/GameLoop/LimitsSystem.cs`, prefabs de entidades. Distinto de Nebual/sandbox-plus (que sigue como ADAPT). | ALTA |
 
 ### Decisión
 
 - **PRIMARY:** cimiento oficial (`Sandbox.Prop` salud/destructibles + `Sandbox.Mapping.Door`) + componentes propios encima: placement preview/ghost, snapping por grid propio (espec 1x1/1x2/1x1x1), cerradura (`Lock`), reparación (estados visuales + coste de recursos), upgrade (madera→reforzada, ya implementado en `FortificationContentHost.Upgrade()`).
 - **ALTERNATIVA 1:** sandbox-plus para constraints físicos (barricadas atornilladas, bisagras) — portar al API actual.
 - **ALTERNATIVA 2:** patrón build wheel de Fortwars para el menú de construcción.
-- **REJECT:** Basebound, Sandbox++ (como tal), ports legacy abandonados.
+- **REJECT:** ports legacy abandonados. ~~Basebound / Sandbox++~~ → corregidos arriba: Basebound = ADAPT referencia (MIT); Softsplit/sandbox-plus-plus = EXTRACT PATTERN (GPL-3.0, solo estudiar arquitectura, sin importar su gamemode).
 
 **Qué portar:** `Code/UltimoBarrio/Content/Fortification/*` (definiciones de 9 objetos + host con salud/reparación/upgrade) y `Assets/prefabs/content/fortification/*` — ya creados.
 
