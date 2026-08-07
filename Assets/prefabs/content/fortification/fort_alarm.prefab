@@ -1,0 +1,39 @@
+{
+  "RootObject": {
+    "__guid": "7b2c4d5e-9f6a-4b7c-8d0e-3f4a5b6c7d1d",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "Fort Alarm",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "0.5,0.5,0.5",
+    "Tags": "fortification,alarm",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Sandbox.ModelRenderer",
+        "__guid": "7b2c4d5e-9f6a-4b7c-8d0e-3f4a5b6c7d1e",
+        "__enabled": true,
+        "Model": "models/citizen_props/crate01.vmdl"
+      },
+      {
+        "__type": "Sandbox.BoxCollider",
+        "__guid": "7b2c4d5e-9f6a-4b7c-8d0e-3f4a5b6c7d1f",
+        "__enabled": true,
+        "Scale": "60,60,60",
+        "Static": true
+      },
+      {
+        "__type": "UltimoBarrio.Content.Fortification.FortificationContentHost",
+        "__guid": "7b2c4d5e-9f6a-4b7c-8d0e-3f4a5b6c7d20",
+        "__enabled": true,
+        "DefinitionId": "fort_alarm"
+      }
+    ],
+    "Children": []
+  }
+}

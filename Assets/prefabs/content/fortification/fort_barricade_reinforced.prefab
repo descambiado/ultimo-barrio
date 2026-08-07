@@ -1,0 +1,39 @@
+{
+  "RootObject": {
+    "__guid": "7b2c4d5e-9f6a-4b7c-8d0e-3f4a5b6c7d05",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "Fort Barricade Reinforced",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "fortification",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Sandbox.ModelRenderer",
+        "__guid": "7b2c4d5e-9f6a-4b7c-8d0e-3f4a5b6c7d06",
+        "__enabled": true,
+        "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl"
+      },
+      {
+        "__type": "Sandbox.BoxCollider",
+        "__guid": "7b2c4d5e-9f6a-4b7c-8d0e-3f4a5b6c7d07",
+        "__enabled": true,
+        "Scale": "60,60,60",
+        "Static": true
+      },
+      {
+        "__type": "UltimoBarrio.Content.Fortification.FortificationContentHost",
+        "__guid": "7b2c4d5e-9f6a-4b7c-8d0e-3f4a5b6c7d08",
+        "__enabled": true,
+        "DefinitionId": "fort_barricade_reinforced"
+      }
+    ],
+    "Children": []
+  }
+}
