@@ -74,7 +74,7 @@ namespace UltimoBarrio.Content.Weapons
 				EquipSlot = "Primary",
 
 				AssetsVerified = false,
-				VerificationNotes = "WorldModel 'facepunch.w_usp': confirmar ruta montada del paquete sboxweapons en Cloud Browser. Fallback metal_wheely_bin ya verificado."
+				VerificationNotes = "WorldModel: ruta canonica reportada por research = models/weapons/sbox_pistol_usp/w_usp.vmdl (dentro de facepunch/sboxweapons). Confirmar en Cloud Browser y actualizar AssetsVerified. Fallback metal_wheely_bin ya verificado."
 			};
 		}
 
