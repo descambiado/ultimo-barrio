@@ -18,7 +18,7 @@
         "__type": "Sandbox.ModelRenderer",
         "__guid": "5f8b2c1a-7a4e-4d90-9b11-1c2d3e4f5a0a",
         "__enabled": true,
-        "Model": "models/dev/box.vmdl"
+        "Model": "models/citizen_props/crowbar01.vmdl"
       }
     ],
     "Children": []

@@ -88,18 +88,22 @@ namespace UltimoBarrio.Content.Weapons
 				DisplayName = "Palanca",
 				Category = WeaponContentCategory.Melee,
 
-				WorldModel = "facepunch.w_crowbar", // PENDING_VERIFY
+				// Sin cloud ident: facepunch.w_crowbar NO existe en el asset system.
+				// Engine content (siempre disponible, sin montaje manual): crowbar01.vmdl.
+				CloudWorldId = "",
+				CloudViewId = "",
+				WorldModel = "models/citizen_props/crowbar01.vmdl", // VERIFIED (engine content, 2026-08-07)
 				WorldModelFallback = "models/citizen_props/crate01.vmdl", // VERIFIED
-				ViewModel = "prefabs/content/weapons/v_crowbar_content.prefab",
+				ViewModel = "prefabs/content/weapons/v_crowbar_content.prefab", // crowbar01 en cámara (no hay viewmodel de palanca específico)
 				AmmoModel = "",
 				CasingModel = "",
 
-				FireSound = "weapon.crowbar.swing",
+				FireSound = "", // no existe SoundEvent de melee en el asset system (verificado 2026-08-07)
 				ReloadSound = "",
 				DryFireSound = "",
 				MuzzleEffect = "",
 
-				AnimGraph = "models/citizen/citizen.animgraph", // PENDING_VERIFY
+				AnimGraph = "", // prop sin rig: no aplica animgraph
 				HoldTypeParam = "holdtype",
 				DrawTime = 0.4f,
 
@@ -116,8 +120,8 @@ namespace UltimoBarrio.Content.Weapons
 				AmmoType = "",
 				EquipSlot = "Melee",
 
-				AssetsVerified = false,
-				VerificationNotes = "Buscar modelo de palanca legal (sboxweapons u oficial). Fallback crate01 verificado."
+				AssetsVerified = true,
+				VerificationNotes = "crowbar01.vmdl verificado en el asset system (engine content, 2026-08-07). facepunch.w_crowbar NO existe: descartado. Sin SoundEvents melee disponibles: campos de sonido vacíos."
 			};
 		}
 

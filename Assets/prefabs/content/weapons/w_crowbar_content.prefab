@@ -18,7 +18,7 @@
         "__type": "Sandbox.ModelRenderer",
         "__guid": "5f8b2c1a-7a4e-4d90-9b11-1c2d3e4f5a07",
         "__enabled": true,
-        "Model": "models/citizen_props/crate01.vmdl"
+        "Model": "models/citizen_props/crowbar01.vmdl"
       },
       {
         "__type": "UltimoBarrio.Content.Weapons.WeaponContentHost",

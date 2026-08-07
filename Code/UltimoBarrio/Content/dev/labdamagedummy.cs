@@ -17,6 +17,12 @@ namespace UltimoBarrio.Content.Dev
 		public float Health { get; private set; } = 100f;
 		public bool IsDead => Health <= 0f;
 
+		/// <summary>Devuelve el dummy a su salud máxima (uso del rig entre tests).</summary>
+		public void ResetHealth()
+		{
+			Health = MaxHealth;
+		}
+
 		protected override void OnStart()
 		{
 			Health = MaxHealth;

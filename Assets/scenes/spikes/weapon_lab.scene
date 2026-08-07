@@ -185,7 +185,30 @@
                   "__guid": "b4f0984f-4474-48b0-ac07-395672695999",
                   "__enabled": true,
                   "AutoTest": true,
-                  "TargetDistance": 200.0
+                  "Tests": [
+                    {
+                      "Label": "USP",
+                      "WeaponId": "ub_weapon_usp",
+                      "TestType": "Firearm",
+                      "WorldPrefab": "prefabs/content/weapons/w_usp_content.prefab",
+                      "ViewPrefab": "prefabs/content/weapons/v_usp_content.prefab",
+                      "TargetDistance": 200.0,
+                      "ExpectedDamage": 15.0,
+                      "ClipSize": 12,
+                      "UsesAmmo": true
+                    },
+                    {
+                      "Label": "Crowbar",
+                      "WeaponId": "ub_weapon_crowbar",
+                      "TestType": "Melee",
+                      "WorldPrefab": "prefabs/content/weapons/w_crowbar_content.prefab",
+                      "ViewPrefab": "prefabs/content/weapons/v_crowbar_content.prefab",
+                      "TargetDistance": 80.0,
+                      "ExpectedDamage": 35.0,
+                      "ClipSize": 0,
+                      "UsesAmmo": false
+                    }
+                  ]
                 },
                 {
                   "__type": "Sandbox.CameraComponent",
