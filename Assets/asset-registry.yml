@@ -34,3 +34,121 @@ assets:
     notes: >
       Do not make this a release dependency until source, license,
       networking authority, dependencies and maintenance are verified.
+
+  # ------------------------------------------------------------------
+  # Content pack portable — spike/laptop-content-stack (2026-08-07)
+  # Todos los candidatos están PENDING_VERIFY: revisar licencia y ruta
+  # exacta con Cloud Browser antes de cualquier build pública.
+  # Los prefabs usan hoy solo fallbacks verificados del contenido oficial.
+  # ------------------------------------------------------------------
+
+  - id: facepunch.w_usp
+    name: USP world model
+    author: Facepunch
+    source_url: https://sbox.game/facepunch/sboxweapons
+    package_type: package-asset
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-candidate
+    version_or_checked_at: "2026-08-07"
+    used_by:
+      - content:Weapons/ub_weapon_usp
+    fallback: models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl
+    notes: >
+      Confirmar ruta montada del paquete y términos antes de activar AssetsVerified.
+
+  - id: facepunch.w_crowbar
+    name: Crowbar world model
+    author: Facepunch (candidato)
+    source_url: https://sbox.game/facepunch/sboxweapons
+    package_type: package-asset
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-candidate
+    version_or_checked_at: "2026-08-07"
+    used_by:
+      - content:Weapons/ub_weapon_crowbar
+    fallback: models/citizen_props/crate01.vmdl
+    notes: >
+      Confirmar existencia real del asset; si no existe, buscar modelo de palanca
+      con licencia compatible (research del stack de contenido).
+
+  - id: facepunch.knife
+    name: Knife world model
+    author: Facepunch (candidato)
+    source_url: https://sbox.game/facepunch/sboxweapons
+    package_type: package-asset
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-candidate
+    version_or_checked_at: "2026-08-07"
+    used_by:
+      - content:Weapons/ub_weapon_knife
+    fallback: models/citizen_props/crate01.vmdl
+    notes: >
+      Confirmar existencia real del asset o buscar modelo de cuchillo legal.
+
+  - id: facepunch.w_shotgun
+    name: Shotgun world model
+    author: Facepunch (candidato)
+    source_url: https://sbox.game/facepunch/sboxweapons
+    package_type: package-asset
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-candidate
+    version_or_checked_at: "2026-08-07"
+    used_by:
+      - content:Weapons/ub_weapon_shotgun
+    fallback: models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl
+    notes: >
+      Confirmar existencia real del asset.
+
+  - id: facepunch.ammo_9mm
+    name: 9mm ammo model
+    author: Facepunch (candidato)
+    source_url: https://sbox.game/facepunch/sboxweapons
+    package_type: package-asset
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-candidate
+    version_or_checked_at: "2026-08-07"
+    used_by:
+      - content:Weapons/ub_weapon_usp (ammo model)
+    fallback: models/sbox_props/cardboard_box/cardboard_box_open.vmdl
+    notes: >
+      Confirmar existencia real del asset.
+
+  - id: facepunch.citizen-model
+    name: Citizen base model + animgraph
+    author: Facepunch
+    source_url: https://sbox.game/facepunch
+    package_type: engine-content
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-candidate
+    version_or_checked_at: "2026-08-07"
+    used_by:
+      - content:Enemies/ub_enemy_saqueador
+      - content:Enemies/ub_enemy_bruto
+      - content:Enemies/ub_enemy_merodeador
+    fallback: models/citizen_props/crate01.vmdl
+    notes: >
+      Ruta candidata models/citizen/citizen.vmdl + citizen.animgraph.
+      Confirmar en Cloud Browser; validar términos de uso de contenido humano.
+
+  - id: sound/content-pack-events
+    name: SoundEvents del content pack (weapon.usp.fire, build.wood.place, ...)
+    author: proyecto (a crear)
+    source_url: null
+    package_type: project-owned
+    license: MPL-2.0 (proyecto)
+    license_verified: true
+    integration_mode: content-pack-candidate
+    version_or_checked_at: "2026-08-07"
+    used_by:
+      - content:Weapons/*
+      - content:Fortification/*
+    fallback: sin sonido (campos vacíos en definiciones)
+    notes: >
+      Crear SoundEvent graphs propios o licenciar CC0/CC-BY (research de audio).
+      Hasta entonces los campos de sonido están vacíos/placeholder en las definiciones.
