@@ -18,7 +18,7 @@
         "__type": "Sandbox.ModelRenderer",
         "__guid": "5f8b2c1a-7a4e-4d90-9b11-1c2d3e4f5a0c",
         "__enabled": true,
-        "Model": "models/citizen_props/crate01.vmdl"
+        "Model": "models/weapons/sbox_melee_trenchknife/w_trenchknife.vmdl"
       },
       {
         "__type": "UltimoBarrio.Content.Weapons.WeaponContentHost",

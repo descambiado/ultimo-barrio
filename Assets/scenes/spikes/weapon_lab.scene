@@ -207,6 +207,28 @@
                       "ExpectedDamage": 35.0,
                       "ClipSize": 0,
                       "UsesAmmo": false
+                    },
+                    {
+                      "Label": "Knife",
+                      "WeaponId": "ub_weapon_knife",
+                      "TestType": "Melee",
+                      "WorldPrefab": "prefabs/content/weapons/w_knife_content.prefab",
+                      "ViewPrefab": "prefabs/content/weapons/v_knife_content.prefab",
+                      "TargetDistance": 65.0,
+                      "ExpectedDamage": 20.0,
+                      "ClipSize": 0,
+                      "UsesAmmo": false
+                    },
+                    {
+                      "Label": "Shotgun",
+                      "WeaponId": "ub_weapon_shotgun",
+                      "TestType": "Firearm",
+                      "WorldPrefab": "prefabs/content/weapons/w_shotgun_content.prefab",
+                      "ViewPrefab": "prefabs/content/weapons/v_shotgun_content.prefab",
+                      "TargetDistance": 200.0,
+                      "ExpectedDamage": 12.0,
+                      "ClipSize": 6,
+                      "UsesAmmo": true
                     }
                   ]
                 },

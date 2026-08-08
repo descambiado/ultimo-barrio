@@ -82,7 +82,9 @@ namespace UltimoBarrio.Content.Weapons
 		/// </summary>
 		private Model ResolveModel()
 		{
-			if ( Definition.AssetsVerified )
+			// Cloud ident primero siempre que exista (null si no resuelve → fallback local).
+			// AssetsVerified documenta el estado, no gatea el intento.
+			if ( !string.IsNullOrEmpty( Definition.CloudWorldId ) )
 			{
 				var cloud = ResolveCloudModel();
 				if ( cloud != null ) return cloud;
@@ -101,12 +103,21 @@ namespace UltimoBarrio.Content.Weapons
 			return null;
 		}
 
+		/// <summary>
+		/// Cloud.Model() exige string literal en el call site (CloudAssetProvider de
+		/// compile-time). Idents verificados en el backend (find_packages, 2026-08-07):
+		///   facepunch.w_usp / facepunch.w_trenchknife / facepunch.w_spaghellim4
+		/// </summary>
 		private Model ResolveCloudModel()
 		{
 			switch ( Definition.Id )
 			{
 				case "ub_weapon_usp":
 					return Cloud.Model( "facepunch.w_usp" );
+				case "ub_weapon_knife":
+					return Cloud.Model( "facepunch.w_trenchknife" );
+				case "ub_weapon_shotgun":
+					return Cloud.Model( "facepunch.w_spaghellim4" );
 				default:
 					return null;
 			}

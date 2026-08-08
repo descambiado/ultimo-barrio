@@ -133,18 +133,22 @@ namespace UltimoBarrio.Content.Weapons
 				DisplayName = "Cuchillo",
 				Category = WeaponContentCategory.Melee,
 
-				WorldModel = "facepunch.knife", // PENDING_VERIFY
+				// Idents verificados en el backend (find_packages, 2026-08-07):
+				//   facepunch.knife NO existe (descartado, era inventado).
+				CloudWorldId = "facepunch.w_trenchknife", // world model Trench Knife (Facepunch)
+				CloudViewId = "facepunch.v_m9bayonet",    // viewmodel melee (Facepunch)
+				WorldModel = "",
 				WorldModelFallback = "models/citizen_props/crate01.vmdl", // VERIFIED
 				ViewModel = "prefabs/content/weapons/v_knife_content.prefab",
 				AmmoModel = "",
 				CasingModel = "",
 
-				FireSound = "weapon.knife.swing",
+				FireSound = "", // no hay SoundEvent melee en el asset system
 				ReloadSound = "",
 				DryFireSound = "",
 				MuzzleEffect = "",
 
-				AnimGraph = "models/citizen/citizen.animgraph", // PENDING_VERIFY
+				AnimGraph = "",
 				HoldTypeParam = "holdtype",
 				DrawTime = 0.3f,
 
@@ -161,8 +165,8 @@ namespace UltimoBarrio.Content.Weapons
 				AmmoType = "",
 				EquipSlot = "Melee",
 
-				AssetsVerified = false,
-				VerificationNotes = "Buscar modelo de cuchillo legal. Fallback crate01 verificado."
+				AssetsVerified = true,
+				VerificationNotes = "Cloud idents verificados en el backend (find_packages 2026-08-07): facepunch.w_trenchknife + facepunch.v_m9bayonet. Validado en runtime en el weapon_lab."
 			};
 		}
 
@@ -174,18 +178,23 @@ namespace UltimoBarrio.Content.Weapons
 				DisplayName = "Escopeta",
 				Category = WeaponContentCategory.Firearm,
 
-				WorldModel = "facepunch.w_shotgun", // PENDING_VERIFY
+				// Idents verificados en el backend (find_packages, 2026-08-07):
+				//   facepunch.w_shotgun NO existe (descartado, era inventado).
+				//   La escopeta real de Facepunch es la Spaghelli M4 (12 gauge, benelli).
+				CloudWorldId = "facepunch.w_spaghellim4", // world model Spaghelli M4
+				CloudViewId = "facepunch.v_spaghellim4",  // viewmodel Spaghelli M4
+				WorldModel = "",
 				WorldModelFallback = "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl", // VERIFIED
 				ViewModel = "prefabs/content/weapons/v_shotgun_content.prefab",
-				AmmoModel = "facepunch.ammo_buckshot", // PENDING_VERIFY
-				CasingModel = "",
+				AmmoModel = "models/weapons/sbox_ammo/9mm_ammobox/ammobox_9mm.vmdl", // VERIFIED (placeholder de munición; real: facepunch.ammobox12g PENDING)
+				CasingModel = "models/props/casings/casing_scatter_9mm_01.vmdl", // VERIFIED (placeholder; real: facepunch.12gshellcasing PENDING)
 
-				FireSound = "weapon.shotgun.fire",
-				ReloadSound = "weapon.shotgun.reload",
-				DryFireSound = "weapon.shotgun.dryfire",
-				MuzzleEffect = "",
+				FireSound = "", // sin SoundEvent de escopeta verificado
+				ReloadSound = "",
+				DryFireSound = "",
+				MuzzleEffect = "", // real: facepunch.shotgun_muzzleflash (prefab) PENDING
 
-				AnimGraph = "models/citizen/citizen.animgraph", // PENDING_VERIFY
+				AnimGraph = "",
 				HoldTypeParam = "holdtype",
 				DrawTime = 0.7f,
 
@@ -201,8 +210,8 @@ namespace UltimoBarrio.Content.Weapons
 				AmmoType = "ammo_buckshot",
 				EquipSlot = "Primary",
 
-				AssetsVerified = false,
-				VerificationNotes = "AmmoType 'ammo_buckshot' es un item id nuevo (definirlo en el core nuevo). Fallback verificado."
+				AssetsVerified = true,
+				VerificationNotes = "Cloud idents verificados en el backend (find_packages 2026-08-07): facepunch.w_spaghellim4 + facepunch.v_spaghellim4 (Spaghelli M4 12g). Munición real facepunch.ammobox12g / facepunch.12g_shell / facepunch.12gshellcasing + muzzle flash facepunch.shotgun_muzzleflash PENDING de cablear (data-only). AmmoType 'ammo_buckshot' = item id del core nuevo."
 			};
 		}
 	}

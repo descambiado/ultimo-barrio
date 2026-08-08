@@ -18,7 +18,7 @@
         "__type": "Sandbox.ModelRenderer",
         "__guid": "5f8b2c1a-7a4e-4d90-9b11-1c2d3e4f5a11",
         "__enabled": true,
-        "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl"
+        "Model": "models/weapons/sbox_shotgun_spaghellim4/w_spaghellim4.vmdl"
       },
       {
         "__type": "UltimoBarrio.Content.Weapons.WeaponContentHost",
