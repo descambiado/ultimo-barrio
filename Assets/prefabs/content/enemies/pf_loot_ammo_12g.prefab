@@ -1,0 +1,41 @@
+{
+  "RootObject": {
+    "__guid": "8f3b2e11-1a2b-4c3d-9e4f-5a6b7c8d9e01",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "Ammo 12g Pickup",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__guid": "8f3b2e11-1a2b-4c3d-9e4f-5a6b7c8d9e11",
+        "__enabled": true,
+        "__type": "UltimoBarrio.WorldItemPickup",
+        "ItemId": "ammo_12g",
+        "Amount": 8
+      },
+      {
+        "__guid": "8f3b2e11-1a2b-4c3d-9e4f-5a6b7c8d9e12",
+        "__enabled": true,
+        "__type": "Sandbox.BoxCollider",
+        "Scale": "10,10,10"
+      },
+      {
+        "__guid": "8f3b2e11-1a2b-4c3d-9e4f-5a6b7c8d9e13",
+        "__enabled": true,
+        "__type": "Sandbox.ModelRenderer",
+        "Model": "facepunch.ammobox12g",
+        "Tint": "0.5,0.5,0.5,1"
+      }
+    ],
+    "Children": []
+  }
+}
