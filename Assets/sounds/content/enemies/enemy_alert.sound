@@ -2,14 +2,19 @@
     "SelectionMode":  "Random",
     "DistanceAttenuation":  true,
     "UI":  false,
-    "Volume":  "0.5",
+    "Volume":  "1",
     "Sounds":  [
-                   "sounds/content/weapons/foley_deploy_weapon_03.vsnd"
+                   "sounds/content/enemies/scared_01.vsnd",
+                   "sounds/content/enemies/scared_02.vsnd",
+                   "sounds/content/enemies/scared_03.vsnd",
+                   "sounds/content/enemies/scared_04.vsnd",
+                   "sounds/content/enemies/scared_05.vsnd",
+                   "sounds/content/enemies/scared_06.vsnd"
                ],
     "Transmission":  true,
-    "Pitch":  "0.899999976 1.14999998",
+    "Pitch":  "1",
     "AirAbsorption":  true,
-    "Decibels":  70,
+    "Decibels":  78,
     "Falloff":  [
                     {
                         "y":  1,
@@ -19,18 +24,11 @@
                         "x":  0
                     },
                     {
-                        "y":  0.22,
-                        "out":  -3.5,
-                        "in":  3.5,
+                        "y":  0.4,
+                        "out":  -0.5,
+                        "in":  -0.5,
                         "mode":  "Mirrored",
-                        "x":  0.05
-                    },
-                    {
-                        "y":  0.04,
-                        "out":  -0.16,
-                        "in":  0.16,
-                        "mode":  "Mirrored",
-                        "x":  0.2
+                        "x":  0.4
                     },
                     {
                         "y":  0,
@@ -42,7 +40,7 @@
                 ],
     "__version":  1,
     "Occlusion":  true,
-    "Distance":  15000,
+    "Distance":  2000,
     "OcclusionRadius":  64,
     "__references":  [
 
