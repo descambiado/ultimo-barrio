@@ -38,7 +38,7 @@ namespace UltimoBarrio.Content.Dev
 	{
 		// Sube este número en cada cambio de código relevante para verificar
 		// que la sesión de juego carga el assembly nuevo (detección de hotload atrasado).
-		public const string Version = "rig-1";
+		public const string Version = "rig-2";
 
 		[Property] public bool AutoTest { get; set; } = true;
 		[Property] public List<BuildTestEntry> Tests { get; set; } = new();
@@ -76,6 +76,7 @@ namespace UltimoBarrio.Content.Dev
 			_camera.Priority = 10;
 
 			_fixture = Components.Create<LabResourceFixture>();
+			_fixture.SetBalance( Tests.Count > 0 ? Tests[0].FixtureBalance : 100 );
 
 			if ( !CheckRegistryCoverage() )
 			{

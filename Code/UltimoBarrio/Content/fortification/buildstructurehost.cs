@@ -150,8 +150,12 @@ namespace UltimoBarrio.Content.Fortification
 			var renderer = Components.GetInChildrenOrSelf<ModelRenderer>();
 			if ( renderer != null )
 			{
-				var model = ResolveModel();
+				var model = ResolveModel() ?? ResolveModelFromPrefab();
 				if ( model != null ) renderer.Model = model;
+				else if ( !string.IsNullOrEmpty( Definition.Model ) )
+				{
+					Log.Warning( $"[BuildHost] {Definition.Id}: modelo no resuelto '{Definition.Model}' (ni ruta ni prefab) — se conserva el del prefab" );
+				}
 			}
 
 			if ( Definition.Scale != 1f )
@@ -163,18 +167,39 @@ namespace UltimoBarrio.Content.Fortification
 		/// <summary>Modelo primario → fallback. Si nada resuelve, se conserva el modelo del prefab.</summary>
 		private Model ResolveModel()
 		{
-			if ( !string.IsNullOrEmpty( Definition.Model ) )
-			{
-				var model = ResourceLibrary.Get<Model>( Definition.Model );
-				if ( model != null ) return model;
-			}
+			var model = ResolveModelPath( Definition.Model );
+			if ( model != null ) return model;
 
-			if ( !string.IsNullOrEmpty( Definition.ModelFallback ) )
+			model = ResolveModelPath( Definition.ModelFallback );
+			if ( model == null && !string.IsNullOrEmpty( Definition.Model ) )
 			{
-				return ResourceLibrary.Get<Model>( Definition.ModelFallback );
+				Log.Warning( $"[BuildHost] {Definition.Id}: modelo no resuelto '{Definition.Model}' — se conserva el del prefab" );
 			}
+			return model;
+		}
 
-			return null;
+		/// <summary>Fallback: modelo ya resuelto por ident dentro del PREFAB destino (los assets del engine no resuelven por ruta).</summary>
+		private Model ResolveModelFromPrefab()
+		{
+			if ( string.IsNullOrEmpty( Definition.Prefab ) ) return null;
+
+			var prefabFile = ResourceLibrary.Get<PrefabFile>( Definition.Prefab );
+			var scene = prefabFile == null ? null : SceneUtility.GetPrefabScene( prefabFile );
+			var renderer = scene?.GetAllComponents<ModelRenderer>()?.FirstOrDefault();
+			return renderer?.Model;
+		}
+
+		/// <summary>Resuelve una ruta de modelo tolerando la extensión .vmdl opcional (Get&lt;Model&gt; es estricto).</summary>
+		private static Model ResolveModelPath( string path )
+		{
+			if ( string.IsNullOrEmpty( path ) ) return null;
+
+			var model = ResourceLibrary.Get<Model>( path );
+			if ( model == null && path.EndsWith( ".vmdl", StringComparison.OrdinalIgnoreCase ) )
+			{
+				model = ResourceLibrary.Get<Model>( path[..^5] );
+			}
+			return model;
 		}
 
 		private string ResolvedModelName()
