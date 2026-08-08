@@ -107,3 +107,21 @@
 - Suite de armas: Play `weapon_lab` ‚Üí 4/4 PASS (delta ‚â• ExpectedDamage; rig no falsifica PASS).
 - Sustituir PENDING_VERIFY (enemigos: modelo Citizen ‚ö†Ô∏è EULA T5) solo con assets vistos en Cloud Browser.
 - Marcar en `asset-registry.yml` el identificador real de cada asset verificado.
+
+## 7. Estado por commit ó handoff 2026-08-08 (rama spike/laptop-content-stack)
+
+| SHA | Dominio | Estado | Dependencias | Portable | Adapter requerido |
+|---|---|---|---|---|---|
+| 9839846 | weapons USP | RUNTIME VALIDATED | w_usp/v_usp cloud | sÌ | IWeaponContentAdapter/IDamageTarget |
+| 6913adb | weapons crowbar | RUNTIME VALIDATED | crowbar01 engine | sÌ | idem |
+| 9fd7b32 | weapons suite 4/4 + PackageReferences | RUNTIME VALIDATED | 9 idents cloud | sÌ | idem |
+| d2e1132 | QA WeaponSuite | RUNTIME VALIDATED | ó | sÌ | no |
+| 21d199f | QA ContentRuntimeSuite | RUNTIME VALIDATED | ó | sÌ | no |
+| 9055be6 | QA stubs suites | STATIC ONLY | ó | sÌ | no |
+| 494b21b | building assets (9 prefabs) | STATIC ONLY | engine models | sÌ | no |
+| 4249201/87e176f/b79dea3 | building system | STATIC ONLY | ó | sÌ | IFortificationContentAdapter/BuildStructureHost |
+| 7222416/8a71468 | enemies assets | STATIC ONLY | citizen + loot | sÌ | IEnemyContentAdapter |
+| cc16de7 | audio bank | STATIC ONLY (sin compile) | facepunch sounds + MIT dry_fire | sÌ | no |
+| d4c0c93 (agent/enemies) | enemy system WIP | WIP (sin compilar) | ó | sÌ (pendiente) | IEnemyContentAdapter |
+| e871fe7 (checkpoint) | diagnÛstico building + open_scene | WIP (roto building_lab) | ó | sÌ (open_scene) | no |
+

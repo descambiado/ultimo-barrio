@@ -62,6 +62,15 @@ NO es una regla del engine: era leer `compile_status` con un `Success` del build
 2. Pipeline del coordinador: Saqueador → wooden barricade → vehicle foundation → Bruto+Merodeador → fortification pack → audio → combined suite.
 3. Prueba manual única al final de todos los labs (PlayerController oficial).
 
+### HANDOFF 2026-08-08 (fábrica congelada — ver docs/handoff/2026-08-08-laptop-handoff.md)
+
+- HEAD estable: `dfdf543` (spike/laptop-content-stack). Compile 0 errores. Pendiente de push a GitHub.
+- Integrado y compilando: QA suite (G), building assets+system (D+C, building_lab runtime FAIL), enemies assets (B), audio (F, sin compilar).
+- WeaponSuite 4/4 PASS validada tras refactor de G (14:42).
+- WIP preservados: `agent/enemies` @ `d4c0c93` (sistema de enemigos de A, sin validar), `checkpoint/laptop-turbo-wip-20260808` @ `e871fe7` (diagnóstico NRE building + tool MCP open_scene).
+- `agent/vehicles` sin trabajo (worker E no entregó).
+- NRE actual: `BuildingTestRig.CheckRegistryCoverage` línea ~104 — `FortificationContentRegistry.All` contiene un null; diagnóstico en curso (ver handoff → Known blockers).
+
 ### BUILDING SPIKE — agent/building (Worker C)
 
 - **Rama**: `agent/building`. Base HEAD validado `9fd7b32`; el coordinador avanzó con
