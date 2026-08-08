@@ -96,3 +96,39 @@ NO es una regla del engine: era leer `compile_status` con un `Success` del build
 - **Nota cross-domain**: `enemy_lab.scene` (dominio enemigos) referenciaba
   `FortificationContentHost` como dummy objetivo → `__type` actualizado a
   `BuildStructureHost` (cambio mecánico de 1 línea, requerido por el rename).
+
+### VEHICLES SPIKE - agent/vehicles-v2 (Worker D)
+
+- **Rama**: `agent/vehicles-v2`. Base HEAD `46b3b01` (spike/laptop-content-stack).
+- **PRIMARY kit**: `fieldguide.vehiclephysics` (Vehicle Physics Kit, sbox Field Guide) -
+  **MIT verificado** (get_package MCP 2026-08-08: "MIT licensed. Fork it, ship it, no
+  strings."; sboxdb v337869, updated 2026-07-31). Ident exacto verificado por
+  find_packages. Decision detallada: `docs/research/vehicles-primary-kit.md`.
+- **Correccion al research**: `fieldguide.vehicle_prototyping` YA NO EXISTE en el
+  backend (find_packages = 0); el montaje (VehicleFactory) vive en el propio kit.
+- **Descartados**: matekdev/sbox-arcade-car-physics (API antigua verificada en source:
+  SceneObject(SceneWorld), Input.AnalogMove - no compila en 26.08.05, aunque MIT);
+  clearly.cavc (2025-03-08, licencia sin verificar); bugge.vehicle_controller (sin
+  licencia verificada).
+- **Entregado** (STATIC ONLY, pendiente de validacion runtime del coordinador):
+  - `VehicleTestRig` (UltimoBarrio.Content.Dev): spawn (prefab del kit por propiedad
+    VehiclePrefabPath) → components validos (Rigidbody+ModelRenderer+listado real de
+    componentes) → driver fixture entra (attach via GameObject.Parent) → throttle
+    (delta de posicion real) → steering (cambio de yaw real) → brake (reduccion de
+    velocidad por ventanas de posicion) → reverse (signo dot(Δ,forward) < 0) → exit
+    (detach) → `[VehicleLab] Suite complete (8/8 PASS)`.
+  - `VehicleDriverFixture` (Dev): enter/exit por ruta real de parenteo; sin fisica propia.
+  - `VehicleSuite`: reporter ILabSuite integrado con el runner QA ([UBSuite]).
+  - `vehicle_lab.scene` actualizada: NetworkHelper StartServer SIN PlayerPrefab
+    (autotest, sin pawn) + rig con CameraComponent (IsMainCamera, Priority 10).
+  - `ultimo_barrio.sbproj`: PackageReferences += "fieldguide.vehiclephysics".
+  - `assets/asset-registry.yml`: entrada fieldguide/vehiclephysics VERIFIED (MIT).
+  - Logs: `[LabBuild] VERSION=rig-1` + `[VehicleLab]`.
+- **Anti-falsificacion**: PASS solo por deltas reales (posicion/yaw/velocidad);
+  input simulado con `Input.SetAction(string,bool)` (API engine verificada 26.08.05);
+  NOMBRES de input actions del kit = propiedades configurables en la escena (defaults
+  Forward/Brake/SteerLeft/SteerRight/Reverse), pendientes de confirmar contra el
+  README del kit tras montarlo.
+- **Pendiente coordinador (runtime)**: merge sbproj → montar paquete → confirmar
+  nombres de input actions en el README del kit → rellenar VehiclePrefabPath con un
+  prefab del kit → Play vehicle_lab → 8/8 PASS.
