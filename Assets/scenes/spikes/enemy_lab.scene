@@ -1,8 +1,8 @@
 {
-  "__guid": "17a82c23-5f5c-4e80-8dbf-da42e7b60911",
+  "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c01",
   "GameObjects": [
     {
-      "__guid": "f131fd51-0780-458f-83c8-42b156332a43",
+      "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c10",
       "__version": 2,
       "Flags": 0,
       "Name": "MapInstance",
@@ -19,16 +19,16 @@
       "Components": [
         {
           "__type": "Sandbox.MapInstance",
-          "__guid": "ccf81d49-7ab3-4607-a307-fd23768fbe55",
+          "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c11",
           "__enabled": true,
-          "MapName": "thieves.rpdowntown3t",
-          "UseMapFromLaunch": true
+          "MapName": "facepunch.flatgrass",
+          "UseMapFromLaunch": false
         }
       ],
       "Children": []
     },
     {
-      "__guid": "8f3163b7-45f0-4a30-99db-89f54492a623",
+      "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c20",
       "__version": 2,
       "Flags": 0,
       "Name": "World",
@@ -45,14 +45,63 @@
       "Components": [],
       "Children": [
         {
-          "__guid": "15d5d115-69e7-4e1d-9741-c700183431f9",
+          "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c21",
           "__version": 2,
           "Flags": 0,
-          "Name": "Lab Dummy",
-          "Position": "300,0,0",
+          "Name": "Sun",
+          "Position": "0,0,200",
+          "Rotation": "0.0990457684,0.369643837,-0.239117607,0.892399073",
+          "Scale": "1,1,1",
+          "Tags": "light_directional,light",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.DirectionalLight",
+              "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c22",
+              "__enabled": true
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c23",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Sky",
+          "Position": "0,0,0",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
-          "Tags": "lab_dummy",
+          "Tags": "skybox",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.SkyBox2D",
+              "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c24",
+              "__enabled": true,
+              "SkyMaterial": "materials/skybox/skybox_day_01.vmat"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c25",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Enemy Spawn Marker",
+          "Position": "100,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "0.3,0.3,0.3",
+          "Tags": "lab_marker",
           "Enabled": true,
           "NetworkMode": 2,
           "NetworkFlags": 0,
@@ -62,34 +111,22 @@
           "Components": [
             {
               "__type": "Sandbox.ModelRenderer",
-              "__guid": "e5cd0852-b3ec-4ed6-af1e-a76de22f1591",
+              "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c26",
               "__enabled": true,
-              "Model": "models/citizen_props/crate01.vmdl"
-            },
-            {
-              "__type": "Sandbox.BoxCollider",
-              "__guid": "469eabb5-1289-4a47-bd40-5f0553228a88",
-              "__enabled": true,
-              "Scale": "80,80,120",
-              "Static": false
-            },
-            {
-              "__type": "UltimoBarrio.Content.Fortification.BuildStructureHost",
-              "__guid": "4b77de7c-cbae-4d43-a178-effd79fab2a0",
-              "__enabled": true,
-              "DefinitionId": "fort_barricade_wood"
+              "Model": "models/citizen_props/crate01.vmdl",
+              "Tint": "0.8,0.2,0.2,1"
             }
           ],
           "Children": []
         },
         {
-          "__guid": "1aa8593c-bdc7-48aa-952f-d40dc75a3ff1",
+          "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c27",
           "__version": 2,
           "Flags": 0,
-          "Name": "Enemy Spawn Marker",
-          "Position": "100,0,0",
+          "Name": "Lab Dummy Marker",
+          "Position": "1100,0,64",
           "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
+          "Scale": "0.3,0.3,0.3",
           "Tags": "lab_marker",
           "Enabled": true,
           "NetworkMode": 2,
@@ -97,13 +134,21 @@
           "NetworkOrphaned": 0,
           "NetworkTransmit": true,
           "OwnerTransfer": 1,
-          "Components": [],
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c28",
+              "__enabled": true,
+              "Model": "models/citizen_props/crate01.vmdl",
+              "Tint": "0.2,0.6,0.2,1"
+            }
+          ],
           "Children": []
         }
       ]
     },
     {
-      "__guid": "0039d6af-e9f4-48e4-af39-89d6984dbd44",
+      "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c30",
       "__version": 2,
       "Flags": 0,
       "Name": "Systems",
@@ -120,7 +165,7 @@
       "Components": [],
       "Children": [
         {
-          "__guid": "18475423-345e-4fa7-a6f9-899c44d4821d",
+          "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c31",
           "__version": 2,
           "Flags": 0,
           "Name": "Network",
@@ -137,12 +182,8 @@
           "Components": [
             {
               "__type": "Sandbox.NetworkHelper",
-              "__guid": "58d84833-786a-442f-adee-46ac783884e4",
+              "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c32",
               "__enabled": true,
-              "PlayerPrefab": {
-                "_type": "gameobject",
-                "prefab": "prefabs/player.prefab"
-              },
               "SpawnPoints": [],
               "StartServer": true
             }
@@ -150,7 +191,7 @@
           "Children": []
         },
         {
-          "__guid": "874557dd-5a9e-4dde-abac-b0d80bf8b9e9",
+          "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c33",
           "__version": 2,
           "Flags": 0,
           "Name": "Lab Systems",
@@ -164,27 +205,92 @@
           "NetworkOrphaned": 0,
           "NetworkTransmit": true,
           "OwnerTransfer": 1,
-          "Components": [
+          "Components": [],
+          "Children": [
             {
-              "__type": "UltimoBarrio.Content.Dev.LabEnemySpawner",
-              "__guid": "7a45891a-5033-4a8c-8531-4462505fa069",
-              "__enabled": true,
-              "SpawnMarker": {
-                "_type": "gameobject",
-                "go": "1aa8593c-bdc7-48aa-952f-d40dc75a3ff1"
-              },
-              "TargetDummy": {
-                "_type": "gameobject",
-                "go": "15d5d115-69e7-4e1d-9741-c700183431f9"
-              }
+              "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c34",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Enemy Test Rig",
+              "Position": "600,-600,220",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "UltimoBarrio.Content.Dev.EnemyTestRig",
+                  "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c35",
+                  "__enabled": true,
+                  "AutoTest": true,
+                  "Tests": [
+                    {
+                      "Label": "Saqueador",
+                      "EnemyPrefab": "prefabs/content/enemies/enemy_saqueador.prefab",
+                      "ExpectedDefinitionId": "ub_enemy_saqueador",
+                      "ExpectedDamagePerHit": 15.0,
+                      "ExpectedLootMin": 1
+                    }
+                  ],
+                  "SpawnMarker": {
+                    "_type": "gameobject",
+                    "go": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c25"
+                  },
+                  "DummyMarker": {
+                    "_type": "gameobject",
+                    "go": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c27"
+                  }
+                },
+                {
+                  "__type": "Sandbox.CameraComponent",
+                  "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c36",
+                  "__enabled": true,
+                  "IsMainCamera": true,
+                  "Priority": 10
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c37",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Lab Enemy Spawner",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "UltimoBarrio.Content.Dev.LabEnemySpawner",
+                  "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c38",
+                  "__enabled": true,
+                  "SpawnMarker": {
+                    "_type": "gameobject",
+                    "go": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c25"
+                  },
+                  "TargetDummy": null
+                }
+              ],
+              "Children": []
             }
-          ],
-          "Children": []
+          ]
         }
       ]
     },
     {
-      "__guid": "726bdd33-4e1a-470b-bb91-6a0418ec00bb",
+      "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c40",
       "__version": 2,
       "Flags": 0,
       "Name": "SpawnPoints",
@@ -201,11 +307,11 @@
       "Components": [],
       "Children": [
         {
-          "__guid": "219bef1a-c312-41b8-9ccb-f3444267cd37",
+          "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c41",
           "__version": 2,
           "Flags": 0,
           "Name": "Primary Spawn",
-          "Position": "0,0,0",
+          "Position": "0,0,100",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Tags": "",
@@ -218,7 +324,7 @@
           "Components": [
             {
               "__type": "Sandbox.SpawnPoint",
-              "__guid": "6eef0d9c-f531-4880-8489-0f7ab73eb1a1",
+              "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c42",
               "__enabled": true,
               "Color": "0.2,0.8,0.3,1"
             }
