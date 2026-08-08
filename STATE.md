@@ -46,3 +46,29 @@ NO es una regla del engine: era leer `compile_status` con un `Success` del build
 1. Replicar patrón limpio: crowbar → knife → shotgun (mismo rig, cambiar prefabs/idents).
 2. `enemy_lab` (Saqueador), `building_lab` (barricada de madera), `vehicle_lab`.
 3. Prueba manual única al final de todos los labs (PlayerController oficial).
+
+### BUILDING SPIKE — agent/building (Worker C)
+
+- **Rama**: `agent/building`. Base HEAD validado `9fd7b32`; el coordinador avanzó con
+  `6c19f14` (prefabs con modelos reales) y `476e4bf` (asset-registry building) antes
+  del spike — se trabajó sobre `476e4bf`.
+- **Sistema portable data-driven** (sin propiedad/apartamentos ni inventario canónico):
+  - `BuildDefinition` (id/displayName/category/prefab/maxHp/repairAmount/repairCost/upgradeTo/model+fallback).
+  - `BuildPlacementRules` (server): rango builder, solapamiento, ground check, volumen
+    de prueba — trazas reales del scene.
+  - `BuildStructureHost`: autoridad host — spawn (prefab), HP (IDamageTarget), damage,
+    repair (consumo vía delegado → `LabResourceFixture` del lab, NO InventoryComponent),
+    upgrade (cambio de definición: modelo + HP), destroy.
+  - `FortificationContentRegistry`: 9 objetos como DATA (wooden_barricade primero;
+    reinforced_barricade, doors, stash, workbench, generator, alarm, repair_station)
+    con los modelos reales del engine verificados en asset-registry.
+  - Rig: `BuildingTestRig` (UltimoBarrio.Content.Dev) + `building_lab.scene`
+    (NetworkHelper StartServer SIN PlayerPrefab): preview inválido REJECTED →
+    bloqueado REJECTED → válido ACCEPTED → rotación → spawn → HP → daño (trace real)
+    → repair (consumo fixture) → upgrade (modelo reforzado) → destroy → PASS.
+    Logs `[BuildingLab]` + `[LabBuild] VERSION=rig-1`.
+- **Commits** (agent/building): `ffa08bd` data layer · `cc249e9` rules+host+retype ·
+  `63bc700` rig+scene · docs STATE.
+- **Nota cross-domain**: `enemy_lab.scene` (dominio enemigos) referenciaba
+  `FortificationContentHost` como dummy objetivo → `__type` actualizado a
+  `BuildStructureHost` (cambio mecánico de 1 línea, requerido por el rename).
