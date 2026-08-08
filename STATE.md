@@ -69,7 +69,7 @@ NO es una regla del engine: era leer `compile_status` con un `Success` del build
 - WeaponSuite 4/4 PASS validada tras refactor de G (14:42).
 - WIP preservados: `agent/enemies` @ `d4c0c93` (sistema de enemigos de A, sin validar), `checkpoint/laptop-turbo-wip-20260808` @ `e871fe7` (diagnóstico NRE building + tool MCP open_scene).
 - `agent/vehicles` sin trabajo (worker E no entregó).
-- NRE building: **RESUELTO** (assembly/hotload stale; cold restart) - fixes: SetBalance fixture + ResolveModelFromPrefab; building_lab 9/9 PASS (commits 1fff31c + b470365).
+- NRE actual: `BuildingTestRig.CheckRegistryCoverage` línea ~104 — `FortificationContentRegistry.All` contiene un null; diagnóstico en curso (ver handoff → Known blockers).
 
 ### BUILDING SPIKE — agent/building (Worker C)
 
@@ -97,30 +97,23 @@ NO es una regla del engine: era leer `compile_status` con un `Success` del build
   `FortificationContentHost` como dummy objetivo → `__type` actualizado a
   `BuildStructureHost` (cambio mecánico de 1 línea, requerido por el rename).
 
+### ENEMY SPIKE — agent/enemies-v2 (Worker A · turbo session 2, 2026-08-08)
 
-### ENEMY NAV FIXTURES - agent/enemies-nav (Worker B)
-
-- **Rama**: `agent/enemies-nav` (base `spike/laptop-content-stack` @ 46b3b01).
-- **Investigación NavMesh (engine instalado)**: el NavMesh NO es un componente: es
-  `SceneProperties.NavMesh` en el .scene (`Enabled/IncludeStaticBodies/...`), generado
-  en runtime por tiles desde los physics bodies (DotRecast). API runtime oficial en
-  `Sandbox.Navigation.NavMesh` (CalculatePath/IsGenerating/RequestTilesGeneration...)
-  y `Sandbox.NavMeshAgent` (MoveTo/Stop/IsNavigating/AgentPosition/WishVelocity).
-  Evidencia completa: `docs/research/enemies-navmesh-api.md`.
-- **enemy_lab.scene reescrito (dominio escenario)**: floor quad estático
-  (MeshComponent Collision Mesh, patrón testing_scene del engine) + NavMesh enabled;
-  `Enemy Spawn Marker` (96,0,8) sobre el mesh; `TestTarget` FIJO (crate + collider
-  estático + LabDamageDummy 200 HP, 768,0,60); `Loot Observation Point` con
-  `LabLootObserver`. NetworkHelper StartServer SIN PlayerPrefab (autotest).
-  Se retiró el MapInstance (thieves) y el dummy de building (dominio C/D): el lab es
-  plano y determinista como weapon/building labs.
-- **Rig de medición t0/t1/t2** (`LabEnemyNavRig` + `EnemyNavSuite`, Content.Dev):
-  PathCheck (CalculatePath Complete) → probe NavMeshAgent REAL (descenso t0/t1/t2,
-  recorrido ≥70% recta, anti-teleport 120u/frame) → prefab enemigo real (host→agent)
-  → kill por IDamageTarget → loot observado físicamente (WorldItemPickup en radio).
-  Logs `[EnemyLab]` + `[UBSuite] Enemy.<Label>`. Sin AI duplicada: los archetypes
-  son de Worker A (prefabs ya en repo: enemy_saqueador/bruto/merodeador).
-- **Commits** (agent/enemies-nav, pendientes de push): research NavMesh →
-  fixtures code → enemy_lab.scene → STATE.
-- **Pendiente coordinador**: validar runtime (play local, editor 26.08.05+):
-  `[LabEnemy] VERSION=rig-1` + `[UBSuite] Enemy.NavSaqueador PASS`.
+- **Rama**: `agent/enemies-v2` (worktree `wt-enemies-v2`, base `spike/laptop-content-stack` @ `46b3b01`).
+- **Port selectivo** del sistema de enemigos de `agent/enemies` @ `d4c0c93` al stack actual (que ya tenía registry/host base + infra QA).
+- **Producción** (`UltimoBarrio.Content.Enemies`):
+  - `EnemyArchetypeDefinition` extendida: visión (rango/ángulo), oído, memoria, `TargetPriority` (Player/Structures/Balanced) + `StructureTag`.
+  - `EnemyPerception` (nuevo): cono de visión + trace real con hitboxes (FIX del trace del worker viejo que ignoraba al target y nunca podía verlo), oído, memoria, scan de candidatos tag `enemy_target`.
+  - `EnemyAttack` (nuevo): melee por ruta real `ContentDamageEvent → IDamageTarget`.
+  - `LootPickupContent` (nuevo): pickup físico del pack (sin inventario canónico).
+  - `EnemyContentHost`: UN brain data-driven — Perception/Attack `[RequireComponent]`, `ApplyDefinition` en primer OnUpdate (logs deterministas), NavMeshAgent real (prohibido teleport), `IsTargetAcquired`/`LastKnownPosition`/`ReportNoise` para rig/core nuevo.
+  - `EnemyContentRegistry`: datos de percepción por arquetipo; loot tables → pickups propios del pack.
+- **Dev** (`UltimoBarrio.Content.Dev`):
+  - `EnemyTestRig` + `EnemySuite` (ILabSuite): spawn prefab → definición esperada → NavMeshAgent válido → detección (visión + sub-check oído) → navegación t0/t1/t2 real → ataque IDamageTarget (delta HP dummy) → daño recibido → muerte → loot físico → PASS/FAIL. Logs `[EnemyLab]` + salida machine-readable `[UBSuite] Enemy.<Label> PASS|FAIL`.
+  - `LabDamageDummy`: `LogPrefix` configurable por rig.
+- **Escena**: `enemy_lab.scene` reescrita — facepunch.flatgrass (NavMesh de mapa), NetworkHelper StartServer SIN PlayerPrefab (autotest), Enemy Test Rig (cámara main + suite Saqueador data-driven), marcadores sobre NavMesh (spawn 100,0,0 / dummy 1100,0,64). Se retira el dummy `BuildStructureHost` que el worker C había metido en enemy_lab como fixture (building_lab es el dominio de fortificación; el rig crea su propio LabDamageDummy).
+- **Loot prefabs**: `loot_scrap_content` / `loot_supplies_content` (con `LootPickupContent`; modelo crate01 verificado como provisional — modelo de loot definitivo pendiente).
+- **APIs engine verificadas** contra `Sandbox.Engine.xml` (objetivo: compilar): `MoveTo/Stop/IsNavigating/AgentPosition/MaxSpeed` (NavMeshAgent), `UseHitboxes` (SceneTrace), `ITagSet.Add`, `Vector3.GetAngle`. `Scene.NavMesh` NO está documentado en el engine → no se usa; la validación de navegación es por agente real (t0/t1/t2) — si el mapa no tiene NavMesh, la suite hace FAIL con diagnóstico claro.
+- **Commits** (agent/enemies-v2): `28f471a` producción · `9ddf54f` rig+suite · `6fee927` escena+loot · `docs STATE`.
+- **Acceptance esperada por el coordinador**: `[UBSuite] Enemy.Saqueador PASS` (navegación real t0/t1/t2 + ataque IDamageTarget + muerte + loot ≥ 1 pickup).
+- **Notas**: sin runtime en este worktree (lo valida el coordinador en el editor). El rig asume `Networking.IsHost=true` (sesión StartServer local). `LabEnemySpawner` (modo manual Slot1-3) queda en el repo pero fuera de la escena del autotest.
