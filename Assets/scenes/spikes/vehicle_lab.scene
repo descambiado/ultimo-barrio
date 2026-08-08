@@ -159,10 +159,6 @@
               "__type": "Sandbox.NetworkHelper",
               "__guid": "05261661-baff-4e9b-81e6-7e56188fa0bb",
               "__enabled": true,
-              "PlayerPrefab": {
-                "_type": "gameobject",
-                "prefab": "prefabs/player.prefab"
-              },
               "SpawnPoints": [],
               "StartServer": true
             }
@@ -173,8 +169,8 @@
           "__guid": "493a90c4-a8cb-4b87-beb7-50428ec6b78c",
           "__version": 2,
           "Flags": 0,
-          "Name": "Lab Systems",
-          "Position": "0,0,0",
+          "Name": "Vehicle Test Rig",
+          "Position": "0,0,64",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Tags": "",
@@ -186,13 +182,31 @@
           "OwnerTransfer": 1,
           "Components": [
             {
-              "__type": "UltimoBarrio.Content.Dev.LabVehicleSpawner",
+              "__type": "UltimoBarrio.Content.Dev.VehicleTestRig",
               "__guid": "85c13b16-0017-4618-89d0-3e98038b4157",
               "__enabled": true,
+              "AutoTest": true,
+              "VehiclePrefabPath": "",
+              "ThrottleAction": "Forward",
+              "BrakeAction": "Brake",
+              "SteerLeftAction": "SteerLeft",
+              "SteerRightAction": "SteerRight",
+              "ReverseAction": "Reverse",
+              "MinThrottleDelta": 25.0,
+              "MinSteerYawDelta": 10.0,
+              "BrakeSpeedReduction": 0.5,
+              "MinReverseDelta": 15.0,
               "SpawnMarker": {
                 "_type": "gameobject",
                 "go": "f86fe40c-1037-4cc6-a4aa-430e86246298"
               }
+            },
+            {
+              "__type": "Sandbox.CameraComponent",
+              "__guid": "3a7c2b10-2b3e-4b2e-9c2e-2f0a1b3c4d5e",
+              "__enabled": true,
+              "IsMainCamera": true,
+              "Priority": 10
             }
           ],
           "Children": []
