@@ -114,11 +114,13 @@ assets:
     license: pending-package-verification
     license_verified: false
     integration_mode: content-pack-verified
-    version_or_checked_at: "2026-08-07"
+    version_or_checked_at: "2026-08-08"
     editor_verified: true
+    verification_status: VERIFIED (get_package MCP 2026-08-08: 9mm Ammo Box, org facepunch, public; usado por prefab oficial prefabs/items/pf_ammo_9mm_pickup.prefab)
     asset_path: models/weapons/sbox_ammo/9mm_ammobox/ammobox_9mm.vmdl
     used_by:
       - content:Weapons/ub_weapon_usp (ammo model)
+      - content:Enemies/loot (pf_ammo_9mm_pickup.prefab en Saqueador/Bruto/Merodeador)
     fallback: models/sbox_props/cardboard_box/cardboard_box_open.vmdl
     notes: >
       Sustituye al candidato facepunch.ammo_9mm (no existía como paquete instalable).
@@ -141,7 +143,7 @@ assets:
       Casquillos 9mm para efectos de expulsión.
 
   - id: facepunch.w_crowbar
-    name: Crowbar world model (SUPERSEDED — no existe como paquete)
+    name: Crowbar world model (SUPERSEDED — runtime usa engine content)
     author: Facepunch (candidato)
     source_url: https://sbox.game/facepunch/sboxweapons
     package_type: package-asset
@@ -152,11 +154,12 @@ assets:
     used_by: []
     fallback: models/citizen_props/crowbar01.vmdl
     notes: >
-      VERIFICADO FALSO: facepunch.w_crowbar NO existe en el backend (find_packages).
-      La palanca real es engine content: models/citizen_props/crowbar01.vmdl (PASS runtime).
+      El crowbar RUNTIME usa models/citizen_props/crowbar01.vmdl (engine content, PASS 2026-08-07).
+      El paquete cloud facepunch.w_crowbar fue VERIFICADO por get_package el 2026-08-08 (ver entrada
+      dedicada más abajo) y queda como alternativo si se quiere el modelo de arma oficial.
 
   - id: facepunch.knife
-    name: Knife world model (SUPERSEDED — no existe como paquete)
+    name: Knife world model (SUPERSEDED by facepunch.w_trenchknife)
     author: Facepunch (candidato)
     source_url: https://sbox.game/facepunch/sboxweapons
     package_type: package-asset
@@ -165,10 +168,10 @@ assets:
     integration_mode: superseded
     version_or_checked_at: "2026-08-08"
     used_by: []
-    fallback: models/weapons/sbox_melee_trenchknife/w_trenchknife.vmdl
+    fallback: models/citizen_props/crate01.vmdl
     notes: >
-      VERIFICADO FALSO: facepunch.knife NO existe. El cuchillo real es
-      facepunch.w_trenchknife (world) + facepunch.v_m9bayonet (view) — PASS runtime.
+      CONFIRMADO FALSO 2026-08-08 (get_package: No package found for 'facepunch.knife').
+      Reemplazado por facepunch.w_trenchknife (world) + facepunch.v_m9bayonet (view), ambos VERIFIED.
 
   - id: facepunch.w_shotgun
     name: Shotgun world model (SUPERSEDED — no existe como paquete)
@@ -183,7 +186,114 @@ assets:
     fallback: models/weapons/sbox_shotgun_spaghellim4/w_spaghellim4.vmdl
     notes: >
       VERIFICADO FALSO: facepunch.w_shotgun NO existe. La escopeta real es
-      facepunch.w_spaghellim4 / facepunch.v_spaghellim4 (Spaghelli M4, 12 gauge) — PASS runtime.
+      facepunch.w_spaghellim4 / facepunch.v_spaghellim4 (Spaghelli M4, 12 gauge) — PASS runtime 2026-08-08.
+
+  - id: facepunch.ammo_9mm
+    name: 9mm ammo model (SUPERSEDED by facepunch.ammobox9mm)
+    author: Facepunch (candidato)
+    source_url: https://sbox.game/facepunch/sboxweapons
+    package_type: package-asset
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: superseded
+    version_or_checked_at: "2026-08-07"
+    used_by: []
+    fallback: models/weapons/sbox_ammo/9mm_ammobox/ammobox_9mm.vmdl
+    notes: >
+      No existía como paquete instalable; reemplazado por facepunch.ammobox9mm (verificado).
+
+  - id: facepunch.citizen-model
+    name: Citizen base model (+animgraph embebido)
+    author: Facepunch
+    source_url: https://sbox.game/facepunch
+    package_type: engine-content
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    editor_verified: true
+    verification_status: VERIFIED (asset_info MCP 2026-08-08: compiled+uptodate en addons/citizen)
+    asset_path: models/citizen/citizen.vmdl
+    animgraph_path: models/citizen/citizen.vanmgrph
+    material_options:
+      - models/citizen/skin/citizen_skin01.vmat
+      - models/citizen/skin/citizen_skin_grey.vmat
+    bodygroups: Head, Chest, Legs, Hands (on/off; pensados para ropa)
+    used_by:
+      - content:Enemies/ub_enemy_saqueador
+      - content:Enemies/ub_enemy_bruto
+      - content:Enemies/ub_enemy_merodeador
+    fallback: models/citizen_props/crate01.vmdl
+    notes: >
+      citizen.vmdl VERIFIED (asset_info 2026-08-08; 568 modelos citizen instalados).
+      El animgraph va embebido en el modelo; citizen.vanmgrph existe como asset independiente.
+      Diferenciacion por archetype SIN assets nuevos: Scale + Tint en SkinnedModelRenderer
+      (saqueador neutro / bruto grimy oscuro / merodeador palido). Bodygroups solo utiles
+      con ropa; skins citizen_skin01/grey como material override futuro.
+      Validar términos de uso de contenido humano antes de standalone (T5).
+
+  - id: engine.citizen_props_crowbar01
+    name: Crowbar prop (engine content)
+    author: Facepunch (engine)
+    source_url: null
+    package_type: engine-content
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    editor_verified: true
+    verification_status: VERIFIED (fs 2026-08-08: addons/citizen/Assets/models/citizen_props/crowbar01.vmdl)
+    asset_path: models/citizen_props/crowbar01.vmdl
+    used_by:
+      - content:Weapons/ub_weapon_crowbar (candidato primario real)
+      - content:Enemies/loot (pf_loot_crowbar.prefab)
+    fallback: models/citizen_props/crate01.vmdl
+    notes: >
+      Modelo de palanca del engine verificado; sustituye al fallback crate01 cuando
+      se valide el crowbar en el lab (fase posterior a USP).
+      Alternativa cloud verificada 2026-08-08: facepunch.w_crowbar (world model oficial, get_package OK).
+
+  - id: sound/content-pack-events
+    name: SoundEvents del content pack (weapon.usp.fire, build.wood.place, ...)
+    author: proyecto (a crear)
+    source_url: null
+    package_type: project-owned
+    license: MPL-2.0 (proyecto)
+    license_verified: true
+    integration_mode: content-pack-candidate
+    version_or_checked_at: "2026-08-07"
+    used_by:
+      - content:Weapons/*
+      - content:Fortification/*
+    fallback: sin sonido (campos vacíos en definiciones)
+    notes: >
+      Crear SoundEvent graphs propios o licenciar CC0/CC-BY (research de audio).
+      Hasta entonces los campos de sonido están vacíos/placeholder en las definiciones.
+
+  # ------------------------------------------------------------------
+  # Enemies + loot — Worker B (2026-08-08) — todos VERIFIED via MCP read-only
+  # (get_package backend + asset_search/asset_info del asset system).
+  # ------------------------------------------------------------------
+
+  - id: facepunch.ammobox12g
+    name: 12 Gauge Ammo Box
+    author: Facepunch
+    source_url: https://sbox.game/facepunch/sboxweapons
+    package_type: package-asset
+    asset_type: model
+    cloud_ident: facepunch.ammobox12g
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    verification_status: VERIFIED (get_package MCP 2026-08-08: 12 Gauge Ammo Box, org facepunch, public, updated 2026-06-09)
+    used_by:
+      - content:Enemies/loot (pf_loot_ammo_12g.prefab, loot Bruto)
+    fallback: models/citizen_props/crate01.vmdl
+    notes: >
+      Munision de escopeta para loot. Prefab pickup nuevo siguiendo el patron oficial
+      pf_ammo_9mm_pickup.prefab (WorldItemPickup + BoxCollider + ModelRenderer cloud ident).
+      ItemId 'ammo_12g' pendiente de registrar en ItemRegistry del core (coordinador).
 
   - id: facepunch.w_trenchknife
     name: Trench Knife world model
@@ -195,17 +305,17 @@ assets:
     license: pending-package-verification
     license_verified: false
     integration_mode: content-pack-verified
-    resolution: PackageReferences (sbproj) + Cloud.Model(cloud_ident)
     version_or_checked_at: "2026-08-08"
-    editor_verified: true
-    verification_status: VERIFIED (weapon_lab Knife PASS; montado via PackageReferences sin install manual)
-    asset_path: models/weapons/sbox_melee_trenchknife/w_trenchknife.vmdl
+    verification_status: VERIFIED (get_package MCP 2026-08-08: Trench Knife world model, org facepunch, public)
     used_by:
-      - content:Weapons/ub_weapon_knife (world)
-    fallback: models/weapons/sbox_melee_trenchknife/w_trenchknife.vmdl (modelo del prefab)
+      - content:Enemies/loot (pf_loot_knife.prefab, loot Bruto)
+    fallback: models/citizen_props/crate01.vmdl
+    notes: >
+      Cuchillo real verificado; sustituye al candidato falso facepunch.knife (SUPERSEDED).
+      ItemId 'weapon_knife' pendiente de registrar en ItemRegistry del core (coordinador).
 
   - id: facepunch.v_m9bayonet
-    name: M9 Bayonet viewmodel
+    name: ViewModel M9 Bayonet
     author: Facepunch
     source_url: https://sbox.game/facepunch/sboxweapons
     package_type: package-asset
@@ -214,12 +324,13 @@ assets:
     license: pending-package-verification
     license_verified: false
     integration_mode: content-pack-verified
-    resolution: PackageReferences (sbproj) + Cloud.Model(cloud_ident)
     version_or_checked_at: "2026-08-08"
-    editor_verified: true
-    verification_status: VERIFIED (weapon_lab Knife PASS viewmodel)
+    verification_status: VERIFIED (get_package MCP 2026-08-08: ViewModel M9 Bayonet, org facepunch, public; skill ub-cloud-asset-resolver PASS runtime)
     used_by:
-      - content:Weapons/ub_weapon_knife (view)
+      - content:Enemies/loot (viewmodel de referencia del cuchillo, weapon lab)
+    fallback: models/citizen_props/crate01.vmdl
+    notes: >
+      Viewmodel del cuchillo (v_m9bayonet.vanmgrph incluido en el paquete).
 
   - id: facepunch.w_spaghellim4
     name: Spaghelli M4 shotgun world model
@@ -234,10 +345,11 @@ assets:
     resolution: PackageReferences (sbproj) + Cloud.Model(cloud_ident)
     version_or_checked_at: "2026-08-08"
     editor_verified: true
-    verification_status: VERIFIED (weapon_lab Shotgun PASS; montado via PackageReferences)
+    verification_status: VERIFIED (weapon_lab Shotgun PASS runtime 2026-08-08; montado via PackageReferences)
     asset_path: models/weapons/sbox_shotgun_spaghellim4/w_spaghellim4.vmdl
     used_by:
       - content:Weapons/ub_weapon_shotgun (world)
+      - content:Enemies/loot (pickup escopeta futuro)
 
   - id: facepunch.v_spaghellim4
     name: Spaghelli M4 viewmodel + animgraph
@@ -252,25 +364,11 @@ assets:
     resolution: PackageReferences (sbproj) + Cloud.Model(cloud_ident)
     version_or_checked_at: "2026-08-08"
     editor_verified: true
-    verification_status: VERIFIED (weapon_lab Shotgun PASS viewmodel)
+    verification_status: VERIFIED (weapon_lab Shotgun PASS runtime 2026-08-08)
     asset_path: models/weapons/sbox_shotgun_spaghellim4/v_spaghellim4.vmdl
     animgraph_path: models/weapons/sbox_shotgun_spaghellim4/v_spaghellim4.vanmgrph
     used_by:
       - content:Weapons/ub_weapon_shotgun (view)
-
-  - id: facepunch.ammobox12g
-    name: 12 gauge ammo box
-    author: Facepunch
-    source_url: https://sbox.game/facepunch/sboxweapons
-    package_type: package-asset
-    license: pending-package-verification
-    license_verified: false
-    integration_mode: content-pack-verified
-    version_or_checked_at: "2026-08-08"
-    editor_verified: true
-    verification_status: VERIFIED (find_packages)
-    used_by:
-      - content:Weapons/ub_weapon_shotgun (ammo type: ammo_buckshot)
 
   - id: facepunch.12g_shell
     name: 12 gauge shell
@@ -296,251 +394,40 @@ assets:
     editor_verified: true
     verification_status: VERIFIED (find_packages)
 
-  - id: facepunch.citizen-model
-    name: Citizen base model (+animgraph embebido)
+  - id: facepunch.w_crowbar
+    name: Crowbar world model
     author: Facepunch
-    source_url: https://sbox.game/facepunch
-    package_type: engine-content
-    license: pending-package-verification
-    license_verified: false
-    integration_mode: content-pack-verified
-    version_or_checked_at: "2026-08-07"
-    editor_verified: true
-    asset_path: models/citizen/citizen.vmdl
-    used_by:
-      - content:Enemies/ub_enemy_saqueador
-      - content:Enemies/ub_enemy_bruto
-      - content:Enemies/ub_enemy_merodeador
-    fallback: models/citizen_props/crate01.vmdl
-    notes: >
-      citizen.vmdl verificado en el asset system (568 modelos citizen instalados).
-      El animgraph va embebido en el modelo (no hay citizen.animgraph suelto en assets).
-      Validar términos de uso de contenido humano antes de standalone (T5).
-
-  - id: engine.citizen_props_crowbar01
-    name: Crowbar prop (engine content)
-    author: Facepunch (engine)
-    source_url: null
-    package_type: engine-content
-    license: pending-package-verification
-    license_verified: false
-    integration_mode: content-pack-verified
-    version_or_checked_at: "2026-08-07"
-    editor_verified: true
-    asset_path: models/citizen_props/crowbar01.vmdl
-    used_by:
-      - content:Weapons/ub_weapon_crowbar (candidato primario real)
-    fallback: models/citizen_props/crate01.vmdl
-    notes: >
-      Modelo de palanca del engine verificado; sustituye al fallback crate01 cuando
-      se valide el crowbar en el lab (fase posterior a USP).
-
-  # ------------------------------------------------------------------
-  # Building / Fortification (2026-08-08, Worker D)
-  # Modelos REALES del engine verificados con asset_search + asset_info
-  # (IsCompiled=true) en el editor. Sustituyen a los fallbacks crate01 /
-  # metal_wheely_bin / cardboard_box_open de los 9 prefabs fort_*.
-  # ------------------------------------------------------------------
-
-  - id: engine.sbox_props_old_bench
-    name: Old bench (wood planks)
-    author: Facepunch (engine)
-    source_url: null
-    package_type: engine-content
+    source_url: https://sbox.game/facepunch/sboxweapons
+    package_type: package-asset
     asset_type: model
+    cloud_ident: facepunch.w_crowbar
     license: pending-package-verification
     license_verified: false
     integration_mode: content-pack-verified
     version_or_checked_at: "2026-08-08"
-    editor_verified: true
-    verification_status: VERIFIED (asset_search + asset_info IsCompiled)
-    asset_path: models/sbox_props/benches/old_bench.vmdl
+    verification_status: VERIFIED (get_package MCP 2026-08-08: Crowbar world model, org facepunch, public)
     used_by:
-      - content:Fortification/fort_barricade_wood
-    fallback: none
+      - content:Enemies/loot (alternativa cloud a engine.citizen_props_crowbar01)
+    fallback: models/citizen_props/crowbar01.vmdl
     notes: >
-      Unica madera real del catalogo engine montado (pallets/planks/fence no
-      existen como vmdl). Barricada de tablones: banco de madera con listones.
+      Alternativa world model oficial a la palanca del engine. El loot usa por ahora
+      models/citizen_props/crowbar01.vmdl (engine content, sin cloud ident, cero montaje).
 
-  - id: engine.sbox_props_security_shutter_box_middle
-    name: Security shutter housing box (metal)
-    author: Facepunch (engine)
+  - id: engine.medkit-bandage
+    name: Medkit / Bandage (loot salud) — NO DISPONIBLE
+    author: (ninguno del engine/facepunch)
     source_url: null
-    package_type: engine-content
-    asset_type: model
-    license: pending-package-verification
+    package_type: none
+    license: n/a
     license_verified: false
-    integration_mode: content-pack-verified
+    integration_mode: deferred
     version_or_checked_at: "2026-08-08"
-    editor_verified: true
-    verification_status: VERIFIED (asset_search + asset_info IsCompiled)
-    asset_path: models/sbox_props/security_shutter/security_shutter_box_middle.vmdl
+    verification_status: BLOQUEADO (find_packages MCP 2026-08-08: solo paquetes 3rd-party sin licencia verificada: fish.medkit, nibbles.medkit, humantarsier4200.bandage, rust.w_bandage...)
     used_by:
-      - content:Fortification/fort_barricade_reinforced
+      - content:Enemies/loot (medicine) — pendiente
     fallback: none
     notes: >
-      Panel metalico (caja de persiana de seguridad) para la barricada reforzada.
-
-  - id: engine.sbox_props_security_shutter_curtain_128
-    name: Security shutter curtain 128 (metal slats)
-    author: Facepunch (engine)
-    source_url: null
-    package_type: engine-content
-    asset_type: model
-    license: pending-package-verification
-    license_verified: false
-    integration_mode: content-pack-verified
-    version_or_checked_at: "2026-08-08"
-    editor_verified: true
-    verification_status: VERIFIED (asset_search + asset_info IsCompiled) - PROXY VISUAL
-    asset_path: models/sbox_props/security_shutter/security_shutter_curtain_128.vmdl
-    used_by:
-      - content:Fortification/fort_door_basic
-    fallback: none
-    notes: >
-      No existe puerta vmdl en el contenido del engine (asset_search 'door'
-      solo devuelve maps/prefabs/doors/*.vmap, no compatibles con
-      ModelRenderer). Proxy visual real: cortina de persiana metalica de 128u
-      (ancho de hoja de puerta). Revisar modelo de puerta custom en integracion.
-
-  - id: engine.sbox_props_security_shutter_curtain_bottom
-    name: Security shutter curtain bottom (metal, lock bar)
-    author: Facepunch (engine)
-    source_url: null
-    package_type: engine-content
-    asset_type: model
-    license: pending-package-verification
-    license_verified: false
-    integration_mode: content-pack-verified
-    version_or_checked_at: "2026-08-08"
-    editor_verified: true
-    verification_status: VERIFIED (asset_search + asset_info IsCompiled) - PROXY VISUAL
-    asset_path: models/sbox_props/security_shutter/security_shutter_curtain_bottom.vmdl
-    used_by:
-      - content:Fortification/fort_door_reinforced
-    fallback: none
-    notes: >
-      Igual que curtain_128: proxy visual real (sin puertas vmdl en engine).
-      Seccion inferior con barra de bloqueo: lectura visual mas robusta para
-      la puerta reforzada.
-
-  - id: engine.citizen_props_gritbin01_combined
-    name: Grit bin (bulk storage container)
-    author: Facepunch (engine)
-    source_url: null
-    package_type: engine-content
-    asset_type: model
-    license: pending-package-verification
-    license_verified: false
-    integration_mode: content-pack-verified
-    version_or_checked_at: "2026-08-08"
-    editor_verified: true
-    verification_status: VERIFIED (asset_search + asset_info IsCompiled)
-    asset_path: models/citizen_props/gritbin01_combined.vmdl
-    used_by:
-      - content:Fortification/fort_stash
-    fallback: none
-    notes: >
-      Contenedor de almacenamiento a granel (silo/arenero) para el stash de
-      fortificacion. Sustituye al placeholder cardboard_box_open.
-
-  - id: engine.citizen_props_oldoven
-    name: Old oven (industrial work station)
-    author: Facepunch (engine)
-    source_url: null
-    package_type: engine-content
-    asset_type: model
-    license: pending-package-verification
-    license_verified: false
-    integration_mode: content-pack-verified
-    version_or_checked_at: "2026-08-08"
-    editor_verified: true
-    verification_status: VERIFIED (asset_search + asset_info IsCompiled) - PROXY VISUAL
-    asset_path: models/citizen_props/oldoven.vmdl
-    used_by:
-      - content:Fortification/fort_workbench
-    fallback: none
-    notes: >
-      No existe workbench vmdl en el engine (asset_search 'workbench' = 0
-      modelos). Proxy visual real: vieja estufa/forja industrial como banco
-      de trabajo. old_bench (la unica mesa real) se reserva para la barricada
-      de madera.
-
-  - id: engine.props_aircon_unit_medium_wall
-    name: Aircon unit wall (vented machine box)
-    author: Facepunch (engine)
-    source_url: null
-    package_type: engine-content
-    asset_type: model
-    license: pending-package-verification
-    license_verified: false
-    integration_mode: content-pack-verified
-    version_or_checked_at: "2026-08-08"
-    editor_verified: true
-    verification_status: VERIFIED (asset_search + asset_info IsCompiled) - PROXY VISUAL
-    asset_path: models/props/aircon_unit_wall/aircon_unit_medium_wall.vmdl
-    used_by:
-      - content:Fortification/fort_generator
-    fallback: none
-    notes: >
-      No existe generator vmdl en el engine (asset_search 'generator' = 0
-      modelos). Proxy visual real: caja metalica con rejillas de ventilacion
-      (lectura de maquina/generador).
-
-  - id: engine.sbox_props_intruder_alarm_2
-    name: Intruder alarm 2 (siren box)
-    author: Facepunch (engine)
-    source_url: null
-    package_type: engine-content
-    asset_type: model
-    license: pending-package-verification
-    license_verified: false
-    integration_mode: content-pack-verified
-    version_or_checked_at: "2026-08-08"
-    editor_verified: true
-    verification_status: VERIFIED (asset_search + asset_info IsCompiled)
-    asset_path: models/sbox_props/intruder_alarm_2/intruder_alarm_2.vmdl
-    used_by:
-      - content:Fortification/fort_alarm
-    fallback: none
-    notes: >
-      Alarma real del engine: sirena de intrusos. Coincidencia directa con el
-      objeto fort_alarm.
-
-  - id: engine.props_microwave_trans
-    name: Microwave transceiver (comms equipment)
-    author: Facepunch (engine)
-    source_url: null
-    package_type: engine-content
-    asset_type: model
-    license: pending-package-verification
-    license_verified: false
-    integration_mode: content-pack-verified
-    version_or_checked_at: "2026-08-08"
-    editor_verified: true
-    verification_status: VERIFIED (asset_search + asset_info IsCompiled) - PROXY VISUAL
-    asset_path: models/props/mobile_masts/microwave_trans.vmdl
-    used_by:
-      - content:Fortification/fort_repair_station
-    fallback: none
-    notes: >
-      No hay workbench/toolbox/radio como vmdl en el engine. Proxy visual
-      real: equipo electronico de comunicaciones (caja metalica con antena)
-      para la estacion de reparacion.
-
-  - id: sound/content-pack-events
-    name: SoundEvents del content pack (weapon.usp.fire, build.wood.place, ...)
-    author: proyecto (a crear)
-    source_url: null
-    package_type: project-owned
-    license: MPL-2.0 (proyecto)
-    license_verified: true
-    integration_mode: content-pack-candidate
-    version_or_checked_at: "2026-08-07"
-    used_by:
-      - content:Weapons/*
-      - content:Fortification/*
-    fallback: sin sonido (campos vacíos en definiciones)
-    notes: >
-      Crear SoundEvent graphs propios o licenciar CC0/CC-BY (research de audio).
-      Hasta entonces los campos de sonido están vacíos/placeholder en las definiciones.
+      NO hay medkit/bandage en engine content ni en paquetes facepunch verificados.
+      El loot 'medicine' del BrutoTable apunta hoy a pf_scrap_pickup (placeholder en codigo,
+      Code/UltimoBarrio/Content/enemies/enemycontentregistry.cs — fuera del alcance de Worker B).
+      Recomendacion: quitar esa entrada o esperar paquete cloud con licencia verificada.
