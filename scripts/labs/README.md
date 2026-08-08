@@ -2,8 +2,9 @@
 
 Escenas aisladas para probar el contenido portable del paquete `Content`
 sin tocar `ultimo_barrio_alpha.scene` ni el core antiguo. Incluye la
-**mini-suite unificada** (`ContentRuntimeSuite`) que valida armas ya y tiene
-contratos listos para enemy/building/vehicle.
+**mini-suite unificada** (`ContentRuntimeSuite`): WeaponSuite validada (4/4)
+y contratos ejecutables para building / enemy / vehicle / audio (Worker E,
+2026-08-08).
 
 > ⚠️ Escenas generadas por script (`python scripts/labs/generate_lab_scenes.py`).
 > Si cambias el formato de escena del editor, re-genera (no edites a mano los GUIDs
@@ -45,7 +46,10 @@ Infra QA, SOLO dev — nunca producción. Todo en `Code/UltimoBarrio/Content/Dev
 | `ilabsuite.cs` | Contrato `ILabSuite` (Domain, Name, Initialize, Step, IsComplete, Result Pass/Fail/Skip + Detail) + `LabSuiteResult` |
 | `contentruntimesuite.cs` | Registro estático `ContentRuntimeSuite.Register(...)` + runner `ContentRuntimeSuiteRunner` (Component) |
 | `weaponsuite.cs` | `WeaponSuite` — lógica validada del rig (logs `[WeaponLab]` intactos) + tipos `WeaponTestEntry`/`WeaponTestType` |
-| `enemysuite.cs` / `buildingsuite.cs` / `vehiclesuite.cs` | Contratos SKIP para workers A/C/E (implementar sin fabricar resultados) |
+| `buildingsuite.cs` | `BuildingSuite` — contrato EJECUTABLE lifecycle 9 pasos (PreviewInvalid→PreviewValid→Rotation→Spawn→HP→Damage→Repair→Upgrade→Destroy) por la ruta real (BuildPlacementRules + BuildStructureHost + trace/IDamageTarget); SKIP si el sistema/fixture no está |
+| `enemysuite.cs` | `EnemySuite` — contrato EJECUTABLE Saqueador 10 pasos (Spawn→RegistryDef→Model→NavMeshAgent→Detect→Approach t0>t1>t2→Attack→ReceiveDamage→Death→Loot) con navegación NavMesh REAL (nunca teleport); SKIP si el sistema/fixture no está |
+| `vehiclesuite.cs` | `VehicleSuite` — contrato foundation 7 pasos (Spawn→Enter→Throttle→Steer→Brake→Reverse→Exit) sobre `VehicleLabAdapter` (puente dev al kit externo); SKIP honesto hasta que el kit exista (manifest bloque H) |
+| `audiosuite.cs` | `AudioSuite` — contrato del banco de sonido (Resource→Load→Play→NoMissingAssets sobre `Assets/sounds/content/**`); SKIP si el banco no está compilado en el editor, FAIL si resuelve parcial (missing assets) |
 | `weapontestrig.cs` | Fixture de escena: cámara propia + TargetDummy + registra una `WeaponSuite` por entrada y crea el runner |
 
 Flujo: el rig registra suites en `ContentRuntimeSuite` y crea
@@ -56,23 +60,35 @@ machine-readable por suite:
 ```
 [UBSuite] Weapon.USP PASS time=8.52s delta=15.0 state=complete
 [UBSuite] Weapon.Crowbar PASS time=6.00s delta=35.0 state=complete
-[UBSuite] Enemy.Saqueador SKIP time=0.00s delta=0.0 state=skip (contrato Worker A: ...)
-[UBSuite] Suite run complete (2 PASS, 0 FAIL, 1 SKIP)
+[UBSuite] Building.WoodBarricade PASS time=8.20s delta=50.0 state=complete
+[UBSuite] Enemy.Saqueador PASS time=14.30s delta=280.0 state=complete
+[UBSuite] Audio.Core SKIP time=0.00s delta=0.0 state=skip (banco de sonido no disponible...)
+[UBSuite] Vehicle.Foundation SKIP time=0.00s delta=0.0 state=skip (kit no integrado...)
+[UBSuite] Suite run complete (4 PASS, 0 FAIL, 2 SKIP)
 ```
 
 Resumen legacy al final del weapon_lab: `[WeaponLab] Suite complete (4/4 PASS)`.
 
-Contrato para los workers A/C/E: implementar la suite del dominio con la ruta real
-(ver docs en cada stub) y registrarla desde el rig de su lab. El runner es común.
+Contrato de registro (rigs): los rigs de cada lab construyen las suites de su dominio
+(ver docs en cada archivo) y las registran en `ContentRuntimeSuite`; el runner es común.
+- Building: `new BuildingSuite( entry, Scene, camera, fixture, rigGO )` (entry = `BuildTestEntry`,
+  misma ruta real que BuildingTestRig).
+- Enemy: `new EnemySuite( entry, Scene, camera, dummy )` (entry = `EnemyTestEntry`); el rig
+  debe dejar un carril despejado cámara→dummy→spawn con navmesh (enemy_lab usa MapInstance).
+- Vehicle: `new VehicleSuite( entry, Scene )`; la suite localiza sola el `VehicleLabAdapter`
+  (el rig implementa ese adapter sobre el kit externo cuando exista).
+- Audio: `new AudioSuite( "Core", AudioSuite.ContentBankDefault(), pos )` (sin fixture).
+Anti-falsificación: las suites llaman la ruta real; si el sistema/fixture no está en la
+sesión emiten SKIP honesto con motivo, nunca PASS fabricado.
 
 ## Escenas
 
 | Escena | Qué probar | Suite |
 |---|---|---|
 | `Assets/scenes/spikes/weapon_lab.scene` | USP, palanca, cuchillo, escopeta (spawn, disparo/melee, daño a IDamageTarget, recarga, dry fire) | `WeaponSuite` (4 tests, rig-7) |
-| `Assets/scenes/spikes/enemy_lab.scene` | Spawn de Saqueador/Bruto/Merodeador, NavMesh, persecución, ataque al dummy, daño, muerte, botín | `EnemySuite` (contrato Worker A) |
-| `Assets/scenes/spikes/building_lab.scene` | Autotest BuildingTestRig (rig-1): preview inválido/bloqueado/overlap REJECTED, válido ACCEPTED, spawn, HP, daño (trace real), repair (consumo fixture), upgrade (madera→reforzada), destroy | `BuildingSuite` (contrato Worker C, sin input manual) |
-| `Assets/scenes/spikes/vehicle_lab.scene` | Stub: rellenar prefabs cuando el research decida el paquete de vehículos (manifest bloque H) | `VehicleSuite` (contrato Worker E) |249e9 (feat(spike): building placement rules + host authority (prefabs retyped))
+| `Assets/scenes/spikes/enemy_lab.scene` | Spawn de Saqueador/Bruto/Merodeador, NavMesh, persecución, ataque al dummy, daño, muerte, botín | `EnemySuite` (contrato ejecutable Saqueador; rig pendiente de registrar) |
+| `Assets/scenes/spikes/building_lab.scene` | Autotest BuildingTestRig (rig-1): preview inválido/bloqueado/overlap REJECTED, válido ACCEPTED, spawn, HP, daño (trace real), repair (consumo fixture), upgrade (madera→reforzada), destroy | `BuildingSuite` (contrato ejecutable lifecycle; rig pendiente de registrar) |
+| `Assets/scenes/spikes/vehicle_lab.scene` | Stub: rellenar prefabs cuando el research decida el paquete de vehículos (manifest bloque H) | `VehicleSuite` (contrato foundation, SKIP hasta kit) |
 
 ## Cómo abrir
 
