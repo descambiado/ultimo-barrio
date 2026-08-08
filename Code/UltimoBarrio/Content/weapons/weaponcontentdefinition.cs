@@ -35,9 +35,14 @@ namespace UltimoBarrio.Content.Weapons
 		public string AmmoModel { get; set; } = "";
 		public string CasingModel { get; set; } = "";
 
-		// Sonido / efectos (nombres de SoundEvent; vacío = silencio hasta verificar)
+		// Sonido / efectos (paths completos de SoundEvent p.ej. "sounds/content/weapons/usp_fire.sound";
+		// vacío = silencio hasta verificar). Todos los paths de este pack viven en Assets/sounds/content/**
+		// y apuntan a .sound del banco VERIFICADO (ver Assets/sounds/content/readme.md).
 		public string FireSound { get; set; } = "";
 		public string ReloadSound { get; set; } = "";
+		public string ReloadStartSound { get; set; } = ""; // fase previa del reload (p.ej. cock de escopeta / mag out)
+		public string DeploySound { get; set; } = "";      // equipar arma
+		public string MeleeHitSound { get; set; } = "";    // impacto melee (crowbar/knife), solo Category==Melee
 		public string DryFireSound { get; set; } = "";
 		public string MuzzleEffect { get; set; } = ""; // ruta .vpcf
 
