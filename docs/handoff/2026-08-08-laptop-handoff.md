@@ -7,16 +7,16 @@ _Este documento es la fuente única de verdad para continuar sin la conversació
 
 - remote: `https://github.com/descambiado/ultimo-barrio.git` (`origin`)
 - branch estable: `spike/laptop-content-stack`
-- HEAD estable: `dfdf543` (docs(sound): registry sounds section + MIT attribution for dry_fire import)
+- HEAD estable: `e37ed82` (docs(handoff): preserve laptop runtime integration state)
 - base original: `feat/holy-grail-foundation` @ `c9e5664` (antigua, ver Critical context)
-- sin push realizado todavía: este documento se publica junto con la rama en el commit de handoff.
+- **PUBLICADO en GitHub** (2026-08-08): spike + agent/enemies + agent/building + agent/audio + agent/qa + checkpoint WIP; verificado con ls-remote (local == remoto en todas).
 
 ## Engine
 
 - s&box build: `26.08.05`
 - MCP endpoint: `http://127.0.0.1:7269/mcp` (JSON-RPC; helper local `workspace/.openclaw/tmp/mcp.ps1` + `mcp_params.json`, o `Invoke-RestMethod` inline)
 - compile status: `local.ultimo_barrio` → 0 errores propios (2 warnings preexistentes del core antiguo: GameResourceAttribute obsolete en `ItemDefinition.cs`/`MovementProfile.cs`)
-- tools MCP útiles: `editor_status` (IsCompiling/LastCompileSucceeded), `compile_status` (IsBuilding por compilador), `play_start/play_stop`, `read_console` (filter/minimumLevel), `list_scenes`, `open_scene` (⚠️ en el checkpoint WIP, ver Known blockers), `reload_active_scene_from_disk`, `asset_search`, `asset_info`, `find_packages`, `get_package`, `save_scene`, `camera_screenshot`
+- tools MCP útiles: `editor_status` (IsCompiling/LastCompileSucceeded), `compile_status` (IsBuilding por compilador), `play_start/play_stop`, `read_console` (filter/minimumLevel), `list_scenes`, `open_scene` (⚠️ recuperable del checkpoint `e871fe7`/`a8a5a56` — cherry-pick de `Editor/UltimoBarrioMcpTools.cs` si se quiere), `reload_active_scene_from_disk`, `asset_search`, `asset_info`, `find_packages`, `get_package`, `save_scene`, `camera_screenshot`
 
 ## Critical context
 
@@ -96,14 +96,14 @@ No integrados (ramas worker): `d4c0c93` (enemies WIP, agent/enemies), `e871fe7` 
 
 | branch | HEAD | integrated? | pushed? | estado |
 |---|---|---|---|---|
-| `agent/enemies` | `d4c0c93` | no (solo assets de B: `7222416`/`8a71468`/`21dfb14` sí) | no | WIP gameplay de A preservado (no compilado) |
-| `agent/building` | `2120d2f` | sí (4 commits) | no | sistema building integrado |
-| `agent/audio` | `802c826` | sí (2 commits) | no | banco de sonidos integrado |
-| `agent/qa` | `76a04d9` | sí (4 commits) | no | QA infra integrada |
-| `agent/vehicles` | `9fd7b32` | — | no | sin trabajo (worker E no entregó commits) |
-| `checkpoint/laptop-turbo-wip-20260808` | `e871fe7` | no | no | WIP diagnóstico building (open_scene + rig-2) — PUEDE ESTAR ROTO |
+| `agent/enemies` | `d4c0c93` | no (solo assets de B: `7222416`/`8a71468`/`21dfb14` sí) | **sí** (push 2026-08-08) | WIP gameplay de A preservado (no compilado) |
+| `agent/building` | `2120d2f` | sí (4 commits) | **sí** | sistema building integrado |
+| `agent/audio` | `802c826` | sí (2 commits) | **sí** | banco de sonidos integrado |
+| `agent/qa` | `76a04d9` | sí (4 commits) | **sí** | QA infra integrada |
+| `agent/vehicles` | `9fd7b32` | — | no (sin trabajo único) | sin trabajo (worker E no entregó commits) |
+| `checkpoint/laptop-turbo-wip-20260808` | `e871fe7` → `a8a5a56` | no | **sí** (e871fe7; a8a5a56 = DebugDump diagnóstico, también pusheado) | WIP diagnóstico building (open_scene + rig-2 + DebugDump) — PUEDE ESTAR ROTO |
+| `spike/laptop-content-stack` | `e37ed82` | — | **sí** (push + verificación ls-remote 2026-08-08) | rama estable del portátil (con handoff) |
 | `checkpoint/laptop-weapon-lab-frankenplayer` | `93dcf9e` | no | no | experimento Frankenstein descartado (no portar) |
-| `spike/laptop-content-stack` | `dfdf543` | — | pendiente (este handoff) | rama estable del portátil |
 
 ## Known blockers
 
