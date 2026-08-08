@@ -173,12 +173,25 @@ def building_lab():
 
 def vehicle_lab():
     marker = go("Vehicle Spawn Marker", [], position="200,0,0", tags="lab_marker")
-    spawner = go("Lab Systems", [
-        comp("UltimoBarrio.Content.Dev.LabVehicleSpawner", SpawnMarker=go_ref(marker["__guid"]))
-    ])
+    rig = go("Vehicle Test Rig", [
+        comp("UltimoBarrio.Content.Dev.VehicleTestRig",
+             AutoTest=True,
+             VehiclePrefabPath="",
+             ThrottleAction="Forward",
+             BrakeAction="Brake",
+             SteerLeftAction="SteerLeft",
+             SteerRightAction="SteerRight",
+             ReverseAction="Reverse",
+             MinThrottleDelta=25.0,
+             MinSteerYawDelta=10.0,
+             BrakeSpeedReduction=0.5,
+             MinReverseDelta=15.0,
+             SpawnMarker=go_ref(marker["__guid"])),
+        comp("Sandbox.CameraComponent", IsMainCamera=True, Priority=10),
+    ], position="0,0,64")
     write_scene("vehicle_lab.scene", [
         world_root([plane_floor(), sun(), sky(), marker]),
-        systems_root([network_systems(), spawner]),
+        systems_root([network_systems_no_player(), go("Lab Systems", [rig])]),
         spawn_points(),
     ])
 
