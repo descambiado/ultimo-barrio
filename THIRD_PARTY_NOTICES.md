@@ -54,8 +54,38 @@ Modelos ya verificados en el engine y usados como fallback hoy:
 
 ## Audio importado — Facepunch/sandbox (MIT)
 
-`Assets/sounds/content/weapons/dry_fire.wav` se importa del repositorio oficial `Facepunch/sandbox`
-(https://github.com/Facepunch/sandbox, archivo `Assets/sounds/dry_fire.wav`), licencia MIT.
+Los siguientes archivos de audio se importan del repositorio oficial `Facepunch/sandbox`
+(https://github.com/Facepunch/sandbox), licencia MIT, y se copian byte-exactos
+(verificados por tamaño vía GitHub API el 2026-08-08). Se conserva el aviso completo de
+licencia en `docs/licenses/MIT-Facepunch-sandbox.txt`. Cada `.sound` del banco que los
+referencia los compila el editor a `.vsnd_c` como assets de proyecto
+(`sounds/content/...`), sin dependencia de paquetes cloud.
 
-MIT License — Copyright (c) 2026 Facepunch. Se conserva el aviso completo de licencia en
-`docs/licenses/MIT-Facepunch-sandbox.txt`. Uso: SoundEvent `sounds/content/weapons/usp_dry.sound`.
+### Armas (Assets/sounds/content/weapons/)
+
+| Archivo local | Origen en el repo (main) | Uso |
+|---|---|---|
+| `glock_shoot_01.wav` | `Assets/weapons/Glock/glock_shoot_01.wav` | `usp_fire.sound` (la USP usa este sonido; ver commit 1b77a36f) |
+| `pistol_mag_in.wav` | `Assets/weapons/Glock/reload/pistol_mag_in.wav` | `usp_reload_magin.sound` |
+| `pistol_mag_out.wav` | `Assets/weapons/Glock/reload/pistol_mag_out.wav` | `usp_reload_magout.sound` |
+| `foley_deploy_weapon_03.wav` | `Assets/weapons/Common/Foley/foley_deploy_weapon_03.wav` | `usp_deploy.sound` (deploy genérico) |
+| `shotgun1_shoot1.wav` | `Assets/weapons/Shotgun/sounds/Shotgun1_Shoot1.wav` | `shotgun_fire.sound` |
+| `shotgun1_shoot2.wav` | `Assets/weapons/Shotgun/sounds/Shotgun1_Shoot2.wav` | `shotgun_fire.sound` |
+| `shotgun_cock.wav` | `Assets/weapons/Shotgun/sounds/shotgun_cock.wav` | `shotgun_reload_start.sound` |
+| `shotgun_load.wav` | `Assets/weapons/Shotgun/sounds/shotgun_load.wav` | `shotgun_reload.sound` |
+| `swing_01.wav` | `Assets/weapons/Crowbar/sounds/swing_01.wav` | `crowbar_swing.sound`, `knife_swing.sound` |
+| `swing_02.wav` | `Assets/weapons/Crowbar/sounds/swing_02.wav` | `crowbar_swing.sound`, `knife_swing.sound` |
+| `crowbar_hit_01.wav` | `Assets/weapons/Crowbar/sounds/crowbar_hit_01.wav` | `crowbar_impact.sound` |
+| `crowbar_hit_02.wav` | `Assets/weapons/Crowbar/sounds/crowbar_hit_02.wav` | `crowbar_impact.sound` |
+| `crowbar_hit_03.wav` | `Assets/weapons/Crowbar/sounds/crowbar_hit_03.wav` | `crowbar_impact.sound` |
+| `crowbar_hit_04.wav` | `Assets/weapons/Crowbar/sounds/crowbar_hit_04.wav` | `crowbar_impact.sound` |
+
+### Enemigos (Assets/sounds/content/enemies/)
+
+| Archivo local | Origen en el repo (main) | Uso |
+|---|---|---|
+| `scared_01.wav` … `scared_06.wav` | `Assets/sounds/npc/darren/scared/scared_0X.wav` | `enemy_alert.sound`, `enemy_attack.sound` |
+
+Nota: los sonidos del NPC darren son voces robóticas/dispositivo (no humanas); se usan como
+candidato documentado para alerta/ataque de enemigos y quedan sujetos a OK de diseño
+(ver `Assets/sounds/content/pending.md`).
