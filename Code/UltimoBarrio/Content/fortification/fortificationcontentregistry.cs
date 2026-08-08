@@ -1,15 +1,18 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace UltimoBarrio.Content.Fortification
 {
 	/// <summary>
-	/// Catálogo del fortification content pack (portable).
-	/// Objetivo: dejar atrás cubos y placeholders con modelos/prefabs reales.
-	/// Mismos estados de assets que el resto de packs (PENDING_VERIFY / VERIFIED fallback).
+	/// Catálogo del fortification content pack (portable). TODOS los objetos como DATA:
+	/// una sola implementación (BuildStructureHost) + una entrada de datos por estructura.
+	/// Orden de registro preservado (All); la barricada de madera va PRIMERA.
+	/// Modelos REALES del engine verificados (asset-registry.yml, Worker D 2026-08-08).
 	/// </summary>
 	public static class FortificationContentRegistry
 	{
-		private static readonly Dictionary<string, FortificationContentDefinition> _definitions = new();
+		private static readonly Dictionary<string, BuildDefinition> _definitions = new();
+		private static readonly List<string> _order = new();
 
 		static FortificationContentRegistry()
 		{
@@ -24,219 +27,196 @@ namespace UltimoBarrio.Content.Fortification
 			Register( RepairStation() );
 		}
 
-		public static FortificationContentDefinition Get( string id )
+		public static BuildDefinition Get( string id )
 		{
 			return id != null && _definitions.TryGetValue( id, out var def ) ? def : null;
 		}
 
-		public static IEnumerable<FortificationContentDefinition> All => _definitions.Values;
+		public static IReadOnlyList<BuildDefinition> All => _order.Select( id => _definitions[id] ).ToList();
 
-		private static void Register( FortificationContentDefinition def ) => _definitions[def.Id] = def;
-
-		private static FortificationContentDefinition BarricadeWood()
+		private static void Register( BuildDefinition def )
 		{
-			return new FortificationContentDefinition
+			_definitions[def.Id] = def;
+			_order.Add( def.Id );
+		}
+
+		private static BuildDefinition BarricadeWood()
+		{
+			return new BuildDefinition
 			{
 				Id = "fort_barricade_wood",
 				DisplayName = "Barricada de madera",
-				Type = FortificationContentType.Barricade,
-				Model = "models/sbox_props/wooden_barricade/wooden_barricade.vmdl", // PENDING_VERIFY
-				ModelFallback = "models/citizen_props/crate01.vmdl", // VERIFIED
+				Category = BuildCategory.Barricade,
+				Prefab = "prefabs/content/fortification/fort_barricade_wood.prefab",
+				Model = "models/sbox_props/benches/old_bench.vmdl", // VERIFIED (engine.sbox_props_old_bench)
+				ModelFallback = "",
 				Scale = 1f,
-				MaxHealth = 150f,
+				MaxHp = 150f,
 				RepairAmount = 25f,
 				RepairCost = 5,
-				UpgradePrefab = "prefabs/content/fortification/fort_barricade_reinforced.prefab",
-				SnapType = FortificationSnapType.Any,
-				BuildSound = "build.wood.place",
-				DamageSound = "build.wood.hit",
-				DestroySound = "build.wood.break",
-				AssetsVerified = false,
-				VerificationNotes = "Buscar modelo de barricada de madera legal (asset store / research). Fallback verificado."
+				UpgradeTo = "fort_barricade_reinforced",
+				AssetsVerified = true,
+				VerificationNotes = "Modelo real del engine (asset-registry engine.sbox_props_old_bench). Upgrades a reinforced."
 			};
 		}
 
-		private static FortificationContentDefinition BarricadeReinforced()
+		private static BuildDefinition BarricadeReinforced()
 		{
-			return new FortificationContentDefinition
+			return new BuildDefinition
 			{
 				Id = "fort_barricade_reinforced",
 				DisplayName = "Barricada reforzada",
-				Type = FortificationContentType.Barricade,
-				Model = "models/sbox_props/metal_barricade/metal_barricade.vmdl", // PENDING_VERIFY
-				ModelFallback = "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl", // VERIFIED
+				Category = BuildCategory.Barricade,
+				Prefab = "prefabs/content/fortification/fort_barricade_reinforced.prefab",
+				Model = "models/sbox_props/security_shutter/security_shutter_box_middle.vmdl", // VERIFIED
+				ModelFallback = "",
 				Scale = 1f,
-				MaxHealth = 400f,
+				MaxHp = 400f,
 				RepairAmount = 30f,
 				RepairCost = 10,
-				UpgradePrefab = "",
-				SnapType = FortificationSnapType.Any,
-				BuildSound = "build.metal.place",
-				DamageSound = "build.metal.hit",
-				DestroySound = "build.metal.break",
-				AssetsVerified = false,
-				VerificationNotes = "Mejora de la barricada de madera. Modelo metálico pendiente de verificar."
+				UpgradeTo = "",
+				AssetsVerified = true,
+				VerificationNotes = "Panel metálico (caja de persiana de seguridad). Mejora de la barricada de madera."
 			};
 		}
 
-		private static FortificationContentDefinition DoorBasic()
+		private static BuildDefinition DoorBasic()
 		{
-			return new FortificationContentDefinition
+			return new BuildDefinition
 			{
 				Id = "fort_door_basic",
-				DisplayName = "Puerta de apartamento",
-				Type = FortificationContentType.Door,
-				Model = "models/sbox_props/wooden_door/wooden_door.vmdl", // PENDING_VERIFY (falló en sprint previo)
-				ModelFallback = "models/citizen_props/crate01.vmdl", // VERIFIED
+				DisplayName = "Puerta básica",
+				Category = BuildCategory.Door,
+				Prefab = "prefabs/content/fortification/fort_door_basic.prefab",
+				Model = "models/sbox_props/security_shutter/security_shutter_curtain_128.vmdl", // VERIFIED (PROXY VISUAL)
+				ModelFallback = "",
 				Scale = 1f,
-				MaxHealth = 200f,
+				MaxHp = 200f,
 				RepairAmount = 25f,
 				RepairCost = 8,
-				UpgradePrefab = "prefabs/content/fortification/fort_door_reinforced.prefab",
-				SnapType = FortificationSnapType.Wall,
-				BuildSound = "build.door.place",
-				DamageSound = "build.wood.hit",
-				DestroySound = "build.wood.break",
-				AssetsVerified = false,
-				VerificationNotes = "OJO: models/sbox_props/wooden_door/wooden_door.vmdl NO existe en el engine (sprint previo lo confirmó). Buscar puerta real."
+				UpgradeTo = "fort_door_reinforced",
+				AssetsVerified = true,
+				VerificationNotes = "No hay puerta vmdl en el engine: proxy real de cortina de persiana 128u (asset-registry)."
 			};
 		}
 
-		private static FortificationContentDefinition DoorReinforced()
+		private static BuildDefinition DoorReinforced()
 		{
-			return new FortificationContentDefinition
+			return new BuildDefinition
 			{
 				Id = "fort_door_reinforced",
 				DisplayName = "Puerta reforzada",
-				Type = FortificationContentType.Door,
-				Model = "models/sbox_props/metal_door/metal_door.vmdl", // PENDING_VERIFY
-				ModelFallback = "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl", // VERIFIED
+				Category = BuildCategory.Door,
+				Prefab = "prefabs/content/fortification/fort_door_reinforced.prefab",
+				Model = "models/sbox_props/security_shutter/security_shutter_curtain_bottom.vmdl", // VERIFIED (PROXY VISUAL)
+				ModelFallback = "",
 				Scale = 1f,
-				MaxHealth = 500f,
+				MaxHp = 500f,
 				RepairAmount = 30f,
 				RepairCost = 15,
-				UpgradePrefab = "",
-				SnapType = FortificationSnapType.Wall,
-				BuildSound = "build.metal.place",
-				DamageSound = "build.metal.hit",
-				DestroySound = "build.metal.break",
-				AssetsVerified = false,
-				VerificationNotes = "Mejora de puerta básica."
+				UpgradeTo = "",
+				AssetsVerified = true,
+				VerificationNotes = "Sección inferior de persiana con barra de bloqueo. Mejora de la puerta básica."
 			};
 		}
 
-		private static FortificationContentDefinition Stash()
+		private static BuildDefinition Stash()
 		{
-			return new FortificationContentDefinition
+			return new BuildDefinition
 			{
 				Id = "fort_stash",
 				DisplayName = "Alijo",
-				Type = FortificationContentType.Stash,
-				Model = "models/sbox_props/cardboard_box/cardboard_box_open.vmdl", // VERIFIED
-				ModelFallback = "models/sbox_props/cardboard_box/cardboard_box_open.vmdl",
+				Category = BuildCategory.Stash,
+				Prefab = "prefabs/content/fortification/fort_stash.prefab",
+				Model = "models/citizen_props/gritbin01_combined.vmdl", // VERIFIED
+				ModelFallback = "",
 				Scale = 1f,
-				MaxHealth = 100f,
+				MaxHp = 100f,
 				RepairAmount = 20f,
 				RepairCost = 5,
-				UpgradePrefab = "",
-				SnapType = FortificationSnapType.Floor,
-				BuildSound = "build.stash.place",
-				DamageSound = "build.cardboard.hit",
-				DestroySound = "build.cardboard.break",
+				UpgradeTo = "",
 				AssetsVerified = true,
-				VerificationNotes = "Modelo ya verificado en el sprint previo. El contenido del alijo lo gestiona el core nuevo."
+				VerificationNotes = "Contenedor a granel (silo/arenero). El contenido del alijo lo gestiona el core nuevo."
 			};
 		}
 
-		private static FortificationContentDefinition Workbench()
+		private static BuildDefinition Workbench()
 		{
-			return new FortificationContentDefinition
+			return new BuildDefinition
 			{
 				Id = "fort_workbench",
 				DisplayName = "Banco de trabajo",
-				Type = FortificationContentType.Workbench,
-				Model = "models/sbox_props/workbench/workbench.vmdl", // PENDING_VERIFY
-				ModelFallback = "models/citizen_props/crate01.vmdl", // VERIFIED
+				Category = BuildCategory.Workbench,
+				Prefab = "prefabs/content/fortification/fort_workbench.prefab",
+				Model = "models/citizen_props/oldoven.vmdl", // VERIFIED (PROXY VISUAL)
+				ModelFallback = "",
 				Scale = 1f,
-				MaxHealth = 150f,
+				MaxHp = 150f,
 				RepairAmount = 20f,
 				RepairCost = 6,
-				UpgradePrefab = "",
-				SnapType = FortificationSnapType.Floor,
-				BuildSound = "build.workbench.place",
-				DamageSound = "build.wood.hit",
-				DestroySound = "build.wood.break",
-				AssetsVerified = false,
-				VerificationNotes = "Para crafting/mejoras. Buscar modelo real."
+				UpgradeTo = "",
+				AssetsVerified = true,
+				VerificationNotes = "No hay workbench vmdl: proxy real de estufa/forja industrial (asset-registry)."
 			};
 		}
 
-		private static FortificationContentDefinition Generator()
+		private static BuildDefinition Generator()
 		{
-			return new FortificationContentDefinition
+			return new BuildDefinition
 			{
 				Id = "fort_generator",
 				DisplayName = "Generador",
-				Type = FortificationContentType.Generator,
-				Model = "models/sbox_props/generator/generator.vmdl", // PENDING_VERIFY
-				ModelFallback = "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl", // VERIFIED
+				Category = BuildCategory.Generator,
+				Prefab = "prefabs/content/fortification/fort_generator.prefab",
+				Model = "models/props/aircon_unit_wall/aircon_unit_medium_wall.vmdl", // VERIFIED (PROXY VISUAL)
+				ModelFallback = "",
 				Scale = 1f,
-				MaxHealth = 80f,
+				MaxHp = 80f,
 				RepairAmount = 20f,
 				RepairCost = 8,
-				UpgradePrefab = "",
-				SnapType = FortificationSnapType.Floor,
-				BuildSound = "build.generator.place",
-				DamageSound = "build.metal.hit",
-				DestroySound = "build.metal.break",
-				AssetsVerified = false,
-				VerificationNotes = "Energía del apartamento (luces/alarma) en el core nuevo."
+				UpgradeTo = "",
+				AssetsVerified = true,
+				VerificationNotes = "No hay generator vmdl: proxy real de unidad de aire acondicionado (asset-registry)."
 			};
 		}
 
-		private static FortificationContentDefinition Alarm()
+		private static BuildDefinition Alarm()
 		{
-			return new FortificationContentDefinition
+			return new BuildDefinition
 			{
 				Id = "fort_alarm",
 				DisplayName = "Alarma",
-				Type = FortificationContentType.Alarm,
-				Model = "models/sbox_props/alarm/alarm.vmdl", // PENDING_VERIFY
-				ModelFallback = "models/citizen_props/crate01.vmdl", // VERIFIED
+				Category = BuildCategory.Alarm,
+				Prefab = "prefabs/content/fortification/fort_alarm.prefab",
+				Model = "models/sbox_props/intruder_alarm_2/intruder_alarm_2.vmdl", // VERIFIED
+				ModelFallback = "",
 				Scale = 0.5f,
-				MaxHealth = 50f,
+				MaxHp = 50f,
 				RepairAmount = 15f,
 				RepairCost = 10,
-				UpgradePrefab = "",
-				SnapType = FortificationSnapType.Wall,
-				BuildSound = "build.alarm.place",
-				DamageSound = "build.electric.hit",
-				DestroySound = "build.electric.break",
-				AssetsVerified = false,
-				VerificationNotes = "Avisa de raids en el core nuevo. Sonido de sirena pendiente (research audio)."
+				UpgradeTo = "",
+				AssetsVerified = true,
+				VerificationNotes = "Sirena de intrusos real del engine. Avisa de raids en el core nuevo."
 			};
 		}
 
-		private static FortificationContentDefinition RepairStation()
+		private static BuildDefinition RepairStation()
 		{
-			return new FortificationContentDefinition
+			return new BuildDefinition
 			{
 				Id = "fort_repair_station",
 				DisplayName = "Estación de reparación",
-				Type = FortificationContentType.RepairStation,
-				Model = "models/sbox_props/repair_station/repair_station.vmdl", // PENDING_VERIFY
-				ModelFallback = "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl", // VERIFIED
+				Category = BuildCategory.RepairStation,
+				Prefab = "prefabs/content/fortification/fort_repair_station.prefab",
+				Model = "models/props/mobile_masts/microwave_trans.vmdl", // VERIFIED (PROXY VISUAL)
+				ModelFallback = "",
 				Scale = 1f,
-				MaxHealth = 120f,
+				MaxHp = 120f,
 				RepairAmount = 25f,
 				RepairCost = 6,
-				UpgradePrefab = "",
-				SnapType = FortificationSnapType.Floor,
-				BuildSound = "build.repair.place",
-				DamageSound = "build.metal.hit",
-				DestroySound = "build.metal.break",
-				AssetsVerified = false,
-				VerificationNotes = "Repara fortificaciones cercanas consumiendo recursos (core nuevo)."
+				UpgradeTo = "",
+				AssetsVerified = true,
+				VerificationNotes = "Proxy real de equipo de comunicaciones. Repara fortificaciones cercanas en el core nuevo."
 			};
 		}
 	}
