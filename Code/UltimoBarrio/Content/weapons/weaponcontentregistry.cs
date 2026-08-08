@@ -54,9 +54,11 @@ namespace UltimoBarrio.Content.Weapons
 				AmmoModel = "models/weapons/sbox_ammo/9mm_ammobox/ammobox_9mm.vmdl", // VERIFIED (facepunch.ammobox9mm)
 				CasingModel = "models/props/casings/casing_scatter_9mm_01.vmdl", // VERIFIED (facepunch.casingscatter9mm01)
 
-				FireSound = "", // PENDING (SoundEvent real tras verificar audio; no usar nombres inventados)
-				ReloadSound = "",
-				DryFireSound = "",
+				FireSound = "sounds/content/weapons/usp_fire.sound", // VERIFIED banco (MIT importado, glock_shoot_01.wav)
+				ReloadSound = "sounds/content/weapons/usp_reload_magin.sound", // VERIFIED (pistol_mag_in.wav)
+				ReloadStartSound = "sounds/content/weapons/usp_reload_magout.sound", // VERIFIED (pistol_mag_out.wav)
+				DeploySound = "sounds/content/weapons/usp_deploy.sound", // VERIFIED (foley_deploy_weapon_03.wav, generic)
+				DryFireSound = "sounds/content/weapons/usp_dry.sound", // VERIFIED (dry_fire.wav MIT)
 				MuzzleEffect = "", // PENDING (.vpcf)
 
 				AnimGraph = "models/citizen/citizen.vmdl", // animgraph embebido en el modelo (citizen.vmdl VERIFIED)
@@ -76,7 +78,7 @@ namespace UltimoBarrio.Content.Weapons
 				EquipSlot = "Primary",
 
 				AssetsVerified = true,
-				VerificationNotes = "Verificado en editor 26.08.05 (2026-08-07): w_usp.vmdl, v_usp.vmdl (+v_usp.vanmgrph), usp_magazine(.empty), ammobox_9mm.vmdl, casing_scatter_9mm_01.vmdl. Paquetes facepunch instalados via install_package. Sonidos PENDIENTES (SoundEvents a crear; campos vacios para no inventar nombres)."
+				VerificationNotes = "Verificado en editor 26.08.05 (2026-08-07): w_usp.vmdl, v_usp.vmdl (+v_usp.vanmgrph), usp_magazine(.empty), ammobox_9mm.vmdl, casing_scatter_9mm_01.vmdl. Paquetes facepunch instalados via install_package. Sonidos: 4 SoundEvents del banco VERIFICADOS 2026-08-08 (worker C audio-v2) -- fuentes MIT importadas de Facepunch/sandbox (glock_shoot_01, pistol_mag_in/out, foley_deploy_weapon_03, dry_fire); los .sound compilan en el editor y las rutas referenciadas son assets de proyecto (sounds/content/weapons/*)."
 			};
 		}
 
@@ -98,8 +100,11 @@ namespace UltimoBarrio.Content.Weapons
 				AmmoModel = "",
 				CasingModel = "",
 
-				FireSound = "", // no existe SoundEvent de melee en el asset system (verificado 2026-08-07)
+				FireSound = "sounds/content/weapons/crowbar_swing.sound", // VERIFIED banco (MIT swing_01/02.wav)
 				ReloadSound = "",
+				ReloadStartSound = "",
+				DeploySound = "",
+				MeleeHitSound = "sounds/content/weapons/crowbar_impact.sound", // VERIFIED banco (MIT crowbar_hit_01..04.wav)
 				DryFireSound = "",
 				MuzzleEffect = "",
 
@@ -121,7 +126,7 @@ namespace UltimoBarrio.Content.Weapons
 				EquipSlot = "Melee",
 
 				AssetsVerified = true,
-				VerificationNotes = "crowbar01.vmdl verificado en el asset system (engine content, 2026-08-07). facepunch.w_crowbar NO existe: descartado. Sin SoundEvents melee disponibles: campos de sonido vacíos."
+				VerificationNotes = "crowbar01.vmdl verificado en el asset system (engine content, 2026-08-07). facepunch.w_crowbar NO existe como paquete instalable: descartado como primary. Sonidos: crowbar_swing + crowbar_impact VERIFICADOS 2026-08-08 (worker C audio-v2) -- fuentes MIT importadas de Facepunch/sandbox (swing_01/02.wav, crowbar_hit_01..04.wav)."
 			};
 		}
 
@@ -143,8 +148,11 @@ namespace UltimoBarrio.Content.Weapons
 				AmmoModel = "",
 				CasingModel = "",
 
-				FireSound = "", // no hay SoundEvent melee en el asset system
+				FireSound = "sounds/content/weapons/knife_swing.sound", // VERIFIED banco (MIT swing_01/02.wav, compartido con crowbar)
 				ReloadSound = "",
+				ReloadStartSound = "",
+				DeploySound = "",
+				MeleeHitSound = "sounds/content/impacts/melee_impact_flesh.sound", // VERIFIED banco (engine core BluntWeapon/flesh-1..4)
 				DryFireSound = "",
 				MuzzleEffect = "",
 
@@ -166,7 +174,7 @@ namespace UltimoBarrio.Content.Weapons
 				EquipSlot = "Melee",
 
 				AssetsVerified = true,
-				VerificationNotes = "Cloud idents verificados en el backend (find_packages 2026-08-07): facepunch.w_trenchknife + facepunch.v_m9bayonet. Validado en runtime en el weapon_lab."
+				VerificationNotes = "Cloud idents verificados en el backend (find_packages 2026-08-07): facepunch.w_trenchknife + facepunch.v_m9bayonet. Validado en runtime en el weapon_lab. Sonidos: knife_swing VERIFICADO 2026-08-08 (worker C audio-v2) -- melee swing MIT importado (swing_01/02.wav, compartido con crowbar; mismo fit acústico, pendiente de OK de diseño para un stab propio del paquete del cuchillo)."
 			};
 		}
 
@@ -189,9 +197,11 @@ namespace UltimoBarrio.Content.Weapons
 				AmmoModel = "models/weapons/sbox_ammo/9mm_ammobox/ammobox_9mm.vmdl", // VERIFIED (placeholder de munición; real: facepunch.ammobox12g PENDING)
 				CasingModel = "models/props/casings/casing_scatter_9mm_01.vmdl", // VERIFIED (placeholder; real: facepunch.12gshellcasing PENDING)
 
-				FireSound = "", // sin SoundEvent de escopeta verificado
-				ReloadSound = "",
-				DryFireSound = "",
+				FireSound = "sounds/content/weapons/shotgun_fire.sound", // VERIFIED banco (MIT shotgun1_shoot1/2.wav)
+				ReloadSound = "sounds/content/weapons/shotgun_reload.sound", // VERIFIED (shotgun_load.wav)
+				ReloadStartSound = "sounds/content/weapons/shotgun_reload_start.sound", // VERIFIED (shotgun_cock.wav)
+				DeploySound = "sounds/content/weapons/usp_deploy.sound", // VERIFIED (foley_deploy_weapon_03.wav, generic)
+				DryFireSound = "sounds/content/weapons/usp_dry.sound", // VERIFIED (dry_fire.wav MIT, generic)
 				MuzzleEffect = "", // real: facepunch.shotgun_muzzleflash (prefab) PENDING
 
 				AnimGraph = "",
@@ -211,7 +221,7 @@ namespace UltimoBarrio.Content.Weapons
 				EquipSlot = "Primary",
 
 				AssetsVerified = true,
-				VerificationNotes = "Cloud idents verificados en el backend (find_packages 2026-08-07): facepunch.w_spaghellim4 + facepunch.v_spaghellim4 (Spaghelli M4 12g). Munición real facepunch.ammobox12g / facepunch.12g_shell / facepunch.12gshellcasing + muzzle flash facepunch.shotgun_muzzleflash PENDING de cablear (data-only). AmmoType 'ammo_buckshot' = item id del core nuevo."
+				VerificationNotes = "Cloud idents verificados en el backend (find_packages 2026-08-07): facepunch.w_spaghellim4 + facepunch.v_spaghellim4 (Spaghelli M4 12g). Munición real facepunch.ammobox12g / facepunch.12g_shell / facepunch.12gshellcasing + muzzle flash facepunch.shotgun_muzzleflash PENDING de cablear (data-only). AmmoType 'ammo_buckshot' = item id del core nuevo. Sonidos: 4 SoundEvents VERIFICADOS 2026-08-08 (worker C audio-v2) -- fuentes MIT importadas de Facepunch/sandbox (shotgun1_shoot1/2, shotgun_cock, shotgun_load, foley_deploy_weapon_03, dry_fire)."
 			};
 		}
 	}
