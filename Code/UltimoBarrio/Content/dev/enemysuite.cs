@@ -1,5 +1,6 @@
 using Sandbox;
 using System;
+using System.Linq;
 using UltimoBarrio.Content.Enemies;
 
 namespace UltimoBarrio.Content.Dev
@@ -112,7 +113,7 @@ namespace UltimoBarrio.Content.Dev
 			_dummyDamage.ResetHealth();
 			_lastDummyHealth = _dummyDamage.Health;
 
-			_lootBaseline = Scene.GetAllComponents<LootPickupContent>().Count;
+			_lootBaseline = _dummy.Scene.GetAllComponents<LootPickupContent>().Count();
 
 			SpawnEnemy();
 		}
@@ -345,7 +346,7 @@ namespace UltimoBarrio.Content.Dev
 			if ( _phaseTimer >= 1.5f && !_lootChecked )
 			{
 				_lootChecked = true;
-				int loot = Scene.GetAllComponents<LootPickupContent>().Count - _lootBaseline;
+				int loot = _dummy.Scene.GetAllComponents<LootPickupContent>().Count() - _lootBaseline;
 				Log.Info( $"[EnemyLab] {_entry.Label} Loot físico: {loot} pickups (mínimo esperado {_entry.ExpectedLootMin})" );
 
 				if ( loot >= _entry.ExpectedLootMin )
@@ -405,7 +406,7 @@ namespace UltimoBarrio.Content.Dev
 			_host = null;
 
 			// Limpieza de loot del test para mantener el baseline estable.
-			foreach ( var loot in Scene.GetAllComponents<LootPickupContent>() )
+			foreach ( var loot in _dummy.Scene.GetAllComponents<LootPickupContent>() )
 			{
 				if ( loot.IsValid() ) loot.GameObject.Destroy();
 			}
@@ -438,3 +439,4 @@ namespace UltimoBarrio.Content.Dev
 		}
 	}
 }
+ 

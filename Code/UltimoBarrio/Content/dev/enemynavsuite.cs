@@ -129,7 +129,7 @@ namespace UltimoBarrio.Content.Dev
 			_targetPosition = _testTarget.WorldPosition;
 
 			// Área NavMesh habilitada en SceneProperties.NavMesh.
-			if ( !NavMesh.IsEnabled )
+			if ( !_spawnMarker.Scene.NavMesh.IsEnabled )
 			{
 				Fail( "NavMesh deshabilitado en la escena (SceneProperties.NavMesh.Enabled=false)" );
 				return;
@@ -169,12 +169,12 @@ namespace UltimoBarrio.Content.Dev
 		private void StepWaitNavMesh()
 		{
 			// TimeSince avanza solo; solo esperar a que los tiles terminen de generarse.
-			if ( NavMesh.IsGenerating && _phaseTimer < NavWaitTimeout )
+			if ( _spawnMarker.Scene.NavMesh.IsGenerating && _phaseTimer < NavWaitTimeout )
 			{
 				return; // los tiles se siguen generando; esperar
 			}
 
-			if ( NavMesh.IsGenerating )
+			if ( _spawnMarker.Scene.NavMesh.IsGenerating )
 			{
 				Fail( $"NavMesh sigue generando tras {NavWaitTimeout:F0}s (geometría estática no horneada?)" );
 				return;
@@ -197,14 +197,14 @@ namespace UltimoBarrio.Content.Dev
 				Target = _targetPosition
 			};
 
-			var path = NavMesh.CalculatePath( request );
-			bool complete = path != null && path.Status == NavMeshPathStatus.Complete;
+			var path = _spawnMarker.Scene.NavMesh.CalculatePath( request );
+			bool complete = path.Status == NavMeshPathStatus.Complete;
 
-			Log.Info( $"[EnemyLab] {Name} PathCheck spawn={request.Start} target={request.Target} status={(path == null ? "null" : path.Status.ToString())} points={(path?.Points?.Count ?? 0)} {(complete ? "PASS" : "FAIL")}" );
+			Log.Info( $"[EnemyLab] {Name} PathCheck spawn={request.Start} target={request.Target} status={path.Status} points={(path.Points?.Count ?? 0)} {(complete ? "PASS" : "FAIL")}" );
 
 			if ( !complete )
 			{
-				Fail( $"ruta inválida sobre el NavMesh (status={path?.Status.ToString() ?? "null"})" );
+				Fail( $"ruta inválida sobre el NavMesh (status={path.Status})" );
 				return;
 			}
 
@@ -583,3 +583,4 @@ namespace UltimoBarrio.Content.Dev
 		}
 	}
 }
+ 
