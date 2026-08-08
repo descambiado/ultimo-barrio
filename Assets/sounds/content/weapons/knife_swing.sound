@@ -2,12 +2,13 @@
     "SelectionMode":  "Random",
     "DistanceAttenuation":  true,
     "UI":  false,
-    "Volume":  "0.5",
+    "Volume":  "1",
     "Sounds":  [
-                   "sounds/content/weapons/foley_deploy_weapon_03.vsnd"
+                   "sounds/content/weapons/swing_01.vsnd",
+                   "sounds/content/weapons/swing_02.vsnd"
                ],
     "Transmission":  true,
-    "Pitch":  "0.899999976 1.14999998",
+    "Pitch":  "1",
     "AirAbsorption":  true,
     "Decibels":  70,
     "Falloff":  [
@@ -42,7 +43,7 @@
                 ],
     "__version":  1,
     "Occlusion":  true,
-    "Distance":  15000,
+    "Distance":  2048,
     "OcclusionRadius":  64,
     "__references":  [
 
