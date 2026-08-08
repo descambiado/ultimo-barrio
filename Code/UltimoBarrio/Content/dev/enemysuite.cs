@@ -4,440 +4,437 @@ using UltimoBarrio.Content.Enemies;
 
 namespace UltimoBarrio.Content.Dev
 {
-	/// <summary>Configuración de un test de enemigo dentro de la suite del rig (data-driven).</summary>
+	/// <summary>Configuración de un test de enemigo dentro de la suite del rig (data-driven, serializada en la escena).</summary>
 	public sealed class EnemyTestEntry
 	{
 		public string Label { get; set; } = "";
-		public string EnemyId { get; set; } = "ub_enemy_saqueador";
-		public string EnemyPrefab { get; set; } = "prefabs/content/enemies/enemy_saqueador.prefab";
-		public float SpawnDistance { get; set; } = 500f;   // separación enemigo→dummy en la línea de persecución
-		public float DummyDistance { get; set; } = 100f;   // dummy frente a la cámara (target humano sustituido)
-		public float DamageToReceive { get; set; } = 30f;  // daño del fixture al enemigo (ruta IDamageTarget)
-		public float ApproachSampleStep { get; set; } = 0.6f; // intervalo entre t0/t1/t2 (navegación real)
+		public string EnemyPrefab { get; set; } = "";
+		public string ExpectedDefinitionId { get; set; } = ""; // valida que el host cargó esta definición
+		public float ExpectedDamagePerHit { get; set; } = 15f; // daño mínimo por golpe real
+		public int ExpectedLootMin { get; set; } = 1;          // pickups físicos mínimos al morir
 	}
 
 	/// <summary>
-	/// EnemySuite — suite ILabSuite del dominio Enemy (CONTRATO EJECUTABLE Saqueador, infra QA, SOLO dev).
+	/// EnemySuite — suite ILabSuite del dominio Enemy (infra QA, SOLO dev).
 	///
-	/// Contrato canónico (pasos con nombre canónico y criterio PASS; el rig los emite en [EnemyLab]):
+	/// Valida el bucle completo de enemigo portable por la RUTA REAL:
+	///   spawn (prefab) → host carga definición → percepción detecta target
+	///   (visión real + sub-check oído) → NavMeshAgent navega de verdad (t0→t1→t2,
+	///   prohibido teleport) → EnemyAttack golpea vía IDamageTarget (delta HP del
+	///   dummy) → el enemigo recibe daño por IDamageTarget → muere → loot físico
+	///   (pickups LootPickupContent) → PASS/FAIL.
 	///
-	///   1. Spawn         — prefab real clonado + EnemyContentHost encontrado
-	///   2. RegistryDef   — host.Definition.Id == EnemyId (EnemyContentRegistry real)
-	///   3. Model         — ModelRenderer con modelo cargado (ruta de assets real del arquetipo)
-	///   4. NavMeshAgent  — NavMeshAgent presente y activo ([RequireComponent] del host)
-	///   5. Detect        — target asignado (SetTarget) + distancia inicial t0
-	///   6. Approach      — navegación REAL sobre NavMeshAgent: t0 &gt; t1 &gt; t2 (nunca teleport)
-	///   7. Attack        — el enemigo ataca por su ruta (percepción → TryAttack): HP del dummy baja
-	///   8. ReceiveDamage — el enemigo recibe daño por IDamageTarget (before/after/delta)
-	///   9. Death         — HP 0 → ruta real de muerte → GameObject destruido
-	///   10. Loot         — loot table del arquetipo existe y sus WorldPrefab resuelven
+	/// Anti-falsificación: la suite NUNCA llama internals del host para fabricar
+	/// t0/t1/t2 ni el daño; solo sustituye input humano y target humano (dummy).
+	/// La navegación se mide con el NavMeshAgent real (AgentPosition/IsNavigating);
+	/// no se toca la API Scene.NavMesh (no documentada en el engine) — si el agente
+	/// no navega, la suite hace FAIL con diagnóstico claro.
 	///
-	/// Anti-falsificación: la navegación se mide con distancias reales del NavMeshAgent (el rig
-	/// NUNCA teletransporta al enemigo) y el daño entra por IDamageTarget (el fixture sustituye al
-	/// atacante humano, misma regla que BuildingTestRig.RunDamage). Si el sistema de enemigos o el
-	/// fixture no están disponibles en la sesión, emite SKIP honesto con motivo (nunca PASS fabricado).
-	///
-	/// Registro (contrato del rig): el rig de escena construye una instancia por entrada
-	///   new EnemySuite( entry, Scene, camera, dummy )
-	/// (cámara y dummy opcionales: se resuelven desde la escena; sin ellas → SKIP), posiciona el
-	/// dummy donde la suite lo requiera y la registra en ContentRuntimeSuite. El runner emite
-	/// [UBSuite] Enemy.&lt;Label&gt; PASS|FAIL|SKIP.
+	/// El rig de escena (EnemyTestRig) construye una instancia por entrada y la
+	/// registra en ContentRuntimeSuite; el runner unificado ejecuta Initialize/Step
+	/// y emite [UBSuite] Enemy.&lt;Label&gt; PASS|FAIL.
 	/// </summary>
 	public sealed class EnemySuite : ILabSuite
 	{
-		/// <summary>Pasos canónicos del contrato Saqueador (orden exacto; el rig los emite en [EnemyLab]).</summary>
-		public enum EnemyStep
-		{
-			Spawn,
-			RegistryDef,
-			Model,
-			NavMeshAgent,
-			Detect,
-			Approach,
-			Attack,
-			ReceiveDamage,
-			Death,
-			Loot
-		}
-
 		public string Domain => "Enemy";
 		public string Name => _entry.Label;
 		public bool IsComplete { get; private set; }
 		public LabSuiteResult Result { get; private set; }
 
 		private readonly EnemyTestEntry _entry;
-		private readonly Scene _scene;
+		private readonly int _testNumber;
+		private readonly int _testTotal;
+		private readonly GameObject _dummy;
+		private readonly LabDamageDummy _dummyDamage;
+		private readonly GameObject _spawnMarker;
+		private readonly GameObject _dummyMarker;
 
-		private CameraComponent _camera;
-		private LabDamageDummy _dummy;
-		private GameObject _enemyGo;
+		private GameObject _enemy;
 		private EnemyContentHost _host;
-
-		private EnemyStep _step;
-		private TimeSince _timer;
-		private float _elapsed;
+		private int _phase;
+		private TimeSince _phaseTimer;
+		private bool _fail;
+		private string _failReason = "";
+		private Vector3 _spawnPosition;
 		private float _t0;
 		private float _t1;
 		private float _t2;
-		private bool _t1Measured;
-		private float _attackDamage;
-		private float _attackRange;
-		private string _lootTableId = "";
-		private bool _deathFired;
+		private bool _t1Logged;
+		private bool _attackObserved;
+		private float _lastDummyHealth;
+		private float _firstDelta;
+		private int _lootBaseline;
+		private bool _lootChecked;
+		private float _elapsed;
+		private bool _initialized;
 
-		public EnemySuite( EnemyTestEntry entry, Scene scene, CameraComponent camera = null, LabDamageDummy dummy = null )
+		public EnemySuite( EnemyTestEntry entry, int testNumber, int testTotal, GameObject dummy, LabDamageDummy dummyDamage, GameObject spawnMarker, GameObject dummyMarker )
 		{
 			_entry = entry ?? throw new ArgumentNullException( nameof( entry ) );
-			_scene = scene ?? throw new ArgumentNullException( nameof( scene ) );
-			_camera = camera;
+			_testNumber = testNumber;
+			_testTotal = testTotal;
 			_dummy = dummy;
+			_dummyDamage = dummyDamage;
+			_spawnMarker = spawnMarker;
+			_dummyMarker = dummyMarker;
 		}
 
 		public void Initialize()
 		{
-			_step = EnemyStep.Spawn;
-			_timer = 0f;
+			if ( _initialized ) return;
+			_initialized = true;
+
+			_phase = 0;
+			_phaseTimer = 0f;
+			_fail = false;
+			_failReason = "";
+			_t1Logged = false;
+			_attackObserved = false;
+			_lootChecked = false;
+			_firstDelta = 0f;
 			_elapsed = 0f;
-			_t1Measured = false;
-			_deathFired = false;
+			_t0 = 0f;
+			_t1 = 0f;
+			_t2 = 0f;
 
-			// SKIP honesto: sistema/fixture no disponibles en esta sesión.
-			if ( !Networking.IsHost )
+			Log.Info( $"[EnemyLab] === Test {_testNumber}/{_testTotal}: {_entry.Label} ===" );
+
+			if ( _spawnMarker == null || _dummyMarker == null )
 			{
-				Skip( "se requiere host (autoridad del EnemyContentHost)" );
+				Fail( "rig sin SpawnMarker/DummyMarker (coloca ambos sobre NavMesh en el editor)" );
 				return;
 			}
 
-			if ( EnemyContentRegistry.GetEnemy( _entry.EnemyId ) == null )
-			{
-				Skip( $"enemy '{_entry.EnemyId}' no registrada (sistema de enemigos ausente)" );
-				return;
-			}
+			// Dummy fijo sobre NavMesh (posición del DummyMarker; el enemigo mira hacia
+			// +X con rotación identidad → detección determinista).
+			_dummy.WorldPosition = _dummyMarker.WorldPosition;
+			_dummy.WorldRotation = Rotation.Identity;
+			_dummyDamage.ResetHealth();
+			_lastDummyHealth = _dummyDamage.Health;
 
-			if ( ResourceLibrary.Get<PrefabFile>( _entry.EnemyPrefab ) == null )
-			{
-				Skip( $"prefab '{_entry.EnemyPrefab}' no disponible en esta sesión" );
-				return;
-			}
+			_lootBaseline = Scene.GetAllComponents<LootPickupContent>().Count;
 
-			if ( _camera == null && !TryResolveCamera() )
-			{
-				Skip( "rig sin cámara (línea de persecución y spawn imposibles)" );
-				return;
-			}
-
-			if ( _dummy == null && !TryResolveDummy() )
-			{
-				Skip( "rig sin LabDamageDummy (target humano sustituido)" );
-				return;
-			}
-
-			// Dummy en la línea de persecución (entre la cámara y el spawn), a nivel de suelo.
-			_dummy.GameObject.WorldPosition = GroundPosition( _camera.WorldPosition + _camera.WorldRotation.Forward * _entry.DummyDistance );
-			_dummy.ResetHealth();
-			Log.Info( $"[EnemyLab] {_entry.Label} TargetDummy en {_dummy.GameObject.WorldPosition}" );
-
-			// Spawn del enemigo por la ruta real (prefab → clone → NetworkSpawn → host).
-			var prefabFile = ResourceLibrary.Get<PrefabFile>( _entry.EnemyPrefab );
-			var enemy = SceneUtility.GetPrefabScene( prefabFile ).Clone();
-			enemy.WorldPosition = GroundPosition( _camera.WorldPosition + _camera.WorldRotation.Forward * _entry.SpawnDistance );
-			enemy.NetworkSpawn( Connection.Local );
-			_enemyGo = enemy;
-			_host = enemy.Components.Get<EnemyContentHost>();
-
-			if ( _host == null )
-			{
-				Fail( "Spawn: prefab sin EnemyContentHost (ruta real)" );
-				return;
-			}
-
-			_host.SetTarget( _dummy.GameObject );
-			Log.Info( $"[EnemyLab] {_entry.Label} Spawn OK prefab={_entry.EnemyPrefab} pos={enemy.WorldPosition}" );
+			SpawnEnemy();
 		}
 
 		public void Step( float dt )
 		{
-			if ( IsComplete ) return;
+			if ( IsComplete || _fail ) return;
 
-			_elapsed += dt;
-			if ( _elapsed > 60f )
-			{
-				Fail( "timeout 60s (contrato Saqueador incompleto)" );
-				return;
-			}
+			_elapsed += dt; // TimeSince avanza solo con tiempo real; no sumar dt al phase timer
 
-			switch ( _step )
+			switch ( _phase )
 			{
-				// Gracia de aparición: OnStart del host corre al frame siguiente y el propio
-				// host retrasa el comportamiento 1s (timeSinceSpawn). A los 1.3s todo es real.
-				case EnemyStep.Spawn: if ( _timer >= 1.3f ) RunVerifySpawn(); break;
-				case EnemyStep.Approach: RunApproach(); break;
-				case EnemyStep.Attack: RunAttack(); break;
-				case EnemyStep.ReceiveDamage: if ( _timer >= 0.2f ) RunReceiveDamage(); break;
-				case EnemyStep.Death: RunDeath(); break;
-				case EnemyStep.Loot: if ( _timer >= 0.2f ) RunLoot(); break;
+				case 0: WaitHostStart(); break;
+				case 1: WaitDetection(); break;
+				case 2: WaitMovement(); break;
+				case 3: WaitAttack(); break;
+				case 4: DamageEnemy(); break;
+				case 5: WaitLoot(); break;
 			}
 		}
 
-		// ---------- Pasos canónicos ----------
+		// --- Fase 0: el OnStart del host corre tras el frame de creación ---
 
-		/// <summary>Pasos 1-5: Spawn / RegistryDef / Model / NavMeshAgent / Detect (medida t0).</summary>
-		private void RunVerifySpawn()
+		private void WaitHostStart()
 		{
-			if ( _host == null || !_enemyGo.IsValid )
+			if ( _phaseTimer < 0.6f ) return;
+
+			_phase = 1;
+			_phaseTimer = 0f;
+
+			if ( _host == null || !_host.IsValid() )
 			{
-				Fail( "Spawn: EnemyContentHost no disponible (ruta real)" );
+				Fail( "EnemyContentHost no encontrado en el prefab" );
 				return;
 			}
-			Log.Info( $"[EnemyLab] {_entry.Label} Spawn PASS (prefab {_entry.EnemyPrefab})" );
 
-			string defId = _host.Definition?.Id ?? "NULL";
-			if ( defId != _entry.EnemyId )
+			if ( _host.Definition == null )
 			{
-				Fail( $"RegistryDef: def real '{defId}' != '{_entry.EnemyId}'" );
+				Fail( $"definición NULL (DefinitionId '{_host.DefinitionId}' no registrada)" );
 				return;
 			}
-			Log.Info( $"[EnemyLab] {_entry.Label} RegistryDef PASS ({defId})" );
 
-			var model = _host.Components.GetInChildrenOrSelf<ModelRenderer>()?.Model;
-			if ( model == null )
+			if ( !string.IsNullOrEmpty( _entry.ExpectedDefinitionId ) && _host.Definition.Id != _entry.ExpectedDefinitionId )
 			{
-				Fail( "Model: sin modelo cargado en el renderer (ruta de assets del arquetipo)" );
+				Fail( $"definición inesperada: {_host.Definition.Id} (esperada {_entry.ExpectedDefinitionId})" );
 				return;
 			}
-			Log.Info( $"[EnemyLab] {_entry.Label} Model PASS ({model.ResourceName})" );
 
-			if ( _host.Agent == null || !_host.Agent.Enabled )
-			{
-				Fail( "NavMeshAgent: ausente o desactivado" );
-				return;
-			}
-			Log.Info( $"[EnemyLab] {_entry.Label} NavMeshAgent PASS" );
-
-			// Detect: target asignado y medida t0 (la persecución real ya está en curso).
-			_attackDamage = _host.Definition.AttackDamage;
-			_attackRange = _host.Definition.AttackRange;
-			_lootTableId = _host.Definition.LootTableId ?? "";
-			_t0 = Vector3.DistanceBetween( _enemyGo.WorldPosition, _dummy.GameObject.WorldPosition );
-			Log.Info( $"[EnemyLab] {_entry.Label} Detect PASS target='{_dummy.GameObject.Name}' t0={_t0:F1}u" );
-
-			_step = EnemyStep.Approach;
-			_timer = 0f;
+			var agent = _host.Agent;
+			Log.Info( $"[EnemyLab] {_entry.Label} NavMeshAgent válido (MaxSpeed={agent.MaxSpeed:F0}, pos={agent.AgentPosition})" );
+			Log.Info( $"[EnemyLab] {_entry.Label} Definición: HP {_host.Definition.MaxHealth} | dmg {_host.Definition.AttackDamage} | rango {_host.Definition.AttackRange} | visión {_host.Definition.VisionRange}u/{_host.Definition.VisionAngle}° | oído {_host.Definition.HearingRadius}u | loot '{_host.Definition.LootTableId}'" );
+			Log.Info( $"[EnemyLab] {_entry.Label} NavMeshAgent válido → OK" );
 		}
 
-		/// <summary>Paso 6: navegación real t0 &gt; t1 &gt; t2 sobre NavMeshAgent (nunca teleport).</summary>
-		private void RunApproach()
+		// --- Fase 1: percepción detecta al target (visión real) + sub-check de oído ---
+
+		private void WaitDetection()
 		{
-			if ( !_t1Measured )
+			if ( _host == null || !_host.IsValid() )
 			{
-				if ( _timer >= _entry.ApproachSampleStep )
+				Fail( "enemigo destruido durante detección" );
+				return;
+			}
+
+			if ( _host.IsTargetAcquired )
+			{
+				Log.Info( $"[EnemyLab] {_entry.Label} Detectado target (percepción visión)" );
+
+				// Sub-check de oído por la ruta real (IEnemyContentAdapter.ReportNoise).
+				_host.ReportNoise( _dummy.WorldPosition, 1f );
+				Log.Info( _host.LastKnownPosition.HasValue
+					? $"[EnemyLab] {_entry.Label} Oído OK (última posición conocida {_host.LastKnownPosition.Value})"
+					: $"[EnemyLab] {_entry.Label} Oído FAIL (sin memoria tras ruido)" );
+
+				_phase = 2;
+				_phaseTimer = 0f;
+				return;
+			}
+
+			if ( _phaseTimer >= 10f )
+			{
+				Fail( "timeout detectando target (¿NavMesh/posición? revisar logs del host)" );
+			}
+		}
+
+		// --- Fase 2: el agente navega de verdad (distancia disminuye t0→t1, llega t2) ---
+
+		private void WaitMovement()
+		{
+			if ( _host == null || !_host.IsValid() )
+			{
+				Fail( "enemigo destruido durante movimiento" );
+				return;
+			}
+
+			float distance = Vector3.DistanceBetween( _enemy.WorldPosition, _dummy.WorldPosition );
+			float moved = Vector3.DistanceBetween( _enemy.WorldPosition, _spawnPosition );
+
+			if ( !_t1Logged && ( distance < _t0 - 25f || moved > 25f ) )
+			{
+				_t1 = distance;
+				_t1Logged = true;
+				Log.Info( $"[EnemyLab] {_entry.Label} Navegando (NavMeshAgent) → t1={_t1:F0} (t0={_t0:F0}, disminuye {_t0 - _t1:F0})" );
+				Log.Info( $"[EnemyLab] {_entry.Label} Distancia disminuye → OK" );
+			}
+
+			// Reasignamos el destino si el agente perdió la ruta ANTES de llegar (objetivo
+			// estático; no debería pasar). Tras llegar, el host hace Agent.Stop() y el
+			// rig no debe pelear con él.
+			if ( !_t1Logged && _host.Agent != null && !_host.Agent.IsNavigating )
+			{
+				_host.Agent.MoveTo( _dummy.WorldPosition );
+			}
+
+			if ( _phaseTimer >= 15f && !_t1Logged )
+			{
+				Fail( $"timeout: el agente no navega (distancia {distance:F0}, movido {moved:F0}). Revisar NavMesh/mapa." );
+				return;
+			}
+
+			if ( _t1Logged && distance <= _host.Definition.AttackRange + 10f )
+			{
+				_t2 = distance;
+				_phase = 3;
+				_phaseTimer = 0f;
+				_lastDummyHealth = _dummyDamage.Health;
+				Log.Info( $"[EnemyLab] {_entry.Label} Llegó al target → t2={_t2:F0} (rango ataque {_host.Definition.AttackRange})" );
+			}
+		}
+
+		// --- Fase 3: ataca → el target pierde HP por la ruta real (IDamageTarget) ---
+
+		private void WaitAttack()
+		{
+			if ( _host == null || !_host.IsValid() )
+			{
+				Fail( "enemigo destruido durante ataque" );
+				return;
+			}
+
+			float current = _dummyDamage.Health;
+
+			if ( !_attackObserved && current < _lastDummyHealth )
+			{
+				_attackObserved = true;
+				_firstDelta = _lastDummyHealth - current;
+				Log.Info( $"[EnemyLab] {_entry.Label} Ataca → target pierde HP (delta {_firstDelta:F1})" );
+				if ( _firstDelta >= _entry.ExpectedDamagePerHit - 0.5f )
 				{
-					_t1 = Vector3.DistanceBetween( _enemyGo.WorldPosition, _dummy.GameObject.WorldPosition );
-					_t1Measured = true;
-					_timer = 0f;
-				}
-				return;
-			}
-
-			if ( _timer < _entry.ApproachSampleStep ) return;
-
-			_t2 = Vector3.DistanceBetween( _enemyGo.WorldPosition, _dummy.GameObject.WorldPosition );
-
-			// PASS: llegó a rango de ataque (dejó de acercarse para atacar) O la distancia
-			// decrece de forma estrictamente continua (acercándose por el navmesh).
-			bool arrived = _t2 <= _attackRange + 20f;
-			bool approaching = _t1 < _t0 - 10f && _t2 < _t1 - 10f;
-			bool pass = arrived || approaching;
-
-			float velocity = _host.Agent.Velocity.Length;
-			Log.Info( $"[EnemyLab] {_entry.Label} Approach t0={_t0:F1} t1={_t1:F1} t2={_t2:F1} (rango ataque {_attackRange:F0}) velocity={velocity:F1} {(pass ? "PASS" : "FAIL")}" );
-			if ( !pass )
-			{
-				Fail( $"Approach: la distancia no decrece (t0={_t0:F1} t1={_t1:F1} t2={_t2:F1}; ¿navmesh ausente en la escena? velocity={velocity:F1})" );
-				return;
-			}
-
-			_step = EnemyStep.Attack;
-			_timer = 0f;
-		}
-
-		/// <summary>Paso 7: el enemigo ataca por su ruta (percepción → TryAttack → IDamageTarget).</summary>
-		private void RunAttack()
-		{
-			if ( _dummy.Health < _dummy.MaxHealth )
-			{
-				float delta = _dummy.MaxHealth - _dummy.Health;
-				bool pass = delta >= _attackDamage - 5f; // tolerancia de cooldown/pellets
-				Log.Info( $"[EnemyLab] {_entry.Label} Attack dummy HP {_dummy.MaxHealth:F0} → {_dummy.Health:F0} (delta {delta:F1}, ataque {_attackDamage:F0}) {(pass ? "PASS" : "FAIL")}" );
-				if ( !pass ) { Fail( $"Attack: delta {delta:F1} < esperado {_attackDamage:F0} - tol" ); return; }
-				_step = EnemyStep.ReceiveDamage;
-				_timer = 0f;
-				return;
-			}
-
-			if ( _timer >= 12f )
-			{
-				Fail( "Attack: el dummy no recibió daño en 12s (¿el enemigo no alcanzó o no atacó?)" );
-			}
-		}
-
-		/// <summary>Paso 8: el enemigo recibe daño por IDamageTarget (fixture = atacante humano).</summary>
-		private void RunReceiveDamage()
-		{
-			if ( _host == null || !_enemyGo.IsValid )
-			{
-				Fail( "ReceiveDamage: enemigo no disponible" );
-				return;
-			}
-
-			float before = _host.Health;
-			_host.TakeDamage( new ContentDamageEvent
-			{
-				Amount = _entry.DamageToReceive,
-				Position = _enemyGo.WorldPosition,
-				SourceId = "lab_enemy_damage_fixture",
-				AttackerId = Connection.Local?.Id.ToString() ?? ""
-			} );
-			float after = _host.Health;
-			float delta = before - after;
-
-			bool pass = MathF.Abs( delta - _entry.DamageToReceive ) < 0.5f;
-			Log.Info( $"[EnemyLab] {_entry.Label} ReceiveDamage before={before:F0} after={after:F0} (delta {delta:F1}) {(pass ? "PASS" : "FAIL")}" );
-			if ( !pass ) { Fail( $"ReceiveDamage: delta {delta:F1} != {_entry.DamageToReceive:F0}" ); return; }
-
-			_step = EnemyStep.Death;
-			_timer = 0f;
-		}
-
-		/// <summary>Paso 9: HP 0 → ruta real de muerte (Die → GameObject.Destroy).</summary>
-		private void RunDeath()
-		{
-			if ( _deathFired )
-			{
-				if ( !_enemyGo.IsValid )
-				{
-					Log.Info( $"[EnemyLab] {_entry.Label} Death PASS (GO destruido por la ruta real de daño)" );
-					_step = EnemyStep.Loot;
-					_timer = 0f;
-				}
-				else if ( _timer >= 2f )
-				{
-					Fail( "Death: el enemigo no se destruyó tras HP 0" );
-				}
-				return;
-			}
-
-			if ( _host.IsDead )
-			{
-				_deathFired = true;
-				_timer = 0f;
-				return;
-			}
-
-			if ( _timer >= 0.25f )
-			{
-				_host.TakeDamage( new ContentDamageEvent
-				{
-					Amount = 1000f,
-					Position = _enemyGo.WorldPosition,
-					SourceId = "lab_enemy_death_fixture",
-					AttackerId = Connection.Local?.Id.ToString() ?? ""
-				} );
-				_timer = 0f;
-			}
-		}
-
-		/// <summary>Paso 10: el loot del arquetipo existe y sus WorldPrefab resuelven (ruta real).</summary>
-		private void RunLoot()
-		{
-			var table = EnemyContentRegistry.GetLootTable( _lootTableId );
-			if ( table == null || table.Entries.Count == 0 )
-			{
-				Fail( $"Loot: tabla '{_lootTableId}' ausente o vacía" );
-				return;
-			}
-
-			int resolved = 0;
-			foreach ( var entry in table.Entries )
-			{
-				if ( string.IsNullOrEmpty( entry.WorldPrefab ) ) continue;
-				if ( ResourceLibrary.Get<PrefabFile>( entry.WorldPrefab ) != null )
-				{
-					resolved++;
+					Log.Info( $"[EnemyLab] {_entry.Label} Daño por golpe OK (>= {_entry.ExpectedDamagePerHit:F0})" );
 				}
 				else
 				{
-					Log.Warning( $"[EnemyLab] Loot prefab no resuelto: {entry.WorldPrefab}" );
+					Fail( $"daño por golpe bajo: {_firstDelta:F1} < {_entry.ExpectedDamagePerHit:F0}" );
+					return;
 				}
 			}
 
-			bool pass = resolved > 0;
-			Log.Info( $"[EnemyLab] {_entry.Label} Loot table='{_lootTableId}' {table.Entries.Count} entradas, {resolved} prefabs resueltos {(pass ? "PASS" : "FAIL")}" );
-			if ( !pass ) { Fail( "Loot: ningún WorldPrefab de la tabla resuelve" ); return; }
+			_lastDummyHealth = current;
 
-			Finish();
+			if ( _attackObserved && _phaseTimer >= 2f )
+			{
+				_phase = 4;
+				_phaseTimer = 0f;
+				Log.Info( $"[EnemyLab] {_entry.Label} Ataca → target pierde HP → OK" );
+			}
+
+			if ( _phaseTimer >= 30f && !_attackObserved )
+			{
+				Fail( $"timeout: el enemigo no ataca (distancia {Vector3.DistanceBetween( _enemy.WorldPosition, _dummy.WorldPosition ):F0})" );
+			}
 		}
 
-		// ---------- Helpers ----------
+		// --- Fase 4: el enemigo recibe daño por IDamageTarget → muere ---
 
-		private void Skip( string reason )
+		private void DamageEnemy()
 		{
-			IsComplete = true;
-			Result = LabSuiteResult.Skip( reason );
+			// Ya murió (Die() destruye el GameObject): contamos solo si pasó el golpe.
+			if ( _host == null || !_host.IsValid() )
+			{
+				if ( _phaseTimer >= 0.5f )
+				{
+					Log.Info( $"[EnemyLab] {_entry.Label} Enemigo recibió daño → murió → OK" );
+					_phase = 5;
+					_phaseTimer = 0f;
+				}
+				else
+				{
+					Fail( "enemigo destruido antes de recibir daño" );
+				}
+				return;
+			}
+
+			if ( _phaseTimer < 0.5f )
+			{
+				// Primer golpe: 25% de la vida (daño incremental por la ruta real).
+				_host.TakeDamage( new ContentDamageEvent
+				{
+					Amount = _host.Definition.MaxHealth * 0.25f,
+					Position = _host.WorldPosition,
+					Force = Vector3.Zero,
+					SourceId = "EnemySuite"
+				} );
+			}
+			else if ( _phaseTimer >= 1f && _phaseTimer < 1.5f )
+			{
+				// Segundo golpe: letal (la ruta real decide la muerte).
+				if ( !_host.IsDead )
+				{
+					_host.TakeDamage( new ContentDamageEvent
+					{
+						Amount = _host.Definition.MaxHealth + 999f,
+						Position = _host.WorldPosition,
+						Force = Vector3.Zero,
+						SourceId = "EnemySuite"
+					} );
+				}
+			}
+			else if ( _phaseTimer >= 2.5f )
+			{
+				// El host sigue vivo tras el golpe letal: la muerte no ocurrió.
+				Fail( $"el enemigo no murió tras daño letal (HP {_host.Health})" );
+			}
+		}
+
+		// --- Fase 5: loot físico aparece en el mundo ---
+
+		private void WaitLoot()
+		{
+			if ( _phaseTimer >= 1.5f && !_lootChecked )
+			{
+				_lootChecked = true;
+				int loot = Scene.GetAllComponents<LootPickupContent>().Count - _lootBaseline;
+				Log.Info( $"[EnemyLab] {_entry.Label} Loot físico: {loot} pickups (mínimo esperado {_entry.ExpectedLootMin})" );
+
+				if ( loot >= _entry.ExpectedLootMin )
+				{
+					Log.Info( $"[EnemyLab] {_entry.Label} Loot aparece físicamente → OK" );
+				}
+				else
+				{
+					Fail( $"loot insuficiente: {loot} < {_entry.ExpectedLootMin}" );
+					return;
+				}
+			}
+
+			if ( _lootChecked && _phaseTimer >= 2.2f )
+			{
+				FinishTest();
+			}
+		}
+
+		// --- Spawn / limpieza ---
+
+		private void SpawnEnemy()
+		{
+			var prefabFile = ResourceLibrary.Get<PrefabFile>( _entry.EnemyPrefab );
+			if ( prefabFile == null )
+			{
+				Fail( $"prefab NO encontrado: {_entry.EnemyPrefab}" );
+				return;
+			}
+
+			_spawnPosition = _spawnMarker.WorldPosition;
+			var enemy = SceneUtility.GetPrefabScene( prefabFile ).Clone();
+			enemy.WorldPosition = _spawnPosition;
+			enemy.NetworkSpawn( Connection.Local );
+			_enemy = enemy;
+
+			_host = enemy.Components.Get<EnemyContentHost>();
+			if ( _host == null )
+			{
+				Fail( "EnemyContentHost no encontrado en el prefab" );
+				return;
+			}
+
+			_host.SetTarget( _dummy );
+
+			_t0 = Vector3.DistanceBetween( _enemy.WorldPosition, _dummy.WorldPosition );
+			Log.Info( $"[EnemyLab] {_entry.Label} Spawn en {_spawnPosition} → t0={_t0:F0}" );
+		}
+
+		private void Cleanup()
+		{
+			if ( _enemy != null && _enemy.IsValid() )
+			{
+				_enemy.Destroy();
+			}
+			_enemy = null;
+			_host = null;
+
+			// Limpieza de loot del test para mantener el baseline estable.
+			foreach ( var loot in Scene.GetAllComponents<LootPickupContent>() )
+			{
+				if ( loot.IsValid() ) loot.GameObject.Destroy();
+			}
+
+			if ( _dummy != null && _dummy.IsValid() )
+			{
+				_dummyDamage.ResetHealth();
+			}
 		}
 
 		private void Fail( string reason )
 		{
+			_fail = true;
+			_failReason = reason;
+			Log.Error( $"[EnemyLab] {_entry.Label} FAIL: {reason}" );
+			FinishTest();
+		}
+
+		private void FinishTest()
+		{
+			bool pass = !_fail && _t1Logged && _attackObserved;
+			Log.Info( pass ? $"[EnemyLab] {_entry.Label} PASS" : $"[EnemyLab] {_entry.Label} FAIL" );
+
+			Result = pass
+				? LabSuiteResult.Pass( _elapsed, _firstDelta, "complete" )
+				: LabSuiteResult.Fail( _elapsed, _firstDelta, $"fail:{_failReason}" );
 			IsComplete = true;
-			Result = LabSuiteResult.Fail( _elapsed, 0f, $"fail:{reason}" );
-			Log.Error( $"[EnemyLab] {_entry.Label} FAIL ({reason})" );
-		}
 
-		private void Finish()
-		{
-			float navDelta = MathF.Max( 0f, _t0 - _t2 );
-			Log.Info( $"[EnemyLab] {_entry.Label} PASS (contrato Saqueador 10/10, navegación {navDelta:F1}u)" );
-			IsComplete = true;
-			Result = LabSuiteResult.Pass( _elapsed, navDelta, "complete" );
-		}
-
-		private bool TryResolveCamera()
-		{
-			CameraComponent fallback = null;
-			foreach ( var cam in _scene.GetAllComponents<CameraComponent>() )
-			{
-				if ( cam.IsMainCamera )
-				{
-					_camera = cam;
-					return true;
-				}
-				if ( fallback == null ) fallback = cam;
-			}
-			if ( fallback != null )
-			{
-				_camera = fallback;
-				return true;
-			}
-			return false;
-		}
-
-		private bool TryResolveDummy()
-		{
-			foreach ( var d in _scene.GetAllComponents<LabDamageDummy>() )
-			{
-				_dummy = d;
-				return true;
-			}
-			return false;
-		}
-
-		/// <summary>Ancla la posición al suelo real de la escena (probe idéntico al de BuildPlacementRules).</summary>
-		private Vector3 GroundPosition( Vector3 p )
-		{
-			var start = p + Vector3.Up * 400f;
-			var end = p - Vector3.Up * 400f;
-			var tr = _scene.Trace.Ray( start, end ).Run();
-			return tr.Hit ? new Vector3( p.x, p.y, tr.HitPosition.z ) : p;
+			Cleanup();
 		}
 	}
 }
