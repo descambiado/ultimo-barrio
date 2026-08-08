@@ -96,3 +96,31 @@ NO es una regla del engine: era leer `compile_status` con un `Success` del build
 - **Nota cross-domain**: `enemy_lab.scene` (dominio enemigos) referenciaba
   `FortificationContentHost` como dummy objetivo → `__type` actualizado a
   `BuildStructureHost` (cambio mecánico de 1 línea, requerido por el rename).
+
+
+### ENEMY NAV FIXTURES - agent/enemies-nav (Worker B)
+
+- **Rama**: `agent/enemies-nav` (base `spike/laptop-content-stack` @ 46b3b01).
+- **Investigación NavMesh (engine instalado)**: el NavMesh NO es un componente: es
+  `SceneProperties.NavMesh` en el .scene (`Enabled/IncludeStaticBodies/...`), generado
+  en runtime por tiles desde los physics bodies (DotRecast). API runtime oficial en
+  `Sandbox.Navigation.NavMesh` (CalculatePath/IsGenerating/RequestTilesGeneration...)
+  y `Sandbox.NavMeshAgent` (MoveTo/Stop/IsNavigating/AgentPosition/WishVelocity).
+  Evidencia completa: `docs/research/enemies-navmesh-api.md`.
+- **enemy_lab.scene reescrito (dominio escenario)**: floor quad estático
+  (MeshComponent Collision Mesh, patrón testing_scene del engine) + NavMesh enabled;
+  `Enemy Spawn Marker` (96,0,8) sobre el mesh; `TestTarget` FIJO (crate + collider
+  estático + LabDamageDummy 200 HP, 768,0,60); `Loot Observation Point` con
+  `LabLootObserver`. NetworkHelper StartServer SIN PlayerPrefab (autotest).
+  Se retiró el MapInstance (thieves) y el dummy de building (dominio C/D): el lab es
+  plano y determinista como weapon/building labs.
+- **Rig de medición t0/t1/t2** (`LabEnemyNavRig` + `EnemyNavSuite`, Content.Dev):
+  PathCheck (CalculatePath Complete) → probe NavMeshAgent REAL (descenso t0/t1/t2,
+  recorrido ≥70% recta, anti-teleport 120u/frame) → prefab enemigo real (host→agent)
+  → kill por IDamageTarget → loot observado físicamente (WorldItemPickup en radio).
+  Logs `[EnemyLab]` + `[UBSuite] Enemy.<Label>`. Sin AI duplicada: los archetypes
+  son de Worker A (prefabs ya en repo: enemy_saqueador/bruto/merodeador).
+- **Commits** (agent/enemies-nav, pendientes de push): research NavMesh →
+  fixtures code → enemy_lab.scene → STATE.
+- **Pendiente coordinador**: validar runtime (play local, editor 26.08.05+):
+  `[LabEnemy] VERSION=rig-1` + `[UBSuite] Enemy.NavSaqueador PASS`.
