@@ -491,3 +491,25 @@ assets:
       El loot 'medicine' del BrutoTable apunta hoy a pf_scrap_pickup (placeholder en codigo,
       Code/UltimoBarrio/Content/enemies/enemycontentregistry.cs — fuera del alcance de Worker B).
       Recomendacion: quitar esa entrada o esperar paquete cloud con licencia verificada.
+  # ------------------------------------------------------------------
+  # Vehicles — kit PRIMARY (Worker D, agent/vehicles-v2, 2026-08-08)
+  # Ver: docs/research/vehicles-primary-kit.md
+
+  - id: fieldguide/vehiclephysics
+    name: Vehicle Physics Kit
+    author: sbox Field Guide
+    source_url: https://sbox.game/fieldguide/vehiclephysics
+    package_type: library (cloud)
+    license: MIT
+    license_verified: true
+    integration_mode: package-reference
+    version_or_checked_at: "2026-08-08 (v337869 sboxdb; updated 2026-07-31)"
+    used_by:
+      - content:Vehicles/vehicle-lab (VehicleTestRig, kit externo PRIMARY)
+    fallback: none (no física propia; kit declarado en PackageReferences)
+    verification_status: VERIFIED (get_package MCP 2026-08-08: descripción oficial "MIT licensed. Fork it, ship it, no strings."; find_packages ident exacto; sboxdb v337869)
+    notes: >
+      Physics/assembly del vehículo del lab. enter/exit lo prueba el fixture DEV
+      (VehicleDriverFixture, UltimoBarrio.Content.Dev); fuel/trunk/damage fuera
+      del alcance de la foundation. Nombres de input actions del kit pendientes
+      de confirmar contra su README tras el montaje (ver vehicles-primary-kit.md).

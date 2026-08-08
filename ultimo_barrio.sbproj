@@ -15,7 +15,8 @@
     "facepunch.v_spaghellim4",
     "facepunch.ammobox12g",
     "facepunch.12g_shell",
-    "facepunch.12gshellcasing"
+    "facepunch.12gshellcasing",
+    "fieldguide.vehiclephysics"
   ],
   "EditorReferences": null,
   "Mounts": null,
