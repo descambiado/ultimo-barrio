@@ -14,6 +14,9 @@ namespace UltimoBarrio.Content.Dev
 	{
 		[Property] public float MaxHealth { get; set; } = 100f;
 
+		/// <summary>Prefijo de los logs de impacto (cada rig usa el suyo: [WeaponLab], [EnemyLab]...).</summary>
+		[Property] public string LogPrefix { get; set; } = "[Lab]";
+
 		public float Health { get; private set; } = 100f;
 		public bool IsDead => Health <= 0f;
 
@@ -35,11 +38,11 @@ namespace UltimoBarrio.Content.Dev
 			Health -= damageEvent.Amount;
 			Health = MathF.Max( 0f, Health );
 
-			Log.Info( $"[Lab] Dummy recibió {damageEvent.Amount:F1} de '{damageEvent.SourceId}' → HP {Health:F1}/{MaxHealth:F0}" );
+			Log.Info( $"{LogPrefix} Dummy recibió {damageEvent.Amount:F1} de '{damageEvent.SourceId}' → HP {Health:F1}/{MaxHealth:F0}" );
 
 			if ( Health <= 0f )
 			{
-				Log.Info( "[Lab] Dummy destruido (HP 0)" );
+				Log.Info( $"{LogPrefix} Dummy destruido (HP 0)" );
 			}
 		}
 	}
