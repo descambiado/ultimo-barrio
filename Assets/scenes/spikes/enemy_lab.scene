@@ -74,7 +74,7 @@
               "Static": false
             },
             {
-              "__type": "UltimoBarrio.Content.Fortification.FortificationContentHost",
+              "__type": "UltimoBarrio.Content.Fortification.BuildStructureHost",
               "__guid": "4b77de7c-cbae-4d43-a178-effd79fab2a0",
               "__enabled": true,
               "DefinitionId": "fort_barricade_wood"

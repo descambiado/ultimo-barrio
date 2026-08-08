@@ -71,8 +71,8 @@ Contrato para los workers A/C/E: implementar la suite del dominio con la ruta re
 |---|---|---|
 | `Assets/scenes/spikes/weapon_lab.scene` | USP, palanca, cuchillo, escopeta (spawn, disparo/melee, daño a IDamageTarget, recarga, dry fire) | `WeaponSuite` (4 tests, rig-7) |
 | `Assets/scenes/spikes/enemy_lab.scene` | Spawn de Saqueador/Bruto/Merodeador, NavMesh, persecución, ataque al dummy, daño, muerte, botín | `EnemySuite` (contrato Worker A) |
-| `Assets/scenes/spikes/building_lab.scene` | Colocar 9 fortificaciones, daño, reparación, upgrade (madera→reforzada) | `BuildingSuite` (contrato Worker C) |
-| `Assets/scenes/spikes/vehicle_lab.scene` | Stub: rellenar prefabs cuando el research decida el paquete de vehículos (manifest bloque H) | `VehicleSuite` (contrato Worker E) |
+| `Assets/scenes/spikes/building_lab.scene` | Autotest BuildingTestRig (rig-1): preview inválido/bloqueado/overlap REJECTED, válido ACCEPTED, spawn, HP, daño (trace real), repair (consumo fixture), upgrade (madera→reforzada), destroy | `BuildingSuite` (contrato Worker C, sin input manual) |
+| `Assets/scenes/spikes/vehicle_lab.scene` | Stub: rellenar prefabs cuando el research decida el paquete de vehículos (manifest bloque H) | `VehicleSuite` (contrato Worker E) |249e9 (feat(spike): building placement rules + host authority (prefabs retyped))
 
 ## Cómo abrir
 
@@ -88,10 +88,11 @@ Contrato para los workers A/C/E: implementar la suite del dominio con la ruta re
   primarios están marcados ⚠️ PENDING_VERIFY en los registros). Con `AutoTest`
   activo, el rig ejecuta la mini-suite completo sin input (rig-7: `[LabBuild] VERSION=rig-7`).
 - **enemy_lab**: usa `MapInstance thieves.rpdowntown3t` (verificado) para que
-  NavMeshAgent tenga navmesh. Los enemigos persiguen al dummy (FortificationContentHost
+  NavMeshAgent tenga navmesh. Los enemigos persiguen al dummy (BuildStructureHost
   como IDamageTarget) y sueltan pickups al morir.
-- **building_lab**: las fortificaciones reciben daño de las armas del weapon_lab
-  (mismo contrato IDamageTarget) y se pueden reparar con R.
+- **building_lab**: el BuildingTestRig valida el bucle completo por la ruta real
+  (BuildPlacementRules → SpawnBuild → trace/IDamageTarget → Repair con
+  LabResourceFixture → Upgrade → destroy). Autotest: `[LabBuild] VERSION` + `[BuildingLab] PASS`.
 
 ## Verificación pendiente (cuando el editor esté disponible)
 

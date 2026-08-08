@@ -28,7 +28,7 @@
         "Static": true
       },
       {
-        "__type": "UltimoBarrio.Content.Fortification.FortificationContentHost",
+        "__type": "UltimoBarrio.Content.Fortification.BuildStructureHost",
         "__guid": "7b2c4d5e-9f6a-4b7c-8d0e-3f4a5b6c7d18",
         "__enabled": true,
         "DefinitionId": "fort_workbench"
