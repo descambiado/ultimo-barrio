@@ -50,10 +50,14 @@ namespace UltimoBarrio.Content.Enemies
 				Scale = 1f,
 				MaxHealth = 100f,
 				WalkSpeed = 220f,
+				VisionRange = 2000f,
+				VisionAngle = 100f,
+				HearingRadius = 1400f,
+				MemoryDuration = 5f,
 				AttackRange = 100f,
 				AttackDamage = 15f,
 				AttackCooldown = 1.5f,
-				PerceptionRange = 2000f,
+				TargetPriority = EnemyTargetPriority.Player,
 				LootTableId = "loot_chatarra",
 				AssetsVerified = false,
 				VerificationNotes = "Modelo base ciudadano de Facepunch pendiente de confirmar en Cloud Browser. Fallback verificado."
@@ -72,10 +76,15 @@ namespace UltimoBarrio.Content.Enemies
 				Scale = 1.3f,
 				MaxHealth = 250f,
 				WalkSpeed = 150f,
+				VisionRange = 1600f,
+				VisionAngle = 90f,
+				HearingRadius = 1200f,
+				MemoryDuration = 6f,
 				AttackRange = 110f,
 				AttackDamage = 40f,
 				AttackCooldown = 2f,
-				PerceptionRange = 1800f,
+				TargetPriority = EnemyTargetPriority.Structures,
+				StructureTag = "fortification",
 				LootTableId = "loot_bruto",
 				AssetsVerified = false,
 				VerificationNotes = "Misma base ciudadana, escala 1.3. Modelo alternativo (skin Bruto) pendiente de investigación."
@@ -94,15 +103,23 @@ namespace UltimoBarrio.Content.Enemies
 				Scale = 0.95f,
 				MaxHealth = 60f,
 				WalkSpeed = 320f,
+				VisionRange = 2400f,
+				VisionAngle = 120f,
+				HearingRadius = 1600f,
+				MemoryDuration = 4f,
 				AttackRange = 80f,
 				AttackDamage = 10f,
 				AttackCooldown = 1f,
-				PerceptionRange = 2500f,
+				TargetPriority = EnemyTargetPriority.Balanced,
 				LootTableId = "loot_merodeador",
 				AssetsVerified = false,
 				VerificationNotes = "Arquetipo rápido y frágil; escala ligeramente reducida."
 			};
 		}
+
+		// Los WorldPrefab apuntan a pickups FÍSICOS del pack (prefabs/content/enemies/*).
+		// Llevan LootPickupContent (el componente del pack), así el rig puede contar
+		// el botín y el core nuevo mapea ItemId → inventario.
 
 		private static LootTableDefinition ChatarraTable()
 		{
@@ -111,7 +128,7 @@ namespace UltimoBarrio.Content.Enemies
 				Id = "loot_chatarra",
 				Entries = new List<LootEntry>
 				{
-					new LootEntry { ItemId = "chatarra", WorldPrefab = "prefabs/items/pf_scrap_pickup.prefab", Min = 1, Max = 3, Chance = 1f }
+					new LootEntry { ItemId = "chatarra", WorldPrefab = "prefabs/content/enemies/loot_scrap_content.prefab", Min = 1, Max = 3, Chance = 1f }
 				}
 			};
 		}
@@ -123,9 +140,8 @@ namespace UltimoBarrio.Content.Enemies
 				Id = "loot_bruto",
 				Entries = new List<LootEntry>
 				{
-					new LootEntry { ItemId = "chatarra", WorldPrefab = "prefabs/items/pf_scrap_pickup.prefab", Min = 2, Max = 5, Chance = 1f },
-					new LootEntry { ItemId = "ammo_9mm", WorldPrefab = "prefabs/items/pf_ammo_9mm_pickup.prefab", Min = 4, Max = 8, Chance = 0.5f },
-					new LootEntry { ItemId = "medicine", WorldPrefab = "prefabs/items/pf_scrap_pickup.prefab", Min = 1, Max = 1, Chance = 0.25f }
+					new LootEntry { ItemId = "chatarra", WorldPrefab = "prefabs/content/enemies/loot_scrap_content.prefab", Min = 2, Max = 5, Chance = 1f },
+					new LootEntry { ItemId = "ammo_9mm", WorldPrefab = "prefabs/content/enemies/loot_supplies_content.prefab", Min = 1, Max = 2, Chance = 0.5f }
 				}
 			};
 		}
@@ -137,8 +153,8 @@ namespace UltimoBarrio.Content.Enemies
 				Id = "loot_merodeador",
 				Entries = new List<LootEntry>
 				{
-					new LootEntry { ItemId = "chatarra", WorldPrefab = "prefabs/items/pf_scrap_pickup.prefab", Min = 1, Max = 2, Chance = 0.8f },
-					new LootEntry { ItemId = "ammo_9mm", WorldPrefab = "prefabs/items/pf_ammo_9mm_pickup.prefab", Min = 2, Max = 4, Chance = 0.3f }
+					new LootEntry { ItemId = "chatarra", WorldPrefab = "prefabs/content/enemies/loot_scrap_content.prefab", Min = 1, Max = 2, Chance = 0.8f },
+					new LootEntry { ItemId = "ammo_9mm", WorldPrefab = "prefabs/content/enemies/loot_supplies_content.prefab", Min = 1, Max = 1, Chance = 0.3f }
 				}
 			};
 		}
