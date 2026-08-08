@@ -255,35 +255,6 @@
                 }
               ],
               "Children": []
-            },
-            {
-              "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c37",
-              "__version": 2,
-              "Flags": 0,
-              "Name": "Lab Enemy Spawner",
-              "Position": "0,0,0",
-              "Rotation": "0,0,0,1",
-              "Scale": "1,1,1",
-              "Tags": "",
-              "Enabled": true,
-              "NetworkMode": 2,
-              "NetworkFlags": 0,
-              "NetworkOrphaned": 0,
-              "NetworkTransmit": true,
-              "OwnerTransfer": 1,
-              "Components": [
-                {
-                  "__type": "UltimoBarrio.Content.Dev.LabEnemySpawner",
-                  "__guid": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c38",
-                  "__enabled": true,
-                  "SpawnMarker": {
-                    "_type": "gameobject",
-                    "go": "3f6c2a91-7d4e-4b5a-9f2c-1e8d4a6b7c25"
-                  },
-                  "TargetDummy": null
-                }
-              ],
-              "Children": []
             }
           ]
         }
