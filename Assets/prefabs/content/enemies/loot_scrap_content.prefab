@@ -1,0 +1,41 @@
+{
+  "RootObject": {
+    "__guid": "9e7a2b5c-1f4d-4a8e-9c3f-5d6a7b8c9d01",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "Loot Scrap (Content)",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "loot_pickup",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Sandbox.ModelRenderer",
+        "__guid": "9e7a2b5c-1f4d-4a8e-9c3f-5d6a7b8c9d02",
+        "__enabled": true,
+        "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+        "Tint": "0.55,0.55,0.55,1"
+      },
+      {
+        "__type": "Sandbox.BoxCollider",
+        "__guid": "9e7a2b5c-1f4d-4a8e-9c3f-5d6a7b8c9d03",
+        "__enabled": true,
+        "Scale": "12,12,24",
+        "Static": false
+      },
+      {
+        "__type": "UltimoBarrio.Content.Enemies.LootPickupContent",
+        "__guid": "9e7a2b5c-1f4d-4a8e-9c3f-5d6a7b8c9d04",
+        "__enabled": true,
+        "ItemId": "chatarra",
+        "Amount": 1
+      }
+    ],
+    "Children": []
+  }
+}

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 namespace UltimoBarrio.Content.Enemies
 {
 	/// <summary>
-	/// Tabla de botín data-driven. Los WorldPrefab apuntan a prefabs de pickup
-	/// (p. ej. prefabs/items/pf_scrap_pickup.prefab) que el core nuevo resolverá.
-	/// Los ItemId son strings opacos: el mapeo a inventario lo decide el core nuevo.
+	/// Tabla de botín data-driven. Los WorldPrefab apuntan a pickups FÍSICOS del pack
+	/// (p. ej. prefabs/content/enemies/loot_scrap_content.prefab); el core nuevo
+	/// mapeará ItemId a inventario, pero el pack nunca lo toca directamente.
 	/// </summary>
 	public sealed class LootTableDefinition
 	{

@@ -15,11 +15,32 @@
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "Sandbox.SkinnedModelRenderer",
+        "__type": "Sandbox.ModelRenderer",
         "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c02",
         "__enabled": true,
-        "Model": "models/citizen/citizen.vmdl",
-        "Tint": "1,1,1,1"
+        "Model": "models/citizen_props/crate01.vmdl"
+      },
+      {
+        "__type": "Sandbox.BoxCollider",
+        "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c0a",
+        "__enabled": true,
+        "Scale": "36,36,36",
+        "Static": false
+      },
+      {
+        "__type": "Sandbox.NavMeshAgent",
+        "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c0b",
+        "__enabled": true
+      },
+      {
+        "__type": "UltimoBarrio.Content.Enemies.EnemyPerception",
+        "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c0c",
+        "__enabled": true
+      },
+      {
+        "__type": "UltimoBarrio.Content.Enemies.EnemyAttack",
+        "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c0d",
+        "__enabled": true
       },
       {
         "__type": "UltimoBarrio.Content.Enemies.EnemyContentHost",
