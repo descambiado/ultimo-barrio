@@ -69,7 +69,7 @@ NO es una regla del engine: era leer `compile_status` con un `Success` del build
 - WeaponSuite 4/4 PASS validada tras refactor de G (14:42).
 - WIP preservados: `agent/enemies` @ `d4c0c93` (sistema de enemigos de A, sin validar), `checkpoint/laptop-turbo-wip-20260808` @ `e871fe7` (diagnóstico NRE building + tool MCP open_scene).
 - `agent/vehicles` sin trabajo (worker E no entregó).
-- NRE actual: `BuildingTestRig.CheckRegistryCoverage` línea ~104 — `FortificationContentRegistry.All` contiene un null; diagnóstico en curso (ver handoff → Known blockers).
+- NRE building: **RESUELTO** (assembly/hotload stale; cold restart) - fixes: SetBalance fixture + ResolveModelFromPrefab; building_lab 9/9 PASS (commits 1fff31c + b470365).
 
 ### BUILDING SPIKE — agent/building (Worker C)
 
