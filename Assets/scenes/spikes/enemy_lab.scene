@@ -431,6 +431,45 @@
           "Children": []
         }
       ]
+    },
+    {
+      "__guid": "e9d1a2b3-4c5d-4e6f-8a9b-0c1d2e3f4a51",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Enemy Test Rig",
+      "Position": "0,0,8",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "UltimoBarrio.Content.Dev.EnemyTestRig",
+          "__guid": "e9d1a2b3-4c5d-4e6f-8a9b-0c1d2e3f4a52",
+          "__enabled": true,
+          "AutoTest": true,
+          "Tests": [
+            { "Label": "Saqueador", "EnemyPrefab": "prefabs/content/enemies/enemy_saqueador.prefab", "ExpectedDefinitionId": "ub_enemy_saqueador", "ExpectedDamagePerHit": 15.0, "ExpectedLootMin": 1 },
+            { "Label": "Bruto", "EnemyPrefab": "prefabs/content/enemies/enemy_bruto.prefab", "ExpectedDefinitionId": "ub_enemy_bruto", "ExpectedDamagePerHit": 40.0, "ExpectedLootMin": 1 },
+            { "Label": "Merodeador", "EnemyPrefab": "prefabs/content/enemies/enemy_merodeador.prefab", "ExpectedDefinitionId": "ub_enemy_merodeador", "ExpectedDamagePerHit": 10.0, "ExpectedLootMin": 1 }
+          ],
+          "SpawnMarker": { "_type": "gameobject", "go": "bfa0aac9-6b03-4976-8bdb-6efa21c18afb" },
+          "DummyMarker": { "_type": "gameobject", "go": "44f85af0-5527-4d66-b6b7-ff45d23ea75f" }
+        },
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "e9d1a2b3-4c5d-4e6f-8a9b-0c1d2e3f4a53",
+          "__enabled": true,
+          "IsMainCamera": true,
+          "Priority": 10
+        }
+      ],
+      "Children": []
     }
   ],
   "SceneProperties": {
