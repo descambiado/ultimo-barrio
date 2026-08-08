@@ -235,6 +235,20 @@
                       "ExpectedDefinitionId": "ub_enemy_saqueador",
                       "ExpectedDamagePerHit": 15.0,
                       "ExpectedLootMin": 1
+                    },
+                    {
+                      "Label": "Bruto",
+                      "EnemyPrefab": "prefabs/content/enemies/enemy_bruto.prefab",
+                      "ExpectedDefinitionId": "ub_enemy_bruto",
+                      "ExpectedDamagePerHit": 40.0,
+                      "ExpectedLootMin": 1
+                    },
+                    {
+                      "Label": "Merodeador",
+                      "EnemyPrefab": "prefabs/content/enemies/enemy_merodeador.prefab",
+                      "ExpectedDefinitionId": "ub_enemy_merodeador",
+                      "ExpectedDamagePerHit": 10.0,
+                      "ExpectedLootMin": 1
                     }
                   ],
                   "SpawnMarker": {
