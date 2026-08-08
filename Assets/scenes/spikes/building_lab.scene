@@ -1,8 +1,8 @@
 {
-  "__guid": "c4970960-3cf4-4dac-ac5a-f25c58f10fe3",
+  "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f401",
   "GameObjects": [
     {
-      "__guid": "c7321ef5-1869-451c-803f-f58ff4d9383c",
+      "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f402",
       "__version": 2,
       "Flags": 0,
       "Name": "World",
@@ -19,13 +19,13 @@
       "Components": [],
       "Children": [
         {
-          "__guid": "fdcf7adc-db59-42d9-9345-4523cf66b0f3",
+          "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f403",
           "__version": 2,
           "Flags": 0,
           "Name": "PrototypeFloor",
           "Position": "0,0,0",
           "Rotation": "0,0,0,1",
-          "Scale": "8,8,1",
+          "Scale": "400,400,1",
           "Tags": "",
           "Enabled": true,
           "NetworkMode": 2,
@@ -36,7 +36,7 @@
           "Components": [
             {
               "__type": "Sandbox.ModelRenderer",
-              "__guid": "ca890ca7-df13-4a57-850a-2cb6c2c3d868",
+              "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f404",
               "__enabled": true,
               "Model": "models/dev/plane.vmdl",
               "MaterialOverride": "materials/default.vmat",
@@ -44,7 +44,7 @@
             },
             {
               "__type": "Sandbox.PlaneCollider",
-              "__guid": "8c76889b-e562-4557-82c7-0586bb783a07",
+              "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f405",
               "__enabled": true,
               "Normal": "0,0,1",
               "Scale": "100,100",
@@ -54,7 +54,7 @@
           "Children": []
         },
         {
-          "__guid": "0af523ca-a86d-4fd6-a90a-d5e879476e0b",
+          "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f406",
           "__version": 2,
           "Flags": 0,
           "Name": "Sun",
@@ -71,14 +71,14 @@
           "Components": [
             {
               "__type": "Sandbox.DirectionalLight",
-              "__guid": "8f8f3f98-0bbb-471a-8eca-7f2c427f9b84",
+              "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f407",
               "__enabled": true
             }
           ],
           "Children": []
         },
         {
-          "__guid": "036b05bb-698f-425d-858f-444b79ff310a",
+          "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f408",
           "__version": 2,
           "Flags": 0,
           "Name": "Sky",
@@ -95,7 +95,7 @@
           "Components": [
             {
               "__type": "Sandbox.SkyBox2D",
-              "__guid": "4e0cafb1-eaf1-456a-9747-3804f93f7b66",
+              "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f409",
               "__enabled": true,
               "SkyMaterial": "materials/skybox/skybox_day_01.vmat"
             }
@@ -105,7 +105,7 @@
       ]
     },
     {
-      "__guid": "48a74af1-5a87-4652-8693-e63ab095baa3",
+      "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f40a",
       "__version": 2,
       "Flags": 0,
       "Name": "Systems",
@@ -122,7 +122,7 @@
       "Components": [],
       "Children": [
         {
-          "__guid": "aababdd0-0bf4-44a1-ad47-594851eac290",
+          "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f40b",
           "__version": 2,
           "Flags": 0,
           "Name": "Network",
@@ -139,12 +139,8 @@
           "Components": [
             {
               "__type": "Sandbox.NetworkHelper",
-              "__guid": "a85992f1-4da0-42f8-a5fb-3e3f8acf515f",
+              "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f40c",
               "__enabled": true,
-              "PlayerPrefab": {
-                "_type": "gameobject",
-                "prefab": "prefabs/player.prefab"
-              },
               "SpawnPoints": [],
               "StartServer": true
             }
@@ -152,7 +148,7 @@
           "Children": []
         },
         {
-          "__guid": "5a48f0ae-34be-4b1d-b079-6041b5909216",
+          "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f40d",
           "__version": 2,
           "Flags": 0,
           "Name": "Lab Systems",
@@ -166,19 +162,60 @@
           "NetworkOrphaned": 0,
           "NetworkTransmit": true,
           "OwnerTransfer": 1,
-          "Components": [
+          "Components": [],
+          "Children": [
             {
-              "__type": "UltimoBarrio.Content.Dev.LabBuildingSpawner",
-              "__guid": "270fed04-4bd5-48a0-a317-8f7bc9ed1ebc",
-              "__enabled": true
+              "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f40e",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Building Test Rig",
+              "Position": "0,0,8",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "UltimoBarrio.Content.Dev.BuildingTestRig",
+                  "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f40f",
+                  "__enabled": true,
+                  "AutoTest": true,
+                  "Tests": [
+                    {
+                      "Label": "WoodenBarricade",
+                      "BuildId": "fort_barricade_wood",
+                      "ValidDistance": 160.0,
+                      "InvalidDistance": 500.0,
+                      "BlockedDistance": 220.0,
+                      "SpawnYaw": 45.0,
+                      "ExpectedMaxHp": 150.0,
+                      "DamageAmount": 50.0,
+                      "FixtureBalance": 100,
+                      "ExpectedUpgradeMaxHp": 400.0
+                    }
+                  ]
+                },
+                {
+                  "__type": "Sandbox.CameraComponent",
+                  "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f410",
+                  "__enabled": true,
+                  "IsMainCamera": true,
+                  "Priority": 10
+                }
+              ],
+              "Children": []
             }
-          ],
-          "Children": []
+          ]
         }
       ]
     },
     {
-      "__guid": "26118590-130a-4762-a430-b68686063753",
+      "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f411",
       "__version": 2,
       "Flags": 0,
       "Name": "SpawnPoints",
@@ -195,11 +232,11 @@
       "Components": [],
       "Children": [
         {
-          "__guid": "239f29c1-a8fd-445f-a7cb-18abdf2a74a0",
+          "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f412",
           "__version": 2,
           "Flags": 0,
           "Name": "Primary Spawn",
-          "Position": "0,0,0",
+          "Position": "0,0,8",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Tags": "",
@@ -212,7 +249,7 @@
           "Components": [
             {
               "__type": "Sandbox.SpawnPoint",
-              "__guid": "645d2f3a-4b65-4195-b529-75052244f0e8",
+              "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f413",
               "__enabled": true,
               "Color": "0.2,0.8,0.3,1"
             }
