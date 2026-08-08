@@ -97,6 +97,7 @@ namespace UltimoBarrio.Content.Dev
 		/// <summary>El registro debe exponer TODOS los objetos como data (9), con la barricada de madera PRIMERA.</summary>
 		private bool CheckRegistryCoverage()
 		{
+			FortificationContentRegistry.DebugDump();
 			var all = FortificationContentRegistry.All;
 			Log.Info( $"[BuildingLab] Registry: {all.Count} definiciones" );
 			foreach ( var def in all )
