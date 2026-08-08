@@ -114,11 +114,13 @@ assets:
     license: pending-package-verification
     license_verified: false
     integration_mode: content-pack-verified
-    version_or_checked_at: "2026-08-07"
+    version_or_checked_at: "2026-08-08"
     editor_verified: true
+    verification_status: VERIFIED (get_package MCP 2026-08-08: 9mm Ammo Box, org facepunch, public; usado por prefab oficial prefabs/items/pf_ammo_9mm_pickup.prefab)
     asset_path: models/weapons/sbox_ammo/9mm_ammobox/ammobox_9mm.vmdl
     used_by:
       - content:Weapons/ub_weapon_usp (ammo model)
+      - content:Enemies/loot (pf_ammo_9mm_pickup.prefab en Saqueador/Bruto/Merodeador)
     fallback: models/sbox_props/cardboard_box/cardboard_box_open.vmdl
     notes: >
       Sustituye al candidato facepunch.ammo_9mm (no existía como paquete instalable).
@@ -157,19 +159,19 @@ assets:
       con licencia compatible (research del stack de contenido).
 
   - id: facepunch.knife
-    name: Knife world model
+    name: Knife world model (SUPERSEDED by facepunch.w_trenchknife)
     author: Facepunch (candidato)
     source_url: https://sbox.game/facepunch/sboxweapons
     package_type: package-asset
     license: pending-package-verification
     license_verified: false
-    integration_mode: content-pack-candidate
-    version_or_checked_at: "2026-08-07"
-    used_by:
-      - content:Weapons/ub_weapon_knife
+    integration_mode: superseded
+    version_or_checked_at: "2026-08-08"
+    used_by: []
     fallback: models/citizen_props/crate01.vmdl
     notes: >
-      Confirmar existencia real del asset o buscar modelo de cuchillo legal.
+      CONFIRMADO FALSO 2026-08-08 (get_package: No package found for 'facepunch.knife').
+      Reemplazado por facepunch.w_trenchknife (world) + facepunch.v_m9bayonet (view), ambos VERIFIED.
 
   - id: facepunch.w_shotgun
     name: Shotgun world model
@@ -208,17 +210,26 @@ assets:
     license: pending-package-verification
     license_verified: false
     integration_mode: content-pack-verified
-    version_or_checked_at: "2026-08-07"
+    version_or_checked_at: "2026-08-08"
     editor_verified: true
+    verification_status: VERIFIED (asset_info MCP 2026-08-08: compiled+uptodate en addons/citizen)
     asset_path: models/citizen/citizen.vmdl
+    animgraph_path: models/citizen/citizen.vanmgrph
+    material_options:
+      - models/citizen/skin/citizen_skin01.vmat
+      - models/citizen/skin/citizen_skin_grey.vmat
+    bodygroups: Head, Chest, Legs, Hands (on/off; pensados para ropa)
     used_by:
       - content:Enemies/ub_enemy_saqueador
       - content:Enemies/ub_enemy_bruto
       - content:Enemies/ub_enemy_merodeador
     fallback: models/citizen_props/crate01.vmdl
     notes: >
-      citizen.vmdl verificado en el asset system (568 modelos citizen instalados).
-      El animgraph va embebido en el modelo (no hay citizen.animgraph suelto en assets).
+      citizen.vmdl VERIFIED (asset_info 2026-08-08; 568 modelos citizen instalados).
+      El animgraph va embebido en el modelo; citizen.vanmgrph existe como asset independiente.
+      Diferenciacion por archetype SIN assets nuevos: Scale + Tint en SkinnedModelRenderer
+      (saqueador neutro / bruto grimy oscuro / merodeador palido). Bodygroups solo utiles
+      con ropa; skins citizen_skin01/grey como material override futuro.
       Validar términos de uso de contenido humano antes de standalone (T5).
 
   - id: engine.citizen_props_crowbar01
@@ -229,15 +240,18 @@ assets:
     license: pending-package-verification
     license_verified: false
     integration_mode: content-pack-verified
-    version_or_checked_at: "2026-08-07"
+    version_or_checked_at: "2026-08-08"
     editor_verified: true
+    verification_status: VERIFIED (fs 2026-08-08: addons/citizen/Assets/models/citizen_props/crowbar01.vmdl)
     asset_path: models/citizen_props/crowbar01.vmdl
     used_by:
       - content:Weapons/ub_weapon_crowbar (candidato primario real)
+      - content:Enemies/loot (pf_loot_crowbar.prefab)
     fallback: models/citizen_props/crate01.vmdl
     notes: >
       Modelo de palanca del engine verificado; sustituye al fallback crate01 cuando
       se valide el crowbar en el lab (fase posterior a USP).
+      Alternativa cloud verificada 2026-08-08: facepunch.w_crowbar (world model oficial, get_package OK).
 
   - id: sound/content-pack-events
     name: SoundEvents del content pack (weapon.usp.fire, build.wood.place, ...)
@@ -255,3 +269,103 @@ assets:
     notes: >
       Crear SoundEvent graphs propios o licenciar CC0/CC-BY (research de audio).
       Hasta entonces los campos de sonido están vacíos/placeholder en las definiciones.
+
+  # ------------------------------------------------------------------
+  # Enemies + loot — Worker B (2026-08-08) — todos VERIFIED via MCP read-only
+  # (get_package backend + asset_search/asset_info del asset system).
+  # ------------------------------------------------------------------
+
+  - id: facepunch.ammobox12g
+    name: 12 Gauge Ammo Box
+    author: Facepunch
+    source_url: https://sbox.game/facepunch/sboxweapons
+    package_type: package-asset
+    asset_type: model
+    cloud_ident: facepunch.ammobox12g
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    verification_status: VERIFIED (get_package MCP 2026-08-08: 12 Gauge Ammo Box, org facepunch, public, updated 2026-06-09)
+    used_by:
+      - content:Enemies/loot (pf_loot_ammo_12g.prefab, loot Bruto)
+    fallback: models/citizen_props/crate01.vmdl
+    notes: >
+      Munision de escopeta para loot. Prefab pickup nuevo siguiendo el patron oficial
+      pf_ammo_9mm_pickup.prefab (WorldItemPickup + BoxCollider + ModelRenderer cloud ident).
+      ItemId 'ammo_12g' pendiente de registrar en ItemRegistry del core (coordinador).
+
+  - id: facepunch.w_trenchknife
+    name: Trench Knife world model
+    author: Facepunch
+    source_url: https://sbox.game/facepunch/sboxweapons
+    package_type: package-asset
+    asset_type: model
+    cloud_ident: facepunch.w_trenchknife
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    verification_status: VERIFIED (get_package MCP 2026-08-08: Trench Knife world model, org facepunch, public)
+    used_by:
+      - content:Enemies/loot (pf_loot_knife.prefab, loot Bruto)
+    fallback: models/citizen_props/crate01.vmdl
+    notes: >
+      Cuchillo real verificado; sustituye al candidato falso facepunch.knife (SUPERSEDED).
+      ItemId 'weapon_knife' pendiente de registrar en ItemRegistry del core (coordinador).
+
+  - id: facepunch.v_m9bayonet
+    name: ViewModel M9 Bayonet
+    author: Facepunch
+    source_url: https://sbox.game/facepunch/sboxweapons
+    package_type: package-asset
+    asset_type: model
+    cloud_ident: facepunch.v_m9bayonet
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    verification_status: VERIFIED (get_package MCP 2026-08-08: ViewModel M9 Bayonet, org facepunch, public; skill ub-cloud-asset-resolver PASS runtime)
+    used_by:
+      - content:Enemies/loot (viewmodel de referencia del cuchillo, weapon lab)
+    fallback: models/citizen_props/crate01.vmdl
+    notes: >
+      Viewmodel del cuchillo (v_m9bayonet.vanmgrph incluido en el paquete).
+
+  - id: facepunch.w_crowbar
+    name: Crowbar world model
+    author: Facepunch
+    source_url: https://sbox.game/facepunch/sboxweapons
+    package_type: package-asset
+    asset_type: model
+    cloud_ident: facepunch.w_crowbar
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    verification_status: VERIFIED (get_package MCP 2026-08-08: Crowbar world model, org facepunch, public)
+    used_by:
+      - content:Enemies/loot (alternativa cloud a engine.citizen_props_crowbar01)
+    fallback: models/citizen_props/crowbar01.vmdl
+    notes: >
+      Alternativa world model oficial a la palanca del engine. El loot usa por ahora
+      models/citizen_props/crowbar01.vmdl (engine content, sin cloud ident, cero montaje).
+
+  - id: engine.medkit-bandage
+    name: Medkit / Bandage (loot salud) — NO DISPONIBLE
+    author: (ninguno del engine/facepunch)
+    source_url: null
+    package_type: none
+    license: n/a
+    license_verified: false
+    integration_mode: deferred
+    version_or_checked_at: "2026-08-08"
+    verification_status: BLOQUEADO (find_packages MCP 2026-08-08: solo paquetes 3rd-party sin licencia verificada: fish.medkit, nibbles.medkit, humantarsier4200.bandage, rust.w_bandage...)
+    used_by:
+      - content:Enemies/loot (medicine) — pendiente
+    fallback: none
+    notes: >
+      NO hay medkit/bandage en engine content ni en paquetes facepunch verificados.
+      El loot 'medicine' del BrutoTable apunta hoy a pf_scrap_pickup (placeholder en codigo,
+      Code/UltimoBarrio/Content/enemies/enemycontentregistry.cs — fuera del alcance de Worker B).
+      Recomendacion: quitar esa entrada o esperar paquete cloud con licencia verificada.
