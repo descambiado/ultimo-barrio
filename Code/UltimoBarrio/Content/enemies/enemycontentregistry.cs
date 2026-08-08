@@ -153,7 +153,7 @@ namespace UltimoBarrio.Content.Enemies
 				Id = "loot_merodeador",
 				Entries = new List<LootEntry>
 				{
-					new LootEntry { ItemId = "chatarra", WorldPrefab = "prefabs/content/enemies/loot_scrap_content.prefab", Min = 1, Max = 2, Chance = 0.8f },
+					new LootEntry { ItemId = "chatarra", WorldPrefab = "prefabs/content/enemies/loot_scrap_content.prefab", Min = 1, Max = 2, Chance = 1f },
 					new LootEntry { ItemId = "ammo_9mm", WorldPrefab = "prefabs/content/enemies/loot_supplies_content.prefab", Min = 1, Max = 1, Chance = 0.3f }
 				}
 			};
