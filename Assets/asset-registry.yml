@@ -254,21 +254,81 @@ assets:
       Alternativa cloud verificada 2026-08-08: facepunch.w_crowbar (world model oficial, get_package OK).
 
   - id: sound/content-pack-events
-    name: SoundEvents del content pack (weapon.usp.fire, build.wood.place, ...)
-    author: proyecto (a crear)
+    name: SoundEvents del content pack (Assets/sounds/content/**)
+    author: proyecto (banco 2026-08-08, worker F)
     source_url: null
     package_type: project-owned
-    license: MPL-2.0 (proyecto)
+    license: MPL-2.0 (proyecto) + MIT (dry_fire.wav importado, atribución en THIRD_PARTY_NOTICES.md)
     license_verified: true
-    integration_mode: content-pack-candidate
-    version_or_checked_at: "2026-08-07"
+    integration_mode: content-pack-verified (rutas) / pending (editor compile)
+    version_or_checked_at: "2026-08-08"
     used_by:
       - content:Weapons/*
       - content:Fortification/*
+      - content:Enemies/*
     fallback: sin sonido (campos vacíos en definiciones)
     notes: >
-      Crear SoundEvent graphs propios o licenciar CC0/CC-BY (research de audio).
-      Hasta entonces los campos de sonido están vacíos/placeholder en las definiciones.
+      15 SoundEvents creados referenciando SOLO archivos verificados (paquetes oficiales
+      facepunch.sboxweapons + core del engine + dry_fire.wav MIT importado). PENDING sin fuente
+      verificada: knife swing, enemy alert, enemy attack, night warning (ver
+      Assets/sounds/content/PENDING.md). Falta compilación en editor (0 errores) y confirmación
+      de resolución en Cloud Browser antes de build pública.
+
+  - id: facepunch.sboxweapons-sounds
+    name: Weapon sounds (sboxweapons collection)
+    author: Facepunch
+    source_url: https://sbox.game/facepunch/sboxweapons
+    package_type: collection-content
+    license: facepunch-official-free-to-use (en proyectos s&box)
+    license_verified: true
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    used_by:
+      - Assets/sounds/content/usp_fire.sound (weapons/glock/glock_shoot_01.vsnd, la USP usa este evento)
+      - Assets/sounds/content/usp_reload_magout.sound (weapons/glock/reload/pistol_mag_out.vsnd)
+      - Assets/sounds/content/usp_reload_magin.sound (weapons/glock/reload/pistol_mag_in.vsnd)
+      - Assets/sounds/content/shotgun_fire.sound (weapons/shotgun/sounds/shotgun1_shoot1.vsnd)
+      - Assets/sounds/content/crowbar_swing.sound (weapons/crowbar/sounds/swing_01.vsnd)
+      - Assets/sounds/content/crowbar_impact.sound (weapons/crowbar/sounds/crowbar_hit_01.vsnd)
+    notes: >
+      Rutas extraídas del repo público Facepunch/sandbox (commit 1b77a36f "USP shoot sound was
+      too quiet" confirma glock_shoot_01.vsnd como el sonido de la USP) y de los .sound oficiales.
+      Paquetes montados vía PackageReferences (facepunch.sboxweapons).
+
+  - id: engine.core-sounds
+    name: Core sound events del engine (impacts, physics, buildings)
+    author: Facepunch (engine)
+    source_url: null
+    package_type: engine-content
+    license: engine-content (referencia, sin redistribución de binarios)
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    used_by:
+      - Assets/sounds/content/melee_impact_flesh.sound (core/sounds/melee/flesh/...)
+      - Assets/sounds/content/bullet_impact_flesh.sound
+      - Assets/sounds/content/door_impact.sound
+      - Assets/sounds/content/barricade_impact.sound
+      - Assets/sounds/content/repair.sound
+      - Assets/sounds/content/enemy_hurt.sound
+      - Assets/sounds/content/enemy_death.sound
+    notes: >
+      Impactos y física del core (1112 archivos de sonido en disco, core/sounds/). Referencia
+      directa sin copiar binarios.
+
+  - id: facepunch.sandbox-game-dryfire
+    name: dry_fire.wav (importado al pack, MIT)
+    author: Facepunch
+    source_url: https://github.com/Facepunch/sandbox/blob/main/Assets/sounds/dry_fire.wav
+    package_type: project-owned-import
+    license: MIT (© 2026 Facepunch) — atribución en THIRD_PARTY_NOTICES.md
+    license_verified: true
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    used_by:
+      - Assets/sounds/content/usp_dry.sound
+    notes: >
+      Importado 36 KB; licencia MIT con atribución requerida (copiada a docs/licenses/).
 
   # ------------------------------------------------------------------
   # Enemies + loot — Worker B (2026-08-08) — todos VERIFIED via MCP read-only
