@@ -85,6 +85,10 @@ def network_systems():
                                SpawnPoints=[], StartServer=True)])
 
 
+def network_systems_no_player():
+    return go("Network", [comp("Sandbox.NetworkHelper", SpawnPoints=[], StartServer=True)])
+
+
 def spawn_points():
     return go("SpawnPoints", [], children=[
         go("Primary Spawn", [comp("Sandbox.SpawnPoint", Color="0.2,0.8,0.3,1")])
@@ -122,7 +126,7 @@ def enemy_lab():
     dummy = go("Lab Dummy", [
         model_renderer("models/citizen_props/crate01.vmdl"),
         comp("Sandbox.BoxCollider", Scale="80,80,120", Static=False),
-        comp("UltimoBarrio.Content.Fortification.FortificationContentHost", DefinitionId="fort_barricade_wood"),
+        comp("UltimoBarrio.Content.Fortification.BuildStructureHost", DefinitionId="fort_barricade_wood"),
     ], position="300,0,0", tags="lab_dummy")
     marker = go("Enemy Spawn Marker", [], position="100,0,0", tags="lab_marker")
 
@@ -141,9 +145,28 @@ def enemy_lab():
 
 
 def building_lab():
+    # Autotest BuildingTestRig: NetworkHelper SIN PlayerPrefab (el rig sustituye
+    # input humano y target humano). La suite data-driven vive en el JSON de la escena.
+    rig = go("Building Test Rig", [
+        comp("UltimoBarrio.Content.Dev.BuildingTestRig",
+             AutoTest=True,
+             Tests=[{
+                 "Label": "WoodenBarricade",
+                 "BuildId": "fort_barricade_wood",
+                 "ValidDistance": 160.0,
+                 "InvalidDistance": 500.0,
+                 "BlockedDistance": 220.0,
+                 "SpawnYaw": 45.0,
+                 "ExpectedMaxHp": 150.0,
+                 "DamageAmount": 50.0,
+                 "FixtureBalance": 100,
+                 "ExpectedUpgradeMaxHp": 400.0,
+             }]),
+        comp("Sandbox.CameraComponent", IsMainCamera=True, Priority=10),
+    ], position="0,0,8")
     write_scene("building_lab.scene", [
         world_root([plane_floor(), sun(), sky()]),
-        systems_root([network_systems(), go("Lab Systems", [comp("UltimoBarrio.Content.Dev.LabBuildingSpawner")])]),
+        systems_root([network_systems_no_player(), go("Lab Systems", [rig])]),
         spawn_points(),
     ])
 

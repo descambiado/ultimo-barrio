@@ -13,7 +13,7 @@ sin tocar `ultimo_barrio_alpha.scene` ni el core antiguo.
 |---|---|---|
 | `Assets/scenes/spikes/weapon_lab.scene` | USP, palanca, cuchillo, escopeta (spawn, disparo/melee, daño a IDamageTarget, recarga, dry fire) | Slot1..Slot4 equipan; attack1 dispara; R recarga; Drop suelta |
 | `Assets/scenes/spikes/enemy_lab.scene` | Spawn de Saqueador/Bruto/Merodeador, NavMesh, persecución, ataque al dummy, daño, muerte, botín | Slot1..Slot3 spawnan enemigos en el marcador |
-| `Assets/scenes/spikes/building_lab.scene` | Colocar 9 fortificaciones, daño, reparación, upgrade (madera→reforzada) | Slot1..Slot9 colocan; R repara la más cercana |
+| `Assets/scenes/spikes/building_lab.scene` | Autotest BuildingTestRig: preview inválido/bloqueado/overlap REJECTED, válido ACCEPTED, spawn, HP, daño (trace), repair (consumo fixture), upgrade (madera→reforzada), destroy | Sin input manual |
 | `Assets/scenes/spikes/vehicle_lab.scene` | Stub: rellenar prefabs cuando el research decida el paquete de vehículos (manifest bloque H) | Slot1 spawna vehículo (pendiente) |
 
 ## Cómo abrir
@@ -29,10 +29,11 @@ sin tocar `ultimo_barrio_alpha.scene` ni el core antiguo.
   hijo del jugador; los modelos usan los fallbacks verificados (los candidatos
   primarios están marcados ⚠️ PENDING_VERIFY en los registros).
 - **enemy_lab**: usa `MapInstance thieves.rpdowntown3t` (verificado) para que
-  NavMeshAgent tenga navmesh. Los enemigos persiguen al dummy (FortificationContentHost
+  NavMeshAgent tenga navmesh. Los enemigos persiguen al dummy (BuildStructureHost
   como IDamageTarget) y sueltan pickups al morir.
-- **building_lab**: las fortificaciones reciben daño de las armas del weapon_lab
-  (mismo contrato IDamageTarget) y se pueden reparar con R.
+- **building_lab**: el BuildingTestRig valida el bucle completo por la ruta real
+  (BuildPlacementRules → SpawnBuild → trace/IDamageTarget → Repair con
+  LabResourceFixture → Upgrade → destroy). Autotest: `[LabBuild] VERSION` + `[BuildingLab] PASS`.
 
 ## Verificación pendiente (cuando el editor esté disponible)
 
