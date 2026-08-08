@@ -1,6 +1,18 @@
 namespace UltimoBarrio.Content.Enemies
 {
 	/// <summary>
+	/// Prioridad de selección de objetivo (data-driven). Un único brain (EnemyContentHost)
+	/// se comporta distinto según la definición; el core nuevo alimenta candidatos
+	/// vía IEnemyContentAdapter y el host los ordena con esta prioridad.
+	/// </summary>
+	public enum EnemyTargetPriority
+	{
+		Player,     // Saqueador: persigue al jugador por encima de todo.
+		Structures, // Bruto: prefiere fortificaciones/estructuras (ver StructureTag).
+		Balanced    // Merodeador: evalúa por proximidad y entradas vulnerables.
+	}
+
+	/// <summary>
 	/// Definición data-driven de un arquetipo de enemigo.
 	/// Clase plana (datos puros) registrada en EnemyContentRegistry.
 	///
@@ -20,15 +32,28 @@ namespace UltimoBarrio.Content.Enemies
 		public string AnimGraph { get; set; } = "";
 		public float Scale { get; set; } = 1f;
 
-		// Combate
+		// Vitalidad
 		public float MaxHealth { get; set; } = 100f;
-		public float WalkSpeed { get; set; } = 200f;   // data-only: el adaptador del core nuevo lo aplica
+
+		// Movimiento (NavMeshAgent REAL; lo aplica EnemyContentHost.ApplyDefinition)
+		public float WalkSpeed { get; set; } = 200f;
+
+		// Percepción (EnemyPerception)
+		public float VisionRange { get; set; } = 2000f;
+		public float VisionAngle { get; set; } = 100f;   // grados (cono completo; ángulo = FOV)
+		public float HearingRadius { get; set; } = 1400f;
+		public float MemoryDuration { get; set; } = 5f;  // recuerdo de la última posición conocida
+
+		// Ataque melee (EnemyAttack)
 		public float AttackRange { get; set; } = 100f;
 		public float AttackDamage { get; set; } = 15f;
 		public float AttackCooldown { get; set; } = 1.5f;
-		public float PerceptionRange { get; set; } = 2000f;
 
-		// Comportamiento
+		// Comportamiento / estructura
+		public EnemyTargetPriority TargetPriority { get; set; } = EnemyTargetPriority.Player;
+		public string StructureTag { get; set; } = "";   // tag de estructuras preferidas (core nuevo)
+
+		// Botín (tabla en EnemyContentRegistry; pickups físicos de mundo)
 		public string LootTableId { get; set; } = "";
 		public float CorpseLifetime { get; set; } = 0f; // 0 = destruir al morir (sin ragdoll aún)
 
