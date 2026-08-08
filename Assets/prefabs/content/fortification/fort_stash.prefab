@@ -18,7 +18,7 @@
         "__type": "Sandbox.ModelRenderer",
         "__guid": "7b2c4d5e-9f6a-4b7c-8d0e-3f4a5b6c7d12",
         "__enabled": true,
-        "Model": "models/sbox_props/cardboard_box/cardboard_box_open.vmdl"
+        "Model": "models/citizen_props/gritbin01_combined.vmdl"
       },
       {
         "__type": "Sandbox.BoxCollider",

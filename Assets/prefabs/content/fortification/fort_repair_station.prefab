@@ -18,7 +18,7 @@
         "__type": "Sandbox.ModelRenderer",
         "__guid": "7b2c4d5e-9f6a-4b7c-8d0e-3f4a5b6c7d22",
         "__enabled": true,
-        "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl"
+        "Model": "models/props/mobile_masts/microwave_trans.vmdl"
       },
       {
         "__type": "Sandbox.BoxCollider",
