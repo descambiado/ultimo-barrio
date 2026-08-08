@@ -97,23 +97,38 @@ NO es una regla del engine: era leer `compile_status` con un `Success` del build
   `FortificationContentHost` como dummy objetivo → `__type` actualizado a
   `BuildStructureHost` (cambio mecánico de 1 línea, requerido por el rename).
 
-### ENEMY SPIKE — agent/enemies-v2 (Worker A · turbo session 2, 2026-08-08)
+### VEHICLES SPIKE - agent/vehicles-v2 (Worker D)
 
-- **Rama**: `agent/enemies-v2` (worktree `wt-enemies-v2`, base `spike/laptop-content-stack` @ `46b3b01`).
-- **Port selectivo** del sistema de enemigos de `agent/enemies` @ `d4c0c93` al stack actual (que ya tenía registry/host base + infra QA).
-- **Producción** (`UltimoBarrio.Content.Enemies`):
-  - `EnemyArchetypeDefinition` extendida: visión (rango/ángulo), oído, memoria, `TargetPriority` (Player/Structures/Balanced) + `StructureTag`.
-  - `EnemyPerception` (nuevo): cono de visión + trace real con hitboxes (FIX del trace del worker viejo que ignoraba al target y nunca podía verlo), oído, memoria, scan de candidatos tag `enemy_target`.
-  - `EnemyAttack` (nuevo): melee por ruta real `ContentDamageEvent → IDamageTarget`.
-  - `LootPickupContent` (nuevo): pickup físico del pack (sin inventario canónico).
-  - `EnemyContentHost`: UN brain data-driven — Perception/Attack `[RequireComponent]`, `ApplyDefinition` en primer OnUpdate (logs deterministas), NavMeshAgent real (prohibido teleport), `IsTargetAcquired`/`LastKnownPosition`/`ReportNoise` para rig/core nuevo.
-  - `EnemyContentRegistry`: datos de percepción por arquetipo; loot tables → pickups propios del pack.
-- **Dev** (`UltimoBarrio.Content.Dev`):
-  - `EnemyTestRig` + `EnemySuite` (ILabSuite): spawn prefab → definición esperada → NavMeshAgent válido → detección (visión + sub-check oído) → navegación t0/t1/t2 real → ataque IDamageTarget (delta HP dummy) → daño recibido → muerte → loot físico → PASS/FAIL. Logs `[EnemyLab]` + salida machine-readable `[UBSuite] Enemy.<Label> PASS|FAIL`.
-  - `LabDamageDummy`: `LogPrefix` configurable por rig.
-- **Escena**: `enemy_lab.scene` reescrita — facepunch.flatgrass (NavMesh de mapa), NetworkHelper StartServer SIN PlayerPrefab (autotest), Enemy Test Rig (cámara main + suite Saqueador data-driven), marcadores sobre NavMesh (spawn 100,0,0 / dummy 1100,0,64). Se retira el dummy `BuildStructureHost` que el worker C había metido en enemy_lab como fixture (building_lab es el dominio de fortificación; el rig crea su propio LabDamageDummy).
-- **Loot prefabs**: `loot_scrap_content` / `loot_supplies_content` (con `LootPickupContent`; modelo crate01 verificado como provisional — modelo de loot definitivo pendiente).
-- **APIs engine verificadas** contra `Sandbox.Engine.xml` (objetivo: compilar): `MoveTo/Stop/IsNavigating/AgentPosition/MaxSpeed` (NavMeshAgent), `UseHitboxes` (SceneTrace), `ITagSet.Add`, `Vector3.GetAngle`. `Scene.NavMesh` NO está documentado en el engine → no se usa; la validación de navegación es por agente real (t0/t1/t2) — si el mapa no tiene NavMesh, la suite hace FAIL con diagnóstico claro.
-- **Commits** (agent/enemies-v2): `28f471a` producción · `9ddf54f` rig+suite · `6fee927` escena+loot · `docs STATE`.
-- **Acceptance esperada por el coordinador**: `[UBSuite] Enemy.Saqueador PASS` (navegación real t0/t1/t2 + ataque IDamageTarget + muerte + loot ≥ 1 pickup).
-- **Notas**: sin runtime en este worktree (lo valida el coordinador en el editor). El rig asume `Networking.IsHost=true` (sesión StartServer local). `LabEnemySpawner` (modo manual Slot1-3) queda en el repo pero fuera de la escena del autotest.
+- **Rama**: `agent/vehicles-v2`. Base HEAD `46b3b01` (spike/laptop-content-stack).
+- **PRIMARY kit**: `fieldguide.vehiclephysics` (Vehicle Physics Kit, sbox Field Guide) -
+  **MIT verificado** (get_package MCP 2026-08-08: "MIT licensed. Fork it, ship it, no
+  strings."; sboxdb v337869, updated 2026-07-31). Ident exacto verificado por
+  find_packages. Decision detallada: `docs/research/vehicles-primary-kit.md`.
+- **Correccion al research**: `fieldguide.vehicle_prototyping` YA NO EXISTE en el
+  backend (find_packages = 0); el montaje (VehicleFactory) vive en el propio kit.
+- **Descartados**: matekdev/sbox-arcade-car-physics (API antigua verificada en source:
+  SceneObject(SceneWorld), Input.AnalogMove - no compila en 26.08.05, aunque MIT);
+  clearly.cavc (2025-03-08, licencia sin verificar); bugge.vehicle_controller (sin
+  licencia verificada).
+- **Entregado** (STATIC ONLY, pendiente de validacion runtime del coordinador):
+  - `VehicleTestRig` (UltimoBarrio.Content.Dev): spawn (prefab del kit por propiedad
+    VehiclePrefabPath) → components validos (Rigidbody+ModelRenderer+listado real de
+    componentes) → driver fixture entra (attach via GameObject.Parent) → throttle
+    (delta de posicion real) → steering (cambio de yaw real) → brake (reduccion de
+    velocidad por ventanas de posicion) → reverse (signo dot(Δ,forward) < 0) → exit
+    (detach) → `[VehicleLab] Suite complete (8/8 PASS)`.
+  - `VehicleDriverFixture` (Dev): enter/exit por ruta real de parenteo; sin fisica propia.
+  - `VehicleSuite`: reporter ILabSuite integrado con el runner QA ([UBSuite]).
+  - `vehicle_lab.scene` actualizada: NetworkHelper StartServer SIN PlayerPrefab
+    (autotest, sin pawn) + rig con CameraComponent (IsMainCamera, Priority 10).
+  - `ultimo_barrio.sbproj`: PackageReferences += "fieldguide.vehiclephysics".
+  - `assets/asset-registry.yml`: entrada fieldguide/vehiclephysics VERIFIED (MIT).
+  - Logs: `[LabBuild] VERSION=rig-1` + `[VehicleLab]`.
+- **Anti-falsificacion**: PASS solo por deltas reales (posicion/yaw/velocidad);
+  input simulado con `Input.SetAction(string,bool)` (API engine verificada 26.08.05);
+  NOMBRES de input actions del kit = propiedades configurables en la escena (defaults
+  Forward/Brake/SteerLeft/SteerRight/Reverse), pendientes de confirmar contra el
+  README del kit tras montarlo.
+- **Pendiente coordinador (runtime)**: merge sbproj → montar paquete → confirmar
+  nombres de input actions en el README del kit → rellenar VehiclePrefabPath con un
+  prefab del kit → Play vehicle_lab → 8/8 PASS.
