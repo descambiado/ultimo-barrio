@@ -1,7 +1,7 @@
-# Laptop Porting Plan — spike/laptop-content-stack → integration/wizard-holy-grail
+# Laptop Porting Plan - spike/laptop-content-stack → integration/wizard-holy-grail
 
 **Fecha:** 2026-08-08 (audit H)
-**Origen:** `spike/laptop-content-stack` @ **7433f69** (18 commits sobre `feat/holy-grail-foundation` @ c9e5664 — base antigua)
+**Origen:** `spike/laptop-content-stack` @ **7433f69** (18 commits sobre `feat/holy-grail-foundation` @ c9e5664 - base antigua)
 **Destino:** `integration/wizard-holy-grail` (se publicará desde el sobremesa; no visible aún en remoto)
 **Regla:** el portátil produce componentes portables (`UltimoBarrio.Content.*`). Este documento es la guía de portado cuando la rama destino aparezca en remoto.
 **Auditoría:** Worker H (portability/audit). Verificado: 0 archivos de core viejo tocados en los 18 commits (`git diff c9e5664..7433f69 -- Code/UltimoBarrio/{Inventory,Players,Housing,Persistence,Missions,Raid} Assets/scenes/ultimo_barrio_alpha.scene Assets/prefabs/player.prefab` = vacío). Bundle runtime: `docs/research/portable-runtime-bundle.md`.
@@ -14,33 +14,34 @@
 - 18 commits, **sin push** (todo local en el portátil).
 - Suite de armas **RUNTIME VALIDATED 4/4** (USP, crowbar, cuchillo, escopeta): daño real `Fire → trace → IDamageTarget`, 0 errores runtime.
 - Dependencias cloud **persistidas** en `ultimo_barrio.sbproj` → `PackageReferences` (9 idents; montaje automático al abrir proyecto).
-- Dependencias de engine: `Component/[Sync]/[Rpc]`, `Cloud.Model()` (string literal — constraint SB2000), `ResourceLibrary`, `Scene.Camera` trace, `NavMeshAgent` (enemigos), `GameObject.Clone`, `TimeSince/TimeUntil`, `Networking`.
+- Dependencias de engine: `Component/[Sync]/[Rpc]`, `Cloud.Model()` (string literal - constraint SB2000), `ResourceLibrary`, `Scene.Camera` trace, `NavMeshAgent` (enemigos), `GameObject.Clone`, `TimeSince/TimeUntil`, `Networking`.
 
 ## 2. Por commit (los 18; filas nuevas del audit H marcadas con ⚠️)
 
 | # | SHA | Dominio | Archivos | Deps engine | Cloud pkgs | Deps core viejo | Portable direct? | Adapter? | Conflictos esperados |
 |---|---|---|---|---|---|---|---|---|---|
-| 1 | `712f2c9` | content: armas | `Assets/prefabs/content/weapons/*.prefab` (8), `Assets/asset-registry.yml`, `THIRD_PARTY_NOTICES.md` | ModelRenderer, prefab JSON | — | — | **SÍ** (JSON puro) | no | `asset-registry.yml`/notices → merge manual; IDs vs `ItemRegistry` core (`weapon_usp` ya existe) |
-| 2 | `1d2047f` | content: enemigos | `Assets/prefabs/content/enemies/*.prefab` (3: saqueador/bruto/merodeador) | ModelRenderer, prefab JSON | — | — | **SÍ** | no (host sí, ver #17) | Modelo Citizen ⚠️ EULA T5; raids/NPC del core manda |
-| 3 | `8eb4253` | content: fortificación | `Assets/prefabs/content/fortification/*.prefab` (9) | ModelRenderer, prefab JSON | — | — | **SÍ** | no (host sí) | IDs vs housing/ownership del core |
-| 3b ⚠️ | `6c19f14` (worker D) | content: fortificación — modelos REALES engine | 9 prefabs actualizados: barricade_wood→`models/sbox_props/benches/old_bench.vmdl`, barricade_reinforced→`security_shutter_box_middle`, door_basic→`security_shutter_curtain_128` (PROXY: no hay puertas vmdl en engine, solo `maps/prefabs/doors/*.vmap`), door_reinforced→`security_shutter_curtain_bottom` (PROXY), stash→`citizen_props/gritbin01_combined`, workbench→`citizen_props/oldoven` (PROXY), generator→`props/aircon_unit_wall/aircon_unit_medium_wall` (PROXY), alarm→`sbox_props/intruder_alarm_2` (directa), repair_station→`props/mobile_masts/microwave_trans` (PROXY) | asset_search + asset_info IsCompiled | — | — | **SÍ** (JSON puro) | no | sustituir los 5 PROXY visuales en integración (puertas: componente PrefabFile con .vmap) |
-| 4 | `0f14eca` | spike: weapon lab | `Assets/scenes/spikes/weapon_lab.scene`, `scripts/labs/generate_lab_scenes.py` | prefab JSON `__version 2` | — | — | **SÍ** | no | StartupScene/sbproj si el core cambia el arranque |
-| 5 | `c14ac4e` | spike: enemy lab | `Assets/scenes/spikes/enemy_lab.scene` | NavMesh (mapa `thieves.rpdowntown3t`, no se copia) | — | — | **SÍ** | no | raids/Saqueador del core → decidir quién manda |
-| 6 | `d9cfdf9` | spike: building lab | `Assets/scenes/spikes/building_lab.scene` | — | — | — | **SÍ** | no | bajo (escena aislada) |
-| 7 | `ac552f3` | spike: vehicle lab (stub) | `Assets/scenes/spikes/vehicle_lab.scene` | — | — | — | **SÍ** | no | bajo; kit de vehículos aún sin PRIMARY |
-| 8 | `081f04c` | fix(content): casing | 18 .cs de Content + `scripts/labs/README.md` | — | — | — | **SÍ** (normalizar PascalCase) | no | índice en minúsculas (`core.ignorecase=true`) |
-| 9 | `66609f4` | docs: catálogo stack | `docs/research/workers/*.md` (8) | — | — | — | **SÍ** | no | ninguno (docs) |
-| 10 | `c1e1be9` | docs: worldmodel USP | `Code/UltimoBarrio/Content/weapons/weaponcontentregistry.cs` (1 línea) | — | — | — | **SÍ** (trivial) | no | si el core renombra el registry |
-| 11 | `7827872` | docs: verdicts research | `docs/research/laptop-content-integration-manifest.md` | — | — | — | **SÍ** | no | ninguno (docs) |
-| 12 | `358585f` | docs: inventory spike | `docs/research/native-inventory-migration-spike.md` | — | — | — | **SÍ** | no | ninguno (docs) |
-| 13 ⚠️ | `93dcf9e` | docs: porting plan | `docs/research/laptop-porting-plan.md` | — | — | — | **SÍ** | no | ninguno (docs; este plan) |
-| 14 ⚠️ | `9839846` | feat(spike): USP validated | `weaponcontenthost.cs` (+cloud resolver), `weaponcontentdefinition.cs` (+Cloud*Id), `weaponcontentregistry.cs`, `dev/weapontestrig.cs` (nuevo rig-2, sin pawn), `dev/labdamagedummy.cs`, `dev/lab_player_official.prefab` (template engine literal), `weapon_lab.scene` (+rig/dummy), `v_usp_content.prefab`, `w_usp_content.prefab`, `asset-registry.yml` | `Cloud.Model()` literals, `Scene.Camera` trace, `Component`, `[Sync]/[Rpc]`, `Rigidbody`/`SkinnedModelRenderer` | facepunch.w_usp, facepunch.v_usp (runtime, vía Cloud.Model; aún NO persistidas en sbproj) | **ninguna** | **SÍ** | **SÍ** — `IWeaponContentAdapter` consumido por el core nuevo (equip/fire/reload); mapeo ident→literal en `ResolveCloudModel()` | `ub_weapon_usp` vs ItemRegistry core; sbproj sin PackageReferences aún (llega en #17) |
-| 15 ⚠️ | `f302efe` | docs(state): USP validado | `STATE.md` | — | — | — | **SÍ** (docs) | no | STATE.md → merge manual (lo tocan otros workers/coordinador) |
-| 16 ⚠️ | `6913adb` | feat(spike): crowbar validated | `weapontestrig.cs` (rig-6, suite data-driven `List<WeaponTestEntry>`), `labdamagedummy.cs` (+6), `weaponcontentregistry.cs` (+crowbar), `weapon_lab.scene`, `v/w_crowbar_content.prefab` | `crowbar01.vmdl` = engine content (sin cloud) | — | **ninguna** | **SÍ** | **SÍ** — melee sin SoundEvents (campos vacíos); daño vía IDamageTarget | facepunch.w_crowbar NO existe (descartado); fallback crate01 |
-| 17 ⚠️ | `9fd7b32` | feat(spike): suite 4/4 + cloud persistida | `weaponcontentregistry.cs` (knife/shotgun: idents backend-verificados), `weaponcontenthost.cs` (+13), `weapontestrig.cs` (+28), `weapon_lab.scene`, `v/w_knife_content.prefab`, `v/w_shotgun_content.prefab`, **`ultimo_barrio.sbproj` (PackageReferences: 9 idents)** | igual #14; `Cloud.Model` knife/shotgun | **facepunch.w_usp, v_usp, w_trenchknife, v_m9bayonet, w_spaghellim4, v_spaghellim4, ammobox12g, 12g_shell, 12gshellcasing** (persistidas en sbproj) | **ninguna** | **SÍ** | **SÍ** — hosts ya implementan `IWeaponContentAdapter`/`IDamageTarget` | **sbproj = merge manual** (lista PackageReferences debe fusionarse con la del core, no overwrite); `AmmoType "ammo_buckshot"` = item id del core nuevo |
-| 18 ⚠️ | `7433f69` | docs(state): suite 4/4 | `STATE.md`, `asset-registry.yml` (+ident verificados knife/shotgun) | — | — | — | **SÍ** (docs/data) | no | `asset-registry.yml` → merge manual (no overwrite); STATE.md → merge manual |
+| 1 | `712f2c9` | content: armas | `Assets/prefabs/content/weapons/*.prefab` (8), `Assets/asset-registry.yml`, `THIRD_PARTY_NOTICES.md` | ModelRenderer, prefab JSON | - | - | **SÍ** (JSON puro) | no | `asset-registry.yml`/notices → merge manual; IDs vs `ItemRegistry` core (`weapon_usp` ya existe) |
+| 2 | `1d2047f` | content: enemigos | `Assets/prefabs/content/enemies/*.prefab` (3: saqueador/bruto/merodeador) | ModelRenderer, prefab JSON | - | - | **SÍ** | no (host sí, ver #17) | Modelo Citizen ⚠️ EULA T5; raids/NPC del core manda |
+| 2b ⚠️ | `23304a4`+`e381564` (worker B) | content: enemigos — assets reales + loot | 3 prefabs (citizen.vmdl real, SkinnedModelRenderer, diferenciación Scale+Tint: Saqueador 1.0/neutro, Bruto 1.3/grimy, Merodeador 0.95/pálido) + 3 loot pickups (`pf_loot_ammo_12g`→ammobox12g, `pf_loot_knife`→w_trenchknife/v_m9bayonet, `pf_loot_crowbar`→crowbar01) | citizen.vanmgrph VERIFIED; skins citizen_skin01/grey | — | **SÍ** (JSON puro) | no | flip AssetsVerified en enemycontentregistry.cs; ItemRegistry: añadir ammo_12g/weapon_knife; loot medicine deferred (sin modelo real); EULA T5 pendiente |
+| 3 | `8eb4253` | content: fortificación | `Assets/prefabs/content/fortification/*.prefab` (9) | ModelRenderer, prefab JSON | - | - | **SÍ** | no (host sí) | IDs vs housing/ownership del core |
+| 3b ⚠️ | `6c19f14` (worker D) | content: fortificación - modelos REALES engine | 9 prefabs actualizados: barricade_wood→`models/sbox_props/benches/old_bench.vmdl`, barricade_reinforced→`security_shutter_box_middle`, door_basic→`security_shutter_curtain_128` (PROXY: no hay puertas vmdl en engine, solo `maps/prefabs/doors/*.vmap`), door_reinforced→`security_shutter_curtain_bottom` (PROXY), stash→`citizen_props/gritbin01_combined`, workbench→`citizen_props/oldoven` (PROXY), generator→`props/aircon_unit_wall/aircon_unit_medium_wall` (PROXY), alarm→`sbox_props/intruder_alarm_2` (directa), repair_station→`props/mobile_masts/microwave_trans` (PROXY) | asset_search + asset_info IsCompiled | - | - | **SÍ** (JSON puro) | no | sustituir los 5 PROXY visuales en integración (puertas: componente PrefabFile con .vmap) |
+| 4 | `0f14eca` | spike: weapon lab | `Assets/scenes/spikes/weapon_lab.scene`, `scripts/labs/generate_lab_scenes.py` | prefab JSON `__version 2` | - | - | **SÍ** | no | StartupScene/sbproj si el core cambia el arranque |
+| 5 | `c14ac4e` | spike: enemy lab | `Assets/scenes/spikes/enemy_lab.scene` | NavMesh (mapa `thieves.rpdowntown3t`, no se copia) | - | - | **SÍ** | no | raids/Saqueador del core → decidir quién manda |
+| 6 | `d9cfdf9` | spike: building lab | `Assets/scenes/spikes/building_lab.scene` | - | - | - | **SÍ** | no | bajo (escena aislada) |
+| 7 | `ac552f3` | spike: vehicle lab (stub) | `Assets/scenes/spikes/vehicle_lab.scene` | - | - | - | **SÍ** | no | bajo; kit de vehículos aún sin PRIMARY |
+| 8 | `081f04c` | fix(content): casing | 18 .cs de Content + `scripts/labs/README.md` | - | - | - | **SÍ** (normalizar PascalCase) | no | índice en minúsculas (`core.ignorecase=true`) |
+| 9 | `66609f4` | docs: catálogo stack | `docs/research/workers/*.md` (8) | - | - | - | **SÍ** | no | ninguno (docs) |
+| 10 | `c1e1be9` | docs: worldmodel USP | `Code/UltimoBarrio/Content/weapons/weaponcontentregistry.cs` (1 línea) | - | - | - | **SÍ** (trivial) | no | si el core renombra el registry |
+| 11 | `7827872` | docs: verdicts research | `docs/research/laptop-content-integration-manifest.md` | - | - | - | **SÍ** | no | ninguno (docs) |
+| 12 | `358585f` | docs: inventory spike | `docs/research/native-inventory-migration-spike.md` | - | - | - | **SÍ** | no | ninguno (docs) |
+| 13 ⚠️ | `93dcf9e` | docs: porting plan | `docs/research/laptop-porting-plan.md` | - | - | - | **SÍ** | no | ninguno (docs; este plan) |
+| 14 ⚠️ | `9839846` | feat(spike): USP validated | `weaponcontenthost.cs` (+cloud resolver), `weaponcontentdefinition.cs` (+Cloud*Id), `weaponcontentregistry.cs`, `dev/weapontestrig.cs` (nuevo rig-2, sin pawn), `dev/labdamagedummy.cs`, `dev/lab_player_official.prefab` (template engine literal), `weapon_lab.scene` (+rig/dummy), `v_usp_content.prefab`, `w_usp_content.prefab`, `asset-registry.yml` | `Cloud.Model()` literals, `Scene.Camera` trace, `Component`, `[Sync]/[Rpc]`, `Rigidbody`/`SkinnedModelRenderer` | facepunch.w_usp, facepunch.v_usp (runtime, vía Cloud.Model; aún NO persistidas en sbproj) | **ninguna** | **SÍ** | **SÍ** - `IWeaponContentAdapter` consumido por el core nuevo (equip/fire/reload); mapeo ident→literal en `ResolveCloudModel()` | `ub_weapon_usp` vs ItemRegistry core; sbproj sin PackageReferences aún (llega en #17) |
+| 15 ⚠️ | `f302efe` | docs(state): USP validado | `STATE.md` | - | - | - | **SÍ** (docs) | no | STATE.md → merge manual (lo tocan otros workers/coordinador) |
+| 16 ⚠️ | `6913adb` | feat(spike): crowbar validated | `weapontestrig.cs` (rig-6, suite data-driven `List<WeaponTestEntry>`), `labdamagedummy.cs` (+6), `weaponcontentregistry.cs` (+crowbar), `weapon_lab.scene`, `v/w_crowbar_content.prefab` | `crowbar01.vmdl` = engine content (sin cloud) | - | **ninguna** | **SÍ** | **SÍ** - melee sin SoundEvents (campos vacíos); daño vía IDamageTarget | facepunch.w_crowbar NO existe (descartado); fallback crate01 |
+| 17 ⚠️ | `9fd7b32` | feat(spike): suite 4/4 + cloud persistida | `weaponcontentregistry.cs` (knife/shotgun: idents backend-verificados), `weaponcontenthost.cs` (+13), `weapontestrig.cs` (+28), `weapon_lab.scene`, `v/w_knife_content.prefab`, `v/w_shotgun_content.prefab`, **`ultimo_barrio.sbproj` (PackageReferences: 9 idents)** | igual #14; `Cloud.Model` knife/shotgun | **facepunch.w_usp, v_usp, w_trenchknife, v_m9bayonet, w_spaghellim4, v_spaghellim4, ammobox12g, 12g_shell, 12gshellcasing** (persistidas en sbproj) | **ninguna** | **SÍ** | **SÍ** - hosts ya implementan `IWeaponContentAdapter`/`IDamageTarget` | **sbproj = merge manual** (lista PackageReferences debe fusionarse con la del core, no overwrite); `AmmoType "ammo_buckshot"` = item id del core nuevo |
+| 18 ⚠️ | `7433f69` | docs(state): suite 4/4 | `STATE.md`, `asset-registry.yml` (+ident verificados knife/shotgun) | - | - | - | **SÍ** (docs/data) | no | `asset-registry.yml` → merge manual (no overwrite); STATE.md → merge manual |
 
-**Nota:** ramas `agent/*` (enemies/building/vehicles/audio/qa) sin commits nuevos a fecha del audit — todas en `9fd7b32`.
+**Nota:** ramas `agent/*` (enemies/building/vehicles/audio/qa) sin commits nuevos a fecha del audit - todas en `9fd7b32`.
 
 ## 3. Clasificación de commits antiguos (pre-spike)
 
@@ -77,13 +78,13 @@
 ## 4. Orden de integración recomendado (actualizado con la suite validada)
 
 1. **Docs** (commits 1-2, 9-13): research + manifest + spike + este plan.
-2. **Contratos**: `IDamageTarget` (+`ContentDamageEvent`), `IWeaponContentAdapter`, `IEnemyContentAdapter`, `IFortificationContentAdapter` — la frontera con el core.
+2. **Contratos**: `IDamageTarget` (+`ContentDamageEvent`), `IWeaponContentAdapter`, `IEnemyContentAdapter`, `IFortificationContentAdapter` - la frontera con el core.
 3. **Gobernanza**: merge manual de `asset-registry.yml`, `THIRD_PARTY_NOTICES.md`, `STATE.md` (conservar ambos historiales).
-4. **PackageReferences en el sbproj del core** (9 idents cloud, commit 17) — ANTES de los prefabs para que el cloud monte solo.
+4. **PackageReferences en el sbproj del core** (9 idents cloud, commit 17) - ANTES de los prefabs para que el cloud monte solo.
 5. **Definiciones + registries + prefabs** (commits 1-3, 8, 14, 16, 17).
 6. **Lab scenes + generador** (commits 4-7).
 7. **Hosts adaptados** al core nuevo: `WeaponContentHost` (equip/fire/reload vía la API de armas del core; mapear `ub_weapon_*` → ItemRegistry), `EnemyContentHost` (raids del core manda), `FortificationContentHost` (ownership del core).
-8. **Dev rig** (`weapontestrig`, `labdamagedummy`, `lab_player_official`) — SOLO dev, último.
+8. **Dev rig** (`weapontestrig`, `labdamagedummy`, `lab_player_official`) - SOLO dev, último.
 9. **Validación en el sobremesa**: compile → Play `weapon_lab` → suite 4/4 PASS → evidence → commit (bloques pequeños).
 
 ## 5. Conflictos esperados (resumen)
