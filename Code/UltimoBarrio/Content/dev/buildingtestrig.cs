@@ -38,7 +38,7 @@ namespace UltimoBarrio.Content.Dev
 	{
 		// Sube este número en cada cambio de código relevante para verificar
 		// que la sesión de juego carga el assembly nuevo (detección de hotload atrasado).
-		public const string Version = "rig-1";
+		public const string Version = "rig-2";
 
 		[Property] public bool AutoTest { get; set; } = true;
 		[Property] public List<BuildTestEntry> Tests { get; set; } = new();
@@ -101,6 +101,11 @@ namespace UltimoBarrio.Content.Dev
 			Log.Info( $"[BuildingLab] Registry: {all.Count} definiciones" );
 			foreach ( var def in all )
 			{
+				if ( def == null )
+				{
+					Log.Error( "[BuildingLab] Registry FAIL: definición null en All" );
+					continue;
+				}
 				Log.Info( $"[BuildingLab] Registry: {def.Id} (cat {def.Category}, HP {def.MaxHp:F0})" );
 			}
 
