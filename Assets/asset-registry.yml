@@ -239,19 +239,99 @@ assets:
       Modelo de palanca del engine verificado; sustituye al fallback crate01 cuando
       se valide el crowbar en el lab (fase posterior a USP).
 
+  # ------------------------------------------------------------------
+  # SOUNDS — banco de sonido del content pack (worker F, 2026-08-08)
+  # Assets/sounds/content/** + README.md (tabla source/license/usage)
+  # ------------------------------------------------------------------
+
+  - id: facepunch.sboxweapons-sounds
+    name: Weapon sounds (sboxweapons collection)
+    author: Facepunch
+    source_url: https://sbox.game/facepunch/sboxweapons
+    package_type: collection-content
+    asset_type: sound
+    license: facepunch-official-free-to-use (en proyectos s&box)
+    license_verified: true
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    editor_verified: false
+    asset_path: weapons/glock/glock_shoot_01.vsnd (y demás .vsnd de armas)
+    used_by:
+      - sound:usp_fire, usp_reload_*, usp_deploy
+      - sound:shotgun_fire, shotgun_reload*, shotgun_reload_start
+      - sound:crowbar_swing, crowbar_impact
+    fallback: none
+    notes: >
+      Los .vsnd de armas resuelven desde los paquetes de la colección facepunch.sboxweapons
+      montados en PackageReferences. Evidencia: el gamemode oficial Facepunch/sandbox (MIT)
+      referencia exactamente estas rutas (Assets/weapons/Glock/glock_shoot.sound etc.);
+      commit 1b77a36f "USP shoot sound was too quiet" edita glock_shoot.sound = sonido de la USP.
+      Verificación en editor pendiente (Cloud Browser) antes de build pública.
+
+  - id: engine.core-sounds
+    name: Core sound events del engine (impacts, physics, buildings)
+    author: Facepunch (engine s&box)
+    source_url: null
+    package_type: engine-content
+    asset_type: sound
+    license: engine-content (referencia, sin redistribución de binarios)
+    license_verified: true
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    editor_verified: true
+    asset_path: sounds/Impacts/Melee/BluntWeapon/flesh-1.vsnd (y demás .vsnd del core)
+    used_by:
+      - sound:melee_impact_flesh, bullet_impact_flesh
+      - sound:door_impact, barricade_impact, repair
+      - sound:enemy_hurt, enemy_death
+    fallback: none
+    notes: >
+      Verificado en disco: core/sounds/** (.wav + .vsnd_c). Los wrappers del pack referencian
+      los .vsnd del core (el propio engine los referencia igual, p.ej. impact-melee-wood.sound_c
+      contiene Sounds:[sounds/impacts/melee/bluntweapon/wood-1..4.vsnd]). Solo referencia, no se
+      copian binarios. T6: auditar términos de los assets del engine antes de standalone.
+
+  - id: facepunch.sandbox-game-dryfire
+    name: dry_fire.wav (importado al pack, MIT)
+    author: Facepunch
+    source_url: https://github.com/Facepunch/sandbox/blob/main/Assets/sounds/dry_fire.wav
+    package_type: project-owned-import
+    asset_type: sound
+    license: MIT (© 2026 Facepunch) — atribución en THIRD_PARTY_NOTICES.md
+    license_verified: true
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    editor_verified: false
+    asset_path: sounds/content/weapons/dry_fire.vsnd (compilado por el editor desde Assets/sounds/content/weapons/dry_fire.wav, 36 KB)
+    used_by:
+      - sound:usp_dry
+    fallback: none
+    notes: >
+      Único binario importado del repo oficial MIT de Facepunch (36 KB, sin LFS).
+      Cierra el hueco de dry fire sin fuente en paquetes montados. El editor compila el wav
+      a .vsnd_c en el mismo path.
+
   - id: sound/content-pack-events
-    name: SoundEvents del content pack (weapon.usp.fire, build.wood.place, ...)
-    author: proyecto (a crear)
+    name: SoundEvents del content pack (Assets/sounds/content/**)
+    author: proyecto
     source_url: null
     package_type: project-owned
+    asset_type: sound
     license: MPL-2.0 (proyecto)
     license_verified: true
-    integration_mode: content-pack-candidate
-    version_or_checked_at: "2026-08-07"
+    integration_mode: content-pack-verified (rutas) / pending (editor compile)
+    version_or_checked_at: "2026-08-08"
+    editor_verified: false
+    asset_path: sounds/content/**
     used_by:
-      - content:Weapons/*
-      - content:Fortification/*
+      - content:Weapons/* (usp_fire, usp_reload_magout, usp_reload_magin, usp_deploy, usp_dry, shotgun_fire, shotgun_reload_start, shotgun_reload, crowbar_swing, crowbar_impact)
+      - content:Fortification/* (door_impact, barricade_impact, repair)
+      - content:Enemies/* (enemy_hurt, enemy_death)
+      - content:Weapons/ub_weapon_knife (knife impact -> melee_impact_flesh; knife swing PENDING)
     fallback: sin sonido (campos vacíos en definiciones)
     notes: >
-      Crear SoundEvent graphs propios o licenciar CC0/CC-BY (research de audio).
-      Hasta entonces los campos de sonido están vacíos/placeholder en las definiciones.
+      15 SoundEvents creados referenciando SOLO archivos verificados (paquetes oficiales
+      facepunch.sboxweapons + core del engine + dry_fire.wav MIT importado). PENDING sin fuente
+      verificada: knife swing, enemy alert, enemy attack, night warning (ver
+      Assets/sounds/content/PENDING.md). Falta compilación en editor (0 errores) y confirmación
+      de resolución en Cloud Browser antes de build pública.

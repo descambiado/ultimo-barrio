@@ -51,3 +51,11 @@ Modelos ya verificados en el engine y usados como fallback hoy:
 - `models/citizen_props/crate01.vmdl`
 - `models/sbox_props/cardboard_box/cardboard_box_open.vmdl`
 - `models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl`
+
+## Audio importado — Facepunch/sandbox (MIT)
+
+`Assets/sounds/content/weapons/dry_fire.wav` se importa del repositorio oficial `Facepunch/sandbox`
+(https://github.com/Facepunch/sandbox, archivo `Assets/sounds/dry_fire.wav`), licencia MIT.
+
+MIT License — Copyright (c) 2026 Facepunch. Se conserva el aviso completo de licencia en
+`docs/licenses/MIT-Facepunch-sandbox.txt`. Uso: SoundEvent `sounds/content/weapons/usp_dry.sound`.
