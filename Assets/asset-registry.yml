@@ -1,4 +1,4 @@
-﻿schema_version: 1
+schema_version: 1
 
 assets:
   - id: facepunch/sboxweapons
@@ -116,7 +116,7 @@ assets:
     integration_mode: content-pack-verified
     version_or_checked_at: "2026-08-08"
     editor_verified: true
-    verification_status: "VERIFIED (get_package MCP 2026-08-08: 9mm Ammo Box, org facepunch, public; usado por prefab oficial prefabs/items/pf_ammo_9mm_pickup.prefab)"
+    verification_status: VERIFIED (get_package MCP 2026-08-08: 9mm Ammo Box, org facepunch, public; usado por prefab oficial prefabs/items/pf_ammo_9mm_pickup.prefab)
     asset_path: models/weapons/sbox_ammo/9mm_ammobox/ammobox_9mm.vmdl
     used_by:
       - content:Weapons/ub_weapon_usp (ammo model)
@@ -212,7 +212,7 @@ assets:
     integration_mode: content-pack-verified
     version_or_checked_at: "2026-08-08"
     editor_verified: true
-    verification_status: "VERIFIED (asset_info MCP 2026-08-08: compiled+uptodate en addons/citizen)"
+    verification_status: VERIFIED (asset_info MCP 2026-08-08: compiled+uptodate en addons/citizen)
     asset_path: models/citizen/citizen.vmdl
     animgraph_path: models/citizen/citizen.vanmgrph
     material_options:
@@ -242,7 +242,7 @@ assets:
     integration_mode: content-pack-verified
     version_or_checked_at: "2026-08-08"
     editor_verified: true
-    verification_status: "VERIFIED (fs 2026-08-08: addons/citizen/Assets/models/citizen_props/crowbar01.vmdl)"
+    verification_status: VERIFIED (fs 2026-08-08: addons/citizen/Assets/models/citizen_props/crowbar01.vmdl)
     asset_path: models/citizen_props/crowbar01.vmdl
     used_by:
       - content:Weapons/ub_weapon_crowbar (candidato primario real)
@@ -255,108 +255,80 @@ assets:
 
   - id: sound/content-pack-events
     name: SoundEvents del content pack (Assets/sounds/content/**)
-    author: proyecto (banco 2026-08-08, workers F + C audio-v2)
+    author: proyecto (banco 2026-08-08, worker F)
     source_url: null
     package_type: project-owned
-    license: MPL-2.0 (proyecto) + MIT (wavs importados de Facepunch/sandbox, atribucion en THIRD_PARTY_NOTICES.md)
+    license: MPL-2.0 (proyecto) + MIT (dry_fire.wav importado, atribución en THIRD_PARTY_NOTICES.md)
     license_verified: true
-    integration_mode: content-pack-verified
+    integration_mode: content-pack-verified (rutas) / pending (editor compile)
     version_or_checked_at: "2026-08-08"
     used_by:
       - content:Weapons/*
       - content:Fortification/*
       - content:Enemies/*
-    fallback: sin sonido (campos vacios en definiciones)
+    fallback: sin sonido (campos vacíos en definiciones)
     notes: >
-      20 SoundEvents (17 del banco worker F + knife_swing, enemy_alert, enemy_attack del worker C).
-      Verificado en editor 26.08.05 via MCP read-only (2026-08-08, worker C): los 17 .sound compilan
-      (IsCompileFailed=false); las refs a core del engine resuelven en el asset system; las refs a
-      weapons/* del paquete NO resuelven (coleccion sboxweapons = solo modelos) y se sustituyeron por
-      wavs MIT importados del repo Facepunch/sandbox (proyecto). PENDING sin fuente verificada: night
-      warning (ver Assets/sounds/content/PENDING.md). Falta confirmacion de resolucion de los nuevos
-      .wav importados en Cloud Browser tras merge a spike (mismo pipeline que dry_fire.wav, que ya
-      resuelve) y play test del coordinador.
+      15 SoundEvents creados referenciando SOLO archivos verificados (paquetes oficiales
+      facepunch.sboxweapons + core del engine + dry_fire.wav MIT importado). PENDING sin fuente
+      verificada: knife swing, enemy alert, enemy attack, night warning (ver
+      Assets/sounds/content/PENDING.md). Falta compilación en editor (0 errores) y confirmación
+      de resolución en Cloud Browser antes de build pública.
 
-  - id: facepunch.sandbox-game-weaponsounds
-    name: Weapon sounds importados del repo Facepunch/sandbox (MIT) -> Assets/sounds/content/weapons/*.wav
+  - id: facepunch.sboxweapons-sounds
+    name: Weapon sounds (sboxweapons collection)
     author: Facepunch
-    source_url: https://github.com/Facepunch/sandbox (Assets/weapons/{Glock,Shotgun,Crowbar,Common/Foley}/**)
-    package_type: project-owned-import
-    license: MIT (c 2026 Facepunch) - atribucion en THIRD_PARTY_NOTICES.md
+    source_url: https://sbox.game/facepunch/sboxweapons
+    package_type: collection-content
+    license: facepunch-official-free-to-use (en proyectos s&box)
     license_verified: true
     integration_mode: content-pack-verified
     version_or_checked_at: "2026-08-08"
     used_by:
-      - Assets/sounds/content/weapons/usp_fire.sound (glock_shoot_01.wav; commit 1b77a36f confirma que la USP usa este sonido)
-      - Assets/sounds/content/weapons/usp_reload_magout.sound (pistol_mag_out.wav)
-      - Assets/sounds/content/weapons/usp_reload_magin.sound (pistol_mag_in.wav)
-      - Assets/sounds/content/weapons/usp_deploy.sound (foley_deploy_weapon_03.wav)
-      - Assets/sounds/content/weapons/shotgun_fire.sound (shotgun1_shoot1/2.wav)
-      - Assets/sounds/content/weapons/shotgun_reload_start.sound (shotgun_cock.wav)
-      - Assets/sounds/content/weapons/shotgun_reload.sound (shotgun_load.wav)
-      - Assets/sounds/content/weapons/crowbar_swing.sound (swing_01/02.wav)
-      - Assets/sounds/content/weapons/crowbar_impact.sound (crowbar_hit_01..04.wav)
-      - Assets/sounds/content/weapons/knife_swing.sound (swing_01/02.wav, compartidos)
+      - Assets/sounds/content/usp_fire.sound (weapons/glock/glock_shoot_01.vsnd, la USP usa este evento)
+      - Assets/sounds/content/usp_reload_magout.sound (weapons/glock/reload/pistol_mag_out.vsnd)
+      - Assets/sounds/content/usp_reload_magin.sound (weapons/glock/reload/pistol_mag_in.vsnd)
+      - Assets/sounds/content/shotgun_fire.sound (weapons/shotgun/sounds/shotgun1_shoot1.vsnd)
+      - Assets/sounds/content/crowbar_swing.sound (weapons/crowbar/sounds/swing_01.vsnd)
+      - Assets/sounds/content/crowbar_impact.sound (weapons/crowbar/sounds/crowbar_hit_01.vsnd)
     notes: >
-      14 wavs byte-exactos del repo oficial (verificado por tamano via GitHub API 2026-08-08).
-      SUSTITUYEN a las rutas weapons/* del paquete: la coleccion facepunch.sboxweapons es solo
-      modelos (get_package + asset_search 2026-08-08: 0 vsnd en paquetes montados) y las rutas
-      del gamemode sandbox no resuelven en el asset system. Importados como dry_fire.wav, con
-      aviso MIT completo en THIRD_PARTY_NOTICES.md y copia en docs/licenses/.
-
-  - id: facepunch.sandbox-game-darren
-    name: Voces NPC darren (MIT) -> Assets/sounds/content/enemies/scared_01..06.wav
-    author: Facepunch
-    source_url: https://github.com/Facepunch/sandbox (Assets/sounds/npc/darren/scared/**)
-    package_type: project-owned-import
-    license: MIT (c 2026 Facepunch) - atribucion en THIRD_PARTY_NOTICES.md
-    license_verified: true
-    integration_mode: "content-pack-verified (candidato documentado; pendiente OK de diseno: voz robotica/dispositivo, no humana)"
-    version_or_checked_at: "2026-08-08"
-    used_by:
-      - Assets/sounds/content/enemies/enemy_alert.sound
-      - Assets/sounds/content/enemies/enemy_attack.sound
-    notes: >
-      6 wavs byte-exactos (scared_01..06.wav) del repo oficial MIT. Candidato documentado en
-      PENDING.md (worker F) como "alternativa oficial MIT verificada solo si el diseno acepta
-      voz robotica". Reemplazable por voces humanas CC0 si el diseno lo exige.
+      Rutas extraídas del repo público Facepunch/sandbox (commit 1b77a36f "USP shoot sound was
+      too quiet" confirma glock_shoot_01.vsnd como el sonido de la USP) y de los .sound oficiales.
+      Paquetes montados vía PackageReferences (facepunch.sboxweapons).
 
   - id: engine.core-sounds
     name: Core sound events del engine (impacts, physics, buildings)
     author: Facepunch (engine)
     source_url: null
     package_type: engine-content
-    license: engine-content (referencia, sin redistribucion de binarios)
+    license: engine-content (referencia, sin redistribución de binarios)
     license_verified: false
     integration_mode: content-pack-verified
     version_or_checked_at: "2026-08-08"
     used_by:
-      - Assets/sounds/content/melee_impact_flesh.sound (core/sounds/Impacts/Melee/BluntWeapon/flesh-1..4)
-      - Assets/sounds/content/bullet_impact_flesh.sound (core/sounds/Impacts/Bullets/flesh_bullet_impact-1..4)
-      - Assets/sounds/content/door_impact.sound (core/sounds/Impacts/Buildings/wood_gib-1..4)
-      - Assets/sounds/content/barricade_impact.sound (core/sounds/Impacts/Buildings/metal_gib+wood_gib)
-      - Assets/sounds/content/repair.sound (core/sounds/Physics/phys-impact-tool-1..4)
-      - Assets/sounds/content/enemy_hurt.sound (core/sounds/Physics/phys-impact-meat-1..4)
-      - Assets/sounds/content/enemy_death.sound (core/sounds/Physics/phys-impact-bone-001..004 + meat)
+      - Assets/sounds/content/melee_impact_flesh.sound (core/sounds/melee/flesh/...)
+      - Assets/sounds/content/bullet_impact_flesh.sound
+      - Assets/sounds/content/door_impact.sound
+      - Assets/sounds/content/barricade_impact.sound
+      - Assets/sounds/content/repair.sound
+      - Assets/sounds/content/enemy_hurt.sound
+      - Assets/sounds/content/enemy_death.sound
     notes: >
-      Impactos y fisica del core. Verificado en el asset system 2026-08-08 (worker C):
-      phys-impact-bone/meat/tool 4+4+4, metal_gib/wood_gib 4+4, flesh_bullet_impact 7,
-      BluntWeapon flesh 40. Referencia directa sin copiar binarios.
+      Impactos y física del core (1112 archivos de sonido en disco, core/sounds/). Referencia
+      directa sin copiar binarios.
 
   - id: facepunch.sandbox-game-dryfire
     name: dry_fire.wav (importado al pack, MIT)
     author: Facepunch
     source_url: https://github.com/Facepunch/sandbox/blob/main/Assets/sounds/dry_fire.wav
     package_type: project-owned-import
-    license: MIT (c 2026 Facepunch) - atribucion en THIRD_PARTY_NOTICES.md
+    license: MIT (© 2026 Facepunch) — atribución en THIRD_PARTY_NOTICES.md
     license_verified: true
     integration_mode: content-pack-verified
     version_or_checked_at: "2026-08-08"
     used_by:
       - Assets/sounds/content/usp_dry.sound
     notes: >
-      Importado 36 KB; licencia MIT con atribucion requerida (copiada a docs/licenses/).
-      Verificado en asset system 2026-08-08: sounds/content/weapons/dry_fire.vsnd resuelve.
+      Importado 36 KB; licencia MIT con atribución requerida (copiada a docs/licenses/).
 
   # ------------------------------------------------------------------
   # Enemies + loot — Worker B (2026-08-08) — todos VERIFIED via MCP read-only
@@ -374,7 +346,7 @@ assets:
     license_verified: false
     integration_mode: content-pack-verified
     version_or_checked_at: "2026-08-08"
-    verification_status: "VERIFIED (get_package MCP 2026-08-08: 12 Gauge Ammo Box, org facepunch, public, updated 2026-06-09)"
+    verification_status: VERIFIED (get_package MCP 2026-08-08: 12 Gauge Ammo Box, org facepunch, public, updated 2026-06-09)
     used_by:
       - content:Enemies/loot (pf_loot_ammo_12g.prefab, loot Bruto)
     fallback: models/citizen_props/crate01.vmdl
@@ -394,7 +366,7 @@ assets:
     license_verified: false
     integration_mode: content-pack-verified
     version_or_checked_at: "2026-08-08"
-    verification_status: "VERIFIED (get_package MCP 2026-08-08: Trench Knife world model, org facepunch, public)"
+    verification_status: VERIFIED (get_package MCP 2026-08-08: Trench Knife world model, org facepunch, public)
     used_by:
       - content:Enemies/loot (pf_loot_knife.prefab, loot Bruto)
     fallback: models/citizen_props/crate01.vmdl
@@ -413,7 +385,7 @@ assets:
     license_verified: false
     integration_mode: content-pack-verified
     version_or_checked_at: "2026-08-08"
-    verification_status: "VERIFIED (get_package MCP 2026-08-08: ViewModel M9 Bayonet, org facepunch, public; skill ub-cloud-asset-resolver PASS runtime)"
+    verification_status: VERIFIED (get_package MCP 2026-08-08: ViewModel M9 Bayonet, org facepunch, public; skill ub-cloud-asset-resolver PASS runtime)
     used_by:
       - content:Enemies/loot (viewmodel de referencia del cuchillo, weapon lab)
     fallback: models/citizen_props/crate01.vmdl
@@ -493,7 +465,7 @@ assets:
     license_verified: false
     integration_mode: content-pack-verified
     version_or_checked_at: "2026-08-08"
-    verification_status: "VERIFIED (get_package MCP 2026-08-08: Crowbar world model, org facepunch, public)"
+    verification_status: VERIFIED (get_package MCP 2026-08-08: Crowbar world model, org facepunch, public)
     used_by:
       - content:Enemies/loot (alternativa cloud a engine.citizen_props_crowbar01)
     fallback: models/citizen_props/crowbar01.vmdl
@@ -510,7 +482,7 @@ assets:
     license_verified: false
     integration_mode: deferred
     version_or_checked_at: "2026-08-08"
-    verification_status: "BLOQUEADO (find_packages MCP 2026-08-08: solo paquetes 3rd-party sin licencia verificada: fish.medkit, nibbles.medkit, humantarsier4200.bandage, rust.w_bandage...)"
+    verification_status: BLOQUEADO (find_packages MCP 2026-08-08: solo paquetes 3rd-party sin licencia verificada: fish.medkit, nibbles.medkit, humantarsier4200.bandage, rust.w_bandage...)
     used_by:
       - content:Enemies/loot (medicine) — pendiente
     fallback: none
@@ -519,3 +491,25 @@ assets:
       El loot 'medicine' del BrutoTable apunta hoy a pf_scrap_pickup (placeholder en codigo,
       Code/UltimoBarrio/Content/enemies/enemycontentregistry.cs — fuera del alcance de Worker B).
       Recomendacion: quitar esa entrada o esperar paquete cloud con licencia verificada.
+  # ------------------------------------------------------------------
+  # Vehicles — kit PRIMARY (Worker D, agent/vehicles-v2, 2026-08-08)
+  # Ver: docs/research/vehicles-primary-kit.md
+
+  - id: fieldguide/vehiclephysics
+    name: Vehicle Physics Kit
+    author: sbox Field Guide
+    source_url: https://sbox.game/fieldguide/vehiclephysics
+    package_type: library (cloud)
+    license: MIT
+    license_verified: true
+    integration_mode: package-reference
+    version_or_checked_at: "2026-08-08 (v337869 sboxdb; updated 2026-07-31)"
+    used_by:
+      - content:Vehicles/vehicle-lab (VehicleTestRig, kit externo PRIMARY)
+    fallback: none (no física propia; kit declarado en PackageReferences)
+    verification_status: VERIFIED (get_package MCP 2026-08-08: descripción oficial "MIT licensed. Fork it, ship it, no strings."; find_packages ident exacto; sboxdb v337869)
+    notes: >
+      Physics/assembly del vehículo del lab. enter/exit lo prueba el fixture DEV
+      (VehicleDriverFixture, UltimoBarrio.Content.Dev); fuel/trunk/damage fuera
+      del alcance de la foundation. Nombres de input actions del kit pendientes
+      de confirmar contra su README tras el montaje (ver vehicles-primary-kit.md).
