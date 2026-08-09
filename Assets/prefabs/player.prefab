@@ -220,20 +220,13 @@
         "ZIndex": 100
       },
       {
-        "__type": "UltimoBarrio.Combat.HeldItemController",
+        "__type": "UltimoBarrio.Combat.UbWeaponCarrier",
         "__enabled": true,
-        "MeleePrefab": {
-          "_type": "gameobject",
-          "prefab": "prefabs/weapons/ub_melee.prefab"
-        },
-        "PrimaryPrefab": {
-          "_type": "gameobject",
-          "prefab": "prefabs/weapons/ub_usp.prefab"
-        },
-        "HandBone": {
-          "_type": "gameobject",
-          "go": "6b5cbc3e-e37c-4eb9-afa6-577469114047"
-        }
+        "HotbarSlots": 6
+      },
+      {
+        "__type": "UltimoBarrio.Content.PlayerContentDamageBridge",
+        "__enabled": true
       },
       {
         "__type": "UltimoBarrio.Players.PlayerMovementModifier",

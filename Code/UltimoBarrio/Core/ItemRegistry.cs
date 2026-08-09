@@ -56,6 +56,22 @@ namespace UltimoBarrio
                 ViewModelPrefab = "prefabs/weapons/v_melee.prefab",
                 WorldModelPrefab = "prefabs/weapons/ub_melee.prefab"
             };
+
+            _fallbacks["weapon_shotgun"] = new ItemDefinition
+            {
+                ItemId = "weapon_shotgun", DisplayName = "Escopeta", Description = "12 gauge",
+                Category = ItemCategory.Firearm, StackSize = 1, AmmoType = "ammo_buckshot", EquipSlot = "Primary",
+                ViewModelPrefab = "prefabs/content/weapons/v_shotgun_content.prefab",
+                WorldModelPrefab = "prefabs/content/weapons/w_shotgun_content.prefab"
+            };
+
+            _fallbacks["weapon_knife"] = new ItemDefinition
+            {
+                ItemId = "weapon_knife", DisplayName = "Cuchillo", Description = "Acero frío",
+                Category = ItemCategory.Melee, StackSize = 1, EquipSlot = "Melee",
+                ViewModelPrefab = "prefabs/content/weapons/v_knife_content.prefab",
+                WorldModelPrefab = "prefabs/content/weapons/w_knife_content.prefab"
+            };
         }
 
         public static ItemDefinition GetDefinition(string itemId)
