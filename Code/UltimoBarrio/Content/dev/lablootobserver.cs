@@ -1,6 +1,7 @@
 using Sandbox;
 using System;
 using System.Collections.Generic;
+using UltimoBarrio.Content.Enemies;
 
 namespace UltimoBarrio.Content.Dev
 {
@@ -15,8 +16,8 @@ namespace UltimoBarrio.Content.Dev
 	/// Anti-falsificación: el observer NO fabrica loot. Solo observa los
 	/// pickups que el EnemyContentHost.SpawnLoot instancia por la ruta real
 	/// (loot table → WorldPrefab → clone → NetworkSpawn). La detección usa el
-	/// componente WorldItemPickup (solo LECTURA, sin acoplamiento de escritura;
-	/// cuando el core nuevo sustituya el pickup, este observer dev se actualiza).
+	/// componente LootPickupContent del pack (solo LECTURA; cuando el core
+	/// nuevo sustituya el pickup, este observer dev se actualiza).
 	/// </summary>
 	[Title( "Lab Loot Observer" )]
 	[Category( "Ultimo Barrio - Content (Dev)" )]
@@ -66,7 +67,7 @@ namespace UltimoBarrio.Content.Dev
 			var anchor = Anchor != null && Anchor.IsValid() ? Anchor : GameObject;
 			var anchorPos = anchor.WorldPosition;
 
-			foreach ( var pickup in Scene.GetAllComponents<WorldItemPickup>() )
+			foreach ( var pickup in Scene.GetAllComponents<LootPickupContent>() )
 			{
 				var go = pickup.GameObject;
 				if ( go == null || !go.IsValid() || _counted.Contains( go ) ) continue;

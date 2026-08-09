@@ -199,20 +199,7 @@
           "NetworkOrphaned": 0,
           "NetworkTransmit": true,
           "OwnerTransfer": 1,
-          "Components": [
-            {
-              "__type": "Sandbox.ModelRenderer",
-              "__guid": "3a0500ae-e353-45be-8288-2dd6a5a28649",
-              "__enabled": true,
-              "Model": "models/citizen_props/crate01.vmdl"
-            },
-            {
-              "__type": "UltimoBarrio.Content.Dev.LabDamageDummy",
-              "__guid": "fb72d512-3a67-44d2-af05-04a0410f8330",
-              "__enabled": true,
-              "MaxHealth": 200.0
-            }
-          ],
+          "Components": [],
           "Children": []
         },
         {

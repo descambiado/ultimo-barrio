@@ -355,15 +355,11 @@ namespace UltimoBarrio.Content.Dev
 				return;
 			}
 
-			var scene = SceneUtility.GetPrefabScene( prefabFile );
-			if ( scene == null )
-			{
-				Fail( $"prefab scene null ({_entry.EnemyPrefabPath})" );
-				return;
-			}
-
-			_enemy = scene.Clone();
-			_enemy.WorldPosition = _spawnMarker.WorldPosition;
+			// CASE 2 fix (mismo patrón que EnemySuite): clonar con TRANSFORM inicial
+			// para que el NavMeshAgent (RequireComponent) nazca con el ancla YA en el
+			// spawn. Asignar WorldPosition después crea el agente en 0,0,0 y la
+			// navegación muere (enemigo clavado en origen, timeout de 25s).
+			_enemy = GameObject.Clone( prefabFile, new Transform( _spawnMarker.WorldPosition, Rotation.Identity ) );
 			_enemy.NetworkSpawn( Connection.Local );
 
 			_host = _enemy.Components.GetInDescendantsOrSelf<EnemyContentHost>();
@@ -373,7 +369,26 @@ namespace UltimoBarrio.Content.Dev
 				return;
 			}
 
-			_host.SetTarget( _testTarget );
+			// El target FÍSICO real es el fixture que EnemyTestRig crea en runtime
+			// (EnemyTestTarget, tag "enemy_target" + IDamageTarget, sobre el
+			// DummyMarker). El TestTarget de la escena es SOLO marker de navegación
+			// (Root=World): la percepción compara roots, así que un hit del hurtbox
+			// del fixture no matchea contra el marker → CanSee=false → sin chase.
+			// Query TIPADA (LabDamageDummy) — el escaneo con GetAllComponents<Component>
+			// (tipo base) no resuelve componentes en esta versión del engine.
+			// Si el fixture no existe (nav rig standalone), se cae al marker.
+			GameObject physicalTarget = null;
+			foreach ( var dummy in _spawnMarker.Scene.GetAllComponents<LabDamageDummy>() )
+			{
+				var go = dummy.GameObject;
+				if ( go.Tags.Has( "enemy_target" ) )
+				{
+					physicalTarget = go;
+					break;
+				}
+			}
+
+			_host.SetTarget( physicalTarget ?? _testTarget );
 
 			Log.Info( $"[EnemyLab] {Name} EnemySpawn def={_host.Definition?.Id ?? "NULL"} hp={_host.Health:F0} prefab={_entry.EnemyPrefabPath}" );
 			_phase = Phase.EnemyMove;
@@ -550,6 +565,13 @@ namespace UltimoBarrio.Content.Dev
 			if ( _probe != null && _probe.IsValid() )
 			{
 				_probe.Destroy();
+			}
+
+			// En rutas de FAIL/SKIP el enemigo NO se autodestruye (sigue vivo):
+			// limpiarlo para no dejar GOs vivos (hosts tickeando) en el lab.
+			if ( _enemy != null && _enemy.IsValid() )
+			{
+				_enemy.Destroy();
 			}
 
 			if ( _fail )

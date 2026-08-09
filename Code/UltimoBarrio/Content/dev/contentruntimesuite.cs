@@ -99,6 +99,12 @@ namespace UltimoBarrio.Content.Dev
 		protected override void OnDestroy()
 		{
 			ContentRuntimeSuite.RunnerActive = false;
+
+			// Lifecycle del registro: las suites pertenecen a la sesión de juego que
+			// las registró. Si sobreviven al play_stop/reload, el runner de la sesión
+			// siguiente las re-ejecuta con referencias muertas y emite resultados
+			// stale (IsComplete/Result viejos) → duplicación y FAILs fantasma.
+			ContentRuntimeSuite.Clear();
 		}
 
 		protected override void OnUpdate()
@@ -156,6 +162,10 @@ namespace UltimoBarrio.Content.Dev
 		{
 			_finished = true;
 			Log.Info( $"[UBSuite] Suite run complete ({_passes} PASS, {_fails} FAIL, {_skips} SKIP)" );
+
+			// El run ha consumido las suites: limpiar el registro para que la
+			// próxima sesión arranque solo con sus propios rigs (4 suites, no 8).
+			ContentRuntimeSuite.Clear();
 		}
 	}
 }

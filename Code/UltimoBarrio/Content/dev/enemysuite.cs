@@ -66,6 +66,7 @@ namespace UltimoBarrio.Content.Dev
 		private float _firstDelta;
 		private int _lootBaseline;
 		private bool _lootChecked;
+		private bool _firstHitSent;
 		private float _elapsed;
 		private bool _initialized;
 
@@ -92,6 +93,7 @@ namespace UltimoBarrio.Content.Dev
 			_t1Logged = false;
 			_attackObserved = false;
 			_lootChecked = false;
+			_firstHitSent = false;
 			_firstDelta = 0f;
 			_elapsed = 0f;
 			_t0 = 0f;
@@ -310,13 +312,19 @@ namespace UltimoBarrio.Content.Dev
 			if ( _phaseTimer < 0.5f )
 			{
 				// Primer golpe: 25% de la vida (daño incremental por la ruta real).
-				_host.TakeDamage( new ContentDamageEvent
+				// DamageEnemy corre CADA FRAME: sin flag, el 25% se reaplicaría ~30
+				// veces y el enemigo moriría (Die→Destroy) antes del golpe letal.
+				if ( !_firstHitSent )
 				{
-					Amount = _host.Definition.MaxHealth * 0.25f,
-					Position = _host.WorldPosition,
-					Force = Vector3.Zero,
-					SourceId = "EnemySuite"
-				} );
+					_firstHitSent = true;
+					_host.TakeDamage( new ContentDamageEvent
+					{
+						Amount = _host.Definition.MaxHealth * 0.25f,
+						Position = _host.WorldPosition,
+						Force = Vector3.Zero,
+						SourceId = "EnemySuite"
+					} );
+				}
 			}
 			else if ( _phaseTimer >= 1f && _phaseTimer < 1.5f )
 			{
@@ -334,8 +342,19 @@ namespace UltimoBarrio.Content.Dev
 			}
 			else if ( _phaseTimer >= 2.5f )
 			{
-				// El host sigue vivo tras el golpe letal: la muerte no ocurrió.
-				Fail( $"el enemigo no murió tras daño letal (HP {_host.Health})" );
+				if ( _host.IsDead )
+				{
+					// Die() destruye el GO con posible retardo de frame; el estado
+					// muerto ya es suficiente para pasar a la fase de loot.
+					Log.Info( $"[EnemyLab] {_entry.Label} Enemigo murió (HP 0) → OK" );
+					_phase = 5;
+					_phaseTimer = 0f;
+				}
+				else
+				{
+					// El host sigue vivo tras el golpe letal: la muerte no ocurrió.
+					Fail( $"el enemigo no murió tras daño letal (HP {_host.Health})" );
+				}
 			}
 		}
 
