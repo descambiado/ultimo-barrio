@@ -87,22 +87,30 @@ namespace UltimoBarrio.Content.Dev
 
 		private void CreateTargetDummy()
 		{
-			var dummy = new GameObject( true, "TargetDummy" );
+			// ROOT = NavigationTarget + IDamageTarget (LabDamageDummy): punto navegable en
+			// suelo, sin collider ni visual, tag enemy_target. El enemigo persigue
+			// root.WorldPosition (NavMesh) y el ataque resuelve IDamageTarget en el root.
+			// CHILD = hurtbox visual/collider elevado (LOS + dano fisico del fixture).
+			var dummy = new GameObject( true, "EnemyTestTarget" );
 			dummy.WorldPosition = DummyMarker.WorldPosition;
 			dummy.WorldRotation = Rotation.Identity;
 			dummy.Tags.Add( "enemy_target" );
-
-			var renderer = dummy.Components.Create<ModelRenderer>();
-			renderer.Model = ResourceLibrary.Get<Model>( "models/citizen_props/crate01.vmdl" );
-
-			var collider = dummy.Components.Create<BoxCollider>();
-			collider.Scale = new Vector3( 60f, 60f, 90f );
-			collider.Static = true;
 
 			_dummyDamage = dummy.Components.Create<LabDamageDummy>();
 			_dummyDamage.LogPrefix = "[EnemyLab]";
 			_dummyDamage.MaxHealth = 200f;
 			_dummy = dummy;
+
+			var hurt = new GameObject( true, "TargetVisualHurtbox" );
+			hurt.SetParent( dummy, false );
+			hurt.LocalPosition = Vector3.Up * 45f;
+
+			var renderer = hurt.Components.Create<ModelRenderer>();
+			renderer.Model = ResourceLibrary.Get<Model>( "models/citizen_props/crate01.vmdl" );
+
+			var collider = hurt.Components.Create<BoxCollider>();
+			collider.Scale = new Vector3( 60f, 60f, 90f );
+			collider.Static = true;
 		}
 
 		protected override void OnUpdate()

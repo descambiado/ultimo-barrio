@@ -378,8 +378,11 @@ namespace UltimoBarrio.Content.Dev
 			}
 
 			_spawnPosition = _spawnMarker.WorldPosition;
-			var enemy = SceneUtility.GetPrefabScene( prefabFile ).Clone();
-			enemy.WorldPosition = _spawnPosition;
+
+			// Instanciar con TRANSFORM inicial (API real: GameObject.Clone(PrefabFile, Transform, ...)):
+			// el NavMeshAgent (RequireComponent) se crea con el GO YA en el spawn, asi el ancla
+			// del NavMesh nace en el spawn (CASE 2 fix en capa de spawn, portable a RaidSpawner).
+			var enemy = GameObject.Clone( prefabFile, new Transform( _spawnPosition, Rotation.Identity ) );
 			enemy.NetworkSpawn( Connection.Local );
 			_enemy = enemy;
 
@@ -391,6 +394,7 @@ namespace UltimoBarrio.Content.Dev
 			}
 
 			_host.SetTarget( _dummy );
+
 
 			_t0 = Vector3.DistanceBetween( _enemy.WorldPosition, _dummy.WorldPosition );
 			Log.Info( $"[EnemyLab] {_entry.Label} Spawn en {_spawnPosition} → t0={_t0:F0}" );

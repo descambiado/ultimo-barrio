@@ -189,7 +189,7 @@
           "__version": 2,
           "Flags": 0,
           "Name": "TestTarget",
-          "Position": "768,0,60",
+          "Position": "768,0,8",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Tags": "lab_target",
@@ -205,13 +205,6 @@
               "__guid": "3a0500ae-e353-45be-8288-2dd6a5a28649",
               "__enabled": true,
               "Model": "models/citizen_props/crate01.vmdl"
-            },
-            {
-              "__type": "Sandbox.BoxCollider",
-              "__guid": "5e552ade-c185-4e3f-b6b0-3b2dcd498bb3",
-              "__enabled": true,
-              "Scale": "80,80,120",
-              "Static": true
             },
             {
               "__type": "UltimoBarrio.Content.Dev.LabDamageDummy",

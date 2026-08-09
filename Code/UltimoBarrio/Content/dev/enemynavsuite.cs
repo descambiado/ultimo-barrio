@@ -200,9 +200,17 @@ namespace UltimoBarrio.Content.Dev
 			var path = _spawnMarker.Scene.NavMesh.CalculatePath( request );
 			bool complete = path.Status == NavMeshPathStatus.Complete;
 
-			Log.Info( $"[EnemyLab] {Name} PathCheck spawn={request.Start} target={request.Target} status={path.Status} points={(path.Points?.Count ?? 0)} {(complete ? "PASS" : "FAIL")}" );
+			// Partial es compatible solo si el ultimo punto del camino queda dentro del
+			// ArrivalRadius del NavigationTarget (destino legítimamente bloqueado por el
+			// hurtbox); la evidencia principal de navegacion es el movimiento real t0>t1>t2.
+			bool partialOk = path.Status == NavMeshPathStatus.Partial
+				&& path.Points != null && path.Points.Count > 0
+				&& Vector3.DistanceBetween( path.Points[^1].Position, _targetPosition ) <= _entry.ArrivalRadius;
+			bool pass = complete || partialOk;
 
-			if ( !complete )
+			Log.Info( $"[EnemyLab] {Name} PathCheck spawn={request.Start} target={request.Target} status={path.Status} points={(path.Points?.Count ?? 0)} {(pass ? "PASS" : "FAIL")}" );
+
+			if ( !pass )
 			{
 				Fail( $"ruta inválida sobre el NavMesh (status={path.Status})" );
 				return;

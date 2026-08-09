@@ -31,6 +31,10 @@ namespace UltimoBarrio.Content.Enemies
 		[Sync] public float Health { get; private set; }
 		public bool IsDead => Health <= 0f;
 
+		// Idempotencia de la transicion de muerte (separada de IsDead: Health<=0 es
+		// estado de salud; _deathHandled garantiza que Die() corre exactamente 1 vez).
+		private bool _deathHandled;
+
 		// Lecturas para el rig / core nuevo
 		public bool IsTargetAcquired => Perception?.CurrentTarget != null;
 		public Vector3? LastKnownPosition => Perception?.LastKnownPosition;
@@ -123,7 +127,7 @@ namespace UltimoBarrio.Content.Enemies
 
 		public void TakeDamage( ContentDamageEvent damageEvent )
 		{
-			if ( !Networking.IsHost || IsDead ) return;
+			if ( !Networking.IsHost || _deathHandled ) return;
 
 			Health = MathF.Max( 0f, Health - damageEvent.Amount );
 			Log.Info( $"[Content.Enemy] {Definition?.Id} recibió {damageEvent.Amount:F0} de '{damageEvent.SourceId}' → HP {Health:F0}/{Definition?.MaxHealth:F0}" );
@@ -138,8 +142,9 @@ namespace UltimoBarrio.Content.Enemies
 
 		private void Die()
 		{
-			if ( !Networking.IsHost || IsDead ) return;
+			if ( !Networking.IsHost || _deathHandled ) return;
 
+			_deathHandled = true;
 			Health = 0f;
 			Log.Info( $"[Content.Enemy] {Definition?.Id} murió" );
 
