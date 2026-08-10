@@ -1,9 +1,50 @@
-## Estado Actual: Laptop Content Stack — weapon_lab RUNTIME VALIDATED 4/4
+## Estado Actual: Barrio 01 Jugable — Integration Fixes Applied
 
-- **Rama Actual**: `spike/laptop-content-stack` (base `feat/holy-grail-foundation` @ c9e5664). Sin push.
-- **Último Commit**: `9fd7b32 feat(spike): complete runtime validated weapon content suite` (2026-08-08).
-- **Errores de Compilación**: 0 (solo 2 warnings preexistentes del core antiguo: GameResourceAttribute obsolete en ItemDefinition.cs / MovementProfile.cs).
-- **Arquitectura del lab (corregida)**: fuera el player/cámara Frankenstein. El autotest corre en un **Weapon Test Rig** fijo (GameObject independiente con CameraComponent main + TargetDummy en la línea de fuego, sin pawn). El player manual es el **PlayerController oficial** del engine (`lab_player_official.prefab`, copia literal del template, sin código custom) — pendiente de validar al final de los labs.
+- **Rama Actual**: `spike/laptop-content-stack` (pushed a GitHub).
+- **Último Commit**: `8366498 fix(trader): use Components.Get<T>() instead of GetComponent<T>()` (2026-08-10).
+- **Commit anterior**: `1c60dc3 fix(integration): wire all gameplay systems for playable barrio_01` (2026-08-10).
+- **Errores de Compilación**: 0 (esperado — sin editor para verificar, pero los cambios son solo correcciones de API y wiring de componentes).
+- **StartupScene**: `scenes/barrio_01.scene` (configurado en sbproj).
+
+### BARRIO 01 — SISTEMAS JUGABLES
+
+| Sistema | Estado | Notas |
+|---|---|---|
+| PlayerController | ✅ | Prefab oficial del engine + UbWeaponCarrier + HealthComponent + InventoryComponent + PlayerHud + PlayerInteractor + PlayerContentDamageBridge |
+| Armas (4) | ✅ | USP, Escopeta, Palanca, Cuchillo — equipar con slots 1-6, disparar/recargar/soltar via WeaponContentHost |
+| Enemigos (3) | ✅ | Saqueador, Bruto, Merodeador — prefabs con NavMeshAgent + EnemyPerception + EnemyAttack + EnemyContentHost |
+| Spawner nocturno | ✅ | NightEnemySpawner activa saqueadores en fase Night, los retira en Day |
+| Ciclo día/noche | ✅ | WorldClock (Day 5m → Prep 1m → Night 3m → Aftermath 30s) + WorldTimeLighting ajusta luces |
+| Loot físico | ✅ | LootPickupContent (recoger con E) + ResourceNode (recolección con respawn) |
+| Apartamentos | ✅ | 5 apartamentos reclamables con stash + ApartmentClaimInteractable |
+| Comerciante | ✅ | Trader NPC — comprar/vender con Wallet + InventoryComponent |
+| Inventario/HUD | ✅ | HotbarPanel con fallback a UbWeaponCarrier, InventoryUI, HudOverlayPanel |
+| Fortificación | ✅ | 9 objetos (barricada madera/reforzada, puertas, stash, workbench, etc.) |
+| Audio | ✅ | Banco de sonidos MIT (15 SoundEvents + WAVs importados) |
+| Raid Manager | ✅ | Clock auto-detect, soporte EnemyContentHost para looters |
+
+### FIXES APLICADOS (2026-08-10)
+
+1. **HotbarPanel**: fallback a `UbWeaponCarrier` cuando `HeldItemController` es null (el player usa el sistema nuevo, no el viejo).
+2. **Prefabs de enemigos**: añadidos `NavMeshAgent` + `EnemyPerception` + `EnemyAttack` (faltaban en los 3 prefabs — `EnemyContentHost` los requiere).
+3. **RaidManager**: auto-busca `WorldClock` como los demás sistemas; soporta tanto `SaqueadorBrain` (viejo) como `EnemyContentHost` (nuevo) para looter targets.
+4. **UbPlayerFix**: eliminado log spam por frame (spameaba console cada frame).
+5. **InventoryComponent.RequestDrop**: añadidos `weapon_crowbar` y `weapon_shotgun` al mapa de prefab paths.
+6. **Trader**: `GetComponent<T>()` → `Components.Get<T>()` (API correcta de s&box).
+7. **PlayerHud**: comentario aclarador de que `HeldItemCtrl` puede ser null.
+
+### ARQUITECTURA
+
+- **Content pack portable** (`UltimoBarrio.Content.*`): weapons, enemies, fortification, audio — sin tocar core viejo.
+- **Adaptadores**: `IDamageTarget`, `IWeaponContentAdapter`, `IEnemyContentAdapter`, `IFortificationContentAdapter` — punto de unión con core nuevo.
+- **Gameplay layer**: `UbWeaponCarrier` (hotbar → content pack), `PlayerContentDamageBridge` (player = IDamageTarget), `NightEnemySpawner` (lifecycle enemigos), `WorldTimeLighting` (luz por fase).
+- **Escena barrio_01**: mapa `facepunch.flatgrass`, 5 apartamentos, trader, 3 armas pickup, 3+ loot nodes, 3 enemy spawns, NavMesh ON, WorldClock 5min día.
+
+### VALIDACIÓN PENDIENTE
+
+- **Compilación**: abrir el editor s&box y verificar 0 errores (no hay .NET SDK local).
+- **Runtime**: Play `barrio_01.scene` → verificar spawn del player, armas equipables, enemigos aparecen de noche, loot recolectable, ciclo día/noche visible, trader funcional.
+- **Multiplayer**: verificar spawn de 2+ jugadores, networking de daño/loot/inventario.
 
 ### WEAPON LAB SUITE 4/4 PASS (editor 26.08.05, play local, 2026-08-08, prefabs definitivos)
 
