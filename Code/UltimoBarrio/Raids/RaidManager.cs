@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UltimoBarrio.WorldTime;
 using UltimoBarrio.Apartments;
+using UltimoBarrio.Content.Enemies;
 
 namespace UltimoBarrio.Raids
 {
@@ -23,7 +24,12 @@ namespace UltimoBarrio.Raids
 
         protected override void OnStart()
         {
-            if (Clock != null && !IsProxy)
+            if ( Clock == null )
+            {
+                Clock = Scene.GetAllComponents<WorldClock>().FirstOrDefault();
+            }
+
+            if ( Clock != null && !IsProxy )
             {
                 Clock.OnPhaseChanged += HandlePhaseChanged;
             }
@@ -70,18 +76,26 @@ namespace UltimoBarrio.Raids
             return null;
         }
 
-        private void SpawnLooter(GameObject target)
+        private void SpawnLooter( GameObject target )
         {
-            if (LooterPrefab == null || SpawnPoint == null) return;
+            if ( LooterPrefab == null || SpawnPoint == null ) return;
 
-            var looter = LooterPrefab.Clone(SpawnPoint.WorldPosition, SpawnPoint.WorldRotation);
+            var looter = LooterPrefab.Clone( SpawnPoint.WorldPosition, SpawnPoint.WorldRotation );
             looter.NetworkSpawn();
-            activeLooters.Add(looter);
+            activeLooters.Add( looter );
 
+            // Intentar SaqueadorBrain (AI vieja) si existe
             var brain = looter.Components.Get<AI.SaqueadorBrain>();
-            if (brain != null)
+            if ( brain != null )
             {
                 brain.RaidTarget = target;
+            }
+
+            // Intentar EnemyContentHost (content pack nuevo) si existe
+            var enemyHost = looter.Components.Get<Content.Enemies.EnemyContentHost>();
+            if ( enemyHost != null && target != null )
+            {
+                enemyHost.SetTarget( target );
             }
         }
 

@@ -199,7 +199,21 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 		}
 
 		if ( loadResult.Snapshot is not null )
+		{
+			// RestauraciÃ³n segura: solo se aplica estado de viviendas que existen en ESTA escena.
+			// ApplySnapshot ya ignora apartmentIds ausentes; aquÃ­ solo informamos de los descartados
+			// para no teletransportar al jugador a posiciones de un mapa/versiÃ³n anterior.
+			var stale = loadResult.Snapshot.Apartments
+				.Where( saved => !_registry.TryGet( saved.ApartmentId, out _ ) )
+				.Select( saved => saved.ApartmentId )
+				.ToList();
+			if ( stale.Count > 0 )
+			{
+				Log.Warning( $"UB.Apartment SaveIgnoredStale apartments={string.Join( ",", stale )} — no existen en esta escena; no se restauran." );
+			}
+
 			_registry.ApplySnapshot( loadResult.Snapshot );
+		}
 
 		_isReady = true;
 		Log.Info( $"UB.Apartment ServiceReady apartments={_registry.Apartments.Count} loaded={loadResult.Status == PersistenceLoadStatus.Loaded}" );

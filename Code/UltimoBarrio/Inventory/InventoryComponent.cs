@@ -103,6 +103,8 @@ namespace UltimoBarrio
                 var prefabPath = "prefabs/items/pf_scrap_pickup.prefab"; 
                 if (itemId == "weapon_usp") prefabPath = "prefabs/items/pf_usp_pickup.prefab";
                 else if (itemId == "ammo_9mm") prefabPath = "prefabs/items/pf_ammo_9mm_pickup.prefab";
+                else if (itemId == "weapon_crowbar") prefabPath = "prefabs/items/pf_crowbar_pickup.prefab";
+                else if (itemId == "weapon_shotgun") prefabPath = "prefabs/items/pf_shotgun_pickup.prefab";
 
                 // s&box way to spawn prefab:
                 var prefabFile = ResourceLibrary.Get<PrefabFile>(prefabPath);

@@ -22,12 +22,42 @@
         "Tint": "0.86,0.9,0.97,1"
       },
       {
+        "__type": "Sandbox.NavMeshAgent",
+        "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c0a",
+        "__enabled": true,
+        "Acceleration": 200,
+        "AllowDefaultArea": true,
+        "AllowedAreas": [],
+        "AutoTraverseLinks": true,
+        "ForbiddenAreas": [],
+        "Height": 64,
+        "MaxSpeed": 320,
+        "Radius": 16,
+        "Separation": 0.25,
+        "UpdatePosition": true,
+        "UpdateRotation": false
+      },
+      {
         "__type": "UltimoBarrio.Content.Enemies.EnemyContentHost",
         "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c09",
         "__enabled": true,
         "DefinitionId": "ub_enemy_merodeador"
+      },
+      {
+        "__type": "UltimoBarrio.Content.Enemies.EnemyPerception",
+        "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c0b",
+        "__enabled": true
+      },
+      {
+        "__type": "UltimoBarrio.Content.Enemies.EnemyAttack",
+        "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c0c",
+        "__enabled": true
       }
     ],
     "Children": []
-  }
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "__references": [],
+  "__version": 2
 }

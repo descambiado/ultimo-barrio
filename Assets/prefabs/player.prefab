@@ -102,7 +102,7 @@
         },
         "MassCenterOverride": "0,0,36",
         "MassOverride": 500,
-        "MotionEnabled": true,
+        "MotionEnabled": false,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,

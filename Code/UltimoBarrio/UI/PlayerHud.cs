@@ -59,6 +59,7 @@ namespace UltimoBarrio.UI
             Hotbar = GameObject.Components.Create<HotbarPanel>();
             Hotbar.TargetInventory = GameObject.Components.Get<InventoryComponent>();
             Hotbar.HeldItemCtrl = GameObject.Components.Get<Combat.HeldItemController>();
+            // Si no hay HeldItemController (viejo), HotbarPanel usa UbWeaponCarrier (nuevo) vía fallback interno.
             
             ChangeState(HudState.Gameplay);
         }

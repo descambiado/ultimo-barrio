@@ -22,12 +22,42 @@
         "Tint": "0.78,0.68,0.62,1"
       },
       {
+        "__type": "Sandbox.NavMeshAgent",
+        "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c07",
+        "__enabled": true,
+        "Acceleration": 100,
+        "AllowDefaultArea": true,
+        "AllowedAreas": [],
+        "AutoTraverseLinks": true,
+        "ForbiddenAreas": [],
+        "Height": 64,
+        "MaxSpeed": 150,
+        "Radius": 16,
+        "Separation": 0.25,
+        "UpdatePosition": true,
+        "UpdateRotation": false
+      },
+      {
         "__type": "UltimoBarrio.Content.Enemies.EnemyContentHost",
         "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c06",
         "__enabled": true,
         "DefinitionId": "ub_enemy_bruto"
+      },
+      {
+        "__type": "UltimoBarrio.Content.Enemies.EnemyPerception",
+        "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c08",
+        "__enabled": true
+      },
+      {
+        "__type": "UltimoBarrio.Content.Enemies.EnemyAttack",
+        "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c09",
+        "__enabled": true
       }
     ],
     "Children": []
-  }
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "__references": [],
+  "__version": 2
 }
