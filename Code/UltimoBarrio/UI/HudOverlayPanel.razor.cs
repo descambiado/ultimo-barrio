@@ -49,8 +49,12 @@ namespace UltimoBarrio.UI
         {
             get 
             {
-                var wep = WeaponComp;
-                return wep != null ? "LISTO" : "--";
+                var carrier = WeaponCarrier;
+                if (carrier != null && !string.IsNullOrEmpty(carrier.ActiveItemId))
+                {
+                    return "LISTO";
+                }
+                return "--";
             }
         }
 
@@ -59,7 +63,7 @@ namespace UltimoBarrio.UI
         private WorldClock Clock => PlayerObj?.Scene?.GetAllComponents<WorldClock>().FirstOrDefault();
         private HealthComponent HealthComp => PlayerObj?.Components.Get<HealthComponent>(FindMode.EverythingInSelfAndDescendants);
         private Wallet WalletComp => PlayerObj?.Components.Get<Wallet>(FindMode.EverythingInSelfAndDescendants);
-        private UltimoBarrio.Combat.BaseCombatWeapon WeaponComp => PlayerObj?.Components.Get<UltimoBarrio.Combat.BaseCombatWeapon>(FindMode.EverythingInSelfAndDescendants);
+        private UbWeaponCarrier WeaponCarrier => PlayerObj?.Components.Get<UbWeaponCarrier>(FindMode.EverythingInSelfAndDescendants);
         
         public override void Tick()
         {
