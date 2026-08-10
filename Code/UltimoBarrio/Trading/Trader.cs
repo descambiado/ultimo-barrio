@@ -28,8 +28,8 @@ namespace UltimoBarrio.Trading
             if (!Networking.IsHost) return;
             if (buyer == null) return;
             
-            var wallet = buyer.GetComponent<IWallet>();
-            var inventory = buyer.GetComponent<IInventory>();
+            var wallet = buyer.Components.Get<IWallet>();
+            var inventory = buyer.Components.Get<IInventory>();
 
             if (wallet == null || inventory == null) 
             {
@@ -79,8 +79,8 @@ namespace UltimoBarrio.Trading
             if (!Networking.IsHost) return;
             if (seller == null) return;
 
-            var wallet = seller.GetComponent<IWallet>();
-            var inventory = seller.GetComponent<IInventory>();
+            var wallet = seller.Components.Get<IWallet>();
+            var inventory = seller.Components.Get<IInventory>();
 
             if (wallet == null || inventory == null) return;
 
