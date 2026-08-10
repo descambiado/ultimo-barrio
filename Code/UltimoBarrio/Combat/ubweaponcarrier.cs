@@ -138,7 +138,7 @@ namespace UltimoBarrio.Combat
 				return;
 			}
 
-			var cam = Components.Get<CameraComponent>();
+			var cam = Components.Get<CameraComponent>() ?? Scene.GetAllComponents<CameraComponent>().FirstOrDefault( c => c.IsMainCamera );
 			if ( cam == null )
 			{
 				Log.Warning( "[WeaponCarrier] sin CameraComponent: arma sin viewmodel" );
