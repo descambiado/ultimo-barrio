@@ -1,50 +1,51 @@
-## Estado Actual: Barrio 01 Jugable — Integration Fixes Applied
+## Estado Actual: Barrio 01 Jugable — Gameplay Loop Cerrado
 
 - **Rama Actual**: `spike/laptop-content-stack` (pushed a GitHub).
-- **Último Commit**: `8366498 fix(trader): use Components.Get<T>() instead of GetComponent<T>()` (2026-08-10).
-- **Commit anterior**: `1c60dc3 fix(integration): wire all gameplay systems for playable barrio_01` (2026-08-10).
-- **Errores de Compilación**: 0 (esperado — sin editor para verificar, pero los cambios son solo correcciones de API y wiring de componentes).
+- **Último Commit**: `c4f0762 feat(build+hud): bind build to F (Flashlight action), show consumable name in HUD` (2026-08-13).
+- **Errores de Compilación**: 0 (esperado — sin editor para verificar, pero los cambios son wiring de componentes, fixes de data y APIs ya usadas en el repo).
 - **StartupScene**: `scenes/barrio_01.scene` (configurado en sbproj).
 
 ### BARRIO 01 — SISTEMAS JUGABLES
 
 | Sistema | Estado | Notas |
 |---|---|---|
-| PlayerController | ✅ | Prefab oficial del engine + UbWeaponCarrier + HealthComponent + InventoryComponent + PlayerHud + PlayerInteractor + PlayerContentDamageBridge |
-| Armas (4) | ✅ | USP, Escopeta, Palanca, Cuchillo — equipar con slots 1-6, disparar/recargar/soltar via WeaponContentHost |
-| Enemigos (3) | ✅ | Saqueador, Bruto, Merodeador — prefabs con NavMeshAgent + EnemyPerception + EnemyAttack + EnemyContentHost |
-| Spawner nocturno | ✅ | NightEnemySpawner activa saqueadores en fase Night, los retira en Day |
+| PlayerController | ✅ | Prefab oficial del engine + UbWeaponCarrier + HealthComponent + InventoryComponent + PlayerHud + PlayerInteractor + PlayerContentDamageBridge + MissionJournal + PlayerDeathHandler + BuildController |
+| Armas (4) | ✅ | USP, Escopeta, Palanca, Cuchillo — equipar con slots 1-6; **la recarga consume munición del inventario** (ammo_9mm / ammo_buckshot); melee sin munición |
+| Consumibles | ✅ | Agua (+25 HP) y Medicina (+50 HP) seleccionables en hotbar; attack1 los usa; host-validado por RPC con id del emisor (multijugador-safe) |
+| Enemigos (3) | ✅ | Saqueador, Bruto, Merodeador — prefabs con NavMeshAgent + EnemyPerception + EnemyAttack + EnemyContentHost; las armas de fuego reportan ruido (ReportNoise) |
+| Spawner nocturno | ✅ | NightEnemySpawner activa saqueadores en fase Night, los retira en Day; NavMesh de escena Enabled+IncludeStaticBodies (los enemigos navegan el barrio) |
 | Ciclo día/noche | ✅ | WorldClock (Day 5m → Prep 1m → Night 3m → Aftermath 30s) + WorldTimeLighting ajusta luces |
-| Loot físico | ✅ | LootPickupContent (recoger con E) + ResourceNode (recolección con respawn) |
-| Apartamentos | ✅ | 5 apartamentos reclamables con stash + ApartmentClaimInteractable |
-| Comerciante | ✅ | Trader NPC — comprar/vender con Wallet + InventoryComponent |
-| Inventario/HUD | ✅ | HotbarPanel con fallback a UbWeaponCarrier, InventoryUI, HudOverlayPanel |
-| Fortificación | ✅ | 9 objetos (barricada madera/reforzada, puertas, stash, workbench, etc.) |
-| Audio | ✅ | Banco de sonidos MIT (15 SoundEvents + WAVs importados) |
-| Raid Manager | ✅ | Clock auto-detect, soporte EnemyContentHost para looters |
+| Loot físico | ✅ | LootPickupContent (recoger con E) + ResourceNode (recolección con respawn) + 57 chatarra a nivel del suelo |
+| Apartamentos | ✅ | **5 apartamentos (a01-a05) a escala real a nivel del suelo**: muros 128u, portal 96u con collider trigger (el jugador entra caminando), stash y spawn interior; claim por portal |
+| Comerciante | ✅ | Kiosko en la plaza (0,0,0) — único trader; compra/venta con Wallet + InventoryComponent; vende agua, medicina, 9mm, cartuchos 12G, USP |
+| Inventario/HUD | ✅ | HotbarPanel (fallback UbWeaponCarrier), InventoryUI, HudOverlayPanel con objetivos de misión, HUD muestra consumible activo |
+| Crafting | ✅ | WorldContentBootstrap coloca la estación junto al kiosko; 5 recetas con ítems reales (ammo_9mm, water, medicine, weapon_knife, weapon_usp) |
+| Fortificación | ✅ | BuildController con tecla F (acción Flashlight) + `ub_build`; barricada de madera con coste 20 chatarra; tags fortification+enemy_target |
+| Misiones | ✅ | Cadena "Primeros Pasos" completa: 8 objetivos, HUD de objetivos, recompensa al completar ($100 + 20x ammo_9mm), ReturnHome al respawnear en casa |
+| Muerte/respawn | ✅ | PlayerDeathHandler: 5s → respawn en apartamento propio (si tiene) o SpawnPoint; notifica ReturnHome |
+| Persistencia | ✅ | Autosave cada 60s (claims + stashes + economía por identidad estable); restauración al reconectar (respawn en casa + balance) |
+| Raid Manager | ✅ | Clock auto-detect, looters con EnemyContentHost apuntando al portal del apartamento |
+| Audio | ✅ | Banco de sonidos MIT (15 SoundEvents + WAVs importados); validación runtime pendiente en editor |
 
-### FIXES APLICADOS (2026-08-10)
+### FIXES APLICADOS (sesión 2026-08-13)
 
-1. **HotbarPanel**: fallback a `UbWeaponCarrier` cuando `HeldItemController` es null (el player usa el sistema nuevo, no el viejo).
-2. **Prefabs de enemigos**: añadidos `NavMeshAgent` + `EnemyPerception` + `EnemyAttack` (faltaban en los 3 prefabs — `EnemyContentHost` los requiere).
-3. **RaidManager**: auto-busca `WorldClock` como los demás sistemas; soporta tanto `SaqueadorBrain` (viejo) como `EnemyContentHost` (nuevo) para looter targets.
-4. **UbPlayerFix**: eliminado log spam por frame (spameaba console cada frame).
-5. **InventoryComponent.RequestDrop**: añadidos `weapon_crowbar` y `weapon_shotgun` al mapa de prefab paths.
-6. **Trader**: `GetComponent<T>()` → `Components.Get<T>()` (API correcta de s&box).
-7. **PlayerHud**: comentario aclarador de que `HeldItemCtrl` puede ser null.
+1. **Escena barrio_01 reescrita**: todo alineado a Z=0 (suelo flatgrass). Antes el contenido jugable flotaba a Z 341-425, los spawns a Z 390 y el plano de colisión a Z 388 (el jugador spawneaba 25+ unidades sobre el barrio).
+2. **Apartamentos a escala real**: colisión correcta (BoxCollider.Scale=64), front walls abiertas (±80) y portal con collider trigger para entrar caminando. Añadidos a03/a04/a05 (5 total).
+3. **Trader duplicado eliminado** (estaba dentro del apartamento a01; también desambigua WorldContentBootstrap).
+4. **NetworkHelper**: PlayerPrefab → prefabs/player.prefab (formato prefab ref); SpawnPoints a Z=0.
+5. **Consumibles**: HealthComponent.Heal + uso por attack1 (agua/medicina) en UbWeaponCarrier.
+6. **Munición real**: FinishReload consume ammo del inventario; ammo_buckshot añadido al registry y al trader.
+7. **Misiones**: fix BuyItem "ammo"→"ammo_9mm", recompensa ammo→ammo_9mm, ReturnHome cableado al respawn, recompensas aplicadas en CompleteMission.
+8. **Crafting**: recetas reescritas con ítems reales (antes producían medicina/repair_kit/barricade inexistentes).
+9. **Persistencia**: autosave periódico + economía persistida por PlayerIdentity (antes solo claims al reclamar; el wallet se perdía).
+10. **QASprintRunner**: commands actualizados a UbWeaponCarrier; UbPlayerFix diag retirado de la escena.
 
-### ARQUITECTURA
+### VALIDACIÓN PENDIENTE (editor s&box — usuario)
 
-- **Content pack portable** (`UltimoBarrio.Content.*`): weapons, enemies, fortification, audio — sin tocar core viejo.
-- **Adaptadores**: `IDamageTarget`, `IWeaponContentAdapter`, `IEnemyContentAdapter`, `IFortificationContentAdapter` — punto de unión con core nuevo.
-- **Gameplay layer**: `UbWeaponCarrier` (hotbar → content pack), `PlayerContentDamageBridge` (player = IDamageTarget), `NightEnemySpawner` (lifecycle enemigos), `WorldTimeLighting` (luz por fase).
-- **Escena barrio_01**: mapa `facepunch.flatgrass`, 5 apartamentos, trader, 3 armas pickup, 3+ loot nodes, 3 enemy spawns, NavMesh ON, WorldClock 5min día.
-
-### VALIDACIÓN PENDIENTE
-
-- **Compilación**: abrir el editor s&box y verificar 0 errores (no hay .NET SDK local).
-- **Runtime**: Play `barrio_01.scene` → verificar spawn del player, armas equipables, enemigos aparecen de noche, loot recolectable, ciclo día/noche visible, trader funcional.
-- **Multiplayer**: verificar spawn de 2+ jugadores, networking de daño/loot/inventario.
+- **Compilación**: abrir el editor y verificar 0 errores (no hay .NET SDK local).
+- **Runtime barrio_01**: Play → spawn del player en la plaza (Z=0), apartamentos visibles y reclamables entrando por el portal, stash, trader, crafting, construir con F, munición consumida al recargar, consumibles curan, misiones completables con recompensa, enemigos nocturnos navegan, muerte → respawn en casa, reinicio → claims/stash/economía restaurados.
+- **Multiplayer**: spawn de 2+ jugadores, daño/loot/inventario/networking.
+- **Vehículos**: kit `fieldguide.vehiclephysics` sin descargar localmente — bloqueado hasta abrir el proyecto en el editor (montaje automático). Pendiente: rellenar VehiclePrefabPath en vehicle_lab y confirmar nombres de input actions contra el README del kit.
 
 ### WEAPON LAB SUITE 4/4 PASS (editor 26.08.05, play local, 2026-08-08, prefabs definitivos)
 
