@@ -91,6 +91,7 @@ namespace UltimoBarrio.Content.Fortification
 				Log.Error( $"[BuildHost] SpawnBuild: '{def.Prefab}' no contiene BuildStructureHost" );
 			}
 
+			Sound.Play( "sounds/content/fortification/repair.sound", position );
 			return host;
 		}
 
@@ -102,6 +103,8 @@ namespace UltimoBarrio.Content.Fortification
 			Health = MathF.Max( 0f, Health );
 
 			Log.Info( $"[BuildHost] {Definition?.Id} damage {damageEvent.Amount:F0} (src '{damageEvent.SourceId}') → HP {Health:F0}" );
+
+			RpcImpactSound( damageEvent.Position );
 
 			if ( Health <= 0f )
 			{
@@ -127,6 +130,7 @@ namespace UltimoBarrio.Content.Fortification
 
 			Health = MathF.Min( Definition.MaxHp, Health + amount );
 			Log.Info( $"[BuildHost] {Definition.Id} repaired +{amount:F0} (coste {Definition.RepairCost}) → HP {Health:F0}/{Definition.MaxHp:F0}" );
+			RpcRepairSound();
 			return true;
 		}
 
@@ -211,6 +215,18 @@ namespace UltimoBarrio.Content.Fortification
 		private string ResolvedModelName()
 		{
 			return Components.GetInChildrenOrSelf<ModelRenderer>()?.Model?.ResourceName ?? "none";
+		}
+
+		[Rpc.Broadcast]
+		private void RpcImpactSound( Vector3 position )
+		{
+			Sound.Play( "sounds/content/fortification/barricade_impact.sound", position );
+		}
+
+		[Rpc.Broadcast]
+		private void RpcRepairSound()
+		{
+			Sound.Play( "sounds/content/fortification/repair.sound", WorldPosition );
 		}
 	}
 }

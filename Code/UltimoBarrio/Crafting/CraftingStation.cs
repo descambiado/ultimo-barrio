@@ -141,8 +141,8 @@ namespace UltimoBarrio.Crafting
         [Rpc.Broadcast]
         private void BroadcastCraftEffects()
         {
-            // Placeholder feedback
-            Log.Info("Crafting effect played");
+            // Feedback de audio: sonido de trabajo (banco verificado).
+            Sound.Play("sounds/content/fortification/repair.sound", WorldPosition);
         }
     }
 }

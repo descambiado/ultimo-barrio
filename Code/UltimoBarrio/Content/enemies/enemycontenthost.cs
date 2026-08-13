@@ -254,13 +254,13 @@ namespace UltimoBarrio.Content.Enemies
 		[Rpc.Broadcast]
 		private void RpcDamageFeedback( float amount, Vector3 position, string sourceId )
 		{
-			// TODO(core nuevo): feedback visual (flash/sangre/sonido) desde datos del pack.
+			Sound.Play( "sounds/content/enemies/enemy_hurt.sound", position );
 		}
 
 		[Rpc.Broadcast]
 		private void RpcDeathEffects()
 		{
-			// TODO(core nuevo): death anim / ragdoll desde datos del pack (CorpseLifetime).
+			Sound.Play( "sounds/content/enemies/enemy_death.sound", WorldPosition );
 		}
 	}
 }
