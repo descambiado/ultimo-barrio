@@ -35,7 +35,6 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 	private bool _isReady;
 	private TimeSince _sinceAutoSave;
 	private Dictionary<string, int> _economyByPlayer = new( StringComparer.Ordinal );
-	private Dictionary<string, int> _economyByPlayer = new( StringComparer.Ordinal );
 
 	protected override void OnStart()
 	{

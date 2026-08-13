@@ -114,9 +114,9 @@ namespace UltimoBarrio.Players
             else if (_weaponCarrier != null && !string.IsNullOrEmpty(_weaponCarrier.ActiveItemId))
             {
                 // Sistema nuevo: si tiene arma equipada, aplicar penalización
-                var def = Core.ItemRegistry.GetDefinition(_weaponCarrier.ActiveItemId);
-                if (def != null && def.Category == Core.ItemCategory.Firearm) weaponMult = 0.95f;
-                else if (def != null && def.Category == Core.ItemCategory.Melee) weaponMult = 1.05f;
+                var def = UltimoBarrio.ItemRegistry.GetDefinition(_weaponCarrier.ActiveItemId);
+                if (def != null && def.Category == UltimoBarrio.ItemCategory.Firearm) weaponMult = 0.95f;
+                else if (def != null && def.Category == UltimoBarrio.ItemCategory.Melee) weaponMult = 1.05f;
             }
 
             float finalMult = weightMult * weaponMult;
