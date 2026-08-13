@@ -62,8 +62,8 @@ namespace UltimoBarrio.Development
 			}
 
 			var station = SceneUtility.GetPrefabScene( prefabFile ).Clone();
-			station.WorldPosition = trader.WorldPosition + trader.WorldRotation.Right * CraftingStationOffset;
-			station.WorldRotation = trader.WorldRotation;
+			station.WorldPosition = trader.WorldPosition + new Vector3( CraftingStationOffset, 0, 0 );
+			station.WorldRotation = Rotation.Identity;
 			station.NetworkSpawn();
 
 			Log.Info( $"[WorldBootstrap] CraftingStation colocada en {station.WorldPosition}" );
