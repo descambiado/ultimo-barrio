@@ -207,6 +207,22 @@ namespace UltimoBarrio.Content.Weapons
 			if ( DebugLog ) Log.Info( $"[Content.Weapon] {Definition.Id} disparo (ammo {CurrentAmmo})" );
 
 			PerformTrace();
+			ReportFireNoise();
+		}
+
+		/// <summary>
+		/// Las armas de fuego son ruidosas: los enemigos cercanos (EnemyContentHost)
+		/// escuchan el disparo y recuerdan la posición vía EnemyPerception.ReportNoise.
+		/// Melee es silencioso (sin ruido). Solo host.
+		/// </summary>
+		private void ReportFireNoise()
+		{
+			if ( !Networking.IsHost || IsMelee ) return;
+
+			foreach ( var enemy in Scene.GetAllComponents<UltimoBarrio.Content.Enemies.EnemyContentHost>() )
+			{
+				enemy.ReportNoise( WorldPosition, 1f );
+			}
 		}
 
 		private void StartReload()
