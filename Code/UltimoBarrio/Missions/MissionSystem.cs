@@ -78,7 +78,7 @@ namespace UltimoBarrio.Missions
                     new MissionObjective { Id = "obj_3", Description = "3. Guarda 5 en el alijo", Type = ObjectiveType.StoreInStash, TargetId = "chatarra", TargetAmount = 5 },
                     new MissionObjective { Id = "obj_4", Description = "4. Vende 5 al comerciante", Type = ObjectiveType.SellToTrader, TargetId = "chatarra", TargetAmount = 5 },
                     new MissionObjective { Id = "obj_5", Description = "5. Compra munición", Type = ObjectiveType.BuyItem, TargetId = "ammo", TargetAmount = 1 },
-                    new MissionObjective { Id = "obj_6", Description = "6. Consigue una pistola", Type = ObjectiveType.ObtainWeapon, TargetId = "weapon_pistol", TargetAmount = 1 },
+                    new MissionObjective { Id = "obj_6", Description = "6. Consigue una pistola", Type = ObjectiveType.ObtainWeapon, TargetId = "weapon_usp", TargetAmount = 1 },
                     new MissionObjective { Id = "obj_7", Description = "7. Regresa a casa", Type = ObjectiveType.ReturnHome, TargetAmount = 1 },
                     new MissionObjective { Id = "obj_8", Description = "8. Sobrevive a la primera noche", Type = ObjectiveType.SurviveNight, TargetAmount = 1 }
                 }

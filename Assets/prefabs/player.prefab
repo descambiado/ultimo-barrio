@@ -187,7 +187,11 @@
       {
         "__type": "UltimoBarrio.InventoryComponent",
         "__guid": "a959eeda-fa54-4e09-a6d2-aad00144bcb1",
-        "__enabled": true
+        "__enabled": true,
+        "StartingItems": [
+          "weapon_crowbar:1",
+          "ammo_9mm:24"
+        ]
       },
       {
         "__type": "UltimoBarrio.Economy.Wallet",
@@ -230,6 +234,11 @@
       },
       {
         "__type": "UltimoBarrio.Players.PlayerMovementModifier",
+        "__enabled": true
+      },
+      {
+        "__type": "UltimoBarrio.Missions.MissionJournal",
+        "__guid": "b7d2e4f1-9a3c-4d5e-8b7f-2c6a1d3e5f09",
         "__enabled": true
       }
     ],

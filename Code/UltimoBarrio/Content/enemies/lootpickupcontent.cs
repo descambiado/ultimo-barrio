@@ -70,6 +70,17 @@ namespace UltimoBarrio.Content.Enemies
 			if ( inventory != null && inventory.TryAdd( ItemId, Amount ) )
 			{
 				Log.Info( $"[Loot] {interactorGo.Name} recogió {Amount}x{ItemId}" );
+
+				// Notificar misión: recoger ítem (chatarra) o conseguir arma.
+				if ( ItemId == "chatarra" )
+				{
+					Missions.MissionJournal.Local?.NotifyProgress( Missions.ObjectiveType.CollectItem, ItemId, Amount );
+				}
+				else if ( ItemId.StartsWith( "weapon_" ) )
+				{
+					Missions.MissionJournal.Local?.NotifyProgress( Missions.ObjectiveType.ObtainWeapon, ItemId, Amount );
+				}
+
 				GameObject.Destroy();
 			}
 		}

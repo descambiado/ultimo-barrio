@@ -89,6 +89,7 @@ namespace UltimoBarrio.World
 				if ( inventory != null && inventory.TryAdd( ItemId, harvestedAmount ) )
 				{
 					Log.Info( $"[ResourceNode] {interactorGo.Name} recolectó {harvestedAmount}x{ItemId}" );
+					Missions.MissionJournal.Local?.NotifyProgress( Missions.ObjectiveType.CollectItem, ItemId, harvestedAmount );
 				}
 			}
 		}

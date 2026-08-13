@@ -17,6 +17,12 @@ namespace UltimoBarrio
         [Property] public string InventoryId { get; set; } = string.Empty;
         [Property] public int MaxSlots { get; set; } = 24;
         [Property] public int HotbarSlots { get; set; } = 6;
+
+        /// <summary>
+        /// Items iniciales (itemId:cantidad) que se otorgan al crearse el inventario
+        /// en el host. P.ej. "weapon_crowbar:1". Solo se aplican una vez, en OnAwake.
+        /// </summary>
+        [Property] public List<string> StartingItems { get; set; } = new();
         
         [Sync] public NetList<InventorySlot> Slots { get; set; } = new NetList<InventorySlot>();
 
@@ -25,6 +31,23 @@ namespace UltimoBarrio
             if (Slots.Count == 0 && !IsProxy)
             {
                 for(int i=0; i<MaxSlots; i++) Slots.Add(new InventorySlot { ItemId = "", Amount = 0 });
+            }
+
+            if ( !IsProxy && Networking.IsHost )
+            {
+                GrantStartingItems();
+            }
+        }
+
+        private void GrantStartingItems()
+        {
+            foreach ( var entry in StartingItems )
+            {
+                if ( string.IsNullOrWhiteSpace( entry ) ) continue;
+                var parts = entry.Split( ':' );
+                var itemId = parts[0].Trim();
+                var amount = parts.Length > 1 && int.TryParse( parts[1], out var parsed ) ? parsed : 1;
+                TryAdd( itemId, amount );
             }
         }
 
@@ -91,6 +114,14 @@ namespace UltimoBarrio
                 {
                     // Refund if add failed
                     TryAdd(itemId, amount);
+                }
+                else
+                {
+                    // Si el destino es un alijo (Stash), notificar la misión de guardar en alijo.
+                    if ( targetInv.GameObject.Components.Get<StashComponent>() != null && itemId == "chatarra" )
+                    {
+                        Missions.MissionJournal.Local?.NotifyProgress( Missions.ObjectiveType.StoreInStash, itemId, amount );
+                    }
                 }
             }
         }

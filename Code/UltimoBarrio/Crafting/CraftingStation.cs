@@ -94,7 +94,7 @@ namespace UltimoBarrio.Crafting
             }
 
             var recipe = Recipes[CurrentRecipeIndex];
-            var playerInv = interactorGo.Components.GetInDescendantsOrSelf<UltimoBarrioPlayerInventory>();
+            var playerInv = interactorGo.Components.GetInDescendantsOrSelf<InventoryComponent>();
             if (playerInv == null) return;
 
             for (int i = 0; i < recipe.InputItems.Count; i++)

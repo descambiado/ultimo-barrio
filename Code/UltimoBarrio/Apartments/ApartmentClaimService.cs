@@ -76,6 +76,7 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 		if ( result.Succeeded )
 		{
 			Log.Info( $"UB.Apartment ClaimSucceeded apartment={knownApartmentId}" );
+			Missions.MissionJournal.Local?.NotifyProgress( Missions.ObjectiveType.ClaimApartment, "", 1 );
 			return;
 		}
 

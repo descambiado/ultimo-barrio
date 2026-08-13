@@ -7315,7 +7315,10 @@
           "Clock": null,
           "currentRaidTime": 0,
           "isRaidActive": false,
-          "LooterPrefab": null,
+          "LooterPrefab": {
+            "_type": "prefab",
+            "prefab": "prefabs/content/enemies/enemy_saqueador.prefab"
+          },
           "MaxLooters": 3,
           "MaxRaidDuration": 180,
           "MinLooters": 1,
@@ -7325,7 +7328,10 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "SpawnPoint": null
+          "SpawnPoint": {
+            "_type": "gameobject",
+            "go": "9a9b8c7d-6e5f-4a3b-8c7d-1e2f3a4b5c70"
+          }
         },
         {
           "__type": "UltimoBarrio.World.LootRespawner",
@@ -7413,6 +7419,20 @@
           "OnComponentStart": null,
           "OnComponentUpdate": null,
           "OnComponentFixedUpdate": null
+        },
+        {
+          "__type": "UltimoBarrio.Development.WorldContentBootstrap",
+          "__guid": "7e9d2c4b-8a1f-4b3e-9c6d-5f0a2d4e6b11",
+          "__enabled": true,
+          "Flags": 0,
+          "CraftingStationPrefab": "prefabs/world/ub_crafting_station.prefab",
+          "CraftingStationOffset": 120,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null
         }
       ],
       "Children": [

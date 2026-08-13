@@ -56,6 +56,7 @@ namespace UltimoBarrio.Trading
                     if (wallet.TryWithdraw(totalCost))
                     {
                         Log.Info($"[Trader] {buyer.Name} bought {amount} {itemId} for {totalCost}. Balance now: ${wallet.Balance}");
+                        Missions.MissionJournal.Local?.NotifyProgress(Missions.ObjectiveType.BuyItem, itemId, amount);
                     }
                     else 
                     {
@@ -101,6 +102,7 @@ namespace UltimoBarrio.Trading
             {
                 wallet.Deposit(totalPrice);
                 Log.Info($"[Trader] {seller.Name} sold {actualAmount} scrap for ${totalPrice}. Balance now: ${wallet.Balance}");
+                Missions.MissionJournal.Local?.NotifyProgress(Missions.ObjectiveType.SellToTrader, "chatarra", actualAmount);
             }
         }
     }

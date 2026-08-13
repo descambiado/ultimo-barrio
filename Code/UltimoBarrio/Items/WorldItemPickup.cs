@@ -59,6 +59,14 @@ namespace UltimoBarrio
                 bool added = inventory.TryAdd(ItemId, Amount);
                 if (added)
                 {
+                    if (ItemId.StartsWith("weapon_"))
+                    {
+                        UltimoBarrio.Missions.MissionJournal.Local?.NotifyProgress(UltimoBarrio.Missions.ObjectiveType.ObtainWeapon, ItemId, Amount);
+                    }
+                    else if (ItemId == "chatarra")
+                    {
+                        UltimoBarrio.Missions.MissionJournal.Local?.NotifyProgress(UltimoBarrio.Missions.ObjectiveType.CollectItem, ItemId, Amount);
+                    }
                     GameObject.Destroy();
                 }
             }
