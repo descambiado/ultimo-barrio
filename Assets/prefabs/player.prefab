@@ -236,6 +236,12 @@
         "PlacementRange": 250
       },
       {
+        "__type": "UltimoBarrio.Combat.PlayerDeathHandler",
+        "__guid": "6d9f4b2e-8c5e-4d7f-9b3e-0e1f6a0d4c13",
+        "__enabled": true,
+        "RespawnDelay": 5
+      },
+      {
         "__type": "UltimoBarrio.Content.PlayerContentDamageBridge",
         "__enabled": true
       },
