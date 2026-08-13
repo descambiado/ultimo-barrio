@@ -10,6 +10,7 @@ using UltimoBarrio.WorldTime;
 using UltimoBarrio.Raids;
 using UltimoBarrio.Apartments;
 using UltimoBarrio.Missions;
+using UltimoBarrio.Core;
 
 namespace UltimoBarrio.UI
 {
@@ -54,6 +55,11 @@ namespace UltimoBarrio.UI
                 var carrier = WeaponCarrier;
                 if (carrier != null && !string.IsNullOrEmpty(carrier.ActiveItemId))
                 {
+                    var def = ItemRegistry.GetDefinition(carrier.ActiveItemId);
+                    if (def != null && def.Category == ItemCategory.Consumable)
+                    {
+                        return def.DisplayName.ToUpper();
+                    }
                     return "LISTO";
                 }
                 return "--";

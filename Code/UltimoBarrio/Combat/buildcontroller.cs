@@ -14,8 +14,9 @@ namespace UltimoBarrio.Combat
 	/// del inventario del jugador y llama a BuildStructureHost.SpawnBuild.
 	///
 	/// Interacción (alpha):
-	///   - Tecla "Build" (por defecto B) → intenta colocar la barricada de madera
-	///     apuntando al suelo frente al jugador (desde la cámara).
+	///   - Tecla F (acción estándar "Flashlight", sin uso en el juego) → intenta
+	///     colocar la barricada de madera apuntando al suelo frente al jugador.
+	///   - Comando de consola `ub_build` como alternativa.
 	///   - Sin vista previa por ahora: la barricada aparece directamente si la
 	///     posición es válida y hay recursos.
 	/// </summary>
@@ -28,12 +29,11 @@ namespace UltimoBarrio.Combat
 		[Property] public float PlacementRange { get; set; } = 250f;
 
 		/// <summary>
-		/// Acción de input para construir. "Build" NO es una acción por defecto de s&box
-		/// (las disponibles son: use, attack1/2, reload, jump, run, duck, drop, slot1-6, view...).
-		/// Vacío = sin tecla (usa el comando de consola `ub_build`). Para usar una tecla,
-		/// vincula "Build" en los Input Actions del proyecto y pon "Build" aquí.
+		/// Acción de input para construir. "Build" NO es una acción por defecto de s&box;
+		/// usamos "Flashlight" (tecla F, estándar del engine y sin usar en el juego).
+		/// También disponible el comando de consola `ub_build`.
 		/// </summary>
-		[Property] public string BuildInputAction { get; set; } = "";
+		[Property] public string BuildInputAction { get; set; } = "Flashlight";
 
 		[ConCmd( "ub_build" )]
 		public static void CmdBuild()
