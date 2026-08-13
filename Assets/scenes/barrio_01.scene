@@ -112,7 +112,335 @@
           "OnComponentUpdate": null
         }
       ],
-      "Children": []
+      "Children": [
+        {
+          "Name": "Street Props",
+          "__guid": "32dfc4ea-f510-42ab-aabe-6fb4cb25d0c0",
+          "Active": true,
+          "Position": "0,0,0",
+          "Rotation": "0,0,0",
+          "Scale": "1",
+          "Components": [],
+          "Children": [
+            {
+              "Name": "Road Cone",
+              "__guid": "68884969-9d84-40f1-b323-5f6185f2875a",
+              "Active": true,
+              "Position": "150,0,0",
+              "Rotation": "0,0,0",
+              "Scale": "1",
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "Model": "models/citizen_props/roadcone01.vmdl",
+                  "Tint": "1,1,1,1",
+                  "CastShadows": true,
+                  "Scale": "0.8",
+                  "Rotation": "0,0,0"
+                }
+              ]
+            },
+            {
+              "Name": "Road Cone",
+              "__guid": "0e23e69a-4ad1-48aa-aa1c-2146d755c85e",
+              "Active": true,
+              "Position": "75,130,0",
+              "Rotation": "0,60,0",
+              "Scale": "1",
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "Model": "models/citizen_props/roadcone01.vmdl",
+                  "Tint": "1,1,1,1",
+                  "CastShadows": true,
+                  "Scale": "0.8",
+                  "Rotation": "0,0,0"
+                }
+              ]
+            },
+            {
+              "Name": "Road Cone",
+              "__guid": "d4c0d458-cf49-4f4b-a31c-74d611938fca",
+              "Active": true,
+              "Position": "-75,130,0",
+              "Rotation": "0,120,0",
+              "Scale": "1",
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "Model": "models/citizen_props/roadcone01.vmdl",
+                  "Tint": "1,1,1,1",
+                  "CastShadows": true,
+                  "Scale": "0.8",
+                  "Rotation": "0,0,0"
+                }
+              ]
+            },
+            {
+              "Name": "Road Cone",
+              "__guid": "bd8a1e35-954e-4be8-86fe-e750259ab266",
+              "Active": true,
+              "Position": "-150,0,0",
+              "Rotation": "0,180,0",
+              "Scale": "1",
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "Model": "models/citizen_props/roadcone01.vmdl",
+                  "Tint": "1,1,1,1",
+                  "CastShadows": true,
+                  "Scale": "0.8",
+                  "Rotation": "0,0,0"
+                }
+              ]
+            },
+            {
+              "Name": "Road Cone",
+              "__guid": "4669ac57-3f0c-41d6-a431-a387f483ca76",
+              "Active": true,
+              "Position": "-75,-130,0",
+              "Rotation": "0,240,0",
+              "Scale": "1",
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "Model": "models/citizen_props/roadcone01.vmdl",
+                  "Tint": "1,1,1,1",
+                  "CastShadows": true,
+                  "Scale": "0.8",
+                  "Rotation": "0,0,0"
+                }
+              ]
+            },
+            {
+              "Name": "Road Cone",
+              "__guid": "d4b00e0e-536f-4728-9c58-942d8755fe5e",
+              "Active": true,
+              "Position": "75,-130,0",
+              "Rotation": "0,300,0",
+              "Scale": "1",
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "Model": "models/citizen_props/roadcone01.vmdl",
+                  "Tint": "1,1,1,1",
+                  "CastShadows": true,
+                  "Scale": "0.8",
+                  "Rotation": "0,0,0"
+                }
+              ]
+            },
+            {
+              "Name": "Bollard",
+              "__guid": "4c55ef28-f39b-46ad-b846-fdd35dc7d9fe",
+              "Active": true,
+              "Position": "-400,400,0",
+              "Rotation": "0,0,0",
+              "Scale": "1",
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "Model": "models/sbox_props/parking_bollard/parking_bollard.vmdl",
+                  "Tint": "1,1,1,1",
+                  "CastShadows": true
+                }
+              ]
+            },
+            {
+              "Name": "Bollard",
+              "__guid": "2fd0609b-598d-42bc-919a-93c7134e8c96",
+              "Active": true,
+              "Position": "-290,400,0",
+              "Rotation": "0,0,0",
+              "Scale": "1",
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "Model": "models/sbox_props/parking_bollard/parking_bollard.vmdl",
+                  "Tint": "1,1,1,1",
+                  "CastShadows": true
+                }
+              ]
+            },
+            {
+              "Name": "Bollard",
+              "__guid": "20209be4-803c-48c4-a221-7d5a2f37f744",
+              "Active": true,
+              "Position": "-180,400,0",
+              "Rotation": "0,0,0",
+              "Scale": "1",
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "Model": "models/sbox_props/parking_bollard/parking_bollard.vmdl",
+                  "Tint": "1,1,1,1",
+                  "CastShadows": true
+                }
+              ]
+            },
+            {
+              "Name": "Bollard",
+              "__guid": "504d9e2a-6c5e-4fca-a746-c3cf3a39a57c",
+              "Active": true,
+              "Position": "-70,400,0",
+              "Rotation": "0,0,0",
+              "Scale": "1",
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "Model": "models/sbox_props/parking_bollard/parking_bollard.vmdl",
+                  "Tint": "1,1,1,1",
+                  "CastShadows": true
+                }
+              ]
+            },
+            {
+              "Name": "Bollard",
+              "__guid": "5eae8d72-e42a-4398-9391-642d9b58c38a",
+              "Active": true,
+              "Position": "40,400,0",
+              "Rotation": "0,0,0",
+              "Scale": "1",
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "Model": "models/sbox_props/parking_bollard/parking_bollard.vmdl",
+                  "Tint": "1,1,1,1",
+                  "CastShadows": true
+                }
+              ]
+            },
+            {
+              "Name": "Bollard",
+              "__guid": "0d8247c4-2353-4bd7-b403-da8dd0365d02",
+              "Active": true,
+              "Position": "150,400,0",
+              "Rotation": "0,0,0",
+              "Scale": "1",
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "Model": "models/sbox_props/parking_bollard/parking_bollard.vmdl",
+                  "Tint": "1,1,1,1",
+                  "CastShadows": true
+                }
+              ]
+            },
+            {
+              "Name": "Bollard",
+              "__guid": "62dbb663-879c-4557-952f-8172cefd32d4",
+              "Active": true,
+              "Position": "260,400,0",
+              "Rotation": "0,0,0",
+              "Scale": "1",
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "Model": "models/sbox_props/parking_bollard/parking_bollard.vmdl",
+                  "Tint": "1,1,1,1",
+                  "CastShadows": true
+                }
+              ]
+            },
+            {
+              "Name": "Bollard",
+              "__guid": "75872782-8ba1-43ce-bc24-9df0aacfabf7",
+              "Active": true,
+              "Position": "370,400,0",
+              "Rotation": "0,0,0",
+              "Scale": "1",
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "Model": "models/sbox_props/parking_bollard/parking_bollard.vmdl",
+                  "Tint": "1,1,1,1",
+                  "CastShadows": true
+                }
+              ]
+            },
+            {
+              "Name": "Bench",
+              "__guid": "93b0502e-67f9-4dd3-bdfe-b696be36692b",
+              "Active": true,
+              "Position": "-200,100,0",
+              "Rotation": "0,90,0",
+              "Scale": "1",
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "Model": "models/sbox_props/benches/old_bench.vmdl",
+                  "Tint": "1,1,1,1",
+                  "CastShadows": true
+                }
+              ]
+            },
+            {
+              "Name": "Street Bin",
+              "__guid": "2a395412-03c7-4f4d-8c17-5b7672614ad6",
+              "Active": true,
+              "Position": "250,150,0",
+              "Rotation": "0,0,0",
+              "Scale": "1",
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "Model": "models/sbox_props/bin/street_bin_rubbish.vmdl",
+                  "Tint": "1,1,1,1",
+                  "CastShadows": true
+                }
+              ]
+            },
+            {
+              "Name": "Industrial Light",
+              "__guid": "47d94a9f-ea90-48ec-a156-acba034a5ae2",
+              "Active": true,
+              "Position": "0,0,250",
+              "Rotation": "0,0,0",
+              "Scale": "1",
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "Model": "models/sbox_props/industrial_strip_light/industrial_strip_light.vmdl",
+                  "Tint": "1,1,1,1",
+                  "CastShadows": true
+                }
+              ]
+            },
+            {
+              "Name": "Industrial Light",
+              "__guid": "e81b885a-1142-43e9-b280-ae03b6f16ded",
+              "Active": true,
+              "Position": "-500,0,250",
+              "Rotation": "0,0,0",
+              "Scale": "1",
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "Model": "models/sbox_props/industrial_strip_light/industrial_strip_light.vmdl",
+                  "Tint": "1,1,1,1",
+                  "CastShadows": true
+                }
+              ]
+            },
+            {
+              "Name": "Industrial Light",
+              "__guid": "61062acd-7c16-4d0f-bb7b-0e390711faa4",
+              "Active": true,
+              "Position": "500,0,250",
+              "Rotation": "0,0,0",
+              "Scale": "1",
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "Model": "models/sbox_props/industrial_strip_light/industrial_strip_light.vmdl",
+                  "Tint": "1,1,1,1",
+                  "CastShadows": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "__guid": "61c5cff2-da23-44fb-b3f3-a52749f7693f",
@@ -441,7 +769,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/trimsheets/concrete/concrete_trim_damaged_blend_01.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -457,7 +785,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.55,0.32,0.16,1"
+                      "Tint": "0.55,0.32,0.16,1",
+                      "Scale": "8,96,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -480,7 +809,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "8,96,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -526,7 +855,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -542,7 +871,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.42,0.45,0.43,1"
+                      "Tint": "0.42,0.45,0.43,1",
+                      "Scale": "8,104,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -565,7 +895,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "8,104,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -598,7 +928,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -614,7 +944,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.38,0.41,0.4,1"
+                      "Tint": "0.38,0.41,0.4,1",
+                      "Scale": "110,8,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -637,7 +968,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "110,8,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -670,7 +1001,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -686,7 +1017,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.38,0.41,0.4,1"
+                      "Tint": "0.38,0.41,0.4,1",
+                      "Scale": "110,8,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -709,7 +1041,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "110,8,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -742,7 +1074,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -758,7 +1090,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.4,0.43,0.41,1"
+                      "Tint": "0.4,0.43,0.41,1",
+                      "Scale": "8,56,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -781,7 +1114,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "8,56,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -814,7 +1147,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -830,7 +1163,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.4,0.43,0.41,1"
+                      "Tint": "0.4,0.43,0.41,1",
+                      "Scale": "8,56,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -853,7 +1187,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "8,56,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -886,7 +1220,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/concrete/floor/floor_tile_blend_02.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -902,7 +1236,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.24,0.26,0.25,1"
+                      "Tint": "0.24,0.26,0.25,1",
+                      "Scale": "110,104,2"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -925,13 +1260,140 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "110,104,2",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
                     }
                   ],
                   "Children": []
+                },
+                {
+                  "Name": "Ceiling",
+                  "__guid": "b0eb127d-a31a-4748-b515-b2a7d8dfb787",
+                  "Active": true,
+                  "Position": "210,0,130",
+                  "Rotation": "0,0,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.BoxCollider",
+                      "Scale": "110,104,4",
+                      "IsTrigger": false
+                    },
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/dev/box.vmdl",
+                      "Scale": "110,104,4",
+                      "MaterialOverride": "materials/concrete/wall/concrete_rough_a.vmat",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true
+                    }
+                  ]
+                },
+                {
+                  "Name": "Chair",
+                  "__guid": "eb153a02-28bb-453e-8a71-c5f14742fc0b",
+                  "Active": true,
+                  "Position": "-43,-48,15",
+                  "Rotation": "0,196,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/chair01.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "1.0",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Crate",
+                  "__guid": "843c4ca3-7b73-4439-8c76-e86d2196fadb",
+                  "Active": true,
+                  "Position": "11,-56,2",
+                  "Rotation": "0,84,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/crate01.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "0.8",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Sink",
+                  "__guid": "85cc1513-2756-4f19-bf4d-eca0aaa60379",
+                  "Active": true,
+                  "Position": "12,7,14",
+                  "Rotation": "0,252,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/bathroomsink01.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "1.0",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Chair",
+                  "__guid": "eb206f92-838d-4fcd-a551-13d8c0bf1459",
+                  "Active": true,
+                  "Position": "-10,-6,6",
+                  "Rotation": "0,313,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/chair02.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "1.0",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Wall Light",
+                  "__guid": "2a019ea9-a5dd-4c7f-98b3-669b20bc09b1",
+                  "Active": true,
+                  "Position": "310,0,100",
+                  "Rotation": "0,180,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/props/industrial_wall_light/industrial_wall_light.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true
+                    }
+                  ]
+                },
+                {
+                  "Name": "Air Duct",
+                  "__guid": "d06c984e-f6d1-4c18-a687-fdb17577207d",
+                  "Active": true,
+                  "Position": "10,-14,128",
+                  "Rotation": "0,0,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/sbox_props/airducts/airduct_a_vent_64x32.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true
+                    }
+                  ]
                 }
               ]
             },
@@ -1143,7 +1605,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/trimsheets/concrete/concrete_trim_damaged_blend_01.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -1159,7 +1621,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.55,0.32,0.16,1"
+                      "Tint": "0.55,0.32,0.16,1",
+                      "Scale": "8,96,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -1182,7 +1645,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "8,96,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -1228,7 +1691,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -1244,7 +1707,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.42,0.45,0.43,1"
+                      "Tint": "0.42,0.45,0.43,1",
+                      "Scale": "8,104,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -1267,7 +1731,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "8,104,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -1300,7 +1764,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -1316,7 +1780,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.38,0.41,0.4,1"
+                      "Tint": "0.38,0.41,0.4,1",
+                      "Scale": "110,8,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -1339,7 +1804,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "110,8,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -1372,7 +1837,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -1388,7 +1853,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.38,0.41,0.4,1"
+                      "Tint": "0.38,0.41,0.4,1",
+                      "Scale": "110,8,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -1411,7 +1877,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "110,8,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -1444,7 +1910,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -1460,7 +1926,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.4,0.43,0.41,1"
+                      "Tint": "0.4,0.43,0.41,1",
+                      "Scale": "8,56,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -1483,7 +1950,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "8,56,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -1516,7 +1983,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -1532,7 +1999,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.4,0.43,0.41,1"
+                      "Tint": "0.4,0.43,0.41,1",
+                      "Scale": "8,56,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -1555,7 +2023,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "8,56,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -1588,7 +2056,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/concrete/floor/floor_tile_blend_02.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -1604,7 +2072,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.24,0.26,0.25,1"
+                      "Tint": "0.24,0.26,0.25,1",
+                      "Scale": "110,104,2"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -1627,13 +2096,194 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "110,104,2",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
                     }
                   ],
                   "Children": []
+                },
+                {
+                  "Name": "Ceiling",
+                  "__guid": "47429459-91d0-4443-9588-03d963de75a3",
+                  "Active": true,
+                  "Position": "210,0,130",
+                  "Rotation": "0,0,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.BoxCollider",
+                      "Scale": "110,104,4",
+                      "IsTrigger": false
+                    },
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/dev/box.vmdl",
+                      "Scale": "110,104,4",
+                      "MaterialOverride": "materials/concrete/wall/concrete_rough_a.vmat",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true
+                    }
+                  ]
+                },
+                {
+                  "Name": "Trashcan",
+                  "__guid": "5614b6a6-40a9-4c1a-8e59-54f7e6069827",
+                  "Active": true,
+                  "Position": "-14,-17,7",
+                  "Rotation": "0,95,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/trashcan01.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "1.0",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Crate",
+                  "__guid": "5f7c85f1-3454-42a0-abc7-63b2d84f808c",
+                  "Active": true,
+                  "Position": "-55,-5,2",
+                  "Rotation": "0,332,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/crate01.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "0.8",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Chair",
+                  "__guid": "e35accfe-7d08-46be-acc4-6b952b57a739",
+                  "Active": true,
+                  "Position": "-51,-25,13",
+                  "Rotation": "0,319,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/chair03.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "1.0",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Chair",
+                  "__guid": "09c21d0d-c5ff-4417-b45d-a0457e253972",
+                  "Active": true,
+                  "Position": "-17,-37,1",
+                  "Rotation": "0,238,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/chair02.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "1.0",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Cardboard Box",
+                  "__guid": "3ea0647e-5993-4179-be79-309abb20709e",
+                  "Active": true,
+                  "Position": "33,58,17",
+                  "Rotation": "0,312,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/cardboardbox01.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "0.8",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Chair",
+                  "__guid": "3e7bedc4-3716-47f9-b619-79e0eda3fa40",
+                  "Active": true,
+                  "Position": "-14,-6,17",
+                  "Rotation": "0,59,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/chair01.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "1.0",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Trash Bag",
+                  "__guid": "c63ced36-b864-4185-88ae-b99d11e43a0d",
+                  "Active": true,
+                  "Position": "-17,20,14",
+                  "Rotation": "0,246,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/trashbag02.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "0.6",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Wall Light",
+                  "__guid": "b75ad2f4-3e48-41eb-8263-6240c6d20355",
+                  "Active": true,
+                  "Position": "310,0,100",
+                  "Rotation": "0,180,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/props/industrial_wall_light/industrial_wall_light.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true
+                    }
+                  ]
+                },
+                {
+                  "Name": "Air Duct",
+                  "__guid": "c5397cf0-6d8e-46bd-aab0-f75e1e2c9010",
+                  "Active": true,
+                  "Position": "-17,5,128",
+                  "Rotation": "0,0,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/sbox_props/airducts/airduct_a_vent_64x32.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true
+                    }
+                  ]
                 }
               ]
             },
@@ -1845,7 +2495,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/trimsheets/concrete/concrete_trim_damaged_blend_01.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -1861,7 +2511,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.55,0.32,0.16,1"
+                      "Tint": "0.55,0.32,0.16,1",
+                      "Scale": "8,96,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -1884,7 +2535,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "8,96,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -1930,7 +2581,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -1946,7 +2597,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.42,0.45,0.43,1"
+                      "Tint": "0.42,0.45,0.43,1",
+                      "Scale": "8,104,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -1969,7 +2621,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "8,104,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -2002,7 +2654,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -2018,7 +2670,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.38,0.41,0.4,1"
+                      "Tint": "0.38,0.41,0.4,1",
+                      "Scale": "110,8,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -2041,7 +2694,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "110,8,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -2074,7 +2727,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -2090,7 +2743,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.38,0.41,0.4,1"
+                      "Tint": "0.38,0.41,0.4,1",
+                      "Scale": "110,8,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -2113,7 +2767,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "110,8,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -2146,7 +2800,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -2162,7 +2816,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.4,0.43,0.41,1"
+                      "Tint": "0.4,0.43,0.41,1",
+                      "Scale": "8,56,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -2185,7 +2840,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "8,56,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -2218,7 +2873,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -2234,7 +2889,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.4,0.43,0.41,1"
+                      "Tint": "0.4,0.43,0.41,1",
+                      "Scale": "8,56,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -2257,7 +2913,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "8,56,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -2290,7 +2946,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/concrete/floor/floor_tile_blend_02.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -2306,7 +2962,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.24,0.26,0.25,1"
+                      "Tint": "0.24,0.26,0.25,1",
+                      "Scale": "110,104,2"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -2329,13 +2986,158 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "110,104,2",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
                     }
                   ],
                   "Children": []
+                },
+                {
+                  "Name": "Ceiling",
+                  "__guid": "0d249b69-2f9b-4ab2-8742-975fa452f6e6",
+                  "Active": true,
+                  "Position": "210,0,130",
+                  "Rotation": "0,0,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.BoxCollider",
+                      "Scale": "110,104,4",
+                      "IsTrigger": false
+                    },
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/dev/box.vmdl",
+                      "Scale": "110,104,4",
+                      "MaterialOverride": "materials/concrete/wall/concrete_rough_a.vmat",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true
+                    }
+                  ]
+                },
+                {
+                  "Name": "Chair",
+                  "__guid": "734b1a1b-2df3-4da7-8ef9-dc9d431f15dd",
+                  "Active": true,
+                  "Position": "23,-34,6",
+                  "Rotation": "0,277,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/chair03.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "1.0",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Cardboard Box",
+                  "__guid": "fd7a2868-40ce-458c-9a8d-762a49686454",
+                  "Active": true,
+                  "Position": "-53,39,16",
+                  "Rotation": "0,144,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/cardboardbox01.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "0.8",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Recycling Bin",
+                  "__guid": "b1b73fa0-8667-462d-afe1-0e0d36408ad0",
+                  "Active": true,
+                  "Position": "-52,50,11",
+                  "Rotation": "0,258,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/recyclingbin01.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "1.0",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Grit Bin",
+                  "__guid": "f84fb53e-6c01-4578-a709-28885a9c452b",
+                  "Active": true,
+                  "Position": "-34,-0,18",
+                  "Rotation": "0,231,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/gritbin01_combined.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "1.0",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Trashcan",
+                  "__guid": "c8af87a9-b610-4354-8a1a-5fe293553349",
+                  "Active": true,
+                  "Position": "-43,-43,15",
+                  "Rotation": "0,194,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/trashcan01.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "1.0",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Wall Light",
+                  "__guid": "7eca6442-f2b5-4455-af44-3cc1be49fa0d",
+                  "Active": true,
+                  "Position": "310,0,100",
+                  "Rotation": "0,180,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/props/industrial_wall_light/industrial_wall_light.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true
+                    }
+                  ]
+                },
+                {
+                  "Name": "Air Duct",
+                  "__guid": "531b0487-1488-4ba7-a709-43a8db0472a9",
+                  "Active": true,
+                  "Position": "10,-3,128",
+                  "Rotation": "0,0,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/sbox_props/airducts/airduct_a_vent_64x32.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true
+                    }
+                  ]
                 }
               ]
             },
@@ -2547,7 +3349,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/trimsheets/concrete/concrete_trim_damaged_blend_01.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -2563,7 +3365,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.55,0.32,0.16,1"
+                      "Tint": "0.55,0.32,0.16,1",
+                      "Scale": "8,96,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -2586,7 +3389,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "8,96,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -2632,7 +3435,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -2648,7 +3451,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.42,0.45,0.43,1"
+                      "Tint": "0.42,0.45,0.43,1",
+                      "Scale": "8,104,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -2671,7 +3475,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "8,104,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -2704,7 +3508,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -2720,7 +3524,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.38,0.41,0.4,1"
+                      "Tint": "0.38,0.41,0.4,1",
+                      "Scale": "110,8,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -2743,7 +3548,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "110,8,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -2776,7 +3581,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -2792,7 +3597,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.38,0.41,0.4,1"
+                      "Tint": "0.38,0.41,0.4,1",
+                      "Scale": "110,8,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -2815,7 +3621,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "110,8,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -2848,7 +3654,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -2864,7 +3670,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.4,0.43,0.41,1"
+                      "Tint": "0.4,0.43,0.41,1",
+                      "Scale": "8,56,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -2887,7 +3694,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "8,56,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -2920,7 +3727,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -2936,7 +3743,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.4,0.43,0.41,1"
+                      "Tint": "0.4,0.43,0.41,1",
+                      "Scale": "8,56,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -2959,7 +3767,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "8,56,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -2992,7 +3800,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/concrete/floor/floor_tile_blend_02.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -3008,7 +3816,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.24,0.26,0.25,1"
+                      "Tint": "0.24,0.26,0.25,1",
+                      "Scale": "110,104,2"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -3031,13 +3840,194 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "110,104,2",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
                     }
                   ],
                   "Children": []
+                },
+                {
+                  "Name": "Ceiling",
+                  "__guid": "84d13fa4-ea03-4435-9470-8d05d3ad6b96",
+                  "Active": true,
+                  "Position": "210,0,130",
+                  "Rotation": "0,0,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.BoxCollider",
+                      "Scale": "110,104,4",
+                      "IsTrigger": false
+                    },
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/dev/box.vmdl",
+                      "Scale": "110,104,4",
+                      "MaterialOverride": "materials/concrete/wall/concrete_rough_a.vmat",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true
+                    }
+                  ]
+                },
+                {
+                  "Name": "Trashcan",
+                  "__guid": "33483098-20ce-486c-bbc8-1dfa791b759e",
+                  "Active": true,
+                  "Position": "43,-42,3",
+                  "Rotation": "0,245,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/trashcan01.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "1.0",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Sink",
+                  "__guid": "568bb803-a625-4ac1-a7e2-b7798b4cbf48",
+                  "Active": true,
+                  "Position": "12,-14,12",
+                  "Rotation": "0,168,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/bathroomsink01.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "1.0",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Chair",
+                  "__guid": "76dc1ca4-3fc8-48ca-ac25-e33021b4c465",
+                  "Active": true,
+                  "Position": "-30,6,19",
+                  "Rotation": "0,245,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/chair03.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "1.0",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Crate",
+                  "__guid": "6667d7a9-24fe-44e5-80d6-9484a6826e7a",
+                  "Active": true,
+                  "Position": "-46,46,15",
+                  "Rotation": "0,277,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/crate01.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "0.8",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Trash Bag",
+                  "__guid": "a0525061-5249-4964-bead-b1f5dfb4790e",
+                  "Active": true,
+                  "Position": "-19,-25,3",
+                  "Rotation": "0,1,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/trashbag02.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "0.6",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Chair",
+                  "__guid": "ab0b4211-b248-4cf2-9273-736d61be9fd8",
+                  "Active": true,
+                  "Position": "27,26,19",
+                  "Rotation": "0,274,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/chair01.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "1.0",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Recycling Bin",
+                  "__guid": "30929d93-792f-40a7-a089-971413794e6b",
+                  "Active": true,
+                  "Position": "1,-47,13",
+                  "Rotation": "0,303,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/recyclingbin01.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "1.0",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Wall Light",
+                  "__guid": "3a346211-eb31-40b1-9f83-a4499f70ee17",
+                  "Active": true,
+                  "Position": "310,0,100",
+                  "Rotation": "0,180,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/props/industrial_wall_light/industrial_wall_light.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true
+                    }
+                  ]
+                },
+                {
+                  "Name": "Air Duct",
+                  "__guid": "4fb58181-fa2a-48b7-be14-20d8d52d7074",
+                  "Active": true,
+                  "Position": "0,-12,128",
+                  "Rotation": "0,0,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/sbox_props/airducts/airduct_a_vent_64x32.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true
+                    }
+                  ]
                 }
               ]
             },
@@ -3249,7 +4239,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/trimsheets/concrete/concrete_trim_damaged_blend_01.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -3265,7 +4255,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.55,0.32,0.16,1"
+                      "Tint": "0.55,0.32,0.16,1",
+                      "Scale": "8,96,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -3288,7 +4279,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "8,96,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -3334,7 +4325,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -3350,7 +4341,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.42,0.45,0.43,1"
+                      "Tint": "0.42,0.45,0.43,1",
+                      "Scale": "8,104,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -3373,7 +4365,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "8,104,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -3406,7 +4398,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -3422,7 +4414,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.38,0.41,0.4,1"
+                      "Tint": "0.38,0.41,0.4,1",
+                      "Scale": "110,8,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -3445,7 +4438,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "110,8,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -3478,7 +4471,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -3494,7 +4487,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.38,0.41,0.4,1"
+                      "Tint": "0.38,0.41,0.4,1",
+                      "Scale": "110,8,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -3517,7 +4511,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "110,8,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -3550,7 +4544,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -3566,7 +4560,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.4,0.43,0.41,1"
+                      "Tint": "0.4,0.43,0.41,1",
+                      "Scale": "8,56,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -3589,7 +4584,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "8,56,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -3622,7 +4617,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/generic/wall_brick_b.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -3638,7 +4633,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.4,0.43,0.41,1"
+                      "Tint": "0.4,0.43,0.41,1",
+                      "Scale": "8,56,64"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -3661,7 +4657,7 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "8,56,64",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
@@ -3694,7 +4690,7 @@
                       "CreateAttachments": false,
                       "LodOverride": null,
                       "MaterialGroup": null,
-                      "MaterialOverride": null,
+                      "MaterialOverride": "materials/concrete/floor/floor_tile_blend_02.vmat",
                       "Materials": null,
                       "Model": "models/dev/box.vmdl",
                       "OnComponentDestroy": null,
@@ -3710,7 +4706,8 @@
                         "AfterUILayer": false
                       },
                       "RenderType": "On",
-                      "Tint": "0.24,0.26,0.25,1"
+                      "Tint": "0.24,0.26,0.25,1",
+                      "Scale": "110,104,2"
                     },
                     {
                       "__type": "Sandbox.BoxCollider",
@@ -3733,13 +4730,176 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "64,64,64",
+                      "Scale": "110,104,2",
                       "Static": true,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
                     }
                   ],
                   "Children": []
+                },
+                {
+                  "Name": "Ceiling",
+                  "__guid": "cf2a4cf8-d5f9-479f-a82a-2d154bf338e9",
+                  "Active": true,
+                  "Position": "210,0,130",
+                  "Rotation": "0,0,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.BoxCollider",
+                      "Scale": "110,104,4",
+                      "IsTrigger": false
+                    },
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/dev/box.vmdl",
+                      "Scale": "110,104,4",
+                      "MaterialOverride": "materials/concrete/wall/concrete_rough_a.vmat",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true
+                    }
+                  ]
+                },
+                {
+                  "Name": "Chair",
+                  "__guid": "cf3dfb21-7722-4837-a7dc-e077a51a00a0",
+                  "Active": true,
+                  "Position": "-58,51,18",
+                  "Rotation": "0,299,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/chair03.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "1.0",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Trash Bag",
+                  "__guid": "199c40ae-b14a-4b4c-aa6f-221842a820e0",
+                  "Active": true,
+                  "Position": "-23,-53,18",
+                  "Rotation": "0,341,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/trashbag02.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "0.6",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Chair",
+                  "__guid": "fe477181-8cb3-486e-85f5-35fde0a5f98a",
+                  "Active": true,
+                  "Position": "-50,-2,1",
+                  "Rotation": "0,274,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/chair01.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "1.0",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Crate",
+                  "__guid": "fc45de4e-e1c5-4422-a22c-5d40a70138f2",
+                  "Active": true,
+                  "Position": "32,-45,10",
+                  "Rotation": "0,198,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/crate01.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "0.8",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Grit Bin",
+                  "__guid": "9d4e4441-413c-4694-b4e3-7695ba4865e4",
+                  "Active": true,
+                  "Position": "-28,45,8",
+                  "Rotation": "0,76,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/gritbin01_combined.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "1.0",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Sink",
+                  "__guid": "2815e2d6-bd09-4ac4-a27b-adde537f48d7",
+                  "Active": true,
+                  "Position": "5,28,4",
+                  "Rotation": "0,112,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/citizen_props/bathroomsink01.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true,
+                      "Scale": "1.0",
+                      "Rotation": "0,0,0"
+                    }
+                  ]
+                },
+                {
+                  "Name": "Wall Light",
+                  "__guid": "e907f2c9-c957-4073-8706-9993cc1c742a",
+                  "Active": true,
+                  "Position": "310,0,100",
+                  "Rotation": "0,180,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/props/industrial_wall_light/industrial_wall_light.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true
+                    }
+                  ]
+                },
+                {
+                  "Name": "Air Duct",
+                  "__guid": "27095bac-6168-4e27-b794-ccd135606073",
+                  "Active": true,
+                  "Position": "20,6,128",
+                  "Rotation": "0,0,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/sbox_props/airducts/airduct_a_vent_64x32.vmdl",
+                      "Tint": "1,1,1,1",
+                      "CastShadows": true
+                    }
+                  ]
                 }
               ]
             }
@@ -3952,7 +5112,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/citizen_props/trashcan01.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -3966,7 +5126,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "3.7,40.1,1.2",
+                  "Scale": "0.87"
                 }
               ],
               "Children": []
@@ -4054,7 +5216,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_a/trash_pile_a_03.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -4068,7 +5230,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "4.5,243.6,0.4",
+                  "Scale": "1.01"
                 }
               ],
               "Children": []
@@ -4156,7 +5320,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_a/trash_pile_a_02.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -4170,7 +5334,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "1.2,33.7,3.0",
+                  "Scale": "1.08"
                 }
               ],
               "Children": []
@@ -4258,7 +5424,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/citizen_props/trashcan02.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -4272,7 +5438,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "2.7,234.0,1.1",
+                  "Scale": "1.09"
                 }
               ],
               "Children": []
@@ -4360,7 +5528,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/citizen_props/trashbag02.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -4374,7 +5542,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "3.8,312.9,0.8",
+                  "Scale": "1.01"
                 }
               ],
               "Children": []
@@ -4462,7 +5632,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_c/trash_pile_c_01.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -4476,7 +5646,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "4.8,56.0,1.7",
+                  "Scale": "0.85"
                 }
               ],
               "Children": []
@@ -4564,7 +5736,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_a/trash_pile_a_03.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -4578,7 +5750,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "1.7,129.2,1.3",
+                  "Scale": "0.82"
                 }
               ],
               "Children": []
@@ -4666,7 +5840,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_c/trash_pile_c_04.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -4680,7 +5854,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "4.9,193.0,1.9",
+                  "Scale": "1.08"
                 }
               ],
               "Children": []
@@ -4768,7 +5944,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/citizen_props/trashcan01.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -4782,7 +5958,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "4.3,222.7,2.9",
+                  "Scale": "1.15"
                 }
               ],
               "Children": []
@@ -4870,7 +6048,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_a/trash_pile_a_02.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -4884,7 +6062,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "3.9,238.1,4.9",
+                  "Scale": "1.23"
                 }
               ],
               "Children": []
@@ -4972,7 +6152,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_a/trash_pile_a_03.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -4986,7 +6166,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "2.3,136.8,4.2",
+                  "Scale": "0.88"
                 }
               ],
               "Children": []
@@ -5074,7 +6256,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_c/trash_pile_c_02.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -5088,7 +6270,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "1.3,75.4,4.7",
+                  "Scale": "1.12"
                 }
               ],
               "Children": []
@@ -5176,7 +6360,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/citizen_props/cardboardbox01.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -5190,7 +6374,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "2.7,228.6,1.2",
+                  "Scale": "1.03"
                 }
               ],
               "Children": []
@@ -5278,7 +6464,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_c/trash_pile_c_01.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -5292,7 +6478,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "3.2,356.2,2.8",
+                  "Scale": "1.14"
                 }
               ],
               "Children": []
@@ -5380,7 +6568,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/citizen_props/trashbag02.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -5394,7 +6582,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "1.1,279.4,0.2",
+                  "Scale": "0.96"
                 }
               ],
               "Children": []
@@ -5482,7 +6672,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_c/trash_pile_c_01.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -5496,7 +6686,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "4.6,23.8,2.8",
+                  "Scale": "1.16"
                 }
               ],
               "Children": []
@@ -5584,7 +6776,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_b/trash_pile_b_2.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -5598,7 +6790,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "2.0,236.0,4.6",
+                  "Scale": "1.03"
                 }
               ],
               "Children": []
@@ -5686,7 +6880,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_c/trash_pile_c_01.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -5700,7 +6894,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "3.7,50.3,2.7",
+                  "Scale": "1.17"
                 }
               ],
               "Children": []
@@ -5788,7 +6984,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_c/trash_pile_c_03.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -5802,7 +6998,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "2.0,323.2,1.1",
+                  "Scale": "1.30"
                 }
               ],
               "Children": []
@@ -5890,7 +7088,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_c/trash_pile_c_05.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -5904,7 +7102,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "3.8,177.7,4.3",
+                  "Scale": "0.88"
                 }
               ],
               "Children": []
@@ -5992,7 +7192,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_b/trash_pile_b_1.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -6006,7 +7206,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "2.1,285.1,0.3",
+                  "Scale": "0.99"
                 }
               ],
               "Children": []
@@ -6094,7 +7296,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_c/trash_pile_c_04.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -6108,7 +7310,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "4.9,190.5,4.3",
+                  "Scale": "0.81"
                 }
               ],
               "Children": []
@@ -6196,7 +7400,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/citizen_props/trashcan02.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -6210,7 +7414,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "4.4,41.2,3.8",
+                  "Scale": "1.18"
                 }
               ],
               "Children": []
@@ -6298,7 +7504,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_c/trash_pile_c_02.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -6312,7 +7518,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "2.2,40.2,2.3",
+                  "Scale": "1.28"
                 }
               ],
               "Children": []
@@ -6400,7 +7608,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/citizen_props/trashcan02.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -6414,7 +7622,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "2.5,94.8,0.9",
+                  "Scale": "1.26"
                 }
               ],
               "Children": []
@@ -6502,7 +7712,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/citizen_props/trashcan01.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -6516,7 +7726,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "3.2,107.4,3.0",
+                  "Scale": "0.88"
                 }
               ],
               "Children": []
@@ -6604,7 +7816,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/citizen_props/trashbag02.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -6618,7 +7830,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "4.8,58.2,4.6",
+                  "Scale": "1.26"
                 }
               ],
               "Children": []
@@ -6706,7 +7920,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/citizen_props/cardboardbox01.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -6720,7 +7934,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "0.1,116.7,4.6",
+                  "Scale": "1.24"
                 }
               ],
               "Children": []
@@ -6808,7 +8024,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/citizen_props/trashbag02.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -6822,7 +8038,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "0.3,110.7,4.4",
+                  "Scale": "1.27"
                 }
               ],
               "Children": []
@@ -6910,7 +8128,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_a/trash_pile_a_03.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -6924,7 +8142,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "4.1,263.5,4.9",
+                  "Scale": "1.07"
                 }
               ],
               "Children": []
@@ -7012,7 +8232,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_b/trash_pile_b_1.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -7026,7 +8246,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "2.4,46.2,2.7",
+                  "Scale": "0.93"
                 }
               ],
               "Children": []
@@ -7114,7 +8336,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/citizen_props/cardboardbox01.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -7128,7 +8350,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "1.1,152.3,2.7",
+                  "Scale": "1.16"
                 }
               ],
               "Children": []
@@ -7216,7 +8440,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_b/trash_pile_b_2.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -7230,7 +8454,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "2.0,256.7,3.4",
+                  "Scale": "0.99"
                 }
               ],
               "Children": []
@@ -7318,7 +8544,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_c/trash_pile_c_05.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -7332,7 +8558,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "1.2,162.5,0.3",
+                  "Scale": "0.81"
                 }
               ],
               "Children": []
@@ -7420,7 +8648,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_c/trash_pile_c_05.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -7434,7 +8662,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "1.1,82.8,0.4",
+                  "Scale": "1.12"
                 }
               ],
               "Children": []
@@ -7522,7 +8752,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_b/trash_pile_b_2.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -7536,7 +8766,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "0.2,24.3,1.7",
+                  "Scale": "1.06"
                 }
               ],
               "Children": []
@@ -7624,7 +8856,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_c/trash_pile_c_01.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -7638,7 +8870,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "1.1,240.8,0.7",
+                  "Scale": "1.27"
                 }
               ],
               "Children": []
@@ -7726,7 +8960,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/citizen_props/cardboardbox01.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -7740,7 +8974,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "1.2,207.4,2.4",
+                  "Scale": "1.00"
                 }
               ],
               "Children": []
@@ -7828,7 +9064,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_a/trash_pile_a_03.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -7842,7 +9078,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "2.2,34.9,2.1",
+                  "Scale": "1.03"
                 }
               ],
               "Children": []
@@ -7930,7 +9168,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/citizen_props/trashcan02.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -7944,7 +9182,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "3.3,19.5,3.2",
+                  "Scale": "0.83"
                 }
               ],
               "Children": []
@@ -8032,7 +9272,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/citizen_props/trashcan02.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -8046,7 +9286,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "4.3,122.1,1.2",
+                  "Scale": "0.90"
                 }
               ],
               "Children": []
@@ -8134,7 +9376,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_c/trash_pile_c_04.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -8148,7 +9390,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "0.9,50.5,2.3",
+                  "Scale": "1.24"
                 }
               ],
               "Children": []
@@ -8236,7 +9480,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_a/trash_pile_a_03.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -8250,7 +9494,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "4.3,159.5,2.8",
+                  "Scale": "0.83"
                 }
               ],
               "Children": []
@@ -8338,7 +9584,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_c/trash_pile_c_05.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -8352,7 +9598,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "4.8,301.0,4.6",
+                  "Scale": "1.22"
                 }
               ],
               "Children": []
@@ -8440,7 +9688,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_b/trash_pile_b_1.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -8454,7 +9702,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "2.4,146.3,4.3",
+                  "Scale": "1.25"
                 }
               ],
               "Children": []
@@ -8542,7 +9792,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_b/trash_pile_b_1.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -8556,7 +9806,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "4.9,136.4,1.3",
+                  "Scale": "1.19"
                 }
               ],
               "Children": []
@@ -8644,7 +9896,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_c/trash_pile_c_04.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -8658,7 +9910,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "3.5,102.7,3.7",
+                  "Scale": "1.19"
                 }
               ],
               "Children": []
@@ -8746,7 +10000,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/citizen_props/trashcan01.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -8760,7 +10014,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "0.8,258.6,1.5",
+                  "Scale": "1.28"
                 }
               ],
               "Children": []
@@ -8848,7 +10104,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/citizen_props/cardboardbox01.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -8862,7 +10118,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "0.3,264.9,1.6",
+                  "Scale": "0.83"
                 }
               ],
               "Children": []
@@ -8950,7 +10208,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_c/trash_pile_c_04.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -8964,7 +10222,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "4.3,181.0,0.8",
+                  "Scale": "1.28"
                 }
               ],
               "Children": []
@@ -9052,7 +10312,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_a/trash_pile_a_03.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -9066,7 +10326,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "0.3,306.5,0.3",
+                  "Scale": "1.23"
                 }
               ],
               "Children": []
@@ -9154,7 +10416,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_c/trash_pile_c_03.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -9168,7 +10430,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "4.5,43.2,1.2",
+                  "Scale": "1.10"
                 }
               ],
               "Children": []
@@ -9256,7 +10520,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/citizen_props/cardboardbox01.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -9270,7 +10534,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "3.3,29.5,2.8",
+                  "Scale": "0.96"
                 }
               ],
               "Children": []
@@ -9358,7 +10624,7 @@
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Materials": null,
-                  "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+                  "Model": "models/props/trash_pile_c/trash_pile_c_01.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -9372,7 +10638,9 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Rotation": "3.6,73.5,1.2",
+                  "Scale": "1.00"
                 }
               ],
               "Children": []
@@ -10046,7 +11314,7 @@
               "MaterialGroup": null,
               "MaterialOverride": null,
               "Materials": null,
-              "Model": "models/citizen_props/crate01.vmdl",
+              "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
@@ -10060,7 +11328,8 @@
                 "AfterUILayer": false
               },
               "RenderType": "On",
-              "Tint": "0.6,0.5,0.35,1"
+              "Tint": "0.6,0.5,0.35,1",
+              "Scale": "1.5"
             },
             {
               "__type": "Sandbox.BoxCollider",
@@ -10133,7 +11402,7 @@
               "MaterialGroup": null,
               "MaterialOverride": null,
               "Materials": null,
-              "Model": "models/citizen_props/crate01.vmdl",
+              "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
@@ -10147,7 +11416,8 @@
                 "AfterUILayer": false
               },
               "RenderType": "On",
-              "Tint": "0.6,0.5,0.35,1"
+              "Tint": "0.6,0.5,0.35,1",
+              "Scale": "1.5"
             },
             {
               "__type": "Sandbox.BoxCollider",
@@ -10220,7 +11490,7 @@
               "MaterialGroup": null,
               "MaterialOverride": null,
               "Materials": null,
-              "Model": "models/citizen_props/crate01.vmdl",
+              "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
@@ -10234,7 +11504,8 @@
                 "AfterUILayer": false
               },
               "RenderType": "On",
-              "Tint": "0.6,0.5,0.35,1"
+              "Tint": "0.6,0.5,0.35,1",
+              "Scale": "1.5"
             },
             {
               "__type": "Sandbox.BoxCollider",
