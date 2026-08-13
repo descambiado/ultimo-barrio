@@ -1,4 +1,4 @@
-{
+﻿{
   "RootObject": {
     "__guid": "f1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
     "__version": 2,
@@ -31,8 +31,8 @@
         "__guid": "c1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
         "__enabled": true,
         "__type": "Sandbox.ModelRenderer",
-        "Model": "models/dev/box.vmdl",
-        "Tint": "1,1,1,1"
+        "Model": "models/citizen_props/crate01.vmdl",
+        "Tint": "0.55,0.42,0.24,1"
       }
     ],
     "Children": []
