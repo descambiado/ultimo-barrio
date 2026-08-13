@@ -139,7 +139,13 @@ namespace UltimoBarrio
 
                 // s&box way to spawn prefab:
                 var prefabFile = ResourceLibrary.Get<PrefabFile>(prefabPath);
-                var obj = SceneUtility.GetPrefabScene(prefabFile)?.Clone();
+                if ( prefabFile == null )
+                {
+                    Log.Warning( "[Inventory] Drop: prefab no encontrado '" + prefabPath + "'" );
+                    return;
+                }
+
+                var obj = SceneUtility.GetPrefabScene( prefabFile )?.Clone();
                 if (obj != null)
                 {
                     obj.WorldPosition = GameObject.WorldPosition + Vector3.Up * 50f + GameObject.WorldRotation.Forward * 50f;
