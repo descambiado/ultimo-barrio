@@ -41,6 +41,7 @@ namespace UltimoBarrio.Trading
             if (itemId == "water") price = WaterPrice;
             else if (itemId == "medicine") price = MedicinePrice;
             else if (itemId == "ammo_9mm" || itemId == "ammo") { price = AmmoPrice; itemId = "ammo_9mm"; }
+            else if (itemId == "ammo_buckshot") { price = AmmoPrice; }
             else if (itemId == "weapon_usp") { price = 100; }
             else 
             {

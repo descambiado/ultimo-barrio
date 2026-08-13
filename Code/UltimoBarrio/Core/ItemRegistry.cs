@@ -40,6 +40,12 @@ namespace UltimoBarrio
                 Category = ItemCategory.Ammo, StackSize = 120
             };
 
+            _fallbacks["ammo_buckshot"] = new ItemDefinition
+            {
+                ItemId = "ammo_buckshot", DisplayName = "Cartuchos", Description = "Cartuchos calibre 12",
+                Category = ItemCategory.Ammo, StackSize = 60
+            };
+
             _fallbacks["weapon_usp"] = new ItemDefinition
             {
                 ItemId = "weapon_usp", DisplayName = "Pistola USP", Description = "Pistola estándar",
