@@ -92,7 +92,7 @@ namespace UltimoBarrio.Missions
         {
             if (IsProxy) return;
 
-            foreach (var mission in ActiveMissions)
+            foreach (var mission in ActiveMissions.ToList())
             {
                 for (int i = 0; i < mission.Objectives.Count; i++)
                 {
@@ -112,7 +112,38 @@ namespace UltimoBarrio.Missions
                         }
                     }
                 }
+
+                if ( mission.Objectives.All( o => o.IsCompleted ) )
+                {
+                    CompleteMission( mission );
+                }
             }
+        }
+
+        /// <summary>
+        /// Marca la misión como completada y aplica la recompensa (dinero + ítems)
+        /// al jugador local. Idempotente por MissionId.
+        /// </summary>
+        private void CompleteMission( MissionDefinition mission )
+        {
+            if ( CompletedMissionIds.Contains( mission.MissionId ) ) return;
+
+            CompletedMissionIds.Add( mission.MissionId );
+            ActiveMissions.Remove( mission );
+
+            var wallet = Components.Get<Economy.Wallet>();
+            if ( wallet != null && mission.Reward.Money > 0 )
+            {
+                wallet.Deposit( mission.Reward.Money );
+            }
+
+            var inventory = Components.Get<InventoryComponent>();
+            if ( inventory != null && !string.IsNullOrEmpty( mission.Reward.ItemId ) && mission.Reward.ItemAmount > 0 )
+            {
+                inventory.TryAdd( mission.Reward.ItemId, mission.Reward.ItemAmount );
+            }
+
+            Log.Info( $"[Missions] Mission Completed: {mission.Title} (+${mission.Reward.Money}, +{mission.Reward.ItemAmount}x{mission.Reward.ItemId})" );
         }
     }
 }
