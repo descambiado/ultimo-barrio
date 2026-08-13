@@ -9514,19 +9514,6 @@
           ]
         },
         {
-          "__type": "UltimoBarrio.World.UbPlayerFix",
-          "__guid": "6c8eaccd-dd08-4362-af0d-c6997cb11e46",
-          "__enabled": true,
-          "Flags": 0,
-          "__version": 1,
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "OnComponentFixedUpdate": null
-        },
-        {
           "__type": "UltimoBarrio.Development.WorldContentBootstrap",
           "__guid": "7e9d2c4b-8a1f-4b3e-9c6d-5f0a2d4e6b11",
           "__enabled": true,
