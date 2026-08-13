@@ -229,6 +229,13 @@
         "HotbarSlots": 6
       },
       {
+        "__type": "UltimoBarrio.Combat.BuildController",
+        "__guid": "5c8e3a1f-9b4d-4c6e-8a2f-7d0e5f9c3b12",
+        "__enabled": true,
+        "BuildDefinitionId": "fort_barricade_wood",
+        "PlacementRange": 250
+      },
+      {
         "__type": "UltimoBarrio.Content.PlayerContentDamageBridge",
         "__enabled": true
       },

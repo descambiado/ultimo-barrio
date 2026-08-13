@@ -54,6 +54,7 @@ namespace UltimoBarrio.Content.Fortification
 				MaxHp = 150f,
 				RepairAmount = 25f,
 				RepairCost = 5,
+				BuildCost = 20,
 				UpgradeTo = "fort_barricade_reinforced",
 				AssetsVerified = true,
 				VerificationNotes = "Modelo real del engine (asset-registry engine.sbox_props_old_bench). Upgrades a reinforced."
@@ -74,6 +75,7 @@ namespace UltimoBarrio.Content.Fortification
 				MaxHp = 400f,
 				RepairAmount = 30f,
 				RepairCost = 10,
+				BuildCost = 50,
 				UpgradeTo = "",
 				AssetsVerified = true,
 				VerificationNotes = "Panel metálico (caja de persiana de seguridad). Mejora de la barricada de madera."

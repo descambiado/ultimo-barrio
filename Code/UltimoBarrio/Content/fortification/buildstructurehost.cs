@@ -28,6 +28,12 @@ namespace UltimoBarrio.Content.Fortification
 
 		protected override void OnStart()
 		{
+			// Tags para que los enemigos puedan percibir y atacar la estructura:
+			//   "enemy_target"  → candidato para EnemyPerception.FindBestCandidate.
+			//   "fortification" → preferencia del Bruto (StructureTag) sobre el jugador.
+			GameObject.Tags.Add( "fortification" );
+			GameObject.Tags.Add( "enemy_target" );
+
 			Definition = FortificationContentRegistry.Get( DefinitionId );
 			if ( Definition == null )
 			{
