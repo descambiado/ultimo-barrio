@@ -2,12 +2,14 @@
 using Sandbox;
 using Sandbox.UI;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UltimoBarrio.Combat;
 using UltimoBarrio.Economy;
 using UltimoBarrio.WorldTime;
 using UltimoBarrio.Raids;
 using UltimoBarrio.Apartments;
+using UltimoBarrio.Missions;
 
 namespace UltimoBarrio.UI
 {
@@ -60,10 +62,36 @@ namespace UltimoBarrio.UI
 
         public string MoneyText => "$" + (WalletComp?.Balance ?? 0).ToString();
 
+        public string MissionTitle => Journal?.ActiveMissions.FirstOrDefault()?.Title ?? "";
+
+        /// <summary>Objetivos de la misión activa como líneas de texto (con estado).</summary>
+        public List<string> MissionObjectives
+        {
+            get
+            {
+                var result = new List<string>();
+                var mission = Journal?.ActiveMissions.FirstOrDefault();
+                if ( mission != null )
+                {
+                    foreach ( var obj in mission.Objectives )
+                    {
+                        string state = obj.IsCompleted
+                            ? "OK"
+                            : $"{obj.CurrentProgress}/{obj.TargetAmount}";
+                        result.Add( $"{obj.Description}  [{state}]" );
+                    }
+                }
+                return result;
+            }
+        }
+
+        public bool HasActiveMission => Journal != null && Journal.ActiveMissions.Count > 0;
+
         private WorldClock Clock => PlayerObj?.Scene?.GetAllComponents<WorldClock>().FirstOrDefault();
         private HealthComponent HealthComp => PlayerObj?.Components.Get<HealthComponent>(FindMode.EverythingInSelfAndDescendants);
         private Wallet WalletComp => PlayerObj?.Components.Get<Wallet>(FindMode.EverythingInSelfAndDescendants);
         private UbWeaponCarrier WeaponCarrier => PlayerObj?.Components.Get<UbWeaponCarrier>(FindMode.EverythingInSelfAndDescendants);
+        private MissionJournal Journal => PlayerObj?.Components.Get<MissionJournal>(FindMode.EverythingInSelfAndDescendants);
         
         public override void Tick()
         {
