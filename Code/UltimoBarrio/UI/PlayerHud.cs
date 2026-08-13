@@ -62,6 +62,9 @@ namespace UltimoBarrio.UI
             // Si no hay HeldItemController (viejo), HotbarPanel usa UbWeaponCarrier (nuevo) vía fallback interno.
             
             ChangeState(HudState.Gameplay);
+
+            // Bienvenida con controles básicos (una vez por sesión).
+            ShowMessage( "E interactuar · 1-6 armas/consumibles · R recargar · F construir · TAB mochila" );
         }
 
         public void ChangeState(HudState newState)
