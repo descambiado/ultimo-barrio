@@ -28,11 +28,13 @@ namespace UltimoBarrio.Crafting
         {
             if (Recipes.Count == 0 && !IsProxy)
             {
+                // Recetas con ítems reales del ItemRegistry (chatarra, water, medicine,
+                // ammo_9mm, weapon_knife, weapon_usp).
                 Recipes.Add(new CraftingRecipe { Name = "Ammo 9mm", OutputItemId = "ammo_9mm", OutputAmount = 12, InputItems = new List<string> { "chatarra" }, InputAmounts = new List<int> { 5 } });
-                Recipes.Add(new CraftingRecipe { Name = "Vendaje", OutputItemId = "medicina", OutputAmount = 1, InputItems = new List<string> { "chatarra" }, InputAmounts = new List<int> { 3 } });
-                Recipes.Add(new CraftingRecipe { Name = "Repair Kit", OutputItemId = "repair_kit", OutputAmount = 1, InputItems = new List<string> { "chatarra", "scrap_parts" }, InputAmounts = new List<int> { 5, 2 } });
-                Recipes.Add(new CraftingRecipe { Name = "Improvised Crowbar", OutputItemId = "weapon_crowbar", OutputAmount = 1, InputItems = new List<string> { "chatarra", "scrap_metal" }, InputAmounts = new List<int> { 10, 5 } });
-                Recipes.Add(new CraftingRecipe { Name = "Barricada", OutputItemId = "barricade", OutputAmount = 1, InputItems = new List<string> { "chatarra" }, InputAmounts = new List<int> { 20 } });
+                Recipes.Add(new CraftingRecipe { Name = "Agua", OutputItemId = "water", OutputAmount = 1, InputItems = new List<string> { "chatarra" }, InputAmounts = new List<int> { 3 } });
+                Recipes.Add(new CraftingRecipe { Name = "Vendaje", OutputItemId = "medicine", OutputAmount = 1, InputItems = new List<string> { "chatarra" }, InputAmounts = new List<int> { 4 } });
+                Recipes.Add(new CraftingRecipe { Name = "Cuchillo improvisado", OutputItemId = "weapon_knife", OutputAmount = 1, InputItems = new List<string> { "chatarra" }, InputAmounts = new List<int> { 12 } });
+                Recipes.Add(new CraftingRecipe { Name = "Pistola USP", OutputItemId = "weapon_usp", OutputAmount = 1, InputItems = new List<string> { "chatarra" }, InputAmounts = new List<int> { 30 } });
             }
         }
 

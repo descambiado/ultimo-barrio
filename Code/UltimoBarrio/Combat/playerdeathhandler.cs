@@ -25,6 +25,7 @@ namespace UltimoBarrio.Combat
 		private HealthComponent _health;
 		private TimeSince _sinceDeath;
 		private bool _dead;
+		private bool _respawnAtHome;
 		private Vector3 _respawnPosition;
 
 		protected override void OnStart()
@@ -52,7 +53,7 @@ namespace UltimoBarrio.Combat
 			if ( _dead ) return;
 			_dead = true;
 			_sinceDeath = 0f;
-			_respawnPosition = FindRespawnPosition();
+			( _respawnPosition, _respawnAtHome ) = FindRespawnPosition();
 
 			Log.Info( $"[DeathHandler] {GameObject.Name} murió. Respawn en {_respawnPosition} tras {RespawnDelay}s" );
 		}
@@ -66,14 +67,22 @@ namespace UltimoBarrio.Combat
 				_dead = false;
 				_health?.Respawn( _respawnPosition );
 				Log.Info( $"[DeathHandler] {GameObject.Name} reapareció en {_respawnPosition}" );
+
+				// Objetivo de misión: "Regresa a casa" (solo si el respawn fue en el
+				// apartamento reclamado del jugador).
+				if ( _respawnAtHome )
+				{
+					Missions.MissionJournal.Local?.NotifyProgress( Missions.ObjectiveType.ReturnHome );
+				}
 			}
 		}
 
 		/// <summary>
 		/// Punto de respawn: spawn del apartamento del jugador si lo tiene; si no,
 		/// el primer SpawnPoint del NetworkHelper; si no, la posición actual.
+		/// Devuelve (posición, esApartamentoPropio).
 		/// </summary>
-		private Vector3 FindRespawnPosition()
+		private (Vector3 Position, bool IsHome) FindRespawnPosition()
 		{
 			var identity = Core.PlayerIdentity.FromGameObject( GameObject );
 
@@ -85,7 +94,7 @@ namespace UltimoBarrio.Combat
 
 			if ( apartment != null && apartment.SpawnReference.IsValid() )
 			{
-				return apartment.SpawnReference.WorldPosition;
+				return ( apartment.SpawnReference.WorldPosition, true );
 			}
 
 			// 2) Spawn point del NetworkHelper.
@@ -95,12 +104,12 @@ namespace UltimoBarrio.Combat
 				var first = helper.SpawnPoints.FirstOrDefault( p => p != null && p.IsValid() );
 				if ( first != null )
 				{
-					return first.WorldPosition;
+					return ( first.WorldPosition, false );
 				}
 			}
 
 			// 3) Fallback: posición actual.
-			return WorldPosition;
+			return ( WorldPosition, false );
 		}
 	}
 }

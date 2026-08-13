@@ -61,6 +61,11 @@ namespace UltimoBarrio.Combat
 			{
 				DropCurrent();
 			}
+
+			if ( IsConsumableActive && Input.Pressed( "attack1" ) )
+			{
+				UseActiveConsumable();
+			}
 		}
 
 		public void SelectSlot( int index )
@@ -98,7 +103,22 @@ namespace UltimoBarrio.Combat
 			}
 
 			var def = ItemRegistry.GetDefinition( slot.ItemId );
-			if ( def == null || ( def.Category != ItemCategory.Firearm && def.Category != ItemCategory.Melee ) )
+			if ( def == null )
+			{
+				Holster();
+				return;
+			}
+
+			// Consumibles: se seleccionan pero no equipan arma; attack1 los usa.
+			if ( def.Category == ItemCategory.Consumable && def.Usable )
+			{
+				ClearEquipped();
+				ActiveItemId = slot.ItemId;
+				Log.Info( $"[WeaponCarrier] consumible seleccionado {slot.ItemId} (slot {index}) — attack1 para usar" );
+				return;
+			}
+
+			if ( def.Category != ItemCategory.Firearm && def.Category != ItemCategory.Melee )
 			{
 				Holster();
 				return;
@@ -159,6 +179,85 @@ namespace UltimoBarrio.Combat
 			ClearEquipped();
 			SelectedSlot = -1;
 			ActiveItemId = "";
+		}
+
+		private bool IsConsumableActive
+		{
+			get
+			{
+				if ( string.IsNullOrEmpty( ActiveItemId ) ) return false;
+				var def = ItemRegistry.GetDefinition( ActiveItemId );
+				return def != null && def.Category == ItemCategory.Consumable && def.Usable;
+			}
+		}
+
+		/// <summary>
+		/// Usa el consumible activo (agua/medicina): valida en host, consume del
+		/// inventario y aplica curación al HealthComponent. Sin recarga de cooldown
+		/// — el rate se limita por input (attack1).
+		/// </summary>
+		private void UseActiveConsumable()
+		{
+			var itemId = ActiveItemId;
+			if ( string.IsNullOrEmpty( itemId ) ) return;
+
+			if ( !Networking.IsHost )
+			{
+				RpcUseConsumable( GameObject.Id, itemId );
+				return;
+			}
+
+			ApplyConsumable( itemId );
+		}
+
+		[Rpc.Host]
+		private void RpcUseConsumable( Guid playerId, string itemId )
+		{
+			// Validar contra el carrier del jugador emisor (no el del host).
+			var go = Scene.Directory.FindByGuid( playerId );
+			var carrier = go?.Components.Get<UbWeaponCarrier>();
+			if ( carrier != null && carrier.ActiveItemId == itemId )
+			{
+				carrier.ApplyConsumable( itemId );
+			}
+		}
+
+		/// <summary>Consume el ítem del inventario de este jugador y aplica la curación (host).</summary>
+		private void ApplyConsumable( string itemId )
+		{
+			var inv = Components.Get<InventoryComponent>();
+			var health = Components.Get<HealthComponent>();
+			if ( inv == null || health == null ) return;
+
+			if ( health.IsDead ) return;
+
+			if ( !inv.TryRemove( itemId, 1 ) )
+			{
+				Log.Info( $"[WeaponCarrier] sin {itemId} en el inventario — manos vacías" );
+				Holster();
+				return;
+			}
+
+			// Efecto por ítem: agua cura poco, medicina cura mucho.
+			float heal = itemId == "medicine" ? 50f : 25f;
+			health.Heal( heal );
+
+			var def = ItemRegistry.GetDefinition( itemId );
+			Log.Info( $"[WeaponCarrier] usado {itemId} (+{heal:F0} HP)" );
+			RpcConsumableFeedback( itemId, heal, def?.DisplayName ?? itemId );
+
+			// Si el slot quedó vacío, holster.
+			var slot = SelectedSlot >= 0 && SelectedSlot < inv.Slots.Count ? inv.Slots[SelectedSlot] : null;
+			if ( slot == null || string.IsNullOrEmpty( slot.ItemId ) || slot.Amount <= 0 )
+			{
+				Holster();
+			}
+		}
+
+		[Rpc.Broadcast]
+		private void RpcConsumableFeedback( string itemId, float heal, string displayName )
+		{
+			Log.Info( $"[Consumible] {displayName}: +{heal:F0} HP" );
 		}
 
 		private void ClearEquipped()
