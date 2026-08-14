@@ -42,6 +42,19 @@ namespace UltimoBarrio.Combat
 
 		private GameObject _weapon;
 		private GameObject _viewmodel;
+		private string _pendingWeaponWorld;
+		private string _pendingWeaponView;
+
+		private void TryEquipPending()
+		{
+			if ( string.IsNullOrEmpty( _pendingWeaponWorld ) ) return;
+			var cam = Components.Get<CameraComponent>()
+				?? Scene.GetAllComponents<CameraComponent>().FirstOrDefault( c => c.IsMainCamera );
+			if ( cam == null ) return;
+			EquipInternal( _pendingWeaponWorld, _pendingWeaponView );
+			_pendingWeaponWorld = null;
+			_pendingWeaponView = null;
+		}
 
 		protected override void OnUpdate()
 		{
@@ -71,6 +84,8 @@ namespace UltimoBarrio.Combat
 				var next = (SelectedSlot + (wheel > 0 ? -1 : 1) + count) % count;
 				SelectSlot( next );
 			}
+
+			TryEquipPending();
 
 			if ( IsConsumableActive && Input.Pressed( "attack1" ) )
 			{
@@ -144,6 +159,15 @@ namespace UltimoBarrio.Combat
 		}
 
 		private void Equip( string itemId, string worldPrefab, string viewPrefab )
+	{
+		ClearEquipped();
+		ActiveItemId = itemId;
+		_pendingWeaponWorld = worldPrefab;
+		_pendingWeaponView = viewPrefab;
+		EquipInternal( itemId, worldPrefab, viewPrefab );
+	}
+
+private void EquipInternal( string itemId, string worldPrefab, string viewPrefab )
 		{
 			ClearEquipped();
 			ActiveItemId = itemId;
@@ -169,11 +193,7 @@ namespace UltimoBarrio.Combat
 			}
 
 			var cam = Components.Get<CameraComponent>() ?? Scene.GetAllComponents<CameraComponent>().FirstOrDefault( c => c.IsMainCamera );
-			if ( cam == null )
-			{
-				Log.Warning( "[WeaponCarrier] sin CameraComponent: arma sin viewmodel" );
-				return;
-			}
+			if ( cam == null ) return;
 
 			_viewmodel = SceneUtility.GetPrefabScene( vFile ).Clone();
 			_viewmodel.SetParent( cam.GameObject );
