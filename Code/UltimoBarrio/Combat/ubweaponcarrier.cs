@@ -47,7 +47,7 @@ namespace UltimoBarrio.Combat
 				DropCurrent();
 			}
 
-			var wheel = Input.MouseWheel;
+			var wheel = Input.MouseWheel.y;
 			if ( wheel > 0f || wheel < 0f )
 			{
 				var inv = Components.Get<InventoryComponent>();
@@ -74,8 +74,9 @@ namespace UltimoBarrio.Combat
 
 		private GameObject FindCameraHost()
 		{
-			var cam = Components.GetInDescendantsOrSelf<CameraComponent>();
-			if ( cam != null ) return cam.GameObject;
+			// PlayerController with UseCameraControls doesn't expose a
+			// CameraComponent we can parent viewmodels to. Use Scene.Camera
+			// (the engine's active camera) or fall back to self.
 			if ( Scene.Camera != null ) return Scene.Camera;
 			return GameObject;
 		}
