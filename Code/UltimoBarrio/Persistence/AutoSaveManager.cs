@@ -16,7 +16,7 @@ namespace UltimoBarrio.Persistence;
 public sealed class AutoSaveManager : Component
 {
     [Property] public float IntervalSeconds { get; set; } = 90f;
-    [Property] public bool Enabled { get; set; } = true;
+    [Property] public new bool Enabled { get; set; } = true;
 
     private TimeSince _timeSinceSave;
 

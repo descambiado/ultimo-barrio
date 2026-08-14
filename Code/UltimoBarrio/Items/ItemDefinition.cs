@@ -23,7 +23,9 @@ namespace UltimoBarrio
     /// más las variantes de chatarra (scrap_*), tela, madera, componentes,
     /// consumibles fabricados y armas de apoyo (weapon_knife).
     /// </summary>
-    [GameResource("Item Definition", "item", "A data-driven definition of an inventory item.", Icon = "category")]
+#pragma warning disable CS0618
+    [GameResource("ultimo_barrio/item_def", "ubitem", "Define un ítem canónico de Último Barrio.")]
+#pragma warning restore CS0618
     public class ItemDefinition : GameResource
     {
         public string ItemId { get; set; } = "unknown";

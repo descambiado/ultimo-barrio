@@ -3,7 +3,9 @@ using System;
 
 namespace UltimoBarrio.Players
 {
-    [GameResource("Movement Profile", "movement", "Defines speed and limits for movement states.", Icon = "directions_run")]
+#pragma warning disable CS0618
+    [GameResource("ultimo_barrio/movement_profile", "ubmove", "Perfil de movimiento base")]
+#pragma warning restore CS0618
     public class MovementProfile : GameResource
     {
         [Category("Speeds")] public float WalkSpeed { get; set; } = 130f;
