@@ -1,20 +1,16 @@
 namespace UltimoBarrio.Content.Dev
 {
 	/// <summary>
-	/// VehicleSuite — suite ILabSuite del dominio Vehicle (CONTRATO, Worker E).
+	/// VehicleSuite — suite ILabSuite del dominio Vehicle (reporte unificado QA).
 	///
-	/// Pipeline (ub-spike-factory): kit de vehículos EXTERNO (PRIMARY, sin física
-	/// propia) → VehicleTestRig → logs [VehicleLab] &lt;Label&gt; ... → PASS/FAIL.
-	/// Secuencia prevista: spawn → enter → throttle → steer → brake → reverse → exit.
+	/// El motor de la suite es el <see cref="VehicleTestRig"/> (kit externo PRIMARY
+	/// fieldguide.vehiclephysics, sin física propia). Este objeto es el reporter:
+	/// el rig registra una instancia, la ejecuta el runner unificado
+	/// (ContentRuntimeSuiteRunner) y al terminar la secuencia el rig llama a
+	/// <see cref="Complete"/> con el resultado real (PASS solo si los 8 pasos
+	/// pasaron por deltas reales de posición/yaw/velocidad).
 	///
-	/// Anti-falsificación: el movimiento se mide por la ruta real (throttle/steer/
-	/// brake del kit, estado del vehículo tras cada input); NUNCA fijar posiciones
-	/// ni llamar internals para fabricar el resultado.
-	///
-	/// Estado actual: stub de contrato — Initialize devuelve SKIP honesto hasta que
-	/// Worker E implemente la lógica (depende del research del paquete de vehículos,
-	/// manifest bloque H). Registrar en ContentRuntimeSuite desde el rig del
-	/// vehicle_lab cuando exista.
+	/// Secuencia (contrato): spawn → enter → throttle → steer → brake → reverse → exit.
 	/// </summary>
 	public sealed class VehicleSuite : ILabSuite
 	{
@@ -23,20 +19,34 @@ namespace UltimoBarrio.Content.Dev
 		public bool IsComplete { get; private set; }
 		public LabSuiteResult Result { get; private set; }
 
+		private LabSuiteResult _pending;
+		private bool _hasPending;
+
 		public VehicleSuite( string label )
 		{
 			Name = label;
 		}
 
+		/// <summary>El rig entrega el resultado final (una vez).</summary>
+		public void Complete( LabSuiteResult result )
+		{
+			if ( _hasPending ) return;
+			_pending = result;
+			_hasPending = true;
+		}
+
 		public void Initialize()
 		{
-			IsComplete = true;
-			Result = LabSuiteResult.Skip( "contrato Worker E: kit externo PRIMARY; spawn→enter→throttle→steer→brake→reverse→exit; sin lógica aún" );
+			// Nada que preparar: el rig gestiona fixtures/cámara/spawn.
 		}
 
 		public void Step( float dt )
 		{
-			// Nada: la suite se marca completa en Initialize hasta que Worker E implemente.
+			if ( !IsComplete && _hasPending )
+			{
+				Result = _pending;
+				IsComplete = true;
+			}
 		}
 	}
 }
