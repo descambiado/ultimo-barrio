@@ -253,6 +253,199 @@ assets:
       se valide el crowbar en el lab (fase posterior a USP).
       Alternativa cloud verificada 2026-08-08: facepunch.w_crowbar (world model oficial, get_package OK).
 
+  # ------------------------------------------------------------------
+  # Building / Fortification (2026-08-08, Worker D)
+  # Modelos REALES del engine verificados con asset_search + asset_info
+  # (IsCompiled=true) en el editor. Sustituyen a los fallbacks crate01 /
+  # metal_wheely_bin / cardboard_box_open de los 9 prefabs fort_*.
+  # ------------------------------------------------------------------
+
+  - id: engine.sbox_props_old_bench
+    name: Old bench (wood planks)
+    author: Facepunch (engine)
+    source_url: null
+    package_type: engine-content
+    asset_type: model
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    editor_verified: true
+    verification_status: VERIFIED (asset_search + asset_info IsCompiled)
+    asset_path: models/sbox_props/benches/old_bench.vmdl
+    used_by:
+      - content:Fortification/fort_barricade_wood
+    fallback: none
+    notes: >
+      Unica madera real del catalogo engine montado (pallets/planks/fence no
+      existen como vmdl). Barricada de tablones: banco de madera con listones.
+
+  - id: engine.sbox_props_security_shutter_box_middle
+    name: Security shutter housing box (metal)
+    author: Facepunch (engine)
+    source_url: null
+    package_type: engine-content
+    asset_type: model
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    editor_verified: true
+    verification_status: VERIFIED (asset_search + asset_info IsCompiled)
+    asset_path: models/sbox_props/security_shutter/security_shutter_box_middle.vmdl
+    used_by:
+      - content:Fortification/fort_barricade_reinforced
+    fallback: none
+    notes: >
+      Panel metalico (caja de persiana de seguridad) para la barricada reforzada.
+
+  - id: engine.sbox_props_security_shutter_curtain_128
+    name: Security shutter curtain 128 (metal slats)
+    author: Facepunch (engine)
+    source_url: null
+    package_type: engine-content
+    asset_type: model
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    editor_verified: true
+    verification_status: VERIFIED (asset_search + asset_info IsCompiled) - PROXY VISUAL
+    asset_path: models/sbox_props/security_shutter/security_shutter_curtain_128.vmdl
+    used_by:
+      - content:Fortification/fort_door_basic
+    fallback: none
+    notes: >
+      No existe puerta vmdl en el contenido del engine (asset_search 'door'
+      solo devuelve maps/prefabs/doors/*.vmap, no compatibles con
+      ModelRenderer). Proxy visual real: cortina de persiana metalica de 128u
+      (ancho de hoja de puerta). Revisar modelo de puerta custom en integracion.
+
+  - id: engine.sbox_props_security_shutter_curtain_bottom
+    name: Security shutter curtain bottom (metal, lock bar)
+    author: Facepunch (engine)
+    source_url: null
+    package_type: engine-content
+    asset_type: model
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    editor_verified: true
+    verification_status: VERIFIED (asset_search + asset_info IsCompiled) - PROXY VISUAL
+    asset_path: models/sbox_props/security_shutter/security_shutter_curtain_bottom.vmdl
+    used_by:
+      - content:Fortification/fort_door_reinforced
+    fallback: none
+    notes: >
+      Igual que curtain_128: proxy visual real (sin puertas vmdl en engine).
+      Seccion inferior con barra de bloqueo: lectura visual mas robusta para
+      la puerta reforzada.
+
+  - id: engine.citizen_props_gritbin01_combined
+    name: Grit bin (bulk storage container)
+    author: Facepunch (engine)
+    source_url: null
+    package_type: engine-content
+    asset_type: model
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    editor_verified: true
+    verification_status: VERIFIED (asset_search + asset_info IsCompiled)
+    asset_path: models/citizen_props/gritbin01_combined.vmdl
+    used_by:
+      - content:Fortification/fort_stash
+    fallback: none
+    notes: >
+      Contenedor de almacenamiento a granel (silo/arenero) para el stash de
+      fortificacion. Sustituye al placeholder cardboard_box_open.
+
+  - id: engine.citizen_props_oldoven
+    name: Old oven (industrial work station)
+    author: Facepunch (engine)
+    source_url: null
+    package_type: engine-content
+    asset_type: model
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    editor_verified: true
+    verification_status: VERIFIED (asset_search + asset_info IsCompiled) - PROXY VISUAL
+    asset_path: models/citizen_props/oldoven.vmdl
+    used_by:
+      - content:Fortification/fort_workbench
+    fallback: none
+    notes: >
+      No existe workbench vmdl en el engine (asset_search 'workbench' = 0
+      modelos). Proxy visual real: vieja estufa/forja industrial como banco
+      de trabajo. old_bench (la unica mesa real) se reserva para la barricada
+      de madera.
+
+  - id: engine.props_aircon_unit_medium_wall
+    name: Aircon unit wall (vented machine box)
+    author: Facepunch (engine)
+    source_url: null
+    package_type: engine-content
+    asset_type: model
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    editor_verified: true
+    verification_status: VERIFIED (asset_search + asset_info IsCompiled) - PROXY VISUAL
+    asset_path: models/props/aircon_unit_wall/aircon_unit_medium_wall.vmdl
+    used_by:
+      - content:Fortification/fort_generator
+    fallback: none
+    notes: >
+      No existe generator vmdl en el engine (asset_search 'generator' = 0
+      modelos). Proxy visual real: caja metalica con rejillas de ventilacion
+      (lectura de maquina/generador).
+
+  - id: engine.sbox_props_intruder_alarm_2
+    name: Intruder alarm 2 (siren box)
+    author: Facepunch (engine)
+    source_url: null
+    package_type: engine-content
+    asset_type: model
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    editor_verified: true
+    verification_status: VERIFIED (asset_search + asset_info IsCompiled)
+    asset_path: models/sbox_props/intruder_alarm_2/intruder_alarm_2.vmdl
+    used_by:
+      - content:Fortification/fort_alarm
+    fallback: none
+    notes: >
+      Alarma real del engine: sirena de intrusos. Coincidencia directa con el
+      objeto fort_alarm.
+
+  - id: engine.props_microwave_trans
+    name: Microwave transceiver (comms equipment)
+    author: Facepunch (engine)
+    source_url: null
+    package_type: engine-content
+    asset_type: model
+    license: pending-package-verification
+    license_verified: false
+    integration_mode: content-pack-verified
+    version_or_checked_at: "2026-08-08"
+    editor_verified: true
+    verification_status: VERIFIED (asset_search + asset_info IsCompiled) - PROXY VISUAL
+    asset_path: models/props/mobile_masts/microwave_trans.vmdl
+    used_by:
+      - content:Fortification/fort_repair_station
+    fallback: none
+    notes: >
+      No hay workbench/toolbox/radio como vmdl en el engine. Proxy visual
+      real: equipo electronico de comunicaciones (caja metalica con antena)
+      para la estacion de reparacion.
+
   - id: sound/content-pack-events
     name: SoundEvents del content pack (Assets/sounds/content/**)
     author: proyecto (banco 2026-08-08, workers F + C audio-v2)

@@ -72,7 +72,7 @@ Contrato para los workers A/C/E: implementar la suite del dominio con la ruta re
 | `Assets/scenes/spikes/weapon_lab.scene` | USP, palanca, cuchillo, escopeta (spawn, disparo/melee, daño a IDamageTarget, recarga, dry fire) | `WeaponSuite` (4 tests, rig-7) |
 | `Assets/scenes/spikes/enemy_lab.scene` | Spawn de Saqueador/Bruto/Merodeador, NavMesh, persecución, ataque al dummy, daño, muerte, botín | `EnemySuite` (contrato Worker A) |
 | `Assets/scenes/spikes/building_lab.scene` | Autotest BuildingTestRig (rig-1): preview inválido/bloqueado/overlap REJECTED, válido ACCEPTED, spawn, HP, daño (trace real), repair (consumo fixture), upgrade (madera→reforzada), destroy | `BuildingSuite` (contrato Worker C, sin input manual) |
-| `Assets/scenes/spikes/vehicle_lab.scene` | Stub: rellenar prefabs cuando el research decida el paquete de vehículos (manifest bloque H) | `VehicleSuite` (contrato Worker E) |249e9 (feat(spike): building placement rules + host authority (prefabs retyped))
+| `Assets/scenes/spikes/vehicle_lab.scene` | Stub: rellenar prefabs cuando el research decida el paquete de vehículos (manifest bloque H) | `VehicleSuite` (contrato Worker E) |
 
 ## Cómo abrir
 

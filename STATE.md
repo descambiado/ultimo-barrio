@@ -71,6 +71,14 @@ NO es una regla del engine: era leer `compile_status` con un `Success` del build
 - `agent/vehicles` sin trabajo (worker E no entregó).
 - NRE actual: `BuildingTestRig.CheckRegistryCoverage` línea ~104 — `FortificationContentRegistry.All` contiene un null; diagnóstico en curso (ver handoff → Known blockers).
 
+### 2026-08-08 — integración a integration/wizard-holy-grail y main
+
+Fusionado en la sesión de integración: `agent/audio-v2` (content adapters
+completos + banco de sonidos) y `agent/building` (ver más abajo). El
+resto de este archivo (BUILDING SPIKE, secciones anteriores) documenta el
+trabajo tal y como se hizo en el portátil aislado — sigue siendo la
+referencia histórica correcta de ESE contexto, no se reescribe.
+
 ### BUILDING SPIKE — agent/building (Worker C)
 
 - **Rama**: `agent/building`. Base HEAD validado `9fd7b32`; el coordinador avanzó con
