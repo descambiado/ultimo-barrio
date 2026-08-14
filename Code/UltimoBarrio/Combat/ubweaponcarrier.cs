@@ -62,6 +62,16 @@ namespace UltimoBarrio.Combat
 				DropCurrent();
 			}
 
+			// Scroll wheel cycles hotbar slots
+			var wheel = Input.MouseWheel;
+			if ( wheel != 0f )
+			{
+				var inv = Components.Get<InventoryComponent>();
+				var count = inv?.HotbarSlots ?? HotbarSlots;
+				var next = (SelectedSlot + (wheel > 0 ? -1 : 1) + count) % count;
+				SelectSlot( next );
+			}
+
 			if ( IsConsumableActive && Input.Pressed( "attack1" ) )
 			{
 				UseActiveConsumable();
