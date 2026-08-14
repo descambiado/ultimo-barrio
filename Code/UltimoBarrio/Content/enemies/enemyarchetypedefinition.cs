@@ -13,15 +13,15 @@ namespace UltimoBarrio.Content.Enemies
 	}
 
 	/// <summary>
-	/// Definición data-driven de un arquetipo de enemigo (clase plana, sin dependencias
-	/// de escena ni de red). Se registra en EnemyContentRegistry.
+	/// Definición data-driven de un arquetipo de enemigo.
+	/// Clase plana (datos puros) registrada en EnemyContentRegistry.
 	///
-	/// Convención de modelos (idéntica al pack de armas):
-	///   Model → candidato PRIMARIO (PENDING_VERIFY).
+	/// Convención de modelos igual que en armas:
+	///   Model → candidato PRIMARIO (pendiente verificación).
 	///   ModelFallback → ruta VERIFICADA que carga hoy.
 	///   AssetsVerified=false → revisar con Cloud Browser antes de release.
 	/// </summary>
-	public sealed class EnemyContentDefinition
+	public sealed class EnemyArchetypeDefinition
 	{
 		public string Id { get; set; } = "";
 		public string DisplayName { get; set; } = "";
@@ -36,7 +36,7 @@ namespace UltimoBarrio.Content.Enemies
 		public float MaxHealth { get; set; } = 100f;
 
 		// Movimiento (NavMeshAgent REAL; lo aplica EnemyContentHost.ApplyDefinition)
-		public float WalkSpeed { get; set; } = 220f;
+		public float WalkSpeed { get; set; } = 200f;
 
 		// Percepción (EnemyPerception)
 		public float VisionRange { get; set; } = 2000f;
@@ -45,7 +45,7 @@ namespace UltimoBarrio.Content.Enemies
 		public float MemoryDuration { get; set; } = 5f;  // recuerdo de la última posición conocida
 
 		// Ataque melee (EnemyAttack)
-		public float AttackRange { get; set; } = 110f;
+		public float AttackRange { get; set; } = 100f;
 		public float AttackDamage { get; set; } = 15f;
 		public float AttackCooldown { get; set; } = 1.5f;
 
@@ -55,8 +55,9 @@ namespace UltimoBarrio.Content.Enemies
 
 		// Botín (tabla en EnemyContentRegistry; pickups físicos de mundo)
 		public string LootTableId { get; set; } = "";
+		public float CorpseLifetime { get; set; } = 0f; // 0 = destruir al morir (sin ragdoll aún)
 
-		// Estado de verificación de assets
+		// Estado de verificación
 		public bool AssetsVerified { get; set; } = false;
 		public string VerificationNotes { get; set; } = "";
 	}

@@ -4,25 +4,33 @@ using System.Collections.Generic;
 
 namespace UltimoBarrio.Audio
 {
+    /// <summary>
+    /// Eventos de audio del banco VERIFICADO del proyecto (Assets/sounds/content/**).
+    /// Cada evento mapea a un .sound real; reproducir un evento con sonido inexistente
+    /// es imposible por construcción (los paths salen del banco, no inventados).
+    /// </summary>
     public enum AudioEvent
     {
-        UIClick,
-        UIReject,
-        PickupScrap,
-        PickupWater,
-        PickupMedicine,
-        PickupAmmo,
-        TraderBuy,
-        DoorOpen,
-        DoorClose,
-        DoorLocked,
-        StashOpen,
-        WeaponPistolShoot,
-        WeaponPistolReload,
-        NightSiren,
-        RaidStart,
-        AmbienceDay,
-        AmbienceNight
+        EnemyAlert,
+        EnemyAttack,
+        EnemyDeath,
+        EnemyHurt,
+        BarricadeImpact,
+        DoorImpact,
+        Repair,
+        BulletImpactFlesh,
+        MeleeImpactFlesh,
+        CrowbarImpact,
+        CrowbarSwing,
+        KnifeSwing,
+        ShotgunFire,
+        ShotgunReload,
+        ShotgunReloadStart,
+        UspDeploy,
+        UspDry,
+        UspFire,
+        UspReloadMagIn,
+        UspReloadMagOut
     }
 
     [Title("Audio Catalog")]
@@ -34,21 +42,26 @@ namespace UltimoBarrio.Audio
 
         private readonly Dictionary<AudioEvent, string> _soundEvents = new()
         {
-            { AudioEvent.UIClick, "ui.button.press" },
-            { AudioEvent.UIReject, "ui.button.deny" },
-            { AudioEvent.PickupScrap, "pickup.scrap" },
-            { AudioEvent.PickupWater, "pickup.water" },
-            { AudioEvent.PickupMedicine, "pickup.medicine" },
-            { AudioEvent.PickupAmmo, "pickup.ammo" },
-            { AudioEvent.TraderBuy, "trader.buy" },
-            { AudioEvent.DoorOpen, "door.open" },
-            { AudioEvent.DoorClose, "door.close" },
-            { AudioEvent.DoorLocked, "door.locked" },
-            { AudioEvent.StashOpen, "stash.open" },
-            { AudioEvent.WeaponPistolShoot, "weapon.usp.shoot" },
-            { AudioEvent.WeaponPistolReload, "weapon.usp.reload" },
-            { AudioEvent.NightSiren, "raid.siren" },
-            { AudioEvent.RaidStart, "raid.start" }
+            { AudioEvent.EnemyAlert, "sounds/content/enemies/enemy_alert.sound" },
+            { AudioEvent.EnemyAttack, "sounds/content/enemies/enemy_attack.sound" },
+            { AudioEvent.EnemyDeath, "sounds/content/enemies/enemy_death.sound" },
+            { AudioEvent.EnemyHurt, "sounds/content/enemies/enemy_hurt.sound" },
+            { AudioEvent.BarricadeImpact, "sounds/content/fortification/barricade_impact.sound" },
+            { AudioEvent.DoorImpact, "sounds/content/fortification/door_impact.sound" },
+            { AudioEvent.Repair, "sounds/content/fortification/repair.sound" },
+            { AudioEvent.BulletImpactFlesh, "sounds/content/impacts/bullet_impact_flesh.sound" },
+            { AudioEvent.MeleeImpactFlesh, "sounds/content/impacts/melee_impact_flesh.sound" },
+            { AudioEvent.CrowbarImpact, "sounds/content/weapons/crowbar_impact.sound" },
+            { AudioEvent.CrowbarSwing, "sounds/content/weapons/crowbar_swing.sound" },
+            { AudioEvent.KnifeSwing, "sounds/content/weapons/knife_swing.sound" },
+            { AudioEvent.ShotgunFire, "sounds/content/weapons/shotgun_fire.sound" },
+            { AudioEvent.ShotgunReload, "sounds/content/weapons/shotgun_reload.sound" },
+            { AudioEvent.ShotgunReloadStart, "sounds/content/weapons/shotgun_reload_start.sound" },
+            { AudioEvent.UspDeploy, "sounds/content/weapons/usp_deploy.sound" },
+            { AudioEvent.UspDry, "sounds/content/weapons/usp_dry.sound" },
+            { AudioEvent.UspFire, "sounds/content/weapons/usp_fire.sound" },
+            { AudioEvent.UspReloadMagIn, "sounds/content/weapons/usp_reload_magin.sound" },
+            { AudioEvent.UspReloadMagOut, "sounds/content/weapons/usp_reload_magout.sound" }
         };
 
         protected override void OnStart()

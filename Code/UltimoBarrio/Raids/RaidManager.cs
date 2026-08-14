@@ -5,6 +5,7 @@ using System.Linq;
 using UltimoBarrio.WorldTime;
 using UltimoBarrio.Apartments;
 using UltimoBarrio.Audio;
+using UltimoBarrio.Content.Enemies;
 
 namespace UltimoBarrio.Raids
 {
@@ -35,6 +36,11 @@ namespace UltimoBarrio.Raids
 
         protected override void OnStart()
         {
+            if ( Clock == null )
+            {
+                Clock = Scene.GetAllComponents<WorldClock>().FirstOrDefault();
+            }
+
             if ( !Core.FeatureFlags.EnableRaids )
             {
                 isRaidActive = false;
@@ -90,9 +96,8 @@ namespace UltimoBarrio.Raids
             for ( int i = 0; i < numLooters; i++ )
                 SpawnLooter( target );
 
-            var audio = Scene.GetAllComponents<UltimoBarrioAudioCatalog>().FirstOrDefault();
-            audio?.PlayEvent( AudioEvent.RaidStart );
-
+            // Sin sonido de sirena/inicio de raid verificado en el banco de audio
+            // (ver misma nota en WorldClock.AdvancePhase): no se inventa el evento.
             RpcRaidAnnounce( $"¡RAID! Los saqueadores atacan {currentRaidTargetId}." );
             Log.Info( $"UB.Raid Iniciada target={currentRaidTargetId} looters={numLooters}" );
         }
@@ -134,6 +139,16 @@ namespace UltimoBarrio.Raids
             var looter = LooterPrefab.Clone( spawn.WorldPosition, spawn.WorldRotation );
             looter.NetworkSpawn();
             activeLooters.Add( looter );
+
+            // Content pack nuevo (armas/enemigos validados en motor) tiene prioridad;
+            // SaqueadorBrain (IA vieja) sigue soportado para LooterPrefabs que aún no
+            // migraron al content pack.
+            var enemyHost = looter.Components.Get<EnemyContentHost>( FindMode.EverythingInSelfAndDescendants );
+            if ( enemyHost is not null && target is not null )
+            {
+                enemyHost.SetTarget( target );
+                return;
+            }
 
             var brain = looter.Components.Get<AI.SaqueadorBrain>( FindMode.EverythingInSelfAndDescendants );
             if ( brain is not null )

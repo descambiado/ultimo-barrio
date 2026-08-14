@@ -18,6 +18,7 @@ namespace UltimoBarrio.Content.Dev
 		public float DamageAmount { get; set; } = 50f;
 		public int FixtureBalance { get; set; } = 100;
 		public float ExpectedUpgradeMaxHp { get; set; } = 400f;
+		public bool FullLifecycle { get; set; } = true; // false = validación data-driven ligera (prefab+registry+spawn+destroy)
 	}
 
 	/// <summary>
@@ -38,7 +39,7 @@ namespace UltimoBarrio.Content.Dev
 	{
 		// Sube este número en cada cambio de código relevante para verificar
 		// que la sesión de juego carga el assembly nuevo (detección de hotload atrasado).
-		public const string Version = "rig-1";
+		public const string Version = "rig-2";
 
 		[Property] public bool AutoTest { get; set; } = true;
 		[Property] public List<BuildTestEntry> Tests { get; set; } = new();
@@ -76,6 +77,7 @@ namespace UltimoBarrio.Content.Dev
 			_camera.Priority = 10;
 
 			_fixture = Components.Create<LabResourceFixture>();
+			_fixture.SetBalance( Tests.Count > 0 ? Tests[0].FixtureBalance : 100 );
 
 			if ( !CheckRegistryCoverage() )
 			{
@@ -144,6 +146,31 @@ namespace UltimoBarrio.Content.Dev
 
 			var entry = Entry;
 			if ( entry == null ) return;
+
+			// Modo ligero: valida registry (StartTest) + preview válido + spawn + HP + destroy.
+			// El lifecycle completo (damage/repair/upgrade/overlap) solo para FullLifecycle.
+			if ( !entry.FullLifecycle )
+			{
+				switch ( _step )
+				{
+					case 0:
+						if ( _timer >= 1f ) RunPreviewValid( entry );
+						break;
+					case 1:
+						if ( _timer >= 0.8f ) RunSpawn( entry );
+						break;
+					case 2:
+						if ( _timer >= 1f ) RunVerifySpawn( entry );
+						break;
+					case 3:
+						if ( _timer >= 0.8f ) RunDestroy( entry );
+						break;
+					case 4:
+						if ( _timer >= 1f ) FinishTest( entry );
+						break;
+				}
+				return;
+			}
 
 			switch ( _step )
 			{

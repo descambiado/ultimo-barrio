@@ -11,6 +11,9 @@ namespace UltimoBarrio.Players
         public Sandbox.PlayerController Controller { get; set; }
         public HeldItemController HeldItems { get; set; }
         
+        /// <summary>Fallback: UbWeaponCarrier (sistema nuevo) si no hay HeldItemController.</summary>
+        private UbWeaponCarrier _weaponCarrier;
+        
         [Property] public MovementProfile Profile { get; set; }
 
         public float CurrentStamina { get; private set; }
@@ -76,11 +79,13 @@ namespace UltimoBarrio.Players
 
         private bool _spawnValidated;
         private float _defaultJumpSpeed = 300f;
+        private bool _wasOnGround;
 
         protected override void OnStart()
         {
             Controller = Components.GetInAncestorsOrSelf<Sandbox.PlayerController>();
             HeldItems = Components.GetInDescendantsOrSelf<HeldItemController>();
+            _weaponCarrier = Components.GetInDescendantsOrSelf<UbWeaponCarrier>();
 
             if ( Controller is not null )
                 _defaultJumpSpeed = Controller.JumpSpeed;
@@ -106,6 +111,12 @@ namespace UltimoBarrio.Players
             }
 
             if (Controller == null || Profile == null) return;
+
+            // NOTA: no gestionamos cámara aquí — el PlayerController del engine tiene
+            // UseCameraControls=true y gestiona EyeAngles/cámara él mismo. Si duplicamos
+            // la gestión, la sensibilidad se duplica.
+
+            _wasOnGround = Controller.IsOnGround;
 
             // Sprinting & Stamina
             bool trySprint = Input.Down("run") && !IsExhausted && Controller.Velocity.Length > 10f && !Input.Down("duck") && Controller.IsOnGround;
@@ -146,6 +157,13 @@ namespace UltimoBarrio.Players
             {
                 if (HeldItems.CurrentSlot == HeldItemSlot.Primary) weaponMult = 0.95f;
                 else if (HeldItems.CurrentSlot == HeldItemSlot.Melee) weaponMult = 1.05f;
+            }
+            else if (_weaponCarrier != null && !string.IsNullOrEmpty(_weaponCarrier.ActiveItemId))
+            {
+                // Sistema nuevo: si tiene arma equipada, aplicar penalización
+                var def = UltimoBarrio.ItemRegistry.GetDefinition(_weaponCarrier.ActiveItemId);
+                if (def != null && def.Category == UltimoBarrio.ItemCategory.Firearm) weaponMult = 0.95f;
+                else if (def != null && def.Category == UltimoBarrio.ItemCategory.Melee) weaponMult = 1.05f;
             }
 
             float finalMult = weightMult * weaponMult;

@@ -99,9 +99,9 @@ namespace UltimoBarrio
                     return;
                 }
 
-                DeliverTo( inventory, node.ResolvedHarvestItemId, Amount, 0 );
+                DeliverTo( inventory, node.ItemId, Amount, 0 );
                 if ( attemptId != 0 )
-                    Log.Info( $"UB.Pickup Attempt={attemptId} After={node.ResolvedHarvestItemId}:{inventory.GetCount( node.ResolvedHarvestItemId )} Consumed=False (nodo respawnea)" );
+                    Log.Info( $"UB.Pickup Attempt={attemptId} After={node.ItemId}:{inventory.GetCount( node.ItemId )} Consumed=False (nodo respawnea)" );
                 return;
             }
 
@@ -120,6 +120,11 @@ namespace UltimoBarrio
 
                 var name = definition?.DisplayName ?? ItemId;
                 NotifyPickup( $"Recogido: {name} x{Amount}" );
+
+                if ( ItemId.StartsWith( "weapon_", StringComparison.Ordinal ) )
+                    Missions.MissionJournal.Local?.NotifyProgress( Missions.ObjectiveType.ObtainWeapon, ItemId, Amount );
+                else
+                    Missions.MissionJournal.Local?.NotifyProgress( Missions.ObjectiveType.CollectItem, ItemId, Amount );
 
                 if ( attemptId != 0 )
                     Log.Info( $"UB.Pickup Attempt={attemptId} After={ItemId}:{inventory.GetCount( ItemId )} Consumed=True" );

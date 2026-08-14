@@ -187,7 +187,11 @@
       {
         "__type": "UltimoBarrio.InventoryComponent",
         "__guid": "a959eeda-fa54-4e09-a6d2-aad00144bcb1",
-        "__enabled": true
+        "__enabled": true,
+        "StartingItems": [
+          "weapon_crowbar:1",
+          "ammo_9mm:24"
+        ]
       },
       {
         "__type": "UltimoBarrio.Economy.Wallet",
@@ -230,21 +234,26 @@
         "ZIndex": 100
       },
       {
-        "__type": "UltimoBarrio.HeldItemController",
-        "__guid": "0e7a8d21-5c44-4f2b-9f6d-2a1c7b904d18",
+        "__type": "UltimoBarrio.Combat.UbWeaponCarrier",
         "__enabled": true,
-        "MeleePrefab": {
-          "_type": "gameobject",
-          "prefab": "prefabs/weapons/ub_melee.prefab"
-        },
-        "PrimaryPrefab": {
-          "_type": "gameobject",
-          "prefab": "prefabs/weapons/ub_usp.prefab"
-        },
-        "HandBone": {
-          "_type": "gameobject",
-          "go": "6b5cbc3e-e37c-4eb9-afa6-577469114047"
-        }
+        "HotbarSlots": 6
+      },
+      {
+        "__type": "UltimoBarrio.Combat.BuildController",
+        "__guid": "5c8e3a1f-9b4d-4c6e-8a2f-7d0e5f9c3b12",
+        "__enabled": true,
+        "BuildDefinitionId": "fort_barricade_wood",
+        "PlacementRange": 250
+      },
+      {
+        "__type": "UltimoBarrio.Combat.PlayerDeathHandler",
+        "__guid": "6d9f4b2e-8c5e-4d7f-9b3e-0e1f6a0d4c13",
+        "__enabled": true,
+        "RespawnDelay": 5
+      },
+      {
+        "__type": "UltimoBarrio.Content.PlayerContentDamageBridge",
+        "__enabled": true
       },
       {
         "__type": "UltimoBarrio.Players.PlayerMovementModifier",

@@ -26,6 +26,10 @@
                     <button class="action-btn" onclick=@(() => Buy("ammo_9mm"))>Comprar</button>
                 </div>
                 <div class="item">
+                    <label>Cartuchos 12G x6 — $@TargetTrader?.AmmoPrice</label>
+                    <button class="action-btn" onclick=@(() => Buy("ammo_buckshot"))>Comprar</button>
+                </div>
+                <div class="item">
                     <label>Pistola USP — $100</label>
                     <button class="action-btn" onclick=@(() => Buy("weapon_usp"))>Comprar</button>
                 </div>

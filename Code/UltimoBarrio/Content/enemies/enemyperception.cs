@@ -10,14 +10,14 @@ namespace UltimoBarrio.Content.Enemies
 	/// - Memoria: última posición conocida con duración configurable.
 	///
 	/// No depende del core antiguo (ni UltimoBarrio.AI.PerceptionComponent ni
-	/// AIBase): todo el estado sale de EnemyContentDefinition.
+	/// AIBase): todo el estado sale de EnemyArchetypeDefinition.
 	/// </summary>
 	[Title( "Content Enemy Perception" )]
 	[Category( "Último Barrio — Content" )]
 	[Icon( "visibility" )]
 	public sealed class EnemyPerception : Component
 	{
-		public EnemyContentDefinition Definition { get; private set; }
+		public EnemyArchetypeDefinition Definition { get; private set; }
 
 		/// <summary>Objetivo actualmente percibido (o null).</summary>
 		public GameObject CurrentTarget { get; private set; }
@@ -29,7 +29,7 @@ namespace UltimoBarrio.Content.Enemies
 		private TimeSince _timeSinceScan;
 
 		/// <summary>El host configura la percepción desde la definición al cargar.</summary>
-		public void Configure( EnemyContentDefinition definition )
+		public void Configure( EnemyArchetypeDefinition definition )
 		{
 			Definition = definition;
 		}
@@ -72,7 +72,8 @@ namespace UltimoBarrio.Content.Enemies
 
 		/// <summary>
 		/// ¿Ve el objetivo ahora mismo? Distancia ≤ VisionRange, ángulo ≤ VisionAngle/2
-		/// y trace real con línea de visión (el objetivo mismo es el que bloquea).
+		/// y trace real con línea de visión: el objetivo (o su jerarquía) BLOQUEA el
+		/// rayo; si algo intermedio lo bloquea, no hay visión.
 		/// </summary>
 		public bool CanSee( GameObject target )
 		{
@@ -89,12 +90,15 @@ namespace UltimoBarrio.Content.Enemies
 			if ( angle > Definition.VisionAngle * 0.5f ) return false;
 
 			var tr = Scene.Trace.Ray( eyePos, targetPos )
-				.IgnoreGameObjectHierarchy( GameObject.Root )
-				.IgnoreGameObjectHierarchy( target.Root )
+				.IgnoreGameObjectHierarchy( GameObject.Root ) // el propio enemigo no se bloquea a sí mismo
 				.UseHitboxes( true )
 				.Run();
 
-			return tr.Hit && tr.GameObject == target;
+			if ( !tr.Hit || tr.GameObject == null ) return false;
+
+			return tr.GameObject == target
+				|| tr.GameObject.Root == target.Root
+				|| tr.GameObject.IsDescendant( target );
 		}
 
 		/// <summary>

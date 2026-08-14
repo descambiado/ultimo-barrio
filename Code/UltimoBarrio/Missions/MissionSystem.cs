@@ -70,15 +70,15 @@ namespace UltimoBarrio.Missions
                 MissionId = "m_alpha_first_steps",
                 Title = "Primeros Pasos en El Barrio",
                 Description = "Establécete en el barrio, asegura recursos y prepárate para la noche.",
-                Reward = new MissionReward { Money = 100, ItemId = "ammo", ItemAmount = 20 },
+                Reward = new MissionReward { Money = 100, ItemId = "ammo_9mm", ItemAmount = 20 },
                 Objectives = new List<MissionObjective>
                 {
                     new MissionObjective { Id = "obj_1", Description = "1. Reclama una vivienda", Type = ObjectiveType.ClaimApartment, TargetAmount = 1 },
                     new MissionObjective { Id = "obj_2", Description = "2. Recoge 10 de chatarra", Type = ObjectiveType.CollectItem, TargetId = "chatarra", TargetAmount = 10 },
                     new MissionObjective { Id = "obj_3", Description = "3. Guarda 5 en el alijo", Type = ObjectiveType.StoreInStash, TargetId = "chatarra", TargetAmount = 5 },
                     new MissionObjective { Id = "obj_4", Description = "4. Vende 5 al comerciante", Type = ObjectiveType.SellToTrader, TargetId = "chatarra", TargetAmount = 5 },
-                    new MissionObjective { Id = "obj_5", Description = "5. Compra munición", Type = ObjectiveType.BuyItem, TargetId = "ammo", TargetAmount = 1 },
-                    new MissionObjective { Id = "obj_6", Description = "6. Consigue una pistola", Type = ObjectiveType.ObtainWeapon, TargetId = "weapon_pistol", TargetAmount = 1 },
+                    new MissionObjective { Id = "obj_5", Description = "5. Compra munición", Type = ObjectiveType.BuyItem, TargetId = "ammo_9mm", TargetAmount = 1 },
+                    new MissionObjective { Id = "obj_6", Description = "6. Consigue una pistola", Type = ObjectiveType.ObtainWeapon, TargetId = "weapon_usp", TargetAmount = 1 },
                     new MissionObjective { Id = "obj_7", Description = "7. Regresa a casa", Type = ObjectiveType.ReturnHome, TargetAmount = 1 },
                     new MissionObjective { Id = "obj_8", Description = "8. Sobrevive a la primera noche", Type = ObjectiveType.SurviveNight, TargetAmount = 1 }
                 }
@@ -92,7 +92,7 @@ namespace UltimoBarrio.Missions
         {
             if (IsProxy) return;
 
-            foreach (var mission in ActiveMissions)
+            foreach (var mission in ActiveMissions.ToList())
             {
                 for (int i = 0; i < mission.Objectives.Count; i++)
                 {
@@ -111,6 +111,11 @@ namespace UltimoBarrio.Missions
                             mission.Objectives[i] = obj;
                         }
                     }
+                }
+
+                if ( mission.Objectives.All( o => o.IsCompleted ) )
+                {
+                    CompleteMission( mission );
                 }
             }
         }
@@ -156,6 +161,32 @@ namespace UltimoBarrio.Missions
             {
                 InitFirstQuestChain();
             }
+        }
+
+        /// <summary>
+        /// Marca la misión como completada y aplica la recompensa (dinero + ítems)
+        /// al jugador local. Idempotente por MissionId.
+        /// </summary>
+        private void CompleteMission( MissionDefinition mission )
+        {
+            if ( CompletedMissionIds.Contains( mission.MissionId ) ) return;
+
+            CompletedMissionIds.Add( mission.MissionId );
+            ActiveMissions.Remove( mission );
+
+            var wallet = Components.Get<Economy.Wallet>();
+            if ( wallet != null && mission.Reward.Money > 0 )
+            {
+                wallet.Deposit( mission.Reward.Money );
+            }
+
+            var inventory = Components.Get<InventoryComponent>();
+            if ( inventory != null && !string.IsNullOrEmpty( mission.Reward.ItemId ) && mission.Reward.ItemAmount > 0 )
+            {
+                inventory.TryAdd( mission.Reward.ItemId, mission.Reward.ItemAmount );
+            }
+
+            Log.Info( $"[Missions] Mission Completed: {mission.Title} (+${mission.Reward.Money}, +{mission.Reward.ItemAmount}x{mission.Reward.ItemId})" );
         }
     }
 }

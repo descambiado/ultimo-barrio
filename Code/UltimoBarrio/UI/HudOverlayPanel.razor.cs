@@ -11,6 +11,8 @@ using UltimoBarrio.WorldTime;
 using UltimoBarrio.Raids;
 using UltimoBarrio.Apartments;
 using UltimoBarrio.Players;
+using UltimoBarrio.Missions;
+using UltimoBarrio.Core;
 
 namespace UltimoBarrio.UI
 {
@@ -66,11 +68,22 @@ namespace UltimoBarrio.UI
             get
             {
                 var held = HeldItemCtrl;
-                if ( held is null || string.IsNullOrEmpty( held.ActiveItemId ) )
-                    return "MANOS VACÍAS";
+                if ( held is not null && !string.IsNullOrEmpty( held.ActiveItemId ) )
+                {
+                    var heldDef = ItemRegistry.GetDefinition( held.ActiveItemId );
+                    return heldDef?.DisplayName ?? held.ActiveItemId;
+                }
 
-                var def = ItemRegistry.GetDefinition( held.ActiveItemId );
-                return def?.DisplayName ?? held.ActiveItemId;
+                var carrier = WeaponCarrier;
+                if ( carrier != null && !string.IsNullOrEmpty( carrier.ActiveItemId ) )
+                {
+                    var def = ItemRegistry.GetDefinition( carrier.ActiveItemId );
+                    if ( def != null && def.Category == ItemCategory.Consumable )
+                        return def.DisplayName.ToUpper();
+                    return "LISTO";
+                }
+
+                return "MANOS VACÍAS";
             }
         }
 
@@ -103,11 +116,38 @@ namespace UltimoBarrio.UI
         private readonly List<string> _feedback = new();
         private readonly List<float> _feedbackAge = new();
 
+        public string MissionTitle => Journal?.ActiveMissions.FirstOrDefault()?.Title ?? "";
+
+        /// <summary>Objetivos de la misión activa como líneas de texto (con estado).</summary>
+        public List<string> MissionObjectives
+        {
+            get
+            {
+                var result = new List<string>();
+                var mission = Journal?.ActiveMissions.FirstOrDefault();
+                if ( mission != null )
+                {
+                    foreach ( var obj in mission.Objectives )
+                    {
+                        string state = obj.IsCompleted
+                            ? "OK"
+                            : $"{obj.CurrentProgress}/{obj.TargetAmount}";
+                        result.Add( $"{obj.Description}  [{state}]" );
+                    }
+                }
+                return result;
+            }
+        }
+
+        public bool HasActiveMission => Journal != null && Journal.ActiveMissions.Count > 0;
+
         private WorldClock Clock => PlayerObj?.Scene?.GetAllComponents<WorldClock>().FirstOrDefault();
         private HealthComponent HealthComp => PlayerObj?.Components.Get<HealthComponent>( FindMode.EverythingInSelfAndDescendants );
         private PlayerMovementModifier StaminaComp => PlayerObj?.Components.Get<PlayerMovementModifier>( FindMode.EverythingInSelfAndDescendants );
         private Wallet WalletComp => PlayerObj?.Components.Get<Wallet>( FindMode.EverythingInSelfAndDescendants );
         private HeldItemController HeldItemCtrl => PlayerObj?.Components.Get<HeldItemController>( FindMode.EverythingInSelfAndDescendants );
+        private UbWeaponCarrier WeaponCarrier => PlayerObj?.Components.Get<UbWeaponCarrier>( FindMode.EverythingInSelfAndDescendants );
+        private MissionJournal Journal => PlayerObj?.Components.Get<MissionJournal>( FindMode.EverythingInSelfAndDescendants );
         private Combat.BaseCombatWeapon ActiveWeapon
         {
             get

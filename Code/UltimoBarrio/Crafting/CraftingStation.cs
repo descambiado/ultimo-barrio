@@ -81,6 +81,12 @@ namespace UltimoBarrio.Crafting
         private void NotifyCraftResult( string message, bool success )
         {
             UI.PlayerFeedback.Push( message );
+
+            if ( success )
+            {
+                // Feedback de audio: sonido de trabajo (banco verificado).
+                Sound.Play( "sounds/content/fortification/repair.sound", WorldPosition );
+            }
         }
     }
 

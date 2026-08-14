@@ -26,14 +26,18 @@ namespace UltimoBarrio.Content.Enemies
 		[Property] public string DefinitionId { get; set; } = "";
 		[Property] public GameObject Target { get; set; }
 
-		public EnemyContentDefinition Definition { get; private set; }
+		public EnemyArchetypeDefinition Definition { get; private set; }
 
 		[Sync] public float Health { get; private set; }
 		public bool IsDead => Health <= 0f;
 
+		// Idempotencia de la transicion de muerte (separada de IsDead: Health<=0 es
+		// estado de salud; _deathHandled garantiza que Die() corre exactamente 1 vez).
+		private bool _deathHandled;
+
 		// Lecturas para el rig / core nuevo
-		public bool IsTargetAcquired => Perception.CurrentTarget != null;
-		public Vector3? LastKnownPosition => Perception.LastKnownPosition;
+		public bool IsTargetAcquired => Perception?.CurrentTarget != null;
+		public Vector3? LastKnownPosition => Perception?.LastKnownPosition;
 		public float DistanceToTarget => Target != null && Target.IsValid()
 			? Vector3.DistanceBetween( WorldPosition, Target.WorldPosition )
 			: -1f;
@@ -123,7 +127,7 @@ namespace UltimoBarrio.Content.Enemies
 
 		public void TakeDamage( ContentDamageEvent damageEvent )
 		{
-			if ( !Networking.IsHost || IsDead ) return;
+			if ( !Networking.IsHost || _deathHandled ) return;
 
 			Health = MathF.Max( 0f, Health - damageEvent.Amount );
 			Log.Info( $"[Content.Enemy] {Definition?.Id} recibió {damageEvent.Amount:F0} de '{damageEvent.SourceId}' → HP {Health:F0}/{Definition?.MaxHealth:F0}" );
@@ -138,8 +142,9 @@ namespace UltimoBarrio.Content.Enemies
 
 		private void Die()
 		{
-			if ( !Networking.IsHost || IsDead ) return;
+			if ( !Networking.IsHost || _deathHandled ) return;
 
+			_deathHandled = true;
 			Health = 0f;
 			Log.Info( $"[Content.Enemy] {Definition?.Id} murió" );
 
@@ -249,13 +254,13 @@ namespace UltimoBarrio.Content.Enemies
 		[Rpc.Broadcast]
 		private void RpcDamageFeedback( float amount, Vector3 position, string sourceId )
 		{
-			// TODO(core nuevo): feedback visual (flash/sangre/sonido) desde datos del pack.
+			Sound.Play( "sounds/content/enemies/enemy_hurt.sound", position );
 		}
 
 		[Rpc.Broadcast]
 		private void RpcDeathEffects()
 		{
-			// TODO(core nuevo): death anim / ragdoll desde datos del pack (CorpseLifetime).
+			Sound.Play( "sounds/content/enemies/enemy_death.sound", WorldPosition );
 		}
 	}
 }

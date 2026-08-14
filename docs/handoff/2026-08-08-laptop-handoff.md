@@ -1,4 +1,4 @@
-# Ultimo Barrio — Laptop Handoff
+# Ultimo Barrio - Laptop Handoff
 
 _Fecha: 2026-08-08. Estado preservado al congelar la fábrica (handoff mode)._
 _Este documento es la fuente única de verdad para continuar sin la conversación original._
@@ -16,7 +16,7 @@ _Este documento es la fuente única de verdad para continuar sin la conversació
 - s&box build: `26.08.05`
 - MCP endpoint: `http://127.0.0.1:7269/mcp` (JSON-RPC; helper local `workspace/.openclaw/tmp/mcp.ps1` + `mcp_params.json`, o `Invoke-RestMethod` inline)
 - compile status: `local.ultimo_barrio` → 0 errores propios (2 warnings preexistentes del core antiguo: GameResourceAttribute obsolete en `ItemDefinition.cs`/`MovementProfile.cs`)
-- tools MCP útiles: `editor_status` (IsCompiling/LastCompileSucceeded), `compile_status` (IsBuilding por compilador), `play_start/play_stop`, `read_console` (filter/minimumLevel), `list_scenes`, `open_scene` (⚠️ recuperable del checkpoint `e871fe7`/`a8a5a56` — cherry-pick de `Editor/UltimoBarrioMcpTools.cs` si se quiere), `reload_active_scene_from_disk`, `asset_search`, `asset_info`, `find_packages`, `get_package`, `save_scene`, `camera_screenshot`
+- tools MCP útiles: `editor_status` (IsCompiling/LastCompileSucceeded), `compile_status` (IsBuilding por compilador), `play_start/play_stop`, `read_console` (filter/minimumLevel), `list_scenes`, `open_scene` (integrado en spike como `0f16745`), `reload_active_scene_from_disk`, `asset_search`, `asset_info`, `find_packages`, `get_package`, `save_scene`, `camera_screenshot`
 
 ## Critical context
 
@@ -37,10 +37,10 @@ _Este documento es la fuente única de verdad para continuar sin la conversació
 | Weapon Shotgun | PASS (runtime; w_spaghellim4/v_spaghellim4 cloud, delta 96 = 8 pellets × 12) |
 | WeaponSuite combinada | PASS 4/4 (`[UBSuite] Suite run complete (4 PASS, 0 FAIL, 0 SKIP)`, 2026-08-08 14:42, rig-7) |
 | Cold restart cloud | PASS (editor cerrado y relanzado; paquetes montados solos vía PackageReferences) |
-| Enemy | **PARTIAL** — assets integrados (prefabs citizen reales + loot pickups + registry, worker B); gameplay/AI en rama `agent/enemies` @ `d4c0c93` **WIP sin validar** (EnemyContentDefinition/Perception/Attack/TestRig escritos, NO compilados/integrados) |
-| Building | **PARTIAL** — assets (9 prefabs modelos engine reales, 4 PROXY visuales) + sistema (BuildDefinition/BuildPlacementRules/BuildStructureHost/BuildingTestRig) integrados y compilan; **building_lab runtime FAIL** (ver Known blockers) |
-| Vehicle | **PENDING** — sin trabajo entregado; rama `agent/vehicles` vacía; research previo en `docs/research/workers/vehicles.md`; falta elegir kit PRIMARY y validar loop |
-| Audio | **STATIC ONLY** — banco integrado (15 SoundEvents en `Assets/sounds/content/` + dry_fire.wav MIT + PENDING 4: knife_swing/enemy_alert/enemy_attack/night_warning); **no compilado en editor** (pendiente validar .sound) |
+| Enemy | **PARTIAL** - assets integrados (prefabs citizen reales + loot pickups + registry, worker B); gameplay/AI en rama `agent/enemies` @ `d4c0c93` **WIP sin validar** (EnemyContentDefinition/Perception/Attack/TestRig escritos, NO compilados/integrados) |
+| Building | **PASS** - building_lab 9/9 PASS (19:00): WoodenBarricade lifecycle completo (preview invalid/blocked/valid, spawn, overlap, damage, repair, upgrade, destroy) + 8 restantes (registry+prefab+spawn+HP+modelo: reinforced_barricade, basic_door, reinforced_door, stash, workbench, generator, alarm, repair_station). Commits `1fff31c` + `b470365` |
+| Vehicle | **PENDING** - sin trabajo entregado; rama `agent/vehicles` vacía; research previo en `docs/research/workers/vehicles.md`; falta elegir kit PRIMARY y validar loop |
+| Audio | **STATIC ONLY** - banco integrado (15 SoundEvents en `Assets/sounds/content/` + dry_fire.wav MIT + PENDING 4: knife_swing/enemy_alert/enemy_attack/night_warning); **no compilado en editor** (pendiente validar .sound) |
 | QA | ContentRuntimeSuite integrado y VALIDADO (ILabSuite + runner `[UBSuite]`; WeaponSuite refactorizado; stubs Enemy/Building/VehicleSuite) |
 | Cloud | 9 PackageReferences en `ultimo_barrio.sbproj` (portable, montaje automático al abrir proyecto); `Cloud.Model("ident")` exige string literal (SB2000) |
 
@@ -69,26 +69,29 @@ Copia EXACTA de `ultimo_barrio.sbproj` (2026-08-08):
 | SHA | Dominio | Estado | Qué contiene |
 |---|---|---|---|
 | `9839846` | weapons | RUNTIME VALIDATED | USP loop (equip/fire/trace/damage/ammo/reload/drop) |
-| `f302efe` | docs | — | STATE weapon lab USP |
+| `f302efe` | docs | - | STATE weapon lab USP |
 | `6913adb` | weapons | RUNTIME VALIDATED | Crowbar melee loop (crowbar01 engine) |
 | `9fd7b32` | weapons+cloud | RUNTIME VALIDATED | Suite 4/4 + PackageReferences + prefabs reales |
-| `7433f69` | docs | — | STATE suite 4/4 + registry knife/shotgun |
+| `7433f69` | docs | - | STATE suite 4/4 + registry knife/shotgun |
 | `d2e1132` | QA | RUNTIME VALIDATED | Refactor WeaponTestRig → WeaponSuite (ILabSuite) |
 | `9055be6` | QA | STATIC ONLY | Stubs EnemySuite/BuildingSuite/VehicleSuite |
-| `a8cbd03` | QA | — | scripts/labs/README (pipeline coordinador) |
+| `b470365` | building | RUNTIME VALIDATED | building_lab 9/9 PASS: rig modo FullLifecycle + escena 9 tests |
+| `1fff31c` | building | RUNTIME VALIDATED | WoodenBarricade lifecycle PASS (fix SetBalance + ResolveModelFromPrefab) |
+| `0f16745` | infra | RUNTIME VALIDATED | open_scene MCP tool (desde checkpoint e871fe7) |
+| `a8cbd03` | QA | - | scripts/labs/README (pipeline coordinador) |
 | `21d199f` | QA | RUNTIME VALIDATED | ILabSuite + ContentRuntimeSuite runner ([UBSuite] PASS) |
 | `494b21b` | building assets | STATIC ONLY | 9 prefabs fortificación modelos engine reales (4 proxy visual) |
-| `fafb557` | building assets | — | asset-registry sección building |
+| `fafb557` | building assets | - | asset-registry sección building |
 | `7222416` | enemies assets | STATIC ONLY | 3 prefabs enemy citizen reales + tint por archetype |
 | `8a71468` | enemies assets | STATIC ONLY | Loot pickups (12g, trench knife, crowbar) |
-| `21dfb14` | enemies assets | — | registry verify enemy/loot |
-| `7727d4b` | docs | — | Porting plan filas enemies (aplicado a tabla H) |
+| `21dfb14` | enemies assets | - | registry verify enemy/loot |
+| `7727d4b` | docs | - | Porting plan filas enemies (aplicado a tabla H) |
 | `4249201` | building system | STATIC ONLY | BuildDefinition + FortificationContentRegistry (9 defs) |
 | `87e176f` | building system | STATIC ONLY | BuildPlacementRules + BuildStructureHost + prefabs retype |
 | `b79dea3` | building system | STATIC ONLY | BuildingTestRig + LabResourceFixture + building_lab.scene |
-| `9d8eab0` | docs | — | STATE building data layer |
+| `9d8eab0` | docs | - | STATE building data layer |
 | `cc16de7` | audio | STATIC ONLY | Banco SoundEvents (15) + dry_fire.wav MIT |
-| `dfdf543` | docs | — | Registry sounds + MIT attribution (HEAD estable) |
+| `dfdf543` | docs | - | Registry sounds + MIT attribution (HEAD estable) |
 
 No integrados (ramas worker): `d4c0c93` (enemies WIP, agent/enemies), `e871fe7` (checkpoint building diagnostic WIP).
 
@@ -100,12 +103,18 @@ No integrados (ramas worker): `d4c0c93` (enemies WIP, agent/enemies), `e871fe7` 
 | `agent/building` | `2120d2f` | sí (4 commits) | **sí** | sistema building integrado |
 | `agent/audio` | `802c826` | sí (2 commits) | **sí** | banco de sonidos integrado |
 | `agent/qa` | `76a04d9` | sí (4 commits) | **sí** | QA infra integrada |
-| `agent/vehicles` | `9fd7b32` | — | no (sin trabajo único) | sin trabajo (worker E no entregó commits) |
-| `checkpoint/laptop-turbo-wip-20260808` | `e871fe7` → `a8a5a56` | no | **sí** (e871fe7; a8a5a56 = DebugDump diagnóstico, también pusheado) | WIP diagnóstico building (open_scene + rig-2 + DebugDump) — PUEDE ESTAR ROTO |
-| `spike/laptop-content-stack` | `e37ed82` | — | **sí** (push + verificación ls-remote 2026-08-08) | rama estable del portátil (con handoff) |
+| `agent/vehicles` | `9fd7b32` | - | no (sin trabajo único) | sin trabajo (worker E no entregó commits) |
+| `checkpoint/laptop-turbo-wip-20260808` | `e871fe7` → `a8a5a56` | no | **sí** (e871fe7; a8a5a56 = DebugDump diagnóstico, también pusheado) | WIP diagnóstico building (open_scene + rig-2 + DebugDump) - PUEDE ESTAR ROTO |
+| `spike/laptop-content-stack` | `e37ed82` | - | **sí** (push + verificación ls-remote 2026-08-08) | rama estable del portátil (con handoff) |
 | `checkpoint/laptop-weapon-lab-frankenplayer` | `93dcf9e` | no | no | experimento Frankenstein descartado (no portar) |
 
 ## Known blockers
+
+### NRE BuildingTestRig.CheckRegistryCoverage — RESUELTO (2026-08-08 18:56)
+
+- **Causa raiz: assembly/hotload STALE, no bug del codigo.** El cold restart del editor (cerrar proceso sbox-dev + relanzar) hizo desaparecer el NRE: el static ctor de `FortificationContentRegistry` ejecutaba una DLL intermedia (keys correctas, values null — confirmado con DebugDump en el checkpoint). Con arbol estable + editor limpio: registry 9/9 y lifecycle completo PASS (building_lab 9/9 PASS 19:00).
+- Fixes reales integrados (el DebugDump NO se porto): `buildingtestrig.cs` rig-2 `_fixture.SetBalance(Entry.FixtureBalance)` (el repair fallaba con balance 0) y `buildstructurehost.cs` `ResolveModelPath` + `ResolveModelFromPrefab` (`ResourceLibrary.Get<Model>` no resuelve assets @nosource del engine por ruta; con prefab fallback el upgrade cambia old_bench -> security_shutter_box_middle).
+- **Leccion proceso**: al editar un `.scene` por fuera del editor, `reload_active_scene_from_disk` es obligatorio antes de play (el editor juega la escena en memoria).
 
 ### NRE en BuildingTestRig.CheckRegistryCoverage (building_lab runtime FAIL)
 
@@ -119,7 +128,7 @@ No integrados (ramas worker): `d4c0c93` (enemies WIP, agent/enemies), `e871fe7` 
 
 ### open_scene (infra MCP, en checkpoint `e871fe7`)
 
-- `Editor/UltimoBarrioMcpTools.cs` añade la tool MCP `open_scene` (`Asset.OpenInEditor()`), validada (abrió building_lab y weapon_lab; ToolCount 53→54). Está SOLO en el checkpoint; cherry-pickear a spike si se quiere abrir escenas vía MCP (sin ella, el editor solo restaura la última escena abierta).
+- `Editor/UltimoBarrioMcpTools.cs` añade la tool MCP `open_scene` (integrado en spike como `0f16745`)`), validada (abrió building_lab y weapon_lab; ToolCount 53→54). Está SOLO en el checkpoint; cherry-pickear a spike si se quiere abrir escenas vía MCP (sin ella, el editor solo restaura la última escena abierta).
 
 ## Do not redo
 

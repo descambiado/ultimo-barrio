@@ -10,10 +10,17 @@ namespace UltimoBarrio.UI
         [Property] public InventoryComponent TargetInventory { get; set; }
         [Property] public HeldItemController HeldItemCtrl { get; set; }
 
+        /// <summary>
+        /// Fallback: si no hay HeldItemController (viejo), usar UbWeaponCarrier (nuevo,
+        /// es el sistema de armas real en el player.prefab actual).
+        /// </summary>
+        private Combat.UbWeaponCarrier _weaponCarrier;
+
         private Panel _container;
 
         protected override void OnStart()
         {
+            _weaponCarrier = Components.Get<Combat.UbWeaponCarrier>();
             if ( Panel != null )
             {
                 Panel.Style.Position = PositionMode.Absolute;
@@ -35,12 +42,14 @@ namespace UltimoBarrio.UI
 
         protected override void OnUpdate()
         {
-            if ( TargetInventory == null || HeldItemCtrl == null || _container == null ) return;
+            if ( TargetInventory == null || _container == null ) return;
 
-            int activeSlot = HeldItemCtrl.SelectedHotbarSlot;
+            int activeSlot = HeldItemCtrl != null ? HeldItemCtrl.SelectedHotbarSlot
+                          : _weaponCarrier != null ? _weaponCarrier.SelectedSlot : -1;
 
-            // Munición del arma activa (cargador + recarga).
-            var activeWeapon = ResolveActiveWeapon();
+            // Munición del arma activa (cargador + recarga) — solo disponible con el
+            // sistema de armas viejo (HeldItemCtrl); UbWeaponCarrier no expone esto aquí.
+            var activeWeapon = HeldItemCtrl != null ? ResolveActiveWeapon() : null;
             int mag = activeWeapon?.CurrentAmmo ?? 0;
             int maxMag = activeWeapon?.MaxAmmo ?? 0;
             bool reloading = activeWeapon?.IsReloading ?? false;
@@ -80,7 +89,13 @@ namespace UltimoBarrio.UI
                 slotPanel.Style.Cursor = "pointer";
 
                 var slotIndex = i;
-                slotPanel.AddEventListener( "onclick", () => HeldItemCtrl.SelectSlot( slotIndex ) );
+                slotPanel.AddEventListener( "onclick", () =>
+                {
+                    if ( HeldItemCtrl != null )
+                        HeldItemCtrl.SelectSlot( slotIndex );
+                    else
+                        _weaponCarrier?.SelectSlot( slotIndex );
+                } );
 
                 var numberLbl = slotPanel.AddChild<Label>();
                 numberLbl.Text = ( i + 1 ).ToString();

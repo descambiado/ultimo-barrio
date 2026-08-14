@@ -41,6 +41,7 @@ namespace UltimoBarrio
 
             // ── Munición ─────────────────────────────────────────────────────
             Add( "ammo_9mm", "Mun. 9mm", "Balas calibre 9mm", ItemCategory.Ammo, 120, weight: 0.05f );
+            Add( "ammo_buckshot", "Cartuchos", "Cartuchos calibre 12", ItemCategory.Ammo, 60, weight: 0.08f );
 
             // ── Consumibles fabricados / utilidades ──────────────────────────
             Add( "repair_kit", "Kit de reparación", "Repara puertas, ventanas y barricadas", ItemCategory.Utility, 5, weight: 3f, usable: false );
@@ -65,8 +66,13 @@ namespace UltimoBarrio
 
             AddWeapon( "weapon_knife", "Cuchillo", "Arma blanca rápida", ItemCategory.Melee,
                 ammoType: "", magazine: 0, damage: 18f, fireRate: 0.35f, meleeRange: 70f,
-                viewModel: "prefabs/weapons/v_melee.prefab", worldModel: "prefabs/weapons/ub_melee.prefab",
+                viewModel: "prefabs/content/weapons/v_knife_content.prefab", worldModel: "prefabs/content/weapons/w_knife_content.prefab",
                 worldPickup: "prefabs/items/pf_scrap_tools.prefab" );
+
+            AddWeapon( "weapon_shotgun", "Escopeta", "12 gauge", ItemCategory.Firearm,
+                ammoType: "ammo_buckshot", magazine: 8, damage: 12f, fireRate: 0.9f,
+                viewModel: "prefabs/content/weapons/v_shotgun_content.prefab", worldModel: "prefabs/content/weapons/w_shotgun_content.prefab",
+                worldPickup: "prefabs/items/pf_scrap_pickup.prefab" );
         }
 
         private static void Add(

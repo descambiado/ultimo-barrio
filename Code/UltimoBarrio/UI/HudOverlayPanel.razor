@@ -70,4 +70,12 @@
             <label class="money-label">FONDOS</label>
         </div>
     </div>
+
+    <div class="mission-panel @(HasActiveMission ? "visible" : "hidden")">
+        <label class="mission-title">@MissionTitle</label>
+        @foreach (var objective in MissionObjectives)
+        {
+            <label class="mission-objective">@objective</label>
+        }
+    </div>
 </root>

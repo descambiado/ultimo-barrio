@@ -69,10 +69,14 @@ namespace UltimoBarrio.UI
             Hotbar = GameObject.Components.Create<HotbarPanel>();
             Hotbar.TargetInventory = GameObject.Components.Get<InventoryComponent>();
             Hotbar.HeldItemCtrl = GameObject.Components.GetInDescendantsOrSelf<UltimoBarrio.HeldItemController>();
+            // Si no hay HeldItemController (viejo), HotbarPanel usa UbWeaponCarrier (nuevo) vía fallback interno.
 
             CraftingUI = GameObject.Components.Create<CraftingPanel>();
             
             ChangeState(HudState.Gameplay);
+
+            // Bienvenida con controles básicos (una vez por sesión).
+            ShowMessage( "E interactuar · 1-6 armas/consumibles · R recargar · F construir · TAB mochila" );
         }
 
         /// <summary>El cursor sólo se usa cuando hay una pantalla que pide puntero.</summary>

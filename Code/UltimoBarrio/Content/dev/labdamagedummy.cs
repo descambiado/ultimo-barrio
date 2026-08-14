@@ -7,15 +7,15 @@ namespace UltimoBarrio.Content.Dev
 	/// Dummy de daño para los labs de contenido (SOLO dev).
 	/// Implementa IDamageTarget del paquete portable y loguea cada impacto
 	/// para verificar la escalera DAMAGES sin tocar el core viejo.
-	/// El prefijo de log es configurable ([Lab] por defecto; el rig de enemigos
-	/// usa [EnemyLab]) para que cada suite emita logs deterministas con su marcador.
 	/// </summary>
 	[Title( "Lab Damage Dummy" )]
 	[Category( "Último Barrio — Content (Dev)" )]
 	public sealed class LabDamageDummy : Component, IDamageTarget
 	{
-		[Property] public string LogPrefix { get; set; } = "[Lab]";
 		[Property] public float MaxHealth { get; set; } = 100f;
+
+		/// <summary>Prefijo de los logs de impacto (cada rig usa el suyo: [WeaponLab], [EnemyLab]...).</summary>
+		[Property] public string LogPrefix { get; set; } = "[Lab]";
 
 		public float Health { get; private set; } = 100f;
 		public bool IsDead => Health <= 0f;
@@ -38,11 +38,11 @@ namespace UltimoBarrio.Content.Dev
 			Health -= damageEvent.Amount;
 			Health = MathF.Max( 0f, Health );
 
-			Log.Info( $"{LogPrefix} TargetDummy recibió {damageEvent.Amount:F1} de '{damageEvent.SourceId}' → HP {Health:F1}/{MaxHealth:F0}" );
+			Log.Info( $"{LogPrefix} Dummy recibió {damageEvent.Amount:F1} de '{damageEvent.SourceId}' → HP {Health:F1}/{MaxHealth:F0}" );
 
 			if ( Health <= 0f )
 			{
-				Log.Info( $"{LogPrefix} TargetDummy destruido (HP 0)" );
+				Log.Info( $"{LogPrefix} Dummy destruido (HP 0)" );
 			}
 		}
 	}

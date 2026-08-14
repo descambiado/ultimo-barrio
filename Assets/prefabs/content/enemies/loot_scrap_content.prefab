@@ -18,7 +18,7 @@
         "__type": "Sandbox.ModelRenderer",
         "__guid": "9e7a2b5c-1f4d-4a8e-9c3f-5d6a7b8c9d02",
         "__enabled": true,
-        "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+        "Model": "models/citizen_props/crate01.vmdl",
         "Tint": "0.55,0.55,0.55,1"
       },
       {

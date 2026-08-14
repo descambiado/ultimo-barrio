@@ -1,6 +1,6 @@
 {
   "RootObject": {
-    "__guid": "9e7a2b5c-1f4d-4a8e-9c3f-5d6a7b8c9d11",
+    "__guid": "a1b2c3d4-5e6f-4a7b-8c9d-0e1f2a3b4c01",
     "__version": 1,
     "Flags": 0,
     "Name": "Loot Supplies (Content)",
@@ -16,23 +16,23 @@
     "Components": [
       {
         "__type": "Sandbox.ModelRenderer",
-        "__guid": "9e7a2b5c-1f4d-4a8e-9c3f-5d6a7b8c9d12",
+        "__guid": "a1b2c3d4-5e6f-4a7b-8c9d-0e1f2a3b4c02",
         "__enabled": true,
-        "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
-        "Tint": "0.35,0.6,0.4,1"
+        "Model": "models/citizen_props/crate01.vmdl",
+        "Tint": "0.4,0.6,0.4,1"
       },
       {
         "__type": "Sandbox.BoxCollider",
-        "__guid": "9e7a2b5c-1f4d-4a8e-9c3f-5d6a7b8c9d13",
+        "__guid": "a1b2c3d4-5e6f-4a7b-8c9d-0e1f2a3b4c03",
         "__enabled": true,
         "Scale": "12,12,24",
         "Static": false
       },
       {
         "__type": "UltimoBarrio.Content.Enemies.LootPickupContent",
-        "__guid": "9e7a2b5c-1f4d-4a8e-9c3f-5d6a7b8c9d14",
+        "__guid": "a1b2c3d4-5e6f-4a7b-8c9d-0e1f2a3b4c04",
         "__enabled": true,
-        "ItemId": "suministros",
+        "ItemId": "medicine",
         "Amount": 1
       }
     ],

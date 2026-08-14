@@ -28,6 +28,12 @@ namespace UltimoBarrio.Content.Fortification
 
 		protected override void OnStart()
 		{
+			// Tags para que los enemigos puedan percibir y atacar la estructura:
+			//   "enemy_target"  → candidato para EnemyPerception.FindBestCandidate.
+			//   "fortification" → preferencia del Bruto (StructureTag) sobre el jugador.
+			GameObject.Tags.Add( "fortification" );
+			GameObject.Tags.Add( "enemy_target" );
+
 			Definition = FortificationContentRegistry.Get( DefinitionId );
 			if ( Definition == null )
 			{
@@ -85,6 +91,7 @@ namespace UltimoBarrio.Content.Fortification
 				Log.Error( $"[BuildHost] SpawnBuild: '{def.Prefab}' no contiene BuildStructureHost" );
 			}
 
+			Sound.Play( "sounds/content/fortification/repair.sound", position );
 			return host;
 		}
 
@@ -96,6 +103,8 @@ namespace UltimoBarrio.Content.Fortification
 			Health = MathF.Max( 0f, Health );
 
 			Log.Info( $"[BuildHost] {Definition?.Id} damage {damageEvent.Amount:F0} (src '{damageEvent.SourceId}') → HP {Health:F0}" );
+
+			RpcImpactSound( damageEvent.Position );
 
 			if ( Health <= 0f )
 			{
@@ -121,6 +130,7 @@ namespace UltimoBarrio.Content.Fortification
 
 			Health = MathF.Min( Definition.MaxHp, Health + amount );
 			Log.Info( $"[BuildHost] {Definition.Id} repaired +{amount:F0} (coste {Definition.RepairCost}) → HP {Health:F0}/{Definition.MaxHp:F0}" );
+			RpcRepairSound();
 			return true;
 		}
 
@@ -150,8 +160,12 @@ namespace UltimoBarrio.Content.Fortification
 			var renderer = Components.GetInChildrenOrSelf<ModelRenderer>();
 			if ( renderer != null )
 			{
-				var model = ResolveModel();
+				var model = ResolveModel() ?? ResolveModelFromPrefab();
 				if ( model != null ) renderer.Model = model;
+				else if ( !string.IsNullOrEmpty( Definition.Model ) )
+				{
+					Log.Warning( $"[BuildHost] {Definition.Id}: modelo no resuelto '{Definition.Model}' (ni ruta ni prefab) — se conserva el del prefab" );
+				}
 			}
 
 			if ( Definition.Scale != 1f )
@@ -163,23 +177,56 @@ namespace UltimoBarrio.Content.Fortification
 		/// <summary>Modelo primario → fallback. Si nada resuelve, se conserva el modelo del prefab.</summary>
 		private Model ResolveModel()
 		{
-			if ( !string.IsNullOrEmpty( Definition.Model ) )
-			{
-				var model = ResourceLibrary.Get<Model>( Definition.Model );
-				if ( model != null ) return model;
-			}
+			var model = ResolveModelPath( Definition.Model );
+			if ( model != null ) return model;
 
-			if ( !string.IsNullOrEmpty( Definition.ModelFallback ) )
+			model = ResolveModelPath( Definition.ModelFallback );
+			if ( model == null && !string.IsNullOrEmpty( Definition.Model ) )
 			{
-				return ResourceLibrary.Get<Model>( Definition.ModelFallback );
+				Log.Warning( $"[BuildHost] {Definition.Id}: modelo no resuelto '{Definition.Model}' — se conserva el del prefab" );
 			}
+			return model;
+		}
 
-			return null;
+		/// <summary>Fallback: modelo ya resuelto por ident dentro del PREFAB destino (los assets del engine no resuelven por ruta).</summary>
+		private Model ResolveModelFromPrefab()
+		{
+			if ( string.IsNullOrEmpty( Definition.Prefab ) ) return null;
+
+			var prefabFile = ResourceLibrary.Get<PrefabFile>( Definition.Prefab );
+			var scene = prefabFile == null ? null : SceneUtility.GetPrefabScene( prefabFile );
+			var renderer = scene?.GetAllComponents<ModelRenderer>()?.FirstOrDefault();
+			return renderer?.Model;
+		}
+
+		/// <summary>Resuelve una ruta de modelo tolerando la extensión .vmdl opcional (Get&lt;Model&gt; es estricto).</summary>
+		private static Model ResolveModelPath( string path )
+		{
+			if ( string.IsNullOrEmpty( path ) ) return null;
+
+			var model = ResourceLibrary.Get<Model>( path );
+			if ( model == null && path.EndsWith( ".vmdl", StringComparison.OrdinalIgnoreCase ) )
+			{
+				model = ResourceLibrary.Get<Model>( path[..^5] );
+			}
+			return model;
 		}
 
 		private string ResolvedModelName()
 		{
 			return Components.GetInChildrenOrSelf<ModelRenderer>()?.Model?.ResourceName ?? "none";
+		}
+
+		[Rpc.Broadcast]
+		private void RpcImpactSound( Vector3 position )
+		{
+			Sound.Play( "sounds/content/fortification/barricade_impact.sound", position );
+		}
+
+		[Rpc.Broadcast]
+		private void RpcRepairSound()
+		{
+			Sound.Play( "sounds/content/fortification/repair.sound", WorldPosition );
 		}
 	}
 }

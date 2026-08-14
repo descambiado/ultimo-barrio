@@ -5,11 +5,11 @@ namespace UltimoBarrio.Content.Enemies
 	/// <summary>
 	/// Catálogo del enemy content pack (portable): Saqueador, Bruto, Merodeador.
 	/// Mismos estados de assets que el pack de armas (PENDING_VERIFY / VERIFIED fallback).
-	/// No conecta persistencia, apartamentos ni raids del core viejo.
+	/// No conecta persistencia ni apartment system de la rama vieja.
 	/// </summary>
 	public static class EnemyContentRegistry
 	{
-		private static readonly Dictionary<string, EnemyContentDefinition> _enemies = new();
+		private static readonly Dictionary<string, EnemyArchetypeDefinition> _enemies = new();
 		private static readonly Dictionary<string, LootTableDefinition> _lootTables = new();
 
 		static EnemyContentRegistry()
@@ -23,27 +23,24 @@ namespace UltimoBarrio.Content.Enemies
 			RegisterLoot( MerodeadorTable() );
 		}
 
-		public static EnemyContentDefinition GetEnemy( string id )
+		public static EnemyArchetypeDefinition GetEnemy( string id )
 		{
-			if ( string.IsNullOrEmpty( id ) ) return null;
-			return _enemies.TryGetValue( id, out var def ) ? def : null;
+			return id != null && _enemies.TryGetValue( id, out var def ) ? def : null;
 		}
 
 		public static LootTableDefinition GetLootTable( string id )
 		{
-			if ( string.IsNullOrEmpty( id ) ) return null;
-			return _lootTables.TryGetValue( id, out var def ) ? def : null;
+			return id != null && _lootTables.TryGetValue( id, out var def ) ? def : null;
 		}
 
-		public static IEnumerable<EnemyContentDefinition> AllEnemies => _enemies.Values;
+		public static IEnumerable<EnemyArchetypeDefinition> AllEnemies => _enemies.Values;
 
-		private static void RegisterEnemy( EnemyContentDefinition def ) => _enemies[def.Id] = def;
+		private static void RegisterEnemy( EnemyArchetypeDefinition def ) => _enemies[def.Id] = def;
 		private static void RegisterLoot( LootTableDefinition def ) => _lootTables[def.Id] = def;
 
-		/// <summary>Saqueador: rápido, vida media-baja, prioriza al jugador.</summary>
-		private static EnemyContentDefinition Saqueador()
+		private static EnemyArchetypeDefinition Saqueador()
 		{
-			return new EnemyContentDefinition
+			return new EnemyArchetypeDefinition
 			{
 				Id = "ub_enemy_saqueador",
 				DisplayName = "Saqueador",
@@ -52,26 +49,24 @@ namespace UltimoBarrio.Content.Enemies
 				AnimGraph = "models/citizen/citizen.animgraph", // PENDING_VERIFY
 				Scale = 1f,
 				MaxHealth = 100f,
-				WalkSpeed = 260f,
+				WalkSpeed = 220f,
 				VisionRange = 2000f,
 				VisionAngle = 100f,
 				HearingRadius = 1400f,
 				MemoryDuration = 5f,
-				AttackRange = 110f,
+				AttackRange = 100f,
 				AttackDamage = 15f,
-				AttackCooldown = 1.2f,
+				AttackCooldown = 1.5f,
 				TargetPriority = EnemyTargetPriority.Player,
-				StructureTag = "fortification",
 				LootTableId = "loot_chatarra",
 				AssetsVerified = false,
 				VerificationNotes = "Modelo base ciudadano de Facepunch pendiente de confirmar en Cloud Browser. Fallback verificado."
 			};
 		}
 
-		/// <summary>Bruto: lento, mucha vida, alto daño estructural (prioriza fortificaciones).</summary>
-		private static EnemyContentDefinition Bruto()
+		private static EnemyArchetypeDefinition Bruto()
 		{
-			return new EnemyContentDefinition
+			return new EnemyArchetypeDefinition
 			{
 				Id = "ub_enemy_bruto",
 				DisplayName = "Bruto",
@@ -79,15 +74,15 @@ namespace UltimoBarrio.Content.Enemies
 				ModelFallback = "models/citizen_props/crate01.vmdl", // VERIFIED
 				AnimGraph = "models/citizen/citizen.animgraph", // PENDING_VERIFY
 				Scale = 1.3f,
-				MaxHealth = 300f,
-				WalkSpeed = 130f,
+				MaxHealth = 250f,
+				WalkSpeed = 150f,
 				VisionRange = 1600f,
-				VisionAngle = 80f,
+				VisionAngle = 90f,
 				HearingRadius = 1200f,
 				MemoryDuration = 6f,
-				AttackRange = 130f,
+				AttackRange = 110f,
 				AttackDamage = 40f,
-				AttackCooldown = 2.2f,
+				AttackCooldown = 2f,
 				TargetPriority = EnemyTargetPriority.Structures,
 				StructureTag = "fortification",
 				LootTableId = "loot_bruto",
@@ -96,10 +91,9 @@ namespace UltimoBarrio.Content.Enemies
 			};
 		}
 
-		/// <summary>Merodeador: movilidad media-alta, percepción superior, busca entradas vulnerables.</summary>
-		private static EnemyContentDefinition Merodeador()
+		private static EnemyArchetypeDefinition Merodeador()
 		{
-			return new EnemyContentDefinition
+			return new EnemyArchetypeDefinition
 			{
 				Id = "ub_enemy_merodeador",
 				DisplayName = "Merodeador",
@@ -108,27 +102,25 @@ namespace UltimoBarrio.Content.Enemies
 				AnimGraph = "models/citizen/citizen.animgraph", // PENDING_VERIFY
 				Scale = 0.95f,
 				MaxHealth = 60f,
-				WalkSpeed = 300f,
-				VisionRange = 2600f,
-				VisionAngle = 140f,
-				HearingRadius = 2000f,
+				WalkSpeed = 320f,
+				VisionRange = 2400f,
+				VisionAngle = 120f,
+				HearingRadius = 1600f,
 				MemoryDuration = 4f,
-				AttackRange = 90f,
+				AttackRange = 80f,
 				AttackDamage = 10f,
-				AttackCooldown = 0.9f,
+				AttackCooldown = 1f,
 				TargetPriority = EnemyTargetPriority.Balanced,
-				StructureTag = "fortification",
 				LootTableId = "loot_merodeador",
 				AssetsVerified = false,
-				VerificationNotes = "Arquetipo rápido y frágil; visión/ángulo y oído superiores (percepción superior)."
+				VerificationNotes = "Arquetipo rápido y frágil; escala ligeramente reducida."
 			};
 		}
 
-		/// <summary>
-		/// Tablas de loot: WorldPrefab apuntan a pickups FÍSICOS del pack
-		/// (prefabs/content/enemies/). Los ItemId son strings opacos: el mapeo a
-		/// inventario lo decide el core nuevo.
-		/// </summary>
+		// Los WorldPrefab apuntan a pickups FÍSICOS del pack (prefabs/content/enemies/*).
+		// Llevan LootPickupContent (el componente del pack), así el rig puede contar
+		// el botín y el core nuevo mapea ItemId → inventario.
+
 		private static LootTableDefinition ChatarraTable()
 		{
 			return new LootTableDefinition
@@ -148,8 +140,8 @@ namespace UltimoBarrio.Content.Enemies
 				Id = "loot_bruto",
 				Entries = new List<LootEntry>
 				{
-					new LootEntry { ItemId = "chatarra", WorldPrefab = "prefabs/content/enemies/loot_scrap_content.prefab", Min = 2, Max = 4, Chance = 1f },
-					new LootEntry { ItemId = "suministros", WorldPrefab = "prefabs/content/enemies/loot_supplies_content.prefab", Min = 1, Max = 2, Chance = 0.6f }
+					new LootEntry { ItemId = "chatarra", WorldPrefab = "prefabs/content/enemies/loot_scrap_content.prefab", Min = 2, Max = 5, Chance = 1f },
+					new LootEntry { ItemId = "ammo_9mm", WorldPrefab = "prefabs/content/enemies/loot_supplies_content.prefab", Min = 1, Max = 2, Chance = 0.5f }
 				}
 			};
 		}
@@ -162,7 +154,7 @@ namespace UltimoBarrio.Content.Enemies
 				Entries = new List<LootEntry>
 				{
 					new LootEntry { ItemId = "chatarra", WorldPrefab = "prefabs/content/enemies/loot_scrap_content.prefab", Min = 1, Max = 2, Chance = 1f },
-					new LootEntry { ItemId = "suministros", WorldPrefab = "prefabs/content/enemies/loot_supplies_content.prefab", Min = 1, Max = 1, Chance = 0.25f }
+					new LootEntry { ItemId = "ammo_9mm", WorldPrefab = "prefabs/content/enemies/loot_supplies_content.prefab", Min = 1, Max = 1, Chance = 0.3f }
 				}
 			};
 		}

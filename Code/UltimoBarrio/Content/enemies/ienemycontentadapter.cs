@@ -12,7 +12,7 @@ namespace UltimoBarrio.Content.Enemies
 	public interface IEnemyContentAdapter
 	{
 		/// <summary>Definición data-driven del arquetipo (stats, percepción, loot).</summary>
-		EnemyContentDefinition Definition { get; }
+		EnemyArchetypeDefinition Definition { get; }
 
 		float Health { get; }
 		bool IsDead { get; }

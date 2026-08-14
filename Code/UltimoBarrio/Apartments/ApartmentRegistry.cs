@@ -102,7 +102,7 @@ public sealed class ApartmentRegistry
 				.Select( apartment => apartment.ToSaveData(
 					string.Equals( apartment.ApartmentId, claimedApartmentId, StringComparison.Ordinal )
 						? ownerId
-						: null ) )
+						: apartment.OwnerId ) )
 				.ToList(),
 			Inventories = Game.ActiveScene.GetAllComponents<InventoryComponent>()
 				.Where( i => !string.IsNullOrEmpty( i.InventoryId ) )

@@ -12,7 +12,7 @@ namespace UltimoBarrio.Content.Enemies
 	[Icon( "swords" )]
 	public sealed class EnemyAttack : Component
 	{
-		public EnemyContentDefinition Definition { get; private set; }
+		public EnemyArchetypeDefinition Definition { get; private set; }
 
 		/// <summary>Tiempo desde el último golpe (lectura del rig para logs deterministas).</summary>
 		public TimeSince TimeSinceLastAttack { get; private set; }
@@ -20,7 +20,7 @@ namespace UltimoBarrio.Content.Enemies
 		public bool HasAttacked => TimeSinceLastAttack < ( Definition?.AttackCooldown ?? 0f );
 
 		/// <summary>El host configura el ataque desde la definición al cargar.</summary>
-		public void Configure( EnemyContentDefinition definition )
+		public void Configure( EnemyArchetypeDefinition definition )
 		{
 			Definition = definition;
 		}

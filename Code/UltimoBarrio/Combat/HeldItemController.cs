@@ -708,9 +708,8 @@ namespace UltimoBarrio
                     return;
             }
 
-            var audio = Scene.GetAllComponents<Audio.UltimoBarrioAudioCatalog>().FirstOrDefault();
-            audio?.PlayEvent( Audio.AudioEvent.PickupWater, WorldPosition );
-
+            // Sin evento de audio verificado para consumibles (agua): no se inventa
+            // un AudioEvent sin sonido real en el banco.
             var hud = Components.GetInDescendantsOrSelf<PlayerHud>();
             hud?.ShowMessage( $"Usado: {definition.DisplayName}" );
 

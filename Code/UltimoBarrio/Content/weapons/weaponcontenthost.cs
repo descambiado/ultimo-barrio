@@ -207,6 +207,22 @@ namespace UltimoBarrio.Content.Weapons
 			if ( DebugLog ) Log.Info( $"[Content.Weapon] {Definition.Id} disparo (ammo {CurrentAmmo})" );
 
 			PerformTrace();
+			ReportFireNoise();
+		}
+
+		/// <summary>
+		/// Las armas de fuego son ruidosas: los enemigos cercanos (EnemyContentHost)
+		/// escuchan el disparo y recuerdan la posición vía EnemyPerception.ReportNoise.
+		/// Melee es silencioso (sin ruido). Solo host.
+		/// </summary>
+		private void ReportFireNoise()
+		{
+			if ( !Networking.IsHost || IsMelee ) return;
+
+			foreach ( var enemy in Scene.GetAllComponents<UltimoBarrio.Content.Enemies.EnemyContentHost>() )
+			{
+				enemy.ReportNoise( WorldPosition, 1f );
+			}
 		}
 
 		private void StartReload()
@@ -219,9 +235,41 @@ namespace UltimoBarrio.Content.Weapons
 		private void FinishReload()
 		{
 			IsReloading = false;
-			CurrentAmmo = Definition.MagazineSize;
-			if ( DebugLog ) Log.Info( $"[Content.Weapon] {Definition.Id} recarga completa (ammo {CurrentAmmo})" );
-			// Nota: el consumo de munición del inventario lo hará el adaptador del core nuevo.
+
+			int missing = Definition.MagazineSize - CurrentAmmo;
+			if ( missing <= 0 ) return;
+
+			var ammoId = Definition.AmmoType;
+			if ( string.IsNullOrEmpty( ammoId ) )
+			{
+				// Melee/sin tipo: recarga directa (no consume inventario).
+				CurrentAmmo = Definition.MagazineSize;
+				return;
+			}
+
+			// Consumir munición del inventario del jugador (el arma world es hija del player).
+			// Si no hay inventario (lab/sandbox) o el jugador no tiene munición, la
+			// recarga NO se aplica: el cargador se queda donde está (dry fire hasta
+			// conseguir munición en el trader/crafting).
+			var inv = GameObject.Root.Components.Get<InventoryComponent>();
+			if ( inv == null )
+			{
+				// Sin inventario (escenario dev/sandbox): recarga directa.
+				CurrentAmmo = Definition.MagazineSize;
+				return;
+			}
+
+			int available = inv.GetCount( ammoId );
+			int toLoad = Math.Min( missing, available );
+			if ( toLoad <= 0 )
+			{
+				if ( DebugLog ) Log.Info( $"[Content.Weapon] {Definition.Id} recarga fallida: sin {ammoId} en el inventario (cargador {CurrentAmmo}/{Definition.MagazineSize})" );
+				return;
+			}
+
+			inv.TryRemove( ammoId, toLoad );
+			CurrentAmmo += toLoad;
+			if ( DebugLog ) Log.Info( $"[Content.Weapon] {Definition.Id} recarga: +{toLoad}x {ammoId} (cargador {CurrentAmmo}/{Definition.MagazineSize}, inventario restante {available - toLoad})" );
 		}
 
 		private void PerformTrace()

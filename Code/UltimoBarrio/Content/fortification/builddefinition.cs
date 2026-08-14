@@ -34,6 +34,7 @@ namespace UltimoBarrio.Content.Fortification
 		public float MaxHp { get; set; } = 100f;
 		public float RepairAmount { get; set; } = 25f; // HP restaurado por uso de reparación
 		public int RepairCost { get; set; } = 5;       // unidades de recurso por reparación
+		public int BuildCost { get; set; } = 20;       // unidades de recurso (chatarra) por construir
 		public string UpgradeTo { get; set; } = "";    // id del BuildDefinition de la mejora (vacío = sin mejora)
 
 		public float Scale { get; set; } = 1f;

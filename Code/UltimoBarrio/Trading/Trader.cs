@@ -1,6 +1,5 @@
 using Sandbox;
 using System;
-using System.Linq;
 using UltimoBarrio.Core;
 using UltimoBarrio;
 using UltimoBarrio.Economy;
@@ -29,8 +28,8 @@ namespace UltimoBarrio.Trading
             if (!Networking.IsHost) return;
             if (buyer == null) return;
             
-            var wallet = buyer.GetComponent<IWallet>();
-            var inventory = buyer.GetComponent<IInventory>();
+            var wallet = buyer.Components.Get<IWallet>();
+            var inventory = buyer.Components.Get<IInventory>();
 
             if (wallet == null || inventory == null) 
             {
@@ -42,6 +41,7 @@ namespace UltimoBarrio.Trading
             if (itemId == "water") price = WaterPrice;
             else if (itemId == "medicine") price = MedicinePrice;
             else if (itemId == "ammo_9mm" || itemId == "ammo") { price = AmmoPrice; itemId = "ammo_9mm"; }
+            else if (itemId == "ammo_buckshot") { price = AmmoPrice; }
             else if (itemId == "weapon_usp") { price = 100; }
             else 
             {
@@ -57,10 +57,7 @@ namespace UltimoBarrio.Trading
                     if (wallet.TryWithdraw(totalCost))
                     {
                         Log.Info($"[Trader] {buyer.Name} bought {amount} {itemId} for {totalCost}. Balance now: ${wallet.Balance}");
-                        NotifyTraderFeedback($"Comprado: {amount}x {itemId} por ${totalCost}");
-
-                        var journal = Scene.GetAllComponents<Missions.MissionJournal>().FirstOrDefault();
-                        journal?.NotifyProgress(Missions.ObjectiveType.BuyItem, itemId, amount);
+                        Missions.MissionJournal.Local?.NotifyProgress(Missions.ObjectiveType.BuyItem, itemId, amount);
                     }
                     else 
                     {
@@ -75,14 +72,7 @@ namespace UltimoBarrio.Trading
             else 
             {
                 Log.Info($"[Trader] {buyer.Name} cannot afford {totalCost} (Balance: ${wallet.Balance}).");
-                NotifyTraderFeedback("No tienes fondos suficientes");
             }
-        }
-
-        [Rpc.Broadcast]
-        private void NotifyTraderFeedback(string message)
-        {
-            UI.PlayerFeedback.Push(message);
         }
 
         [Rpc.Host]
@@ -91,8 +81,8 @@ namespace UltimoBarrio.Trading
             if (!Networking.IsHost) return;
             if (seller == null) return;
 
-            var wallet = seller.GetComponent<IWallet>();
-            var inventory = seller.GetComponent<IInventory>();
+            var wallet = seller.Components.Get<IWallet>();
+            var inventory = seller.Components.Get<IInventory>();
 
             if (wallet == null || inventory == null) return;
 
@@ -113,9 +103,7 @@ namespace UltimoBarrio.Trading
             {
                 wallet.Deposit(totalPrice);
                 Log.Info($"[Trader] {seller.Name} sold {actualAmount} scrap for ${totalPrice}. Balance now: ${wallet.Balance}");
-
-                var journal = Scene.GetAllComponents<Missions.MissionJournal>().FirstOrDefault();
-                journal?.NotifyProgress(Missions.ObjectiveType.SellToTrader, "chatarra", actualAmount);
+                Missions.MissionJournal.Local?.NotifyProgress(Missions.ObjectiveType.SellToTrader, "chatarra", actualAmount);
             }
         }
     }

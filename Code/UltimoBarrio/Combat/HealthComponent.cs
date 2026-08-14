@@ -14,6 +14,7 @@ namespace UltimoBarrio.Combat
 
         public Action<float, Vector3, Vector3, string> OnDamageTaken;
         public Action OnDeath;
+        public Action<float> OnHealed;
 
         protected override void OnStart()
         {
@@ -42,21 +43,29 @@ namespace UltimoBarrio.Combat
             }
         }
 
-        /// <summary>Curación host-autoritativa (consumibles, vendedor médico).</summary>
-        public void Heal( float amount )
+        /// <summary>
+        /// Cura al objetivo (host-only). Clamp a MaxHealth. No revive (no-op si IsDead).
+        /// </summary>
+        public void Heal(float amount)
         {
-            if ( !Networking.IsHost ) return;
-            if ( IsDead || amount <= 0 ) return;
+            if (!Networking.IsHost) return;
+            if (IsDead || amount <= 0) return;
 
             var before = Health;
-            Health = MathF.Min( MaxHealth, Health + amount );
-            RpcHealFeedback( Health - before );
+            Health = MathF.Min(MaxHealth, Health + amount);
+            var applied = Health - before;
+
+            if (applied > 0)
+            {
+                Log.Info($"[Heal] healed {applied:F0} HP ({before:F0} → {Health:F0})");
+                RpcHealFeedback(applied);
+            }
         }
 
         [Rpc.Broadcast]
-        private void RpcHealFeedback( float healedAmount )
+        private void RpcHealFeedback(float amount)
         {
-            // Hook para HUD / sonido de curación.
+            OnHealed?.Invoke(amount);
         }
 
         [Rpc.Broadcast]
