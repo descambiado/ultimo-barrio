@@ -58,6 +58,7 @@ TestResults/
 .claude/settings.local.json
 .cursor/
 .codex/
+.omc/
 
 # IMPORTANT:
 # Do NOT ignore Libraries/. s&box libraries are vendored source and should be committed.
