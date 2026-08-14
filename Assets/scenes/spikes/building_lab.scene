@@ -1,0 +1,262 @@
+{
+  "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f401",
+  "GameObjects": [
+    {
+      "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f402",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "World",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": [
+        {
+          "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f403",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "PrototypeFloor",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "400,400,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f404",
+              "__enabled": true,
+              "Model": "models/dev/plane.vmdl",
+              "MaterialOverride": "materials/default.vmat",
+              "Tint": "0.3,0.38,0.27,1"
+            },
+            {
+              "__type": "Sandbox.PlaneCollider",
+              "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f405",
+              "__enabled": true,
+              "Normal": "0,0,1",
+              "Scale": "100,100",
+              "Static": true
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f406",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Sun",
+          "Position": "0,0,200",
+          "Rotation": "0.0990457684,0.369643837,-0.239117607,0.892399073",
+          "Scale": "1,1,1",
+          "Tags": "light_directional,light",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.DirectionalLight",
+              "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f407",
+              "__enabled": true
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f408",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Sky",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "skybox",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.SkyBox2D",
+              "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f409",
+              "__enabled": true,
+              "SkyMaterial": "materials/skybox/skybox_day_01.vmat"
+            }
+          ],
+          "Children": []
+        }
+      ]
+    },
+    {
+      "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f40a",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Systems",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": [
+        {
+          "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f40b",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Network",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.NetworkHelper",
+              "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f40c",
+              "__enabled": true,
+              "SpawnPoints": [],
+              "StartServer": true
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f40d",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Lab Systems",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [],
+          "Children": [
+            {
+              "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f40e",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Building Test Rig",
+              "Position": "0,0,8",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "UltimoBarrio.Content.Dev.BuildingTestRig",
+                  "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f40f",
+                  "__enabled": true,
+                  "AutoTest": true,
+                  "Tests": [
+                    {
+                      "Label": "WoodenBarricade",
+                      "BuildId": "fort_barricade_wood",
+                      "ValidDistance": 160.0,
+                      "InvalidDistance": 500.0,
+                      "BlockedDistance": 220.0,
+                      "SpawnYaw": 45.0,
+                      "ExpectedMaxHp": 150.0,
+                      "DamageAmount": 50.0,
+                      "FixtureBalance": 100,
+                      "ExpectedUpgradeMaxHp": 400.0
+                    }
+                  ]
+                },
+                {
+                  "__type": "Sandbox.CameraComponent",
+                  "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f410",
+                  "__enabled": true,
+                  "IsMainCamera": true,
+                  "Priority": 10
+                }
+              ],
+              "Children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f411",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "SpawnPoints",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": [
+        {
+          "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f412",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Primary Spawn",
+          "Position": "0,0,8",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.SpawnPoint",
+              "__guid": "5e1b4c7a-9f21-4d3e-b8a2-0c55d1e6f413",
+              "__enabled": true,
+              "Color": "0.2,0.8,0.3,1"
+            }
+          ],
+          "Children": []
+        }
+      ]
+    }
+  ]
+}
