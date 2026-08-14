@@ -22,6 +22,28 @@
         "Tint": "0.86,0.9,0.97,1"
       },
       {
+        "__type": "Sandbox.BoxCollider",
+        "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c12",
+        "__enabled": true,
+        "Scale": "34,34,34",
+        "Static": false
+      },
+      {
+        "__type": "Sandbox.NavMeshAgent",
+        "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c13",
+        "__enabled": true
+      },
+      {
+        "__type": "UltimoBarrio.Content.Enemies.EnemyPerception",
+        "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c14",
+        "__enabled": true
+      },
+      {
+        "__type": "UltimoBarrio.Content.Enemies.EnemyAttack",
+        "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c15",
+        "__enabled": true
+      },
+      {
         "__type": "UltimoBarrio.Content.Enemies.EnemyContentHost",
         "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c09",
         "__enabled": true,
