@@ -1,6 +1,7 @@
 using Sandbox;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UltimoBarrio.Content.Enemies;
 
 namespace UltimoBarrio.Content.Dev
@@ -181,7 +182,7 @@ namespace UltimoBarrio.Content.Dev
 			_dummyDamage.ResetHealth();
 			_lastDummyHealth = _dummyDamage.Health;
 
-			_lootBaseline = Scene.GetAllComponents<LootPickupContent>().Count;
+			_lootBaseline = Scene.GetAllComponents<LootPickupContent>().Count();
 			Log.Info( $"[EnemyLab] {entry.Label} TargetDummy en {_dummy.WorldPosition} (HP {_dummyDamage.MaxHealth}), loot baseline {_lootBaseline}" );
 
 			SpawnEnemy( entry );
@@ -478,7 +479,7 @@ namespace UltimoBarrio.Content.Dev
 			if ( _phaseTimer >= 1.5f && !_lootChecked )
 			{
 				_lootChecked = true;
-				int loot = Scene.GetAllComponents<LootPickupContent>().Count - _lootBaseline;
+				int loot = Scene.GetAllComponents<LootPickupContent>().Count() - _lootBaseline;
 				Log.Info( $"[EnemyLab] {entry.Label} Loot físico: {loot} pickups (mínimo esperado {entry.ExpectedLootMin})" );
 
 				if ( loot >= entry.ExpectedLootMin )

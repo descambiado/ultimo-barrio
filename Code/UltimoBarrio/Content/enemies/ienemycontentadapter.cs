@@ -1,3 +1,5 @@
+using Sandbox;
+
 namespace UltimoBarrio.Content.Enemies
 {
 	/// <summary>
@@ -27,6 +29,6 @@ namespace UltimoBarrio.Content.Enemies
 		/// Oído: el core nuevo reporta ruidos (disparos, pasos, explosiones);
 		/// el enemigo los procesa según su HearingRadius.
 		/// </summary>
-		void ReportNoise( Sandbox.Vector3 position, float volume );
+		void ReportNoise( Vector3 position, float volume );
 	}
 }
