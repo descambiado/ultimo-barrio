@@ -1,4 +1,4 @@
-{
+﻿{
   "RootObject": {
     "__guid": "2fe44a10-514b-4554-8f90-60130768d5b4",
     "__version": 2,
@@ -32,7 +32,7 @@
         "__guid": "416dcd00-3ad3-45fe-88ab-7377a4e35bd0",
         "__enabled": true,
         "__type": "Sandbox.ModelRenderer",
-        "Model": "models/sbox_props/power_cord/power_cord.vmdl",
+        "Model": "models/citizen_props/crate01.vmdl",
         "Tint": "0.5,0.5,0.5,1"
       }
     ],

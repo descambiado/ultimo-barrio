@@ -14,12 +14,12 @@ namespace UltimoBarrio.QA
         [ConCmd("ub_qa_held_state")]
         public static void CheckHeldState()
         {
-            var p = Game.ActiveScene.GetAllComponents<HeldItemController>().FirstOrDefault(x => x.GameObject.Root.Name.Contains("Player", System.StringComparison.OrdinalIgnoreCase) || x.GameObject.Root.Name.Contains("Descambiado", System.StringComparison.OrdinalIgnoreCase));
-            if (p == null) { Log.Error("No HeldItemController found on Player."); return; }
+            var p = Game.ActiveScene.GetAllComponents<UbWeaponCarrier>().FirstOrDefault(x => x.GameObject.Root.Name.Contains("Player", System.StringComparison.OrdinalIgnoreCase) || x.GameObject.Root.Name.Contains("Descambiado", System.StringComparison.OrdinalIgnoreCase));
+            if (p == null) { Log.Error("No UbWeaponCarrier found on Player."); return; }
 
             Log.Info("--- ub_qa_held_state ---");
-            Log.Info($"CurrentSlot: {p.CurrentSlot}");
-            var currentWeapon = p.GameObject.Components.GetAll<Component>(FindMode.EverythingInDescendants).FirstOrDefault(c => c.GetType().Name.Contains("Weapon"));
+            Log.Info($"ActiveItemId: {p.ActiveItemId ?? "(manos vacías)"}");
+            var currentWeapon = p.GameObject.Components.GetAll<Component>(FindMode.EverythingInDescendants).FirstOrDefault(c => c.GetType().Name.Contains("WeaponContentHost"));
             if (currentWeapon != null)
             {
                 Log.Info($"CurrentWeapon: {currentWeapon.GameObject.Name}");
@@ -33,9 +33,9 @@ namespace UltimoBarrio.QA
         [ConCmd("ub_qa_weapon_state")]
         public static void CheckWeaponState()
         {
-            var p = Game.ActiveScene.GetAllComponents<HeldItemController>().FirstOrDefault(x => x.GameObject.Root.Name.Contains("Player", System.StringComparison.OrdinalIgnoreCase) || x.GameObject.Root.Name.Contains("Descambiado", System.StringComparison.OrdinalIgnoreCase));
-            if (p == null) { Log.Error("No HeldItemController or Weapon found."); return; }
-            var currentWeapon = p.GameObject.Components.GetAll<Component>(FindMode.EverythingInDescendants).FirstOrDefault(c => c.GetType().Name.Contains("Weapon"));
+            var p = Game.ActiveScene.GetAllComponents<UbWeaponCarrier>().FirstOrDefault(x => x.GameObject.Root.Name.Contains("Player", System.StringComparison.OrdinalIgnoreCase) || x.GameObject.Root.Name.Contains("Descambiado", System.StringComparison.OrdinalIgnoreCase));
+            if (p == null) { Log.Error("No UbWeaponCarrier found."); return; }
+            var currentWeapon = p.GameObject.Components.GetAll<Component>(FindMode.EverythingInDescendants).FirstOrDefault(c => c.GetType().Name.Contains("WeaponContentHost"));
 
             Log.Info("--- ub_qa_weapon_state ---");
             if (currentWeapon != null)
@@ -144,17 +144,16 @@ namespace UltimoBarrio.QA
             // 2. Dump Player
             var hud = Game.ActiveScene.GetAllComponents<UI.PlayerHud>().FirstOrDefault();
             var invComp = player?.Components.Get<InventoryComponent>();
-            var held = player?.Components.Get<Combat.HeldItemController>();
+            var held = player?.Components.Get<Combat.UbWeaponCarrier>();
 
             Log.Info($"PlayerHud presente: {hud != null}");
             Log.Info($"HotbarPanel creado: {hud?.Hotbar != null}");
             Log.Info($"InventoryComponent presente: {invComp != null}");
-            Log.Info($"HeldItemController presente: {held != null}");
+            Log.Info($"UbWeaponCarrier presente: {held != null}");
             Log.Info($"ItemRegistry disponible: {ItemRegistry.GetDefinition("chatarra") != null}");
-            Log.Info($"SelectedSlot: {held?.SelectedHotbarSlot}");
-            Log.Info($"SelectedItemId: {held?.ActiveItemId}");
-            
-            var wpn = held?.GameObject.Components.GetAll<Component>(FindMode.EverythingInDescendants).FirstOrDefault(c => c.GetType().Name.Contains("Weapon"));
+            Log.Info($"ActiveItemId: {held?.ActiveItemId}");
+
+            var wpn = held?.GameObject.Components.GetAll<Component>(FindMode.EverythingInDescendants).FirstOrDefault(c => c.GetType().Name.Contains("WeaponContentHost"));
             Log.Info($"ActiveViewModel: {wpn != null}");
             Log.Info($"ActiveWorldModel: {wpn != null}");
 

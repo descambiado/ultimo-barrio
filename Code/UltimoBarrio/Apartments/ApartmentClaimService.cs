@@ -20,6 +20,9 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 	/// </summary>
 	[Property] public float ClaimDistance { get; set; } = 150f;
 
+	/// <summary>Intervalo de autosave (segundos). 0 desactiva el autosave periódico.</summary>
+	[Property] public float AutoSaveInterval { get; set; } = 60f;
+
 	private readonly object _claimGate = new();
 	private readonly HashSet<string> _apartmentsInProgress = new( StringComparer.Ordinal );
 	private readonly HashSet<string> _ownersInProgress = new( StringComparer.Ordinal );
@@ -30,6 +33,8 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 	private IPlayerIdentityProvider _identityProvider;
 	private bool _initializationAttempted;
 	private bool _isReady;
+	private TimeSince _sinceAutoSave;
+	private Dictionary<string, int> _economyByPlayer = new( StringComparer.Ordinal );
 
 	protected override void OnStart()
 	{
@@ -49,6 +54,7 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 
 		TryInitialize();
 		ProcessPendingRespawns();
+		ProcessAutoSave();
 	}
 
 	public void OnActive( Connection connection )
@@ -76,6 +82,7 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 		if ( result.Succeeded )
 		{
 			Log.Info( $"UB.Apartment ClaimSucceeded apartment={knownApartmentId}" );
+			Missions.MissionJournal.Local?.NotifyProgress( Missions.ObjectiveType.ClaimApartment, "", 1 );
 			return;
 		}
 
@@ -151,6 +158,7 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 			try
 			{
 				var candidate = _registry.CreateSnapshot( SaveSlotId, apartment.ApartmentId, ownerIdentity.CanonicalId );
+				FillEconomy( candidate );
 				var saveResult = _persistence.Save( candidate );
 				if ( !saveResult.Succeeded )
 				{
@@ -199,7 +207,28 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 		}
 
 		if ( loadResult.Snapshot is not null )
+		{
+			// RestauraciÃ³n segura: solo se aplica estado de viviendas que existen en ESTA escena.
+			// ApplySnapshot ya ignora apartmentIds ausentes; aquÃ­ solo informamos de los descartados
+			// para no teletransportar al jugador a posiciones de un mapa/versiÃ³n anterior.
+			var stale = loadResult.Snapshot.Apartments
+				.Where( saved => !_registry.TryGet( saved.ApartmentId, out _ ) )
+				.Select( saved => saved.ApartmentId )
+				.ToList();
+			if ( stale.Count > 0 )
+			{
+				Log.Warning( $"UB.Apartment SaveIgnoredStale apartments={string.Join( ",", stale )} — no existen en esta escena; no se restauran." );
+			}
+
 			_registry.ApplySnapshot( loadResult.Snapshot );
+
+			// Economía persistida por identidad estable (SteamId/QA id), no por GUID
+			// de GameObject (que cambia en cada sesión).
+			_economyByPlayer = ( loadResult.Snapshot.PlayersEconomy ?? [] )
+				.Where( e => !string.IsNullOrWhiteSpace( e.PlayerId ) )
+				.GroupBy( e => e.PlayerId, StringComparer.Ordinal )
+				.ToDictionary( g => g.Key, g => g.Last().Balance, StringComparer.Ordinal );
+		}
 
 		_isReady = true;
 		Log.Info( $"UB.Apartment ServiceReady apartments={_registry.Apartments.Count} loaded={loadResult.Status == PersistenceLoadStatus.Loaded}" );
@@ -231,6 +260,20 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 				continue;
 			}
 
+			var player = FindPlayer( connection );
+
+			// 1) Restaurar economía guardada (una sola vez por jugador).
+			if ( player.IsValid() && _economyByPlayer.Remove( ownerIdentity.CanonicalId, out var balance ) )
+			{
+				var wallet = player.GameObject.Components.Get<Economy.Wallet>();
+				if ( wallet != null )
+				{
+					wallet.LoadData( balance );
+					Log.Info( $"UB.Apartment EconomyRestored player={ownerIdentity.CanonicalId} balance={balance}" );
+				}
+			}
+
+			// 2) Respawn en el apartamento si el jugador tiene uno reclamado.
 			var apartment = _registry.FindByOwner( ownerIdentity.CanonicalId );
 			if ( !apartment.IsValid() )
 			{
@@ -245,7 +288,6 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 				continue;
 			}
 
-			var player = FindPlayer( connection );
 			if ( !player.IsValid() )
 				continue;
 
@@ -253,6 +295,42 @@ public sealed class ApartmentClaimService : Component, Component.INetworkListene
 			_pendingRespawns.Remove( connection );
 			Log.Info( $"UB.Apartment OwnerRespawned apartment={apartment.ApartmentId}" );
 		}
+	}
+
+	/// <summary>
+	/// Rellena PlayersEconomy del snapshot con los wallets de los jugadores conectados.
+	/// </summary>
+	private void FillEconomy( Persistence.SaveSnapshot snapshot )
+	{
+		if ( snapshot is null ) return;
+
+		snapshot.PlayersEconomy = Game.ActiveScene.GetAllComponents<PlayerController>()
+			.Where( p => p.IsValid() && p.GameObject.Components.Get<Economy.Wallet>() != null )
+			.Select( p => new Persistence.PlayerEconomySaveData
+			{
+				PlayerId = Core.PlayerIdentity.FromGameObject( p.GameObject ).CanonicalId,
+				Balance = p.GameObject.Components.Get<Economy.Wallet>().Balance
+			} )
+			.ToList();
+	}
+
+	private void ProcessAutoSave()
+	{
+		if ( !_isReady || AutoSaveInterval <= 0f )
+			return;
+
+		if ( _sinceAutoSave < AutoSaveInterval )
+			return;
+
+		_sinceAutoSave = 0f;
+
+		// Snapshot completo: claims actuales + todos los inventarios con id (stashes).
+		var snapshot = _registry.CreateSnapshot( SaveSlotId, null, null );
+		FillEconomy( snapshot );
+		var result = _persistence.Save( snapshot );
+		Log.Info( result.Succeeded
+			? $"UB.Apartment AutoSaveOk generation={snapshot.Generation}"
+			: $"UB.Apartment AutoSaveFailed error={result.Error}" );
 	}
 
 	public bool CanEnter( string apartmentId, string playerId )

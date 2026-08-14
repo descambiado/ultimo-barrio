@@ -8,10 +8,16 @@ namespace UltimoBarrio.UI
         [Property] public InventoryComponent TargetInventory { get; set; }
         [Property] public Combat.HeldItemController HeldItemCtrl { get; set; }
         
+        /// <summary>
+        /// Fallback: si no hay HeldItemController (viejo), usar UbWeaponCarrier (nuevo).
+        /// </summary>
+        private Combat.UbWeaponCarrier _weaponCarrier;
+        
         private Panel _container;
 
         protected override void OnStart()
         {
+            _weaponCarrier = Components.Get<Combat.UbWeaponCarrier>();
             if (Panel != null)
             {
                 Panel.Style.Position = PositionMode.Absolute;
@@ -37,9 +43,10 @@ namespace UltimoBarrio.UI
 
         protected override void OnUpdate()
         {
-            if (TargetInventory == null || HeldItemCtrl == null || _container == null) return;
+            if ( TargetInventory == null || _container == null ) return;
             
-            int activeSlot = HeldItemCtrl.SelectedHotbarSlot;
+            int activeSlot = HeldItemCtrl != null ? HeldItemCtrl.SelectedHotbarSlot
+                          : _weaponCarrier != null ? _weaponCarrier.SelectedSlot : -1;
             
             int currentHash = System.HashCode.Combine(activeSlot, TargetInventory.HotbarSlots);
             for(int i = 0; i < TargetInventory.HotbarSlots; i++)

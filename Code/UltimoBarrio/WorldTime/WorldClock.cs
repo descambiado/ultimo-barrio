@@ -43,6 +43,8 @@ namespace UltimoBarrio.WorldTime
                     break;
                 case TimePhase.Night:
                     SetPhase(TimePhase.Aftermath);
+                    // El jugador sobrevivió a la noche (transición Night → Aftermath).
+                    Missions.MissionJournal.Local?.NotifyProgress( Missions.ObjectiveType.SurviveNight, "", 1 );
                     break;
                 case TimePhase.Aftermath:
                     SetPhase(TimePhase.Day);

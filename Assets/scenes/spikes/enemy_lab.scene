@@ -1,0 +1,479 @@
+{
+  "__guid": "17a82c23-5f5c-4e80-8dbf-da42e7b60911",
+  "GameObjects": [
+    {
+      "__guid": "62a186b9-b9f9-41ca-99bc-c7c2a983f96d",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "World",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": [
+        {
+          "__guid": "9c2d66f1-e051-41ae-8e59-e5e383451d33",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "PrototypeFloor",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.MeshComponent",
+              "__guid": "9a405eff-b268-4eb4-abea-08dd12d5bd85",
+              "__enabled": true,
+              "Flags": 0,
+              "ColliderFlags": 0,
+              "Collision": "Mesh",
+              "Color": "1,1,1,1",
+              "Elasticity": null,
+              "Friction": null,
+              "HideInGame": false,
+              "IsTrigger": false,
+              "Mesh": {
+                "Topology": "H4sIAAAAAAAACk2MCQoAIQzE4qqr//9wJdiCA6WQOQawgcbVBwzgT+bJXi0gIkLeM68q69fXm7n1bsv1a6skN2tH394B6DpJeKAAAAA=",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Positions": [
+                  "-1024,-1024,0",
+                  "1024,-1024,0",
+                  "1024,1024,0",
+                  "-1024,1024,0"
+                ],
+                "Blends": [
+                  "0,0,0,0",
+                  "0,0,0,0",
+                  "0,0,0,0",
+                  "0,0,0,0",
+                  "0,0,0,0",
+                  "0,0,0,0",
+                  "0,0,0,0",
+                  "0,0,0,0"
+                ],
+                "Colors": [
+                  "0,0,0,0",
+                  "0,0,0,0",
+                  "0,0,0,0",
+                  "0,0,0,0",
+                  "0,0,0,0",
+                  "0,0,0,0",
+                  "0,0,0,0",
+                  "0,0,0,0"
+                ],
+                "TextureCoord": [
+                  "32,32",
+                  "0,0",
+                  "32,-32",
+                  "0,0",
+                  "-32,-32",
+                  "0,0",
+                  "-32,32",
+                  "0,0"
+                ],
+                "TextureUAxis": [
+                  "1,0,0"
+                ],
+                "TextureVAxis": [
+                  "0,-1,0"
+                ],
+                "TextureScale": [
+                  "0.25,0.25"
+                ],
+                "TextureOffset": [
+                  "0,0"
+                ],
+                "MaterialIndex": [
+                  0
+                ],
+                "EdgeFlags": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "Materials": [
+                  "materials/dev/dev_measuregeneric01b.vmat"
+                ]
+              },
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RenderType": "On",
+              "RollingResistance": null,
+              "SmoothingAngle": 40,
+              "Static": true,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "1bfd1c2d-be60-4cdf-8451-6c661887e9c1",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Sun",
+          "Position": "0,0,200",
+          "Rotation": "0.0990457684,0.369643837,-0.239117607,0.892399073",
+          "Scale": "1,1,1",
+          "Tags": "light_directional,light",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.DirectionalLight",
+              "__guid": "63ae8538-e1ba-4754-8c86-8c47d04092a9",
+              "__enabled": true
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "fe9adb71-019c-44a0-bcdb-e33cf93a5d72",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Sky",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "skybox",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.SkyBox2D",
+              "__guid": "66bdb347-48b7-4c35-83ee-b146c2f36dc2",
+              "__enabled": true,
+              "SkyMaterial": "materials/skybox/skybox_day_01.vmat"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "44f85af0-5527-4d66-b6b7-ff45d23ea75f",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "TestTarget",
+          "Position": "768,0,8",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "lab_target",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [],
+          "Children": []
+        },
+        {
+          "__guid": "bfa0aac9-6b03-4976-8bdb-6efa21c18afb",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Enemy Spawn Marker",
+          "Position": "96,0,8",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "lab_marker",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [],
+          "Children": []
+        },
+        {
+          "__guid": "79dc4f75-7d00-4c53-904e-039dafa9f90b",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Loot Observation Point",
+          "Position": "768,0,8",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "lab_loot_obs",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UltimoBarrio.Content.Dev.LabLootObserver",
+              "__guid": "e958fe63-6fc7-4e83-bd98-4e1faa23f261",
+              "__enabled": true,
+              "Radius": 250.0,
+              "ObserveSeconds": 3.0
+            }
+          ],
+          "Children": []
+        }
+      ]
+    },
+    {
+      "__guid": "e8633375-b359-4807-9937-b868c55f1f01",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Systems",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": [
+        {
+          "__guid": "f005a5ae-21b2-46b7-ab8a-25f070e16b05",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Network",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.NetworkHelper",
+              "__guid": "4cc91261-9e96-4239-b18f-3b1c122d4afc",
+              "__enabled": true,
+              "SpawnPoints": [],
+              "StartServer": true
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "726bd37b-6795-4bb4-8b18-42f99ddfe1dc",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Lab Systems",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [],
+          "Children": [
+            {
+              "__guid": "6bb6a5c9-a83e-4741-9115-6a487719e134",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Enemy Nav Rig",
+              "Position": "0,0,8",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "UltimoBarrio.Content.Dev.LabEnemyNavRig",
+                  "__guid": "ed973e7b-824d-4436-915f-1e7a830737bf",
+                  "__enabled": true,
+                  "AutoTest": true,
+                  "SpawnMarker": {
+                    "_type": "gameobject",
+                    "go": "bfa0aac9-6b03-4976-8bdb-6efa21c18afb"
+                  },
+                  "TestTarget": {
+                    "_type": "gameobject",
+                    "go": "44f85af0-5527-4d66-b6b7-ff45d23ea75f"
+                  },
+                  "LootObservationPoint": {
+                    "_type": "gameobject",
+                    "go": "79dc4f75-7d00-4c53-904e-039dafa9f90b"
+                  },
+                  "Tests": [
+                    {
+                      "Label": "NavSaqueador",
+                      "EnemyPrefabPath": "prefabs/content/enemies/enemy_saqueador.prefab",
+                      "ArrivalRadius": 110.0,
+                      "MoveTimeout": 25.0,
+                      "KillDelay": 1.0,
+                      "ExpectedLootItemIds": [
+                        "chatarra"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "__type": "Sandbox.CameraComponent",
+                  "__guid": "7068225b-8ad5-4777-a078-a75c86f05104",
+                  "__enabled": true,
+                  "IsMainCamera": true,
+                  "Priority": 10
+                }
+              ],
+              "Children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "9d89b598-b64a-448e-950c-a780d679d1be",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "SpawnPoints",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": [
+        {
+          "__guid": "86a69996-6ec9-46e6-b9f9-5cf04224cb4d",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Primary Spawn",
+          "Position": "0,0,8",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.SpawnPoint",
+              "__guid": "cec94bf7-8d5c-4e1f-a6f0-434bf46cae7e",
+              "__enabled": true,
+              "Color": "0.2,0.8,0.3,1"
+            }
+          ],
+          "Children": []
+        }
+      ]
+    },
+    {
+      "__guid": "e9d1a2b3-4c5d-4e6f-8a9b-0c1d2e3f4a51",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Enemy Test Rig",
+      "Position": "0,0,8",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "UltimoBarrio.Content.Dev.EnemyTestRig",
+          "__guid": "e9d1a2b3-4c5d-4e6f-8a9b-0c1d2e3f4a52",
+          "__enabled": true,
+          "AutoTest": true,
+          "Tests": [
+            { "Label": "Saqueador", "EnemyPrefab": "prefabs/content/enemies/enemy_saqueador.prefab", "ExpectedDefinitionId": "ub_enemy_saqueador", "ExpectedDamagePerHit": 15.0, "ExpectedLootMin": 1 },
+            { "Label": "Bruto", "EnemyPrefab": "prefabs/content/enemies/enemy_bruto.prefab", "ExpectedDefinitionId": "ub_enemy_bruto", "ExpectedDamagePerHit": 40.0, "ExpectedLootMin": 1 },
+            { "Label": "Merodeador", "EnemyPrefab": "prefabs/content/enemies/enemy_merodeador.prefab", "ExpectedDefinitionId": "ub_enemy_merodeador", "ExpectedDamagePerHit": 10.0, "ExpectedLootMin": 1 }
+          ],
+          "SpawnMarker": { "_type": "gameobject", "go": "bfa0aac9-6b03-4976-8bdb-6efa21c18afb" },
+          "DummyMarker": { "_type": "gameobject", "go": "44f85af0-5527-4d66-b6b7-ff45d23ea75f" }
+        },
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "e9d1a2b3-4c5d-4e6f-8a9b-0c1d2e3f4a53",
+          "__enabled": true,
+          "IsMainCamera": true,
+          "Priority": 10
+        }
+      ],
+      "Children": []
+    }
+  ],
+  "SceneProperties": {
+    "NetworkInterpolation": true,
+    "TimeScale": 1,
+    "WantsSystemScene": true,
+    "Metadata": {},
+    "NavMesh": {
+      "Enabled": true,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": false,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": "",
+      "CustomBounds": false
+    }
+  },
+  "ResourceVersion": 3,
+  "Title": null,
+  "Description": null,
+  "__references": [],
+  "__version": 3
+}

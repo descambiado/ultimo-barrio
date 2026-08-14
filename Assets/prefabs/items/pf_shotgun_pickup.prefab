@@ -1,0 +1,48 @@
+{
+  "RootObject": {
+    "__guid": "3a7b8c9d-1e2f-4a5b-8c7d-9e0f1a2b3c51",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "Shotgun Pickup",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__guid": "3a7b8c9d-1e2f-4a5b-8c7d-9e0f1a2b3c52",
+        "__enabled": true,
+        "__type": "UltimoBarrio.WorldItemPickup",
+        "ItemId": "weapon_shotgun",
+        "Amount": 1
+      },
+      {
+        "__guid": "3a7b8c9d-1e2f-4a5b-8c7d-9e0f1a2b3c53",
+        "__enabled": true,
+        "__type": "Sandbox.BoxCollider",
+        "Center": "0,0,16",
+        "Scale": "14,14,32",
+        "Static": false
+      },
+      {
+        "__guid": "3a7b8c9d-1e2f-4a5b-8c7d-9e0f1a2b3c54",
+        "__enabled": true,
+        "__type": "Sandbox.ModelRenderer",
+        "Model": "facepunch.w_spaghellim4",
+        "Tint": "0.5,0.5,0.5,1"
+      }
+    ],
+    "Children": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": true,
+  "MenuPath": "Items/Weapons",
+  "MenuIcon": "gps_fixed",
+  "__version": 2
+}

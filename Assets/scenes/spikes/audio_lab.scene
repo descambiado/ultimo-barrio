@@ -1,0 +1,125 @@
+{
+  "__guid": "a11b2c3d-4e5f-4a6b-8c9d-0e1f2a3b4c51",
+  "GameObjects": [
+    {
+      "__guid": "a11b2c3d-4e5f-4a6b-8c9d-0e1f2a3b4c01",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "World",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": []
+    },
+    {
+      "__guid": "a11b2c3d-4e5f-4a6b-8c9d-0e1f2a3b4c02",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Systems",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": [
+        {
+          "__guid": "a11b2c3d-4e5f-4a6b-8c9d-0e1f2a3b4c21",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Network",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.NetworkHelper",
+              "__guid": "a11b2c3d-4e5f-4a6b-8c9d-0e1f2a3b4c22",
+              "__enabled": true,
+              "SpawnPoints": [],
+              "StartServer": true
+            }
+          ],
+          "Children": []
+        }
+      ]
+    },
+    {
+      "__guid": "a11b2c3d-4e5f-4a6b-8c9d-0e1f2a3b4c03",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Audio Test Rig",
+      "Position": "0,0,60",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "UltimoBarrio.Content.Dev.AudioTestRig",
+          "__guid": "a11b2c3d-4e5f-4a6b-8c9d-0e1f2a3b4c31",
+          "__enabled": true,
+          "AutoTest": true,
+          "PlayPosition": "0,0,60"
+        },
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "a11b2c3d-4e5f-4a6b-8c9d-0e1f2a3b4c32",
+          "__enabled": true,
+          "IsMainCamera": true,
+          "Priority": 10
+        }
+      ],
+      "Children": []
+    }
+  ],
+  "SceneProperties": {
+    "NetworkInterpolation": true,
+    "TimeScale": 1,
+    "WantsSystemScene": true,
+    "Metadata": {},
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": false,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": "",
+      "CustomBounds": false
+    }
+  },
+  "ResourceVersion": 3,
+  "Title": null,
+  "Description": null,
+  "__references": [],
+  "__version": 3
+}

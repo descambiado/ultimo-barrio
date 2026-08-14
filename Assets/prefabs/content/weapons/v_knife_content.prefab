@@ -1,0 +1,26 @@
+{
+  "RootObject": {
+    "__guid": "5f8b2c1a-7a4e-4d90-9b11-1c2d3e4f5a0e",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "Content Viewmodel Knife",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Sandbox.ModelRenderer",
+        "__guid": "5f8b2c1a-7a4e-4d90-9b11-1c2d3e4f5a0f",
+        "__enabled": true,
+        "Model": "models/citizen_props/crowbar01.vmdl"
+      }
+    ],
+    "Children": []
+  }
+}
