@@ -5159,21 +5159,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "80aa1536-2ace-479e-b95c-3a5b6be56e99",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 1,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "23011afc-2b74-4506-83e3-d5a704eb64b8",
                   "__enabled": true,
@@ -5261,21 +5246,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "022dbdd1-b2f4-4170-b54d-77c03acb9cc2",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 2,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -5367,21 +5337,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "e1126fc7-f881-47cc-8f50-85d695be2b7f",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "f50d7972-b951-4f18-8d98-ae1c4dd67a88",
                   "__enabled": true,
@@ -5469,21 +5424,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "48934c98-871b-4276-b56b-1512716882a7",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 1,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -5575,21 +5515,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "e965301f-6f8f-43bb-a32b-3486ba1671dd",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 2,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "520f6e5d-bace-468e-98c2-d6be4b8451d6",
                   "__enabled": true,
@@ -5677,21 +5602,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "ae85e032-5c1d-4fa6-86b1-90188b7ddd07",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -5783,21 +5693,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "24ace03e-45ce-4afd-b65f-d5e45eb2d664",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 1,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "4ac32136-21c1-492c-9637-8cabaeb59c69",
                   "__enabled": true,
@@ -5885,21 +5780,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "f8da2098-237b-4754-aab3-a407b4fefab2",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 2,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -5991,21 +5871,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "18a2aff7-60ff-40b9-9216-1d8b66339d55",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "d60dfd59-2d75-4951-b03e-0b1a9d34d09d",
                   "__enabled": true,
@@ -6093,21 +5958,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "55baa1c2-1430-443c-a1ec-8fb552330e5c",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 1,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -6199,21 +6049,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "23549ef0-ee40-4ef0-bdc6-4b98e4f0b708",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 2000,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "8f844797-1e7c-46cd-a018-20f8d9c0682e",
                   "__enabled": true,
@@ -6301,21 +6136,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "51409b4c-f303-4705-bd37-6436c0b9e173",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -6407,21 +6227,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "ace34b30-e49f-42e8-adfa-12063c8f32ba",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 1,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "f9740140-d4ef-48d6-a45b-0f5cd85b6096",
                   "__enabled": true,
@@ -6509,21 +6314,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "0658e0a1-578d-41b9-be10-7fe6bf529ff0",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 2,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -6615,21 +6405,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "9fa0fbc4-02f6-40db-acb8-00f3d1be1353",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "e537ce1f-efc0-47a8-a4d8-ed03d7df7ff5",
                   "__enabled": true,
@@ -6717,21 +6492,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "75c8300e-1be1-4945-aa55-5a37fb7fb94a",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 1,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -6823,21 +6583,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "aa847c25-007e-45e6-9f86-83607e541384",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 2,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "3d170651-a8a6-4774-af5f-f531c7b34fe8",
                   "__enabled": true,
@@ -6925,21 +6670,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "98ef817a-ae86-4664-8945-77f59e7e076a",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -7031,21 +6761,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "05ef354c-ef73-42be-abf5-8598ca2a3817",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "c14f2555-ab3c-49c3-8d22-e9d54298a114",
                   "__enabled": true,
@@ -7133,21 +6848,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "7d02f834-9cee-4016-8791-94ca7067b2f4",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -7239,21 +6939,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "c33e574f-85f5-451a-bd5b-ca798c8e9457",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "27f16e56-d191-4eee-8a3b-502c7d348906",
                   "__enabled": true,
@@ -7341,21 +7026,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "9a24c8aa-79c2-4830-86b2-1347d9cab7e7",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -7447,21 +7117,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "9fd76780-6e94-459b-8c13-ea36445cb863",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "e207f33c-7dbe-4faa-a8ec-793a589ac51a",
                   "__enabled": true,
@@ -7549,21 +7204,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "d9192737-01a5-4470-a3c0-0a9706839cc9",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -7655,21 +7295,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "0f9d391a-c7e3-434b-a9d1-a16fb0414803",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "2fd86a4a-d35d-4332-b1b0-be77cde502bf",
                   "__enabled": true,
@@ -7757,21 +7382,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "0b7f30ca-2388-4ae3-a1d1-08a871c1aba3",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -7863,21 +7473,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "a6c32c2c-d890-4cec-9070-6c9430560d5a",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "9f3fc4ef-680d-411a-bdc8-f32d879d37ea",
                   "__enabled": true,
@@ -7965,21 +7560,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "8a46ff14-3407-417f-b9f9-e333eb30562b",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -8071,21 +7651,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "f423af94-910d-4989-8642-cb2a3a6300f8",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "4b63306c-ac9a-4550-b8ea-345254eaf636",
                   "__enabled": true,
@@ -8173,21 +7738,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "14f3a4ab-0b65-4347-9257-d7cf33712ae7",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -8279,21 +7829,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "b78db55b-863b-4921-872a-32508d297d00",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "3091eac7-e0c6-4d19-a19f-0ff1936bd4c5",
                   "__enabled": true,
@@ -8381,21 +7916,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "131f53f3-20fb-49a5-8d0b-cbb89a25fec6",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -8487,21 +8007,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "26b9d66c-b36f-4e30-8996-1bf59fd571dc",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "75a3eda0-6aaa-46f8-a3a7-db17e8ae3cf2",
                   "__enabled": true,
@@ -8589,21 +8094,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "6c9e9d17-b282-4dfe-bcdc-4636210c69a1",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -8695,21 +8185,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "45cb56ba-c963-4e18-8cfe-2a9b56713138",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "5f6a7706-2344-4599-97d7-3e90d677964d",
                   "__enabled": true,
@@ -8797,21 +8272,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "a3407588-2344-4909-8403-ce0b84cb6de0",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -8903,21 +8363,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "32b5a0f8-fe16-48ce-b213-c6e0c827d832",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "7c411c54-db03-455d-8855-2821d5f3e1f5",
                   "__enabled": true,
@@ -9005,21 +8450,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "8b3171db-81f1-44a7-a617-7654dd602c90",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -9111,21 +8541,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "c9bc0ed0-dcdf-42dd-b079-4acdd1755034",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "eed7d245-df14-416d-8ae1-15eeabcc5f71",
                   "__enabled": true,
@@ -9213,21 +8628,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "5a238635-34b2-410b-95be-870d83ca6876",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -9319,21 +8719,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "6fb6dfde-6d24-4c35-94ba-43ed5adc1224",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "b4d8cde4-425e-43e7-a9ab-3051487f7ba2",
                   "__enabled": true,
@@ -9421,21 +8806,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "2942f666-156b-491f-ba9b-9de7fd9ee63f",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -9527,21 +8897,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "e0a17f3a-d7e8-4376-beba-511ec7f63e0b",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "c6d99733-97f0-4a82-8228-e306ee34af39",
                   "__enabled": true,
@@ -9629,21 +8984,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "18d036fa-b618-4967-a8b3-d58384da2aa6",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -9735,21 +9075,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "8f0e61da-690e-48cf-9223-6f6788fd1d6a",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "d4d0203f-8994-42be-9d7f-2a3d1db45ca5",
                   "__enabled": true,
@@ -9837,21 +9162,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "d4169689-c9aa-423f-b080-28795cfda191",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -9943,21 +9253,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "42c929c1-c8bf-4e94-b2e5-294cc0e6baf4",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "22bfe44a-cfb4-4122-b7cc-d89e2f0a6afe",
                   "__enabled": true,
@@ -10045,21 +9340,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "f5bd5179-f964-46c5-83d8-0f6bda21e58e",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -10151,21 +9431,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "04e43692-237e-4d9e-aa5c-84e6f4de1841",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "96e622a6-52c3-4d1d-b5a3-8ea89e0081ef",
                   "__enabled": true,
@@ -10253,21 +9518,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "bdce7e2b-d0d7-41ca-9d47-06b565f4ab10",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -10359,21 +9609,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "73718fc9-d9cb-401b-8743-02ee0a844eea",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "a3d29e26-9039-4e8f-b850-5fb996486efe",
                   "__enabled": true,
@@ -10461,21 +9696,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "843b110f-fe73-4d8e-9085-5968c24af3eb",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 3,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
@@ -10567,21 +9787,6 @@
                   "OnComponentUpdate": null
                 },
                 {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "7e7a4130-830b-4837-9b31-e89bcbae4ba7",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 1,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
-                },
-                {
                   "__type": "Sandbox.BoxCollider",
                   "__guid": "cb871420-0ae4-4b3d-be78-12bdfe9f0045",
                   "__enabled": true,
@@ -10669,21 +9874,6 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null
-                },
-                {
-                  "__type": "UltimoBarrio.World.ResourceNode",
-                  "__guid": "9591ddf6-ebe2-4c1a-9a08-5eb1541668ec",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Amount": 2,
-                  "ItemId": "chatarra",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RespawnTime": 30
                 },
                 {
                   "__type": "Sandbox.BoxCollider",
