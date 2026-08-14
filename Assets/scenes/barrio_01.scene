@@ -1394,6 +1394,22 @@
                       "CastShadows": true
                     }
                   ]
+                },
+                {
+                  "Name": "Room Light",
+                  "__guid": "5aa38273-8753-4aaf-aa22-b30cbb6fa4ef",
+                  "Active": true,
+                  "Position": "210,0,110",
+                  "Rotation": "0,0,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.PointLight",
+                      "Color": "255,240,220,255",
+                      "Radius": "200",
+                      "Brightness": "2"
+                    }
+                  ]
                 }
               ]
             },
@@ -2284,6 +2300,22 @@
                       "CastShadows": true
                     }
                   ]
+                },
+                {
+                  "Name": "Room Light",
+                  "__guid": "ef6afb0a-0809-4bdd-a411-3e13a37e7675",
+                  "Active": true,
+                  "Position": "210,0,110",
+                  "Rotation": "0,0,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.PointLight",
+                      "Color": "255,240,220,255",
+                      "Radius": "200",
+                      "Brightness": "2"
+                    }
+                  ]
                 }
               ]
             },
@@ -3136,6 +3168,22 @@
                       "Model": "models/sbox_props/airducts/airduct_a_vent_64x32.vmdl",
                       "Tint": "1,1,1,1",
                       "CastShadows": true
+                    }
+                  ]
+                },
+                {
+                  "Name": "Room Light",
+                  "__guid": "141d8aa1-cde1-43b3-91cb-0764f321c1ec",
+                  "Active": true,
+                  "Position": "210,0,110",
+                  "Rotation": "0,0,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.PointLight",
+                      "Color": "255,240,220,255",
+                      "Radius": "200",
+                      "Brightness": "2"
                     }
                   ]
                 }
@@ -4028,6 +4076,22 @@
                       "CastShadows": true
                     }
                   ]
+                },
+                {
+                  "Name": "Room Light",
+                  "__guid": "a2130565-52e2-421e-ae81-fc0da2e15c46",
+                  "Active": true,
+                  "Position": "210,0,110",
+                  "Rotation": "0,0,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.PointLight",
+                      "Color": "255,240,220,255",
+                      "Radius": "200",
+                      "Brightness": "2"
+                    }
+                  ]
                 }
               ]
             },
@@ -4900,6 +4964,22 @@
                       "CastShadows": true
                     }
                   ]
+                },
+                {
+                  "Name": "Room Light",
+                  "__guid": "dfdd0674-8407-4c98-9fb0-ffe8a3a7435a",
+                  "Active": true,
+                  "Position": "210,0,110",
+                  "Rotation": "0,0,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.PointLight",
+                      "Color": "255,240,220,255",
+                      "Radius": "200",
+                      "Brightness": "2"
+                    }
+                  ]
                 }
               ]
             }
@@ -4989,9 +5069,9 @@
                   "CreateAttachments": false,
                   "LodOverride": null,
                   "MaterialGroup": null,
-                  "MaterialOverride": null,
+                  "MaterialOverride": "materials/concrete/wall/concrete_rough_a.vmat",
                   "Materials": null,
-                  "Model": "models/citizen_props/chair01.vmdl",
+                  "Model": "models/citizen_props/gritbin01_combined.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -5005,10 +5085,28 @@
                     "AfterUILayer": false
                   },
                   "RenderType": "On",
-                  "Tint": "1,1,1,1"
+                  "Tint": "1,1,1,1",
+                  "Scale": "2"
                 }
               ],
-              "Children": []
+              "Children": [
+                {
+                  "Name": "Kiosko Light",
+                  "__guid": "48511e6b-879c-4761-af26-8dcd06451b94",
+                  "Active": true,
+                  "Position": "0,0,120",
+                  "Rotation": "0,0,0",
+                  "Scale": "1",
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "Model": "models/sbox_props/industrial_strip_light/industrial_strip_light.vmdl",
+                      "Tint": "1,0.9,0.5,1",
+                      "CastShadows": true
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
