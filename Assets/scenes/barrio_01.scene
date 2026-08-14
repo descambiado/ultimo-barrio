@@ -462,6 +462,52 @@
       ]
     },
     {
+      "__guid": "c2e8f4a1-7b3d-4e9c-a851-6f0d2c9a4b73",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Ground Visual",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "60,60,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "e6a1d8b4-3c7f-4d92-8b0e-5a1f9c2e6d84",
+          "__enabled": true,
+          "Flags": 0,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "LodOverride": null,
+          "MaterialGroup": null,
+          "MaterialOverride": "materials/default.vmat",
+          "Materials": null,
+          "Model": "models/dev/plane.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "0.32,0.33,0.35,1"
+        }
+      ],
+      "Children": []
+    },
+    {
       "__guid": "9f2c4a17-6d3e-4b8a-9c1f-2e7a5b8d0f61",
       "__version": 2,
       "Flags": 0,
