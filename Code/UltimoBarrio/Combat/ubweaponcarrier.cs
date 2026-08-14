@@ -1,3 +1,4 @@
+// UbWeaponCarrier — connects hotbar inventory to weapon prefabs
 using Sandbox;
 using System;
 using System.Collections.Generic;
@@ -74,10 +75,10 @@ namespace UltimoBarrio.Combat
 
 		private GameObject FindCameraHost()
 		{
-			// PlayerController with UseCameraControls doesn't expose a
-			// CameraComponent we can parent viewmodels to. Use Scene.Camera
-			// (the engine's active camera) or fall back to self.
-			if ( Scene.Camera != null ) return Scene.Camera;
+			// Scene.Camera is a CameraComponent, not a GameObject.
+			// Get its parent Transform's GameObject, or fall back to self.
+			var sceneCam = Scene.Camera;
+			if ( sceneCam != null ) return sceneCam.Transform.GameObject;
 			return GameObject;
 		}
 
