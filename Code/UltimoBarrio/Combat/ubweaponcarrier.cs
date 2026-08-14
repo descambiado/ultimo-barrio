@@ -25,9 +25,9 @@ namespace UltimoBarrio.Combat
 
 		private GameObject _weapon;
 		private GameObject _viewmodel;
-		private string _pendingEquipItemId;
-		private string _pendingEquipWorld;
-		private string _pendingEquipView;
+		private string _pendingItemId;
+		private string _pendingWorld;
+		private string _pendingView;
 
 		protected override void OnUpdate()
 		{
@@ -37,7 +37,6 @@ namespace UltimoBarrio.Combat
 			{
 				if ( Input.Pressed( $"Slot{i + 1}" ) )
 				{
-					Log.Info( $"[WeaponCarrier] hotbar slot={i}" );
 					SelectSlot( i );
 					break;
 				}
@@ -57,18 +56,14 @@ namespace UltimoBarrio.Combat
 				SelectSlot( next );
 			}
 
-			// Retry pending equip once camera appears
-			if ( !string.IsNullOrEmpty( _pendingEquipItemId ) )
+			if ( !string.IsNullOrEmpty( _pendingItemId ) )
 			{
-				var cam = FindCamera();
-				if ( cam != null )
-				{
-					var itemId = _pendingEquipItemId;
-					var world = _pendingEquipWorld;
-					var view = _pendingEquipView;
-					_pendingEquipItemId = null;
-					DoEquip( itemId, world, view, cam );
-				}
+				var camHost = FindCameraHost();
+				var id = _pendingItemId;
+				var w = _pendingWorld;
+				var v = _pendingView;
+				_pendingItemId = null;
+				CreateViewmodel( id, v, camHost );
 			}
 
 			if ( IsConsumableActive && Input.Pressed( "attack1" ) )
@@ -77,10 +72,12 @@ namespace UltimoBarrio.Combat
 			}
 		}
 
-		private CameraComponent FindCamera()
+		private GameObject FindCameraHost()
 		{
-			return Components.Get<CameraComponent>()
-				?? Scene.GetAllComponents<CameraComponent>().FirstOrDefault( c => c.IsMainCamera );
+			var cam = Components.GetInDescendantsOrSelf<CameraComponent>();
+			if ( cam != null ) return cam.GameObject;
+			if ( Scene.Camera != null ) return Scene.Camera;
+			return GameObject;
 		}
 
 		public void SelectSlot( int index )
@@ -128,7 +125,7 @@ namespace UltimoBarrio.Combat
 			{
 				ClearEquipped();
 				ActiveItemId = slot.ItemId;
-				Log.Info( $"[WeaponCarrier] consumible seleccionado {slot.ItemId} (slot {index}) — attack1 para usar" );
+				Log.Info( $"[WeaponCarrier] consumible seleccionado {slot.ItemId} (slot {index})" );
 				return;
 			}
 
@@ -152,24 +149,22 @@ namespace UltimoBarrio.Combat
 			ClearEquipped();
 			ActiveItemId = itemId;
 
-			var cam = FindCamera();
-			if ( cam == null )
+			SpawnWorldWeapon( worldPrefab );
+
+			var camHost = FindCameraHost();
+			if ( camHost == null )
 			{
-				// Camera not ready yet — spawn world weapon now, defer viewmodel
-				_pendingEquipItemId = itemId;
-				_pendingEquipWorld = worldPrefab;
-				_pendingEquipView = viewPrefab;
-				SpawnWorldWeapon( worldPrefab );
+				_pendingItemId = itemId;
+				_pendingWorld = worldPrefab;
+				_pendingView = viewPrefab;
 				return;
 			}
 
-			DoEquip( itemId, worldPrefab, viewPrefab, cam );
+			CreateViewmodel( itemId, viewPrefab, camHost );
 		}
 
-		private void DoEquip( string itemId, string worldPrefab, string viewPrefab, CameraComponent cam )
+		private void CreateViewmodel( string itemId, string viewPrefab, GameObject cameraHost )
 		{
-			SpawnWorldWeapon( worldPrefab );
-
 			var vFile = ResourceLibrary.Get<PrefabFile>( viewPrefab );
 			if ( vFile == null )
 			{
@@ -178,7 +173,7 @@ namespace UltimoBarrio.Combat
 			}
 
 			_viewmodel = SceneUtility.GetPrefabScene( vFile ).Clone();
-			_viewmodel.SetParent( cam.GameObject );
+			_viewmodel.SetParent( cameraHost );
 			_viewmodel.LocalPosition = Vector3.Zero;
 			_viewmodel.LocalRotation = Rotation.Identity;
 			_viewmodel.NetworkSpawn( Connection.Local );
@@ -207,7 +202,7 @@ namespace UltimoBarrio.Combat
 			ClearEquipped();
 			SelectedSlot = -1;
 			ActiveItemId = "";
-			_pendingEquipItemId = null;
+			_pendingItemId = null;
 		}
 
 		private bool IsConsumableActive
@@ -254,7 +249,7 @@ namespace UltimoBarrio.Combat
 
 			if ( !inv.TryRemove( itemId, 1 ) )
 			{
-				Log.Info( $"[WeaponCarrier] sin {itemId} en el inventario — manos vacías" );
+				Log.Info( $"[WeaponCarrier] sin {itemId} en el inventario" );
 				Holster();
 				return;
 			}
