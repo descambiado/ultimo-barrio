@@ -38,14 +38,16 @@ namespace UltimoBarrio.Development
 
 		private void SpawnCraftingStation()
 		{
-			_spawned = true;
-
 			// No duplicar si ya hay una.
 			if ( Scene.GetAllComponents<Crafting.CraftingStation>().Any() )
 			{
+				_spawned = true;
 				Log.Info( "[WorldBootstrap] CraftingStation ya presente; no se duplica." );
 				return;
 			}
+
+			var trader = Scene.GetAllComponents<Trading.Trader>().FirstOrDefault();
+			if ( trader == null ) return; // retry next frame
 
 			var prefabFile = ResourceLibrary.Get<PrefabFile>( CraftingStationPrefab );
 			if ( prefabFile == null )
@@ -54,12 +56,7 @@ namespace UltimoBarrio.Development
 				return;
 			}
 
-			var trader = Scene.GetAllComponents<Trading.Trader>().FirstOrDefault();
-			if ( trader == null )
-			{
-				Log.Warning( "[WorldBootstrap] Sin trader en la escena; la estación de crafteo no se coloca." );
-				return;
-			}
+			_spawned = true;
 
 			var station = SceneUtility.GetPrefabScene( prefabFile ).Clone();
 			station.WorldPosition = trader.WorldPosition + new Vector3( CraftingStationOffset, 0, 0 );

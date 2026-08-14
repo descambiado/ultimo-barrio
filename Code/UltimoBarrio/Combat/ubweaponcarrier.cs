@@ -5,34 +5,17 @@ using UltimoBarrio.Core;
 
 namespace UltimoBarrio.Combat
 {
-	/// <summary>
-	/// Weapon Carrier — capa de juego que conecta el inventario/hotbar del jugador
-	/// con las armas del pack de contenido (WeaponContentHost).
-	///
-	/// REUSE > BUILD: no reinventa viewmodels, reload, ammo, ni networking. El arma
-	/// clonada (prefab w_*_content) trae WeaponContentHost con AutoHandleInput=true,
-	/// que ya gestiona fire/reload/dry-fire/sonidos/daño por IDamageTarget. Este
-	/// componente solo:
-	///   - lee el slot del hotbar (1..6) del InventoryComponent,
-	///   - instancia el arma world (hija del jugador) y el viewmodel (hija de la cámara),
-	///   - holstera al cambiar a un slot vacío,
-	///   - suelta el arma actual con la tecla de drop.
-	///
-	/// Sustituye a HeldItemController en el prefab del jugador (que apuntaba a la
-	/// pila vieja BaseCombatWeapon, incompatible con los enemigos del content pack).
-	/// </summary>
 	[Title( "Weapon Carrier" )]
 	[Category( "Ultimo Barrio — Combat" )]
 	[Icon( "gps_fixed" )]
 	public sealed class UbWeaponCarrier : Component
 	{
-		// itemId (inventario) → (world prefab, view prefab) del pack verificado.
 		private static readonly Dictionary<string, (string World, string View)> WeaponPrefabs = new()
 		{
 			["weapon_usp"] = ("prefabs/content/weapons/w_usp_content.prefab", "prefabs/content/weapons/v_usp_content.prefab"),
 			["weapon_shotgun"] = ("prefabs/content/weapons/w_shotgun_content.prefab", "prefabs/content/weapons/v_shotgun_content.prefab"),
 			["weapon_crowbar"] = ("prefabs/content/weapons/w_crowbar_content.prefab", "prefabs/content/weapons/v_crowbar_content.prefab"),
-			["weapon_knife"] = ("prefabs/content/weapons/w_knife_content.prefab", "prefabs/content/weapons/v_knife_content.prefab")
+			["weapon_knife"] = ("prefabs/content/weapons/w_knife.prefab", "prefabs/content/weapons/v_knife.prefab")
 		};
 
 		[Property] public int HotbarSlots { get; set; } = 6;
@@ -42,19 +25,9 @@ namespace UltimoBarrio.Combat
 
 		private GameObject _weapon;
 		private GameObject _viewmodel;
-		private string _pendingWeaponWorld;
-		private string _pendingWeaponView;
-
-		private void TryEquipPending()
-		{
-			if ( string.IsNullOrEmpty( _pendingWeaponWorld ) ) return;
-			var cam = Components.Get<CameraComponent>()
-				?? Scene.GetAllComponents<CameraComponent>().FirstOrDefault( c => c.IsMainCamera );
-			if ( cam == null ) return;
-			EquipInternal( _pendingWeaponWorld, _pendingWeaponView );
-			_pendingWeaponWorld = null;
-			_pendingWeaponView = null;
-		}
+		private string _pendingEquipItemId;
+		private string _pendingEquipWorld;
+		private string _pendingEquipView;
 
 		protected override void OnUpdate()
 		{
@@ -75,22 +48,39 @@ namespace UltimoBarrio.Combat
 				DropCurrent();
 			}
 
-			// Scroll wheel cycles hotbar slots
 			var wheel = Input.MouseWheel;
-			if ( wheel != 0f )
+			if ( wheel > 0f || wheel < 0f )
 			{
 				var inv = Components.Get<InventoryComponent>();
 				var count = inv?.HotbarSlots ?? HotbarSlots;
-				var next = (SelectedSlot + (wheel > 0 ? -1 : 1) + count) % count;
+				var next = (SelectedSlot + (wheel > 0f ? -1 : 1) + count) % count;
 				SelectSlot( next );
 			}
 
-			TryEquipPending();
+			// Retry pending equip once camera appears
+			if ( !string.IsNullOrEmpty( _pendingEquipItemId ) )
+			{
+				var cam = FindCamera();
+				if ( cam != null )
+				{
+					var itemId = _pendingEquipItemId;
+					var world = _pendingEquipWorld;
+					var view = _pendingEquipView;
+					_pendingEquipItemId = null;
+					DoEquip( itemId, world, view, cam );
+				}
+			}
 
 			if ( IsConsumableActive && Input.Pressed( "attack1" ) )
 			{
 				UseActiveConsumable();
 			}
+		}
+
+		private CameraComponent FindCamera()
+		{
+			return Components.Get<CameraComponent>()
+				?? Scene.GetAllComponents<CameraComponent>().FirstOrDefault( c => c.IsMainCamera );
 		}
 
 		public void SelectSlot( int index )
@@ -134,7 +124,6 @@ namespace UltimoBarrio.Combat
 				return;
 			}
 
-			// Consumibles: se seleccionan pero no equipan arma; attack1 los usa.
 			if ( def.Category == ItemCategory.Consumable && def.Usable )
 			{
 				ClearEquipped();
@@ -159,19 +148,46 @@ namespace UltimoBarrio.Combat
 		}
 
 		private void Equip( string itemId, string worldPrefab, string viewPrefab )
-	{
-		ClearEquipped();
-		ActiveItemId = itemId;
-		_pendingWeaponWorld = worldPrefab;
-		_pendingWeaponView = viewPrefab;
-		EquipInternal( itemId, worldPrefab, viewPrefab );
-	}
-
-private void EquipInternal( string itemId, string worldPrefab, string viewPrefab )
 		{
 			ClearEquipped();
 			ActiveItemId = itemId;
 
+			var cam = FindCamera();
+			if ( cam == null )
+			{
+				// Camera not ready yet — spawn world weapon now, defer viewmodel
+				_pendingEquipItemId = itemId;
+				_pendingEquipWorld = worldPrefab;
+				_pendingEquipView = viewPrefab;
+				SpawnWorldWeapon( worldPrefab );
+				return;
+			}
+
+			DoEquip( itemId, worldPrefab, viewPrefab, cam );
+		}
+
+		private void DoEquip( string itemId, string worldPrefab, string viewPrefab, CameraComponent cam )
+		{
+			SpawnWorldWeapon( worldPrefab );
+
+			var vFile = ResourceLibrary.Get<PrefabFile>( viewPrefab );
+			if ( vFile == null )
+			{
+				Log.Error( $"[WeaponCarrier] view prefab NO encontrado: {viewPrefab}" );
+				return;
+			}
+
+			_viewmodel = SceneUtility.GetPrefabScene( vFile ).Clone();
+			_viewmodel.SetParent( cam.GameObject );
+			_viewmodel.LocalPosition = Vector3.Zero;
+			_viewmodel.LocalRotation = Rotation.Identity;
+			_viewmodel.NetworkSpawn( Connection.Local );
+
+			Log.Info( $"[WeaponCarrier] equipada {itemId} (slot {SelectedSlot})" );
+		}
+
+		private void SpawnWorldWeapon( string worldPrefab )
+		{
 			var wFile = ResourceLibrary.Get<PrefabFile>( worldPrefab );
 			if ( wFile == null )
 			{
@@ -184,24 +200,6 @@ private void EquipInternal( string itemId, string worldPrefab, string viewPrefab
 			_weapon.LocalPosition = Vector3.Zero;
 			_weapon.LocalRotation = Rotation.Identity;
 			_weapon.NetworkSpawn( Connection.Local );
-
-			var vFile = ResourceLibrary.Get<PrefabFile>( viewPrefab );
-			if ( vFile == null )
-			{
-				Log.Error( $"[WeaponCarrier] view prefab NO encontrado: {viewPrefab}" );
-				return;
-			}
-
-			var cam = Components.Get<CameraComponent>() ?? Scene.GetAllComponents<CameraComponent>().FirstOrDefault( c => c.IsMainCamera );
-			if ( cam == null ) return;
-
-			_viewmodel = SceneUtility.GetPrefabScene( vFile ).Clone();
-			_viewmodel.SetParent( cam.GameObject );
-			_viewmodel.LocalPosition = Vector3.Zero;
-			_viewmodel.LocalRotation = Rotation.Identity;
-			_viewmodel.NetworkSpawn( Connection.Local );
-
-			Log.Info( $"[WeaponCarrier] equipada {itemId} (slot {SelectedSlot})" );
 		}
 
 		private void Holster()
@@ -209,6 +207,7 @@ private void EquipInternal( string itemId, string worldPrefab, string viewPrefab
 			ClearEquipped();
 			SelectedSlot = -1;
 			ActiveItemId = "";
+			_pendingEquipItemId = null;
 		}
 
 		private bool IsConsumableActive
@@ -221,11 +220,6 @@ private void EquipInternal( string itemId, string worldPrefab, string viewPrefab
 			}
 		}
 
-		/// <summary>
-		/// Usa el consumible activo (agua/medicina): valida en host, consume del
-		/// inventario y aplica curación al HealthComponent. Sin recarga de cooldown
-		/// — el rate se limita por input (attack1).
-		/// </summary>
 		private void UseActiveConsumable()
 		{
 			var itemId = ActiveItemId;
@@ -243,7 +237,6 @@ private void EquipInternal( string itemId, string worldPrefab, string viewPrefab
 		[Rpc.Host]
 		private void RpcUseConsumable( Guid playerId, string itemId )
 		{
-			// Validar contra el carrier del jugador emisor (no el del host).
 			var go = Scene.Directory.FindByGuid( playerId );
 			var carrier = go?.Components.Get<UbWeaponCarrier>();
 			if ( carrier != null && carrier.ActiveItemId == itemId )
@@ -252,13 +245,11 @@ private void EquipInternal( string itemId, string worldPrefab, string viewPrefab
 			}
 		}
 
-		/// <summary>Consume el ítem del inventario de este jugador y aplica la curación (host).</summary>
 		private void ApplyConsumable( string itemId )
 		{
 			var inv = Components.Get<InventoryComponent>();
 			var health = Components.Get<HealthComponent>();
 			if ( inv == null || health == null ) return;
-
 			if ( health.IsDead ) return;
 
 			if ( !inv.TryRemove( itemId, 1 ) )
@@ -268,7 +259,6 @@ private void EquipInternal( string itemId, string worldPrefab, string viewPrefab
 				return;
 			}
 
-			// Efecto por ítem: agua cura poco, medicina cura mucho.
 			float heal = itemId == "medicine" ? 50f : 25f;
 			health.Heal( heal );
 
@@ -276,7 +266,6 @@ private void EquipInternal( string itemId, string worldPrefab, string viewPrefab
 			Log.Info( $"[WeaponCarrier] usado {itemId} (+{heal:F0} HP)" );
 			RpcConsumableFeedback( itemId, heal, def?.DisplayName ?? itemId );
 
-			// Si el slot quedó vacío, holster.
 			var slot = SelectedSlot >= 0 && SelectedSlot < inv.Slots.Count ? inv.Slots[SelectedSlot] : null;
 			if ( slot == null || string.IsNullOrEmpty( slot.ItemId ) || slot.Amount <= 0 )
 			{
