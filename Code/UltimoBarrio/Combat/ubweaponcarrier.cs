@@ -1,5 +1,6 @@
 // UbWeaponCarrier — connects hotbar inventory to weapon prefabs
 using Sandbox;
+using Sandbox.Citizen;
 using System;
 using System.Collections.Generic;
 using UltimoBarrio.Core;
@@ -20,6 +21,20 @@ namespace UltimoBarrio.Combat
 			["weapon_m4a1"] = ("prefabs/content/weapons/w_m4a1_content.prefab", "prefabs/content/weapons/v_m4a1_content.prefab"),
 			["weapon_magnum"] = ("prefabs/content/weapons/w_magnum_content.prefab", "prefabs/content/weapons/v_magnum_content.prefab"),
 			["weapon_mp5"] = ("prefabs/content/weapons/w_mp5_content.prefab", "prefabs/content/weapons/v_mp5_content.prefab")
+		};
+
+		// CitizenAnimationHelper.HoldType anima la pose de mano/brazo del citizen
+		// para que coincida con el tipo de arma; sin esto el modelo cuelga con la
+		// bind pose por defecto (aparece flotando en pies/cabeza en vez de en la mano).
+		private static readonly Dictionary<string, CitizenAnimationHelper.HoldTypes> HoldTypeByWeapon = new()
+		{
+			["weapon_usp"] = CitizenAnimationHelper.HoldTypes.Pistol,
+			["weapon_magnum"] = CitizenAnimationHelper.HoldTypes.Pistol,
+			["weapon_shotgun"] = CitizenAnimationHelper.HoldTypes.Shotgun,
+			["weapon_mp5"] = CitizenAnimationHelper.HoldTypes.Rifle,
+			["weapon_m4a1"] = CitizenAnimationHelper.HoldTypes.Rifle,
+			["weapon_crowbar"] = CitizenAnimationHelper.HoldTypes.Swing,
+			["weapon_knife"] = CitizenAnimationHelper.HoldTypes.HoldItem
 		};
 
 		[Property] public int HotbarSlots { get; set; } = 6;
@@ -153,6 +168,14 @@ namespace UltimoBarrio.Combat
 		{
 			ClearEquipped();
 			ActiveItemId = itemId;
+
+			var anim = Components.GetInDescendantsOrSelf<CitizenAnimationHelper>();
+			if ( anim != null )
+			{
+				anim.HoldType = HoldTypeByWeapon.TryGetValue( itemId, out var holdType )
+					? holdType
+					: CitizenAnimationHelper.HoldTypes.HoldItem;
+			}
 
 			SpawnWorldWeapon( worldPrefab );
 
@@ -301,6 +324,9 @@ namespace UltimoBarrio.Combat
 			if ( _viewmodel != null && _viewmodel.IsValid() ) _viewmodel.Destroy();
 			_weapon = null;
 			_viewmodel = null;
+
+			var anim = Components.GetInDescendantsOrSelf<CitizenAnimationHelper>();
+			if ( anim != null ) anim.HoldType = CitizenAnimationHelper.HoldTypes.None;
 		}
 
 		private void DropCurrent()

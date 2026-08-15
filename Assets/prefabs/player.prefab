@@ -15,6 +15,17 @@
     "OwnerTransfer": 1,
     "Components": [
       {
+        "__type": "Sandbox.Citizen.CitizenAnimationHelper",
+        "__guid": "a1b2c3d4-5e6f-4a7b-8c9d-0e1f2a3b4c5d",
+        "__enabled": true,
+        "Target": {
+          "_type": "component",
+          "component_id": "f2b49a45-d5d0-4868-8e56-f85f9a989be6",
+          "go": "6b5cbc3e-e37c-4eb9-afa6-577469114047",
+          "component_type": "SkinnedModelRenderer"
+        }
+      },
+      {
         "__type": "Sandbox.PlayerController",
         "__guid": "3ae1b3c4-14c5-4d68-be0a-1096ec3e2c8d",
         "__enabled": true,
