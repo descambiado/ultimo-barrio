@@ -73,6 +73,21 @@ namespace UltimoBarrio
                 ammoType: "ammo_buckshot", magazine: 8, damage: 12f, fireRate: 0.9f,
                 viewModel: "prefabs/content/weapons/v_shotgun_content.prefab", worldModel: "prefabs/content/weapons/w_shotgun_content.prefab",
                 worldPickup: "prefabs/items/pf_scrap_pickup.prefab" );
+
+            AddWeapon( "weapon_m4a1", "M4A1", "Rifle de asalto automático", ItemCategory.Firearm,
+                ammoType: "ammo_9mm", magazine: 30, damage: 18f, fireRate: 0.1f,
+                viewModel: "prefabs/content/weapons/v_m4a1_content.prefab", worldModel: "prefabs/content/weapons/w_m4a1_content.prefab",
+                worldPickup: "prefabs/items/pf_scrap_pickup.prefab" );
+
+            AddWeapon( "weapon_magnum", "Revólver Magnum", "Alto daño, recarga lenta", ItemCategory.Firearm,
+                ammoType: "ammo_9mm", magazine: 6, damage: 45f, fireRate: 0.6f,
+                viewModel: "prefabs/content/weapons/v_magnum_content.prefab", worldModel: "prefabs/content/weapons/w_magnum_content.prefab",
+                worldPickup: "prefabs/items/pf_scrap_pickup.prefab" );
+
+            AddWeapon( "weapon_mp5", "MP5", "Subfusil de fuego rápido", ItemCategory.Firearm,
+                ammoType: "ammo_9mm", magazine: 25, damage: 12f, fireRate: 0.08f,
+                viewModel: "prefabs/content/weapons/v_mp5_content.prefab", worldModel: "prefabs/content/weapons/w_mp5_content.prefab",
+                worldPickup: "prefabs/items/pf_scrap_pickup.prefab" );
         }
 
         private static void Add(

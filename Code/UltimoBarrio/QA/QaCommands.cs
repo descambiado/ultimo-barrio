@@ -29,6 +29,15 @@ namespace UltimoBarrio.QA
             Log.Info($"[QA] hand/weapon/hold bones ({names.Count}): {string.Join(", ", names)}");
         }
 
+        [ConCmd("ub_qa_check_item")]
+        public static void CheckItem(string itemId)
+        {
+            bool inCatalog = ItemCatalog.TryGet(itemId, out var def);
+            Log.Info($"[QA] ItemCatalog.TryGet({itemId}) -> {inCatalog}, def={(def == null ? "null" : def.DisplayName)}");
+            Log.Info($"[QA] ItemCatalog.All.Count = {ItemCatalog.All.Count}");
+            Log.Info($"[QA] ItemCatalog contains weapon_m4a1: {ItemCatalog.All.Any(d => d.ItemId == "weapon_m4a1")}");
+        }
+
         [ConCmd("ub_qa_select_slot")]
         public static void SelectSlot(int slot)
         {

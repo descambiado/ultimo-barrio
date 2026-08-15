@@ -23,6 +23,9 @@ namespace UltimoBarrio.Content.Weapons
 			Register( Crowbar() );
 			Register( Knife() );
 			Register( Shotgun() );
+			Register( M4A1() );
+			Register( Magnum() );
+			Register( Mp5() );
 		}
 
 		public static WeaponContentDefinition Get( string id )
@@ -222,6 +225,140 @@ namespace UltimoBarrio.Content.Weapons
 
 				AssetsVerified = true,
 				VerificationNotes = "Cloud idents verificados en el backend (find_packages 2026-08-07): facepunch.w_spaghellim4 + facepunch.v_spaghellim4 (Spaghelli M4 12g). Munición real facepunch.ammobox12g / facepunch.12g_shell / facepunch.12gshellcasing + muzzle flash facepunch.shotgun_muzzleflash PENDING de cablear (data-only). AmmoType 'ammo_buckshot' = item id del core nuevo. Sonidos: 4 SoundEvents VERIFICADOS 2026-08-08 (worker C audio-v2) -- fuentes MIT importadas de Facepunch/sandbox (shotgun1_shoot1/2, shotgun_cock, shotgun_load, foley_deploy_weapon_03, dry_fire)."
+			};
+		}
+
+		private static WeaponContentDefinition M4A1()
+		{
+			return new WeaponContentDefinition
+			{
+				Id = "ub_weapon_m4a1",
+				DisplayName = "M4A1",
+				Category = WeaponContentCategory.Firearm,
+
+				CloudWorldId = "facepunch.w_m4a1",
+				CloudViewId = "facepunch.v_m4a1",
+				WorldModel = "models/weapons/sbox_assault_m4a1/w_m4a1.vmdl", // VERIFIED (install_package 2026-08-15)
+				WorldModelFallback = "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl", // VERIFIED
+				ViewModel = "prefabs/content/weapons/v_m4a1_content.prefab",
+				AmmoModel = "",
+				CasingModel = "",
+
+				FireSound = "sounds/content/weapons/usp_fire.sound", // PENDING sonido propio; reutiliza banco verificado
+				ReloadSound = "sounds/content/weapons/usp_reload_magin.sound",
+				ReloadStartSound = "sounds/content/weapons/usp_reload_magout.sound",
+				DeploySound = "sounds/content/weapons/usp_deploy.sound",
+				DryFireSound = "sounds/content/weapons/usp_dry.sound",
+				MuzzleEffect = "",
+
+				AnimGraph = "",
+				HoldTypeParam = "holdtype",
+				DrawTime = 0.6f,
+
+				Damage = 18f,
+				FireRate = 0.1f,
+				MagazineSize = 30,
+				ReloadTime = 2f,
+				IsAutomatic = true,
+				Pellets = 1,
+				Range = 5000f,
+				RecoilKick = 5f,
+				MovementSpeedScale = 0.9f,
+				AmmoType = "ammo_9mm",
+				EquipSlot = "Primary",
+
+				AssetsVerified = true,
+				VerificationNotes = "facepunch.w_m4a1 + facepunch.v_m4a1 instalados via install_package 2026-08-15. Sonidos y efecto de boca PENDING (reutiliza banco de la USP como placeholder verificado, no inventado)."
+			};
+		}
+
+		private static WeaponContentDefinition Magnum()
+		{
+			return new WeaponContentDefinition
+			{
+				Id = "ub_weapon_magnum",
+				DisplayName = "Revólver Magnum",
+				Category = WeaponContentCategory.Firearm,
+
+				// facepunch.wmagnum es el único paquete oficial: solo world model,
+				// sin viewmodel dedicado. Se reutiliza el mismo modelo para ambos.
+				CloudWorldId = "facepunch.wmagnum",
+				CloudViewId = "",
+				WorldModel = "models/weapons/sbox_revolver_magnum/w_magnum.vmdl", // VERIFIED (install_package 2026-08-15)
+				WorldModelFallback = "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl", // VERIFIED
+				ViewModel = "prefabs/content/weapons/v_magnum_content.prefab",
+				AmmoModel = "",
+				CasingModel = "",
+
+				FireSound = "sounds/content/weapons/usp_fire.sound", // PENDING sonido propio; reutiliza banco verificado
+				ReloadSound = "sounds/content/weapons/usp_reload_magin.sound",
+				ReloadStartSound = "sounds/content/weapons/usp_reload_magout.sound",
+				DeploySound = "sounds/content/weapons/usp_deploy.sound",
+				DryFireSound = "sounds/content/weapons/usp_dry.sound",
+				MuzzleEffect = "",
+
+				AnimGraph = "",
+				HoldTypeParam = "holdtype",
+				DrawTime = 0.6f,
+
+				Damage = 45f,
+				FireRate = 0.6f,
+				MagazineSize = 6,
+				ReloadTime = 2.5f,
+				IsAutomatic = false,
+				Pellets = 1,
+				Range = 5000f,
+				RecoilKick = 10f,
+				MovementSpeedScale = 0.92f,
+				AmmoType = "ammo_9mm",
+				EquipSlot = "Primary",
+
+				AssetsVerified = true,
+				VerificationNotes = "facepunch.wmagnum instalado via install_package 2026-08-15. Sin viewmodel oficial de Facepunch para el Magnum: el world model se reutiliza también como viewmodel. Sonidos PENDING (reutiliza banco de la USP como placeholder verificado)."
+			};
+		}
+
+		private static WeaponContentDefinition Mp5()
+		{
+			return new WeaponContentDefinition
+			{
+				Id = "ub_weapon_mp5",
+				DisplayName = "MP5",
+				Category = WeaponContentCategory.Firearm,
+
+				CloudWorldId = "facepunch.w_mp5",
+				CloudViewId = "facepunch.v_mp5",
+				WorldModel = "models/weapons/sbox_smg_mp5/w_mp5.vmdl", // VERIFIED (install_package 2026-08-15)
+				WorldModelFallback = "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl", // VERIFIED
+				ViewModel = "prefabs/content/weapons/v_mp5_content.prefab",
+				AmmoModel = "",
+				CasingModel = "",
+
+				FireSound = "sounds/content/weapons/usp_fire.sound", // PENDING sonido propio; reutiliza banco verificado
+				ReloadSound = "sounds/content/weapons/usp_reload_magin.sound",
+				ReloadStartSound = "sounds/content/weapons/usp_reload_magout.sound",
+				DeploySound = "sounds/content/weapons/usp_deploy.sound",
+				DryFireSound = "sounds/content/weapons/usp_dry.sound",
+				MuzzleEffect = "",
+
+				AnimGraph = "",
+				HoldTypeParam = "holdtype",
+				DrawTime = 0.5f,
+
+				Damage = 12f,
+				FireRate = 0.08f,
+				MagazineSize = 25,
+				ReloadTime = 1.8f,
+				IsAutomatic = true,
+				Pellets = 1,
+				Range = 4000f,
+				RecoilKick = 3f,
+				MovementSpeedScale = 0.95f,
+				AmmoType = "ammo_9mm",
+				EquipSlot = "Primary",
+
+				AssetsVerified = true,
+				VerificationNotes = "facepunch.w_mp5 + facepunch.v_mp5 instalados via install_package 2026-08-15. Sonidos y efecto de boca PENDING (reutiliza banco de la USP como placeholder verificado, no inventado)."
 			};
 		}
 	}

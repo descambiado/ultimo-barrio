@@ -16,6 +16,12 @@
     "facepunch.ammobox12g",
     "facepunch.12g_shell",
     "facepunch.12gshellcasing",
+    "facepunch.w_m4a1",
+    "facepunch.v_m4a1",
+    "facepunch.w_mp5",
+    "facepunch.v_mp5",
+    "facepunch.wmagnum",
+    "facepunch.v_crowbar",
     "fieldguide.vehiclephysics"
   ],
   "EditorReferences": null,

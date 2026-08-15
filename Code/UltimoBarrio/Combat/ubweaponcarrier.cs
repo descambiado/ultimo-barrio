@@ -16,7 +16,10 @@ namespace UltimoBarrio.Combat
 			["weapon_usp"] = ("prefabs/content/weapons/w_usp_content.prefab", "prefabs/content/weapons/v_usp_content.prefab"),
 			["weapon_shotgun"] = ("prefabs/content/weapons/w_shotgun_content.prefab", "prefabs/content/weapons/v_shotgun_content.prefab"),
 			["weapon_crowbar"] = ("prefabs/content/weapons/w_crowbar_content.prefab", "prefabs/content/weapons/v_crowbar_content.prefab"),
-			["weapon_knife"] = ("prefabs/content/weapons/w_knife.prefab", "prefabs/content/weapons/v_knife.prefab")
+			["weapon_knife"] = ("prefabs/content/weapons/w_knife_content.prefab", "prefabs/content/weapons/v_knife_content.prefab"),
+			["weapon_m4a1"] = ("prefabs/content/weapons/w_m4a1_content.prefab", "prefabs/content/weapons/v_m4a1_content.prefab"),
+			["weapon_magnum"] = ("prefabs/content/weapons/w_magnum_content.prefab", "prefabs/content/weapons/v_magnum_content.prefab"),
+			["weapon_mp5"] = ("prefabs/content/weapons/w_mp5_content.prefab", "prefabs/content/weapons/v_mp5_content.prefab")
 		};
 
 		[Property] public int HotbarSlots { get; set; } = 6;

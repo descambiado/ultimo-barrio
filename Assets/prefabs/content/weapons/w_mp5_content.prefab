@@ -1,9 +1,9 @@
 {
   "RootObject": {
-    "__guid": "5f8b2c1a-7a4e-4d90-9b11-1c2d3e4f5a06",
+    "__guid": "8c3d5e7f-1a2b-4c9d-8e6f-3b7a9c1d5e30",
     "__version": 1,
     "Flags": 0,
-    "Name": "Content Weapon Crowbar",
+    "Name": "Content Weapon MP5",
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
@@ -16,15 +16,15 @@
     "Components": [
       {
         "__type": "Sandbox.ModelRenderer",
-        "__guid": "5f8b2c1a-7a4e-4d90-9b11-1c2d3e4f5a07",
+        "__guid": "8c3d5e7f-1a2b-4c9d-8e6f-3b7a9c1d5e31",
         "__enabled": true,
-        "Model": "models/weapons/sbox_melee_crowbar/v_crowbar.vmdl"
+        "Model": "models/weapons/sbox_smg_mp5/w_mp5.vmdl"
       },
       {
         "__type": "UltimoBarrio.Content.Weapons.WeaponContentHost",
-        "__guid": "5f8b2c1a-7a4e-4d90-9b11-1c2d3e4f5a08",
+        "__guid": "8c3d5e7f-1a2b-4c9d-8e6f-3b7a9c1d5e32",
         "__enabled": true,
-        "DefinitionId": "ub_weapon_crowbar",
+        "DefinitionId": "ub_weapon_mp5",
         "AutoHandleInput": true
       }
     ],
