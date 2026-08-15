@@ -204,6 +204,14 @@ namespace UltimoBarrio.Combat
 			_viewmodel.SetParent( cameraHost );
 			_viewmodel.LocalPosition = Vector3.Zero;
 			_viewmodel.LocalRotation = Rotation.Identity;
+
+			// Los brazos citizen bonemergeados (Arms, hijo del prefab) necesitan que
+			// el arma sepa que está usando ese esqueleto en vez del humano por
+			// defecto: parámetro "skeleton" del animgraph (0=humano, 1=citizen),
+			// documentado en sbox.game/dev/doc first-person-weapons.
+			var weaponSkinned = _viewmodel.Components.Get<SkinnedModelRenderer>();
+			weaponSkinned?.Set( "skeleton", 1 );
+
 			_viewmodel.NetworkSpawn( Connection.Local );
 
 			Log.Info( $"[WeaponCarrier] equipada {itemId} (slot {SelectedSlot})" );

@@ -15,12 +15,43 @@
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "Sandbox.ModelRenderer",
+        "__type": "Sandbox.SkinnedModelRenderer",
         "__guid": "8c3d5e7f-1a2b-4c9d-8e6f-3b7a9c1d5e24",
         "__enabled": true,
         "Model": "models/weapons/sbox_assault_m4a1/v_m4a1.vmdl"
       }
     ],
-    "Children": []
+    "Children": [
+      {
+        "__guid": "8c3d5e7f-1a2b-4c9d-8e6f-3b7a9c1d5e25",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "Arms",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.SkinnedModelRenderer",
+            "__guid": "8c3d5e7f-1a2b-4c9d-8e6f-3b7a9c1d5e26",
+            "__enabled": true,
+            "Model": "models/first_person/v_first_person_arms_citizen.vmdl",
+            "BoneMergeTarget": {
+              "_type": "component",
+              "component_id": "8c3d5e7f-1a2b-4c9d-8e6f-3b7a9c1d5e24",
+              "go": "8c3d5e7f-1a2b-4c9d-8e6f-3b7a9c1d5e23",
+              "component_type": "SkinnedModelRenderer"
+            }
+          }
+        ],
+        "Children": []
+      }
+    ]
   }
 }

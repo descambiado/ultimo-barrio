@@ -38,6 +38,15 @@ namespace UltimoBarrio.QA
             Log.Info($"[QA] ItemCatalog contains weapon_m4a1: {ItemCatalog.All.Any(d => d.ItemId == "weapon_m4a1")}");
         }
 
+        [ConCmd("ub_qa_toggle_firstperson")]
+        public static void ToggleFirstPerson()
+        {
+            var controller = Game.ActiveScene.GetAllComponents<PlayerController>().FirstOrDefault(c => !c.IsProxy);
+            if (controller == null) { Log.Error("[QA] No local PlayerController found."); return; }
+            controller.ThirdPerson = !controller.ThirdPerson;
+            Log.Info($"[QA] ThirdPerson -> {controller.ThirdPerson}");
+        }
+
         [ConCmd("ub_qa_select_slot")]
         public static void SelectSlot(int slot)
         {
