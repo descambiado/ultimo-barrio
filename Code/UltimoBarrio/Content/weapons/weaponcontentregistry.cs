@@ -26,6 +26,8 @@ namespace UltimoBarrio.Content.Weapons
 			Register( M4A1() );
 			Register( Magnum() );
 			Register( Mp5() );
+			Register( M700() );
+			Register( Colt1911() );
 		}
 
 		public static WeaponContentDefinition Get( string id )
@@ -143,8 +145,11 @@ namespace UltimoBarrio.Content.Weapons
 
 				// Idents verificados en el backend (find_packages, 2026-08-07):
 				//   facepunch.knife NO existe (descartado, era inventado).
+				// CloudViewId corregido 2026-08-15: estaba mezclado con v_m9bayonet
+				// (arma DISTINTA de trenchknife dentro de la colección); ahora usa
+				// el viewmodel real del Trench Knife, coherente con el world model.
 				CloudWorldId = "facepunch.w_trenchknife", // world model Trench Knife (Facepunch)
-				CloudViewId = "facepunch.v_m9bayonet",    // viewmodel melee (Facepunch)
+				CloudViewId = "facepunch.v_trenchknife",  // viewmodel Trench Knife (Facepunch)
 				WorldModel = "",
 				WorldModelFallback = "models/citizen_props/crate01.vmdl", // VERIFIED
 				ViewModel = "prefabs/content/weapons/v_knife_content.prefab",
@@ -359,6 +364,96 @@ namespace UltimoBarrio.Content.Weapons
 
 				AssetsVerified = true,
 				VerificationNotes = "facepunch.w_mp5 + facepunch.v_mp5 instalados via install_package 2026-08-15. Sonidos y efecto de boca PENDING (reutiliza banco de la USP como placeholder verificado, no inventado)."
+			};
+		}
+
+		private static WeaponContentDefinition M700()
+		{
+			return new WeaponContentDefinition
+			{
+				Id = "ub_weapon_m700",
+				DisplayName = "Rifle M700",
+				Category = WeaponContentCategory.Firearm,
+
+				CloudWorldId = "facepunch.w_m700",
+				CloudViewId = "facepunch.v_m700",
+				WorldModel = "models/weapons/sbox_sniper_m700/w_m700.vmdl", // VERIFIED (install_package 2026-08-15)
+				WorldModelFallback = "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl", // VERIFIED
+				ViewModel = "prefabs/content/weapons/v_m700_content.prefab",
+				AmmoModel = "",
+				CasingModel = "",
+
+				FireSound = "sounds/content/weapons/usp_fire.sound", // PENDING sonido propio; reutiliza banco verificado
+				ReloadSound = "sounds/content/weapons/usp_reload_magin.sound",
+				ReloadStartSound = "sounds/content/weapons/usp_reload_magout.sound",
+				DeploySound = "sounds/content/weapons/usp_deploy.sound",
+				DryFireSound = "sounds/content/weapons/usp_dry.sound",
+				MuzzleEffect = "",
+
+				AnimGraph = "",
+				HoldTypeParam = "holdtype",
+				DrawTime = 0.8f,
+
+				Damage = 80f,
+				FireRate = 1.2f,
+				MagazineSize = 5,
+				ReloadTime = 3f,
+				IsAutomatic = false,
+				Pellets = 1,
+				Range = 8000f,
+				RecoilKick = 18f,
+				MovementSpeedScale = 0.85f,
+				AmmoType = "ammo_9mm",
+				EquipSlot = "Primary",
+
+				AssetsVerified = true,
+				VerificationNotes = "facepunch.w_m700 + facepunch.v_m700 instalados via install_package 2026-08-15 (rifle de cerrojo, francotirador de la colección oficial). Sonidos y efecto de boca PENDING (reutiliza banco de la USP como placeholder verificado, no inventado). Usa CitizenAnimationHelper.HoldTypes.Rifle: no existe holdtype dedicado 'Sniper' en el motor."
+			};
+		}
+
+		private static WeaponContentDefinition Colt1911()
+		{
+			return new WeaponContentDefinition
+			{
+				Id = "ub_weapon_1911",
+				DisplayName = "Pistola 1911",
+				Category = WeaponContentCategory.Firearm,
+
+				// facepunch.w_1911 es el único paquete oficial: solo world model,
+				// igual que el Magnum, sin viewmodel dedicado en la colección.
+				CloudWorldId = "facepunch.w_1911",
+				CloudViewId = "",
+				WorldModel = "models/weapons/sbox_pistol_1911/w_1911.vmdl", // VERIFIED (install_package 2026-08-15)
+				WorldModelFallback = "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl", // VERIFIED
+				ViewModel = "prefabs/content/weapons/v_1911_content.prefab",
+				AmmoModel = "",
+				CasingModel = "",
+
+				FireSound = "sounds/content/weapons/usp_fire.sound", // PENDING sonido propio; reutiliza banco verificado
+				ReloadSound = "sounds/content/weapons/usp_reload_magin.sound",
+				ReloadStartSound = "sounds/content/weapons/usp_reload_magout.sound",
+				DeploySound = "sounds/content/weapons/usp_deploy.sound",
+				DryFireSound = "sounds/content/weapons/usp_dry.sound",
+				MuzzleEffect = "",
+
+				AnimGraph = "",
+				HoldTypeParam = "holdtype",
+				DrawTime = 0.5f,
+
+				Damage = 20f,
+				FireRate = 0.3f,
+				MagazineSize = 7,
+				ReloadTime = 1.6f,
+				IsAutomatic = false,
+				Pellets = 1,
+				Range = 5000f,
+				RecoilKick = 5f,
+				MovementSpeedScale = 0.95f,
+				AmmoType = "ammo_9mm",
+				EquipSlot = "Primary",
+
+				AssetsVerified = true,
+				VerificationNotes = "facepunch.w_1911 instalado via install_package 2026-08-15. Sin viewmodel oficial de Facepunch para el 1911 (igual que el Magnum): el world model se reutiliza también como viewmodel. Sonidos PENDING (reutiliza banco de la USP como placeholder verificado)."
 			};
 		}
 	}

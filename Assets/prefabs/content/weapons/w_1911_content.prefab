@@ -1,0 +1,33 @@
+{
+  "RootObject": {
+    "__guid": "3a4b5c6d-7e8f-4a1b-9c2d-3e4f5a6b7c60",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "Content Weapon 1911",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Sandbox.ModelRenderer",
+        "__guid": "3a4b5c6d-7e8f-4a1b-9c2d-3e4f5a6b7c61",
+        "__enabled": true,
+        "Model": "models/weapons/sbox_pistol_1911/w_1911.vmdl"
+      },
+      {
+        "__type": "UltimoBarrio.Content.Weapons.WeaponContentHost",
+        "__guid": "3a4b5c6d-7e8f-4a1b-9c2d-3e4f5a6b7c62",
+        "__enabled": true,
+        "DefinitionId": "ub_weapon_1911",
+        "AutoHandleInput": true
+      }
+    ],
+    "Children": []
+  }
+}

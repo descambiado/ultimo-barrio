@@ -20,7 +20,9 @@ namespace UltimoBarrio.Combat
 			["weapon_knife"] = ("prefabs/content/weapons/w_knife_content.prefab", "prefabs/content/weapons/v_knife_content.prefab"),
 			["weapon_m4a1"] = ("prefabs/content/weapons/w_m4a1_content.prefab", "prefabs/content/weapons/v_m4a1_content.prefab"),
 			["weapon_magnum"] = ("prefabs/content/weapons/w_magnum_content.prefab", "prefabs/content/weapons/v_magnum_content.prefab"),
-			["weapon_mp5"] = ("prefabs/content/weapons/w_mp5_content.prefab", "prefabs/content/weapons/v_mp5_content.prefab")
+			["weapon_mp5"] = ("prefabs/content/weapons/w_mp5_content.prefab", "prefabs/content/weapons/v_mp5_content.prefab"),
+			["weapon_m700"] = ("prefabs/content/weapons/w_m700_content.prefab", "prefabs/content/weapons/v_m700_content.prefab"),
+			["weapon_1911"] = ("prefabs/content/weapons/w_1911_content.prefab", "prefabs/content/weapons/v_1911_content.prefab")
 		};
 
 		// CitizenAnimationHelper.HoldType anima la pose de mano/brazo del citizen
@@ -34,7 +36,9 @@ namespace UltimoBarrio.Combat
 			["weapon_mp5"] = CitizenAnimationHelper.HoldTypes.Rifle,
 			["weapon_m4a1"] = CitizenAnimationHelper.HoldTypes.Rifle,
 			["weapon_crowbar"] = CitizenAnimationHelper.HoldTypes.Swing,
-			["weapon_knife"] = CitizenAnimationHelper.HoldTypes.HoldItem
+			["weapon_knife"] = CitizenAnimationHelper.HoldTypes.HoldItem,
+			["weapon_m700"] = CitizenAnimationHelper.HoldTypes.Rifle,
+			["weapon_1911"] = CitizenAnimationHelper.HoldTypes.Pistol
 		};
 
 		[Property] public int HotbarSlots { get; set; } = 6;

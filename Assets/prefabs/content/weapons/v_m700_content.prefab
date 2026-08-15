@@ -1,9 +1,9 @@
 {
   "RootObject": {
-    "__guid": "5f8b2c1a-7a4e-4d90-9b11-1c2d3e4f5a0e",
+    "__guid": "3a4b5c6d-7e8f-4a1b-9c2d-3e4f5a6b7c53",
     "__version": 1,
     "Flags": 0,
-    "Name": "Content Viewmodel Knife",
+    "Name": "Content Viewmodel M700",
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
@@ -16,14 +16,14 @@
     "Components": [
       {
         "__type": "Sandbox.SkinnedModelRenderer",
-        "__guid": "5f8b2c1a-7a4e-4d90-9b11-1c2d3e4f5a0f",
+        "__guid": "3a4b5c6d-7e8f-4a1b-9c2d-3e4f5a6b7c54",
         "__enabled": true,
-        "Model": "models/weapons/sbox_melee_trenchknife/v_trenchknife.vmdl"
+        "Model": "models/weapons/sbox_sniper_m700/v_m700.vmdl"
       }
     ],
     "Children": [
       {
-        "__guid": "5f8b2c1a-7a4e-4d90-9b11-1c2d3e4f5a10",
+        "__guid": "3a4b5c6d-7e8f-4a1b-9c2d-3e4f5a6b7c55",
         "__version": 1,
         "Flags": 0,
         "Name": "Arms",
@@ -39,13 +39,13 @@
         "Components": [
           {
             "__type": "Sandbox.SkinnedModelRenderer",
-            "__guid": "5f8b2c1a-7a4e-4d90-9b11-1c2d3e4f5a17",
+            "__guid": "3a4b5c6d-7e8f-4a1b-9c2d-3e4f5a6b7c56",
             "__enabled": true,
             "Model": "models/first_person/v_first_person_arms_citizen.vmdl",
             "BoneMergeTarget": {
               "_type": "component",
-              "component_id": "5f8b2c1a-7a4e-4d90-9b11-1c2d3e4f5a0f",
-              "go": "5f8b2c1a-7a4e-4d90-9b11-1c2d3e4f5a0e",
+              "component_id": "3a4b5c6d-7e8f-4a1b-9c2d-3e4f5a6b7c54",
+              "go": "3a4b5c6d-7e8f-4a1b-9c2d-3e4f5a6b7c53",
               "component_type": "SkinnedModelRenderer"
             }
           }

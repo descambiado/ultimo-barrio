@@ -88,6 +88,16 @@ namespace UltimoBarrio
                 ammoType: "ammo_9mm", magazine: 25, damage: 12f, fireRate: 0.08f,
                 viewModel: "prefabs/content/weapons/v_mp5_content.prefab", worldModel: "prefabs/content/weapons/w_mp5_content.prefab",
                 worldPickup: "prefabs/items/pf_scrap_pickup.prefab" );
+
+            AddWeapon( "weapon_m700", "Rifle M700", "Francotirador de cerrojo, alto daño a distancia", ItemCategory.Firearm,
+                ammoType: "ammo_9mm", magazine: 5, damage: 80f, fireRate: 1.2f,
+                viewModel: "prefabs/content/weapons/v_m700_content.prefab", worldModel: "prefabs/content/weapons/w_m700_content.prefab",
+                worldPickup: "prefabs/items/pf_scrap_pickup.prefab" );
+
+            AddWeapon( "weapon_1911", "Pistola 1911", "Semiautomática clásica", ItemCategory.Firearm,
+                ammoType: "ammo_9mm", magazine: 7, damage: 20f, fireRate: 0.3f,
+                viewModel: "prefabs/content/weapons/v_1911_content.prefab", worldModel: "prefabs/content/weapons/w_1911_content.prefab",
+                worldPickup: "prefabs/items/pf_scrap_pickup.prefab" );
         }
 
         private static void Add(

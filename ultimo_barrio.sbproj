@@ -23,6 +23,10 @@
     "facepunch.wmagnum",
     "facepunch.v_crowbar",
     "facepunch.v_first_person_arms_citizen",
+    "facepunch.v_trenchknife",
+    "facepunch.w_m700",
+    "facepunch.v_m700",
+    "facepunch.w_1911",
     "fieldguide.vehiclephysics"
   ],
   "EditorReferences": null,
