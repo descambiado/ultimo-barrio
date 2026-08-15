@@ -5,11 +5,40 @@ using UltimoBarrio.Apartments;
 using UltimoBarrio.Core;
 using UltimoBarrio.WorldTime;
 using UltimoBarrio.Economy;
+using UltimoBarrio.Combat;
 
 namespace UltimoBarrio.QA
 {
     public static class QaCommands
     {
+        [ConCmd("ub_qa_list_bones")]
+        public static void ListBones()
+        {
+            var carrier = Game.ActiveScene.GetAllComponents<UbWeaponCarrier>()
+                .FirstOrDefault(c => !c.IsProxy);
+            if (carrier == null) { Log.Error("[QA] No local UbWeaponCarrier found."); return; }
+            var body = carrier.Components.GetInDescendantsOrSelf<SkinnedModelRenderer>();
+            if (body == null) { Log.Error("[QA] No SkinnedModelRenderer found on player."); return; }
+            var model = body.Model;
+            if (model == null) { Log.Error("[QA] SkinnedModelRenderer.Model is null."); return; }
+            var names = model.Bones.AllBones.Select(b => b.Name)
+                .Where(n => n.Contains("hand", System.StringComparison.OrdinalIgnoreCase)
+                         || n.Contains("weapon", System.StringComparison.OrdinalIgnoreCase)
+                         || n.Contains("hold", System.StringComparison.OrdinalIgnoreCase))
+                .ToList();
+            Log.Info($"[QA] hand/weapon/hold bones ({names.Count}): {string.Join(", ", names)}");
+        }
+
+        [ConCmd("ub_qa_select_slot")]
+        public static void SelectSlot(int slot)
+        {
+            var carrier = Game.ActiveScene.GetAllComponents<UbWeaponCarrier>()
+                .FirstOrDefault(c => !c.IsProxy);
+            if (carrier == null) { Log.Error("[QA] No local UbWeaponCarrier found."); return; }
+            carrier.SelectSlot(slot);
+            Log.Info($"[QA] SelectSlot({slot}) -> ActiveItemId={carrier.ActiveItemId}");
+        }
+
         [ConCmd("ub_qa_reset_save")]
         public static void ResetQaSave()
         {

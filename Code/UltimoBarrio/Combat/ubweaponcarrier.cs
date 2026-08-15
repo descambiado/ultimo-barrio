@@ -196,6 +196,22 @@ namespace UltimoBarrio.Combat
 			_weapon.SetParent( GameObject );
 			_weapon.LocalPosition = Vector3.Zero;
 			_weapon.LocalRotation = Rotation.Identity;
+
+			// Sin esto el arma queda flotando en el origen del jugador en vez de
+			// en la mano. hold_R (confirmado vía ub_qa_list_bones contra el
+			// esqueleto real del citizen: hand_L, hold_L, hand_R, hold_R + IK) es
+			// el punto pensado para sujetar objetos. Requiere CreateBoneObjects=true
+			// en el SkinnedModelRenderer del cuerpo (player.prefab) — sin eso
+			// GetBoneObject devuelve null pase lo que pase.
+			var bodyRenderer = Components.GetInDescendantsOrSelf<SkinnedModelRenderer>();
+			var hand = bodyRenderer?.GetBoneObject( "hold_R" ) ?? bodyRenderer?.GetBoneObject( "hand_R" );
+			if ( hand != null && hand.IsValid() )
+			{
+				_weapon.SetParent( hand );
+				_weapon.LocalPosition = Vector3.Zero;
+				_weapon.LocalRotation = Rotation.Identity;
+			}
+
 			_weapon.NetworkSpawn( Connection.Local );
 		}
 

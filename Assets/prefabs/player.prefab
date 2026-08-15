@@ -290,7 +290,7 @@
             "BodyGroups": 341,
             "BoneMergeTarget": null,
             "CreateAttachments": false,
-            "CreateBoneObjects": false,
+            "CreateBoneObjects": true,
             "LodOverride": null,
             "MaterialGroup": null,
             "MaterialOverride": null,
