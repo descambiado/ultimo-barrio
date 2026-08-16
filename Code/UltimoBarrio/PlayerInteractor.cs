@@ -139,7 +139,7 @@ namespace UltimoBarrio
             if (tr.Hit && tr.GameObject != null)
             {
                 // Only query for IWorldInteractable components
-                var interactable = tr.GameObject.Components.Get<IWorldInteractable>();
+                var interactable = InteractionResolver.Find( tr.GameObject );
                 if (interactable != null)
                 {
                     var req = new InteractionRequest
@@ -244,7 +244,7 @@ namespace UltimoBarrio
 
                     // Default IWorldInteractable (Pickups, etc)
                     string defaultPrompt = interactable.GetInteractionPrompt(req);
-                    bool can = interactable.CanInteract(req);
+                    bool can = InteractionResolver.CanUse( interactable, req );
                     _hud?.ShowPrompt(defaultPrompt, can ? "Pulsa E" : "");
 
                     if (pressed)
@@ -261,7 +261,7 @@ namespace UltimoBarrio
                             if (interactable is WorldItemPickup pickup)
                                 pickup.DebugAttemptId = attemptId;
 
-                            interactable.OnInteract(req);
+                            InteractionResolver.TryUse( interactable, req );
                         }
                     }
                     return;
