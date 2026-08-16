@@ -1,5 +1,6 @@
 using Sandbox;
 using System;
+using UltimoBarrio.AI;
 
 namespace UltimoBarrio.Content.Enemies
 {
@@ -22,6 +23,7 @@ namespace UltimoBarrio.Content.Enemies
 		[RequireComponent] public NavMeshAgent Agent { get; set; }
 		[RequireComponent] public EnemyPerception Perception { get; set; }
 		[RequireComponent] public EnemyAttack Attack { get; set; }
+		[RequireComponent] public UbNpcScheduleRunner ScheduleRunner { get; set; }
 
 		[Property] public string DefinitionId { get; set; } = "";
 		[Property] public GameObject Target { get; set; }
@@ -65,7 +67,6 @@ namespace UltimoBarrio.Content.Enemies
 
 			_timeSinceSpawn = 0f;
 			_spawnPosition = WorldPosition;
-			_nextWanderDelay = Game.Random.Float( WanderIntervalMin, WanderIntervalMax );
 		}
 
 		protected override void OnUpdate()
@@ -103,49 +104,26 @@ namespace UltimoBarrio.Content.Enemies
 
 			if ( Perception.CurrentTarget != null && Perception.CurrentTarget.IsValid() )
 			{
-				_isWandering = false;
+				if ( ScheduleRunner.ActiveSchedule != null ) ScheduleRunner.ClearSchedule();
 				ChaseOrAttack( Perception.CurrentTarget );
 			}
 			else
 			{
-				Wander();
+				EnsureWanderSchedule();
 			}
 		}
 
-		// --- Deambular sin objetivo (evita el "maniquí de pie" cuando no hay nadie
-		// cerca): puntos aleatorios alrededor del spawn, vía el mismo Agent.MoveTo
-		// real ya usado para perseguir — nunca teleport. No es un árbol de
-		// comportamiento (schedules/tasks de DarkRP): un wander simple es lo que
-		// pide el hueco real (enemigo estático), no una IA de propósito general. ---
-
 		private Vector3 _spawnPosition;
-		private bool _isWandering;
-		private TimeSince _timeSinceWander;
 		private const float WanderRadius = 400f;
-		private const float WanderIntervalMin = 4f;
-		private const float WanderIntervalMax = 9f;
-		private float _nextWanderDelay;
 
-		private void Wander()
+		private void EnsureWanderSchedule()
 		{
-			if ( Agent.IsNavigating )
-			{
-				if ( !_isWandering ) Agent.Stop(); // el objetivo se perdió mientras perseguía: frenar, no deambular a mitad de path.
-				return;
-			}
-
-			_isWandering = false;
-
-			if ( _timeSinceWander < _nextWanderDelay ) return;
+			if ( ScheduleRunner.ActiveSchedule != null ) return;
 
 			var offset = Vector3.Random.WithZ( 0f ).Normal * Game.Random.Float( 0.3f, 1f ) * WanderRadius;
 			var target = _spawnPosition + offset;
-
-			Agent.MoveTo( target );
-			_isWandering = true;
-			_timeSinceWander = 0f;
-			_nextWanderDelay = Game.Random.Float( WanderIntervalMin, WanderIntervalMax );
-			Log.Info( $"[Content.Enemy] Wander: {Definition.Id} desde {WorldPosition} hacia {target}" );
+			ScheduleRunner.SetSchedule( new EnemyWanderSchedule( target, WorldPosition ) );
+			Log.Info( $"[Content.Enemy] Schedule=Wander desde {WorldPosition} hacia {target}" );
 		}
 
 		private void ApplyDefinition()
@@ -365,6 +343,24 @@ namespace UltimoBarrio.Content.Enemies
 		private void RpcDeathEffects()
 		{
 			Sound.Play( "sounds/content/enemies/enemy_death.sound", WorldPosition );
+		}
+	}
+
+	/// <summary>Schedule de navegación del Saqueador; se cancela al adquirir objetivo.</summary>
+	internal sealed class EnemyWanderSchedule : UbNpcSchedule
+	{
+		private readonly Vector3 _target;
+		private readonly Vector3 _origin;
+
+		public EnemyWanderSchedule( Vector3 target, Vector3 origin )
+		{
+			_target = target;
+			_origin = origin;
+		}
+
+		protected override void BuildTasks()
+		{
+			AddMoveTask( _target );
 		}
 	}
 }
