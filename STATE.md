@@ -1,17 +1,44 @@
-## Estado actual — Framework port en progreso (2026-08-16)
+## Estado actual — Framework port, consolidado (2026-08-16)
 
-- **Rama activa:** `feat/darkrp-framework-port` con remoto `origin` configurado.
-- **Último checkpoint estable:** commit actual de `feat/darkrp-framework-port` — comercio transaccional host-only, ownership y limpieza temporal de objetos, contrato de sesión persistible del jugador y asignación de roles de trabajo data-driven.
-- **Jugador:** `Assets/prefabs/player.prefab` monta `UbPlayerSession`; se comprobó que el componente existe en el player creado por `NetworkHelper` durante Play Mode.
-- **Armas:** `WeaponContentHost` es la única fuente de cargador/recarga/ADS para `UbWeaponCarrier`; los drops no reciben munición desde el cliente y preservan un cargador vacío de forma explícita.
-- **Infraestructura preparada, no activada:** `SaveRequestCoalescer` y `NpcPopulationDirector` son host-only y opt-in; el director no genera NPCs sin configuración de escena.
-- **Editor:** s&box 26.08.05. `barrio_01` se inició y detuvo en Play Mode para este bloque.
-- **Compilación:** `local.ultimo_barrio` y editor, 0 errores y 0 avisos.
-- **Consola:** ninguna entrada de nivel Error del arranque actual.
-- **Escena:** `Assets/scenes/barrio_01.scene` tiene cambios locales anteriores ajenos a este bloque; no se han añadido al commit.
-- **Validado en runtime:** player con `PlayerInteractor`, inventario y carrier; Saqueador con `UbNpcScheduleRunner`, vestuario aplicado y Wander.
-- **No validado todavía:** disparar → cambiar slot → volver, drop/re-pickup de arma en host y cliente, transiciones/restauración de fases, `Investigate`/`Engage` de NPC y roles de trabajo montados/configurados en el prefab.
-- **Siguientes tres acciones:** ejecutar la prueba de arma con cargador parcial en host+cliente; conectar el coalescer a emisores de guardado sin duplicar escrituras; configurar y validar el director NPC con spawn points/target reales.
+- **Rama activa:** `feat/darkrp-framework-port`.
+- **Decisión de esta pasada — se retira el `FrameworkKernel` de base classes sin adoptar.**
+  `UbCarryableComponent`/`UbWeaponFrameworkComponent` (base classes) y la
+  "infraestructura preparada, no activada" del checkpoint anterior
+  (`SaveRequestCoalescer`, `NpcPopulationDirector`, `WorkRoleAssignmentComponent`/
+  `WorkRoleDefinition`, `TimedWorldCleanup`, `WorldObjectOwnership`) tenían **cero**
+  referencias en ninguna escena o prefab — comprobado con grep antes de tocar
+  nada. Quedaban como dos sistemas de armas paralelos (uno real, uno vacío) y
+  varios subsistemas fantasma. Se eliminaron; se conservó solo `IUbWeaponRuntime`
+  (ahora en `Components/IUbWeaponRuntime.cs`), que sí es el límite real entre
+  `WeaponContentHost` y `UbWeaponCarrier`. Detalle en
+  `docs/architecture/DARKRP_FRAMEWORK_PORT.md`.
+- **Jugador:** `Assets/prefabs/player.prefab` monta `UbPlayerSession`, confirmado en Play Mode.
+- **Armas:** `WeaponContentHost` (implementa `IUbWeaponRuntime`) es la única fuente
+  de cargador/recarga/ADS. Esta pasada añadió y verificó en vivo: recoil real
+  (EyeAngles, confirmado con log antes/después), ADS (`ironsights` en el
+  viewmodel), sway/bob del viewmodel (reubicado a `UbWeaponCarrier`, que es
+  quien de verdad posee la instancia — `WeaponContentHost` solo vive en el
+  world model), impactos por `Surface` (partícula+decal+sonido, sangre en
+  carne), fogonazo, animación de disparo/recarga (`b_attack`/`b_reload`).
+- **NPC:** `EnemyContentHost` + `UbNpcScheduleRunner`. `Wander` verificado en
+  vivo por log (posiciones reales, ciclos sucesivos). `Investigate`/`Engage`
+  revisados por código (usan el mismo `Perception.CurrentTarget` ya probado)
+  pero NO reproducidos en vivo esta pasada — `ub_qa_test_combat` daña
+  directamente sin dar tiempo a que Percepción detecte; falta una prueba QA
+  que simule acercamiento real. Vestuario del Saqueador (`Dresser`) corregido:
+  causa real era condición de carrera con el modelo + falta de
+  `Source=Manual`, no el formato del JSON del prefab.
+- **Editor:** s&box 26.08.05. Compilación limpia en cada paso de esta pasada.
+- **Escena:** `Assets/scenes/barrio_01.scene` — diff aditivo y verificado
+  (housing/properties/day-night/combat QA, ver commits anteriores), pendiente
+  de commit en esta pasada.
+- **No validado todavía:** `Investigate`/`Engage` en vivo; host+cliente (todo
+  esta sesión fue standalone); transición de fases con reinicio real de
+  sesión; RaidManager dirigido (sigue sin cablear, ver hallazgo previo sobre
+  serialización GameObject→prefab sin referencia).
+- **Siguientes acciones:** prueba QA de acercamiento real para
+  Investigate/Engage; decidir si el sistema "Properties" (alquiler/shells)
+  recibe contenido de nivel o queda documentado fuera de alcance.
 
 ## Estado histórico: Laptop Content Stack — weapon_lab RUNTIME VALIDATED 4/4
 

@@ -85,11 +85,42 @@ La atribución y la licencia se conservan en `THIRD_PARTY_NOTICES.md`. El port
 no incorpora el sistema de jobs policiales ni decisiones de autoridad del
 framework original que entren en conflicto con Último Barrio.
 
-## Estado inicial
+## Estado (2026-08-16)
 
-- Recoil, ADS, viewmodel presentation, efectos y wander ya están integrados en
-  la primera capa experimental.
-- Falta consolidar el núcleo común para que las próximas armas, NPCs,
-  interacción y persistencia dependan de las mismas abstracciones.
-- El siguiente bloque de implementación es `FrameworkKernel + BaseCarryable +
-  BaseWeapon/IronSights`, antes de ampliar el árbol de NPC.
+Sistemas realmente conectados y en uso — verificados en Play Mode, no solo
+compilados:
+
+- **Armas**: `WeaponContentHost` (implementa `IUbWeaponRuntime`) + `UbWeaponCarrier`.
+  Recoil, ADS, sway/bob del viewmodel, impactos por `Surface` (partícula +
+  decal + sonido, sangre incluida), fogonazo, animación disparo/recarga.
+- **NPC**: `EnemyContentHost` + `EnemyPerception`/`EnemyAttack` +
+  `UbNpcScheduleRunner`/`UbNpcScheduleRuntime` (Wander/Investigate/Engage).
+  Vestuario real (`Dresser`).
+- **Jugador**: `UbPlayerSession` vía `PlayerSessionLifecycle`, cableado en
+  `player.prefab`.
+- **Economía**: `TradeTransactionService` cableado en `Trader`.
+- **Vivienda/propiedades**: `ApartmentClaimService`, `ApartmentFortification`,
+  `PropertyClaimService`, `KeyringService`, `RentalService` — verificados con
+  gateways QA reales esta sesión.
+
+### Decisión: retirado el `FrameworkKernel` de base classes sin adoptar
+
+`UbCarryableComponent` y `UbWeaponFrameworkComponent` (más `TimedWorldCleanup`,
+`WorldObjectOwnership`, `NpcPopulationDirector`, `WorkRoleAssignmentComponent`/
+`WorkRoleDefinition`, `SaveRequestCoalescer`) se escribieron como base común
+"DarkRP-style" pero **nada las usaba** — cero referencias en ninguna escena o
+prefab, comprobado con grep antes de tocar nada. Mantenerlas habría dejado dos
+sistemas de armas paralelos (uno real, uno vacío) y tres subsistemas fantasma
+(población de NPCs, trabajos, coalescing de guardado) sin ningún punto de
+entrada real. Eso es exactamente el tipo de complejidad que hace que "un modo
+de juego simple" deje de sentirse simple.
+
+Se conservó únicamente `IUbWeaponRuntime` (ahora en
+`Components/IUbWeaponRuntime.cs`), que sí es el límite real entre
+`WeaponContentHost` y `UbWeaponCarrier`.
+
+Regla para lo que sigue: no se añade una abstracción de framework nueva sin
+conectarla el mismo PR a un prefab/escena real y probarla en Play Mode. Si un
+bloque de esta lista de superficies a portar no tiene todavía un hueco de
+gameplay real que lo necesite, se documenta como pendiente en vez de
+escribirse por adelantado.
