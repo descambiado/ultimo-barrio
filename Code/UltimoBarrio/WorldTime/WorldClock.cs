@@ -2,6 +2,7 @@ using Sandbox;
 using System;
 using System.Linq;
 using UltimoBarrio.Audio;
+using UltimoBarrio.Persistence;
 
 namespace UltimoBarrio.WorldTime
 {
@@ -154,6 +155,16 @@ namespace UltimoBarrio.WorldTime
 
             Log.Info( $"UB.WorldClock Fase={newPhase} duración={TimeRemainingInPhase}" );
             OnPhaseChanged?.Invoke( CurrentPhase );
+
+            // El cambio de fase es un límite de sesión: raids, iluminación y
+            // consecuencias dependen de él. Igual que el GameLoop de DarkRP
+            // persiste sus transiciones relevantes, pedimos un snapshot del
+            // host inmediatamente para no volver a una fase anterior tras un
+            // cierre o caída entre autosaves periódicos.
+            if ( Networking.IsHost )
+            {
+                PersistenceBridge.RequestSave( $"phase:{newPhase}" );
+            }
         }
 
         [Rpc.Broadcast]
