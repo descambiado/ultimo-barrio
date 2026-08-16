@@ -58,7 +58,40 @@ public abstract class UbNpcSchedule
 	protected virtual bool ShouldInterrupt() => false;
 	protected virtual void OnStopped() { }
 	protected void AddTask( UbNpcTask task ) => _tasks.Add( task );
-	internal void AddMoveTask( Vector3 target ) => AddTask( new UbNpcMoveTask( target ) );
+	protected void AddMoveTask( Vector3 target ) => AddTask( new UbNpcMoveTask( target ) );
+	protected void AddWaitTask( float duration ) => AddTask( new UbNpcWaitTask( duration ) );
+	protected void AddActionTask( System.Action action ) => AddTask( new UbNpcActionTask( action ) );
+}
+
+/// <summary>Time gate used to keep idle schedules from immediately respawning.</summary>
+public sealed class UbNpcWaitTask : UbNpcTask
+{
+	private readonly float _duration;
+	private TimeSince _elapsed;
+
+	public UbNpcWaitTask( float duration ) => _duration = System.MathF.Max( 0f, duration );
+
+	protected override void OnStart() => _elapsed = 0f;
+	protected override UbNpcTaskStatus OnTick()
+		=> _elapsed >= _duration ? UbNpcTaskStatus.Success : UbNpcTaskStatus.Running;
+}
+
+/// <summary>One-shot schedule task for a host-owned state transition.</summary>
+public sealed class UbNpcActionTask : UbNpcTask
+{
+	private readonly System.Action _action;
+	private bool _complete;
+
+	public UbNpcActionTask( System.Action action ) => _action = action;
+
+	protected override void OnStart()
+	{
+		_action?.Invoke();
+		_complete = true;
+	}
+
+	protected override UbNpcTaskStatus OnTick()
+		=> _complete ? UbNpcTaskStatus.Success : UbNpcTaskStatus.Failed;
 }
 
 public abstract class UbNpcTask

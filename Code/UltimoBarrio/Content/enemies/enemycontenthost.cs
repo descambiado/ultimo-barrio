@@ -109,12 +109,17 @@ namespace UltimoBarrio.Content.Enemies
 			}
 			else
 			{
-				EnsureWanderSchedule();
+				if ( Perception.HasRecentMemory && Perception.LastKnownPosition.HasValue )
+					EnsureInvestigateSchedule( Perception.LastKnownPosition.Value );
+				else
+					EnsureWanderSchedule();
 			}
 		}
 
 		private Vector3 _spawnPosition;
 		private const float WanderRadius = 400f;
+		private const float WanderDelayMin = 3f;
+		private const float WanderDelayMax = 7f;
 
 		private void EnsureWanderSchedule()
 		{
@@ -122,8 +127,16 @@ namespace UltimoBarrio.Content.Enemies
 
 			var offset = Vector3.Random.WithZ( 0f ).Normal * Game.Random.Float( 0.3f, 1f ) * WanderRadius;
 			var target = _spawnPosition + offset;
-			ScheduleRunner.SetSchedule( new EnemyWanderSchedule( target, WorldPosition ) );
+			ScheduleRunner.SetSchedule( new EnemyWanderSchedule( target, Game.Random.Float( WanderDelayMin, WanderDelayMax ) ) );
 			Log.Info( $"[Content.Enemy] Schedule=Wander desde {WorldPosition} hacia {target}" );
+		}
+
+		private void EnsureInvestigateSchedule( Vector3 position )
+		{
+			if ( ScheduleRunner.ActiveSchedule != null ) return;
+
+			ScheduleRunner.SetSchedule( new EnemyInvestigateSchedule( position, Perception.ForgetMemory ) );
+			Log.Info( $"[Content.Enemy] Schedule=Investigate hacia {position}" );
 		}
 
 		private void ApplyDefinition()
@@ -350,17 +363,37 @@ namespace UltimoBarrio.Content.Enemies
 	internal sealed class EnemyWanderSchedule : UbNpcSchedule
 	{
 		private readonly Vector3 _target;
-		private readonly Vector3 _origin;
+		private readonly float _delay;
 
-		public EnemyWanderSchedule( Vector3 target, Vector3 origin )
+		public EnemyWanderSchedule( Vector3 target, float delay )
 		{
 			_target = target;
-			_origin = origin;
+			_delay = delay;
 		}
 
 		protected override void BuildTasks()
 		{
+			AddWaitTask( _delay );
 			AddMoveTask( _target );
+		}
+	}
+
+	internal sealed class EnemyInvestigateSchedule : UbNpcSchedule
+	{
+		private readonly Vector3 _position;
+		private readonly Action _onInvestigated;
+
+		public EnemyInvestigateSchedule( Vector3 position, Action onInvestigated )
+		{
+			_position = position;
+			_onInvestigated = onInvestigated;
+		}
+
+		protected override void BuildTasks()
+		{
+			AddMoveTask( _position );
+			AddWaitTask( 1.5f );
+			AddActionTask( _onInvestigated );
 		}
 	}
 }

@@ -24,6 +24,8 @@ namespace UltimoBarrio.Content.Enemies
 
 		/// <summary>Última posición conocida del objetivo (visión u oído).</summary>
 		public Vector3? LastKnownPosition { get; private set; }
+		public bool HasRecentMemory => LastKnownPosition.HasValue
+			&& _timeSinceLastSeen <= ( Definition?.MemoryDuration ?? 0f );
 
 		private TimeSince _timeSinceLastSeen;
 		private TimeSince _timeSinceScan;
@@ -119,6 +121,12 @@ namespace UltimoBarrio.Content.Enemies
 		public void ForgetTarget()
 		{
 			CurrentTarget = null;
+		}
+
+		public void ForgetMemory()
+		{
+			CurrentTarget = null;
+			LastKnownPosition = null;
 		}
 
 		private void Acquire( GameObject target )
