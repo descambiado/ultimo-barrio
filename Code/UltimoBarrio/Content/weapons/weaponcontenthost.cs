@@ -1,6 +1,7 @@
 using Sandbox;
 using System;
 using System.Linq;
+using UltimoBarrio.Components;
 
 namespace UltimoBarrio.Content.Weapons
 {
@@ -15,7 +16,7 @@ namespace UltimoBarrio.Content.Weapons
 	[Title( "Content Weapon Host" )]
 	[Category( "Último Barrio — Content" )]
 	[Icon( "gps_fixed" )]
-	public sealed class WeaponContentHost : Component, IWeaponContentAdapter
+	public sealed class WeaponContentHost : Component, IWeaponContentAdapter, IUbWeaponRuntime
 	{
 		[Property] public string DefinitionId { get; set; } = "";
 		[Property] public bool AutoHandleInput { get; set; } = true;

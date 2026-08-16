@@ -2,6 +2,15 @@ using Sandbox;
 
 namespace UltimoBarrio.Components;
 
+/// <summary>Stable boundary consumed by carriers, UI and future weapon systems.</summary>
+public interface IUbWeaponRuntime
+{
+	bool IsAiming { get; }
+	bool IsReloading { get; }
+	int CurrentAmmo { get; }
+	bool CanFire { get; }
+}
+
 /// <summary>
 /// Framework-level weapon state shared by content adapters. It intentionally
 /// contains no damage or inventory policy: those remain host-side services.

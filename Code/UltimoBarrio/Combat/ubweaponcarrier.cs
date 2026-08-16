@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using UltimoBarrio.Core;
 using UltimoBarrio.Content.Weapons;
+using UltimoBarrio.Components;
 
 namespace UltimoBarrio.Combat
 {
@@ -166,7 +167,7 @@ namespace UltimoBarrio.Combat
 			// Apuntado: el estado real vive en el world model (única instancia con
 			// WeaponContentHost); el viewmodel solo refleja el animgraph.
 			var isAiming = _weapon != null && _weapon.IsValid()
-				&& ( _weapon.Components.Get<WeaponContentHost>()?.IsAiming ?? false );
+				&& ( _weapon.Components.GetInDescendantsOrSelf<IUbWeaponRuntime>()?.IsAiming ?? false );
 			weaponRenderer.Set( "ironsights", isAiming ? 1 : 0 );
 		}
 
