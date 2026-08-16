@@ -11,6 +11,8 @@ using UltimoBarrio.UI;
 using UltimoBarrio.Properties;
 using UltimoBarrio.Properties.Doors;
 using UltimoBarrio.Properties.Keys;
+using UltimoBarrio.Content;
+using UltimoBarrio.Content.Enemies;
 
 namespace UltimoBarrio.QA
 {
@@ -555,6 +557,69 @@ namespace UltimoBarrio.QA
 
             barricade.TakeDamage(new DamageEvent { Amount = 500f, Position = barricade.WorldPosition });
             Log.Info($"--- ub_qa_test_barricade --- Tras daño letal: destruida={barricade.IsDestroyed} anchorLibre={!anchor.HasBarricade}");
+        }
+
+        /// <summary>
+        /// Diagnóstico de combate real: localiza al Saqueador vivo más cercano
+        /// (EnemyContentHost), teleporta al jugador a su rango de ataque para que
+        /// EnemyAttack pueda dispararle en los siguientes frames reales (el ataque
+        /// de la IA es asíncrono — no se fabrica aquí, hay que revisar la consola
+        /// unos segundos después), y aplica daño real vía IDamageTarget.TakeDamage
+        /// (el mismo gateway que usan las armas). Con lethal=true confirma muerte
+        /// y loot físico (SpawnLoot ya loguea su propio resultado).
+        /// Requiere un Saqueador vivo: corre ub_qa_force_night primero y espera a
+        /// que el NightEnemySpawner coloque uno.
+        /// </summary>
+        [ConCmd("ub_qa_test_combat")]
+        public static void TestCombat(bool lethal = false)
+        {
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            if (player is null) { Log.Error("--- ub_qa_test_combat --- No player found."); return; }
+
+            var enemy = Game.ActiveScene.GetAllComponents<EnemyContentHost>()
+                .Where(e => e.GameObject.IsValid() && !e.IsDead)
+                .OrderBy(e => Vector3.DistanceBetween(e.WorldPosition, player.WorldPosition))
+                .FirstOrDefault();
+
+            if (enemy is null)
+            {
+                Log.Error("--- ub_qa_test_combat --- No hay ningún Saqueador vivo. Ejecuta ub_qa_force_night y espera a que el NightEnemySpawner coloque uno (revisa consola).");
+                return;
+            }
+
+            var health = player.Components.GetInDescendantsOrSelf<Combat.HealthComponent>();
+            var playerHealthBefore = health?.Health ?? -1f;
+
+            // Colocamos al jugador dentro del rango de ataque real y orientamos al
+            // enemigo hacia él para que pase el cono de visión de EnemyPerception.CanSee
+            // (distancia+ángulo+trace real) — EnemyAttack sigue disparando por su cuenta
+            // en los siguientes frames, no se fuerza aquí.
+            var toPlayer = (player.WorldPosition - enemy.WorldPosition);
+            var dir = toPlayer.Length > 0.01f ? toPlayer.Normal : Vector3.Forward;
+            player.WorldPosition = enemy.WorldPosition + dir * 40f;
+            enemy.WorldRotation = Rotation.LookAt(dir);
+
+            Log.Info($"--- ub_qa_test_combat --- target={enemy.Definition?.Id} HPantes={enemy.Health}/{enemy.Definition?.MaxHealth} playerHealthAntes={playerHealthBefore}");
+
+            var amount = lethal ? 9999f : 40f;
+            enemy.TakeDamage(new ContentDamageEvent { Amount = amount, Position = enemy.WorldPosition, SourceId = "qa_test", AttackerId = "qa" });
+
+            Log.Info($"--- ub_qa_test_combat --- daño aplicado={amount} lethal={lethal}. Si lethal=false, vuelve a correr con lethal=true para confirmar muerte+loot. Revisa la consola en unos segundos para ver si el jugador recibe daño real del ataque de la IA (playerHealthAntes={playerHealthBefore}).");
+
+            // Verificación directa del gateway de daño ENTRANTE (IA → jugador): el mismo
+            // patrón que ya usan ub_qa_test_door/ub_qa_test_barricade (TakeDamage directo),
+            // porque el disparo autónomo de EnemyAttack depende del cono de visión/trace
+            // real y no siempre cae dentro de la ventana corta de esta prueba.
+            var bridge = player.Components.Get<PlayerContentDamageBridge>();
+            if (bridge is null)
+            {
+                Log.Error("--- ub_qa_test_combat --- No hay PlayerContentDamageBridge en el jugador.");
+                return;
+            }
+
+            bridge.TakeDamage(new ContentDamageEvent { Amount = 10f, Position = player.WorldPosition, SourceId = "qa_test", AttackerId = "qa" });
+            var playerHealthAfter = health?.Health ?? -1f;
+            Log.Info($"--- ub_qa_test_combat --- gateway entrante directo: playerHealthAntes={playerHealthBefore} playerHealthDespues={playerHealthAfter} bajo={playerHealthAfter < playerHealthBefore}");
         }
 
         /// <summary>

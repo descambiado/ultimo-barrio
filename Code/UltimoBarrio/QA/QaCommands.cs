@@ -29,6 +29,65 @@ namespace UltimoBarrio.QA
             Log.Info($"[QA] hand/weapon/hold bones ({names.Count}): {string.Join(", ", names)}");
         }
 
+        /// <summary>
+        /// Dispara el arma equipada por su gateway real (WeaponContentHost.Fire),
+        /// el mismo que invoca el input de ataque. Sirve para verificar el bucle
+        /// completo de presentación: fogonazo, traza, impacto por material
+        /// (partícula + decal + sonido) y sangre al dar en carne.
+        /// </summary>
+        /// <summary>Activa la traza de resolución de efectos por material.</summary>
+        /// <summary>Aplica un guardarropa a un enemigo vivo vía Dresser.Clothing real (gateway API, no JSON adivinado).</summary>
+        [ConCmd("ub_qa_dress_enemy")]
+        public static void DressEnemy()
+        {
+            var enemy = Game.ActiveScene.GetAllComponents<Content.Enemies.EnemyContentHost>().FirstOrDefault();
+            if (enemy == null) { Log.Error("[QA] No hay ningún enemigo vivo."); return; }
+
+            var dresser = enemy.Components.GetOrCreate<Sandbox.Dresser>();
+            dresser.BodyTarget = enemy.Components.Get<SkinnedModelRenderer>();
+
+            var hoodie = ResourceLibrary.Get<Sandbox.Clothing>("models/citizen_clothes/jacket/Hoodie/hoodie_black.clothing");
+            var pants = ResourceLibrary.Get<Sandbox.Clothing>("models/citizen_clothes/trousers/CargoPants/cargo_pants_army.clothing");
+            var hat = ResourceLibrary.Get<Sandbox.Clothing>("models/citizen_clothes/hat/Beanie/beanie.clothing");
+            Log.Info($"[QA] resolved: hoodie={hoodie != null} pants={pants != null} hat={hat != null}");
+
+            dresser.Clothing.Clear();
+            if (hoodie != null) dresser.Clothing.Add(new Sandbox.ClothingContainer.ClothingEntry { Clothing = hoodie });
+            if (pants != null) dresser.Clothing.Add(new Sandbox.ClothingContainer.ClothingEntry { Clothing = pants });
+            if (hat != null) dresser.Clothing.Add(new Sandbox.ClothingContainer.ClothingEntry { Clothing = hat });
+            dresser.Apply();
+            Log.Info("[QA] ub_qa_dress_enemy applied.");
+        }
+
+        [ConCmd("ub_qa_fx_debug")]
+        public static void FxDebug(int on = 1)
+        {
+            Content.CombatEffects.DebugLog = on != 0;
+            Log.Info($"[QA] CombatEffects.DebugLog={Content.CombatEffects.DebugLog}");
+        }
+
+        [ConCmd("ub_qa_fire")]
+        public static void FireEquipped(int shots = 1)
+        {
+            var weapons = Game.ActiveScene
+                .GetAllComponents<Content.Weapons.WeaponContentHost>()
+                .Where(w => !w.IsProxy && w.GameObject.IsValid())
+                .ToList();
+
+            if (weapons.Count == 0) { Log.Error("[QA] No hay ningún WeaponContentHost activo (equipa un arma primero)."); return; }
+
+            // El viewmodel y el world model comparten definición; disparamos el
+            // primero que pueda hacerlo para no duplicar la traza.
+            var weapon = weapons.FirstOrDefault(w => w.CanFire) ?? weapons[0];
+
+            Log.Info($"[QA] ub_qa_fire: arma={weapon.Definition?.Id} CanFire={weapon.CanFire} ammo={weapon.CurrentAmmo} muzzle='{weapon.Definition?.MuzzleEffect}'");
+
+            for (int i = 0; i < shots; i++)
+            {
+                weapon.Fire();
+            }
+        }
+
         [ConCmd("ub_qa_check_item")]
         public static void CheckItem(string itemId)
         {

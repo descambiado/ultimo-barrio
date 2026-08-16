@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace UltimoBarrio.Content.Weapons
 {
@@ -64,7 +64,7 @@ namespace UltimoBarrio.Content.Weapons
 				ReloadStartSound = "sounds/content/weapons/usp_reload_magout.sound", // VERIFIED (pistol_mag_out.wav)
 				DeploySound = "sounds/content/weapons/usp_deploy.sound", // VERIFIED (foley_deploy_weapon_03.wav, generic)
 				DryFireSound = "sounds/content/weapons/usp_dry.sound", // VERIFIED (dry_fire.wav MIT)
-				MuzzleEffect = "", // PENDING (.vpcf)
+				MuzzleEffect = "prefabs/weapon_effects/pistol_muzzleflash.prefab", // VERIFIED instalado del cloud oficial (USP)
 
 				AnimGraph = "models/citizen/citizen.vmdl", // animgraph embebido en el modelo (citizen.vmdl VERIFIED)
 				HoldTypeParam = "holdtype",
@@ -210,7 +210,7 @@ namespace UltimoBarrio.Content.Weapons
 				ReloadStartSound = "sounds/content/weapons/shotgun_reload_start.sound", // VERIFIED (shotgun_cock.wav)
 				DeploySound = "sounds/content/weapons/usp_deploy.sound", // VERIFIED (foley_deploy_weapon_03.wav, generic)
 				DryFireSound = "sounds/content/weapons/usp_dry.sound", // VERIFIED (dry_fire.wav MIT, generic)
-				MuzzleEffect = "", // real: facepunch.shotgun_muzzleflash (prefab) PENDING
+				MuzzleEffect = "prefabs/weapon_effects/shotgun_muzzleflash.prefab", // VERIFIED instalado del cloud oficial (Shotgun)
 
 				AnimGraph = "",
 				HoldTypeParam = "holdtype",
@@ -254,7 +254,7 @@ namespace UltimoBarrio.Content.Weapons
 				ReloadStartSound = "sounds/content/weapons/usp_reload_magout.sound",
 				DeploySound = "sounds/content/weapons/usp_deploy.sound",
 				DryFireSound = "sounds/content/weapons/usp_dry.sound",
-				MuzzleEffect = "",
+				MuzzleEffect = "prefabs/weapon_effects/rifle_muzzleflash.prefab", // VERIFIED instalado del cloud oficial (M4A1)
 
 				AnimGraph = "",
 				HoldTypeParam = "holdtype",
@@ -300,7 +300,7 @@ namespace UltimoBarrio.Content.Weapons
 				ReloadStartSound = "sounds/content/weapons/usp_reload_magout.sound",
 				DeploySound = "sounds/content/weapons/usp_deploy.sound",
 				DryFireSound = "sounds/content/weapons/usp_dry.sound",
-				MuzzleEffect = "",
+				MuzzleEffect = "prefabs/weapon_effects/pistol_muzzleflash.prefab", // VERIFIED instalado del cloud oficial (Magnum)
 
 				AnimGraph = "",
 				HoldTypeParam = "holdtype",
@@ -344,7 +344,7 @@ namespace UltimoBarrio.Content.Weapons
 				ReloadStartSound = "sounds/content/weapons/usp_reload_magout.sound",
 				DeploySound = "sounds/content/weapons/usp_deploy.sound",
 				DryFireSound = "sounds/content/weapons/usp_dry.sound",
-				MuzzleEffect = "",
+				MuzzleEffect = "prefabs/weapon_effects/pistol_muzzleflash.prefab", // VERIFIED instalado del cloud oficial (MP5 (9x19))
 
 				AnimGraph = "",
 				HoldTypeParam = "holdtype",
@@ -388,7 +388,7 @@ namespace UltimoBarrio.Content.Weapons
 				ReloadStartSound = "sounds/content/weapons/usp_reload_magout.sound",
 				DeploySound = "sounds/content/weapons/usp_deploy.sound",
 				DryFireSound = "sounds/content/weapons/usp_dry.sound",
-				MuzzleEffect = "",
+				MuzzleEffect = "prefabs/weapon_effects/rifle_muzzleflash.prefab", // VERIFIED instalado del cloud oficial (M700)
 
 				AnimGraph = "",
 				HoldTypeParam = "holdtype",
@@ -434,7 +434,7 @@ namespace UltimoBarrio.Content.Weapons
 				ReloadStartSound = "sounds/content/weapons/usp_reload_magout.sound",
 				DeploySound = "sounds/content/weapons/usp_deploy.sound",
 				DryFireSound = "sounds/content/weapons/usp_dry.sound",
-				MuzzleEffect = "",
+				MuzzleEffect = "prefabs/weapon_effects/pistol_muzzleflash.prefab", // VERIFIED instalado del cloud oficial (1911)
 
 				AnimGraph = "",
 				HoldTypeParam = "holdtype",

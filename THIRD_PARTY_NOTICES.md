@@ -89,3 +89,21 @@ referencia los compila el editor a `.vsnd_c` como assets de proyecto
 Nota: los sonidos del NPC darren son voces robóticas/dispositivo (no humanas); se usan como
 candidato documentado para alerta/ataque de enemigos y quedan sujetos a OK de diseño
 (ver `Assets/sounds/content/pending.md`).
+
+## sousou63 — DarkRP 2 (MIT)
+
+Repositorio: https://github.com/sousou63/DarkRP — licencia MIT.
+
+Se reutilizan patrones y código de su framework de armas, presentación y NPCs. La
+licencia MIT exige conservar el aviso de copyright y la nota de permiso; el archivo
+`LICENSE` original se conserva junto a cualquier fichero portado.
+
+Adoptado hasta ahora:
+
+| Elemento | Origen en DarkRP | Uso en Último Barrio |
+|---|---|---|
+| Parámetros de animgraph `b_attack` / `b_reload` sobre `PlayerController.Renderer` | `Code/Game/Weapon/BaseBulletWeapon/BaseBulletWeapon.cs`, `BaseWeapon/BaseWeapon.Reloading.cs` | `Code/UltimoBarrio/Content/combateffects.cs` (`PlayAttackAnimation`, `PlayReloadAnimation`) |
+
+Pendiente de evaluación para adopción posterior: `Code/Game/Weapon/` (BaseWeapon,
+BaseBulletWeapon, IronSightsWeapon, MeleeWeapon, WeaponModel/ViewModel) y `Code/Npcs/`
+(árbol de comportamiento: schedules, tasks, layers, combat, speech).

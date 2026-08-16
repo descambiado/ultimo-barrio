@@ -1,5 +1,6 @@
 using Sandbox;
 using System;
+using System.Linq;
 
 namespace UltimoBarrio.Content.Weapons
 {
@@ -30,6 +31,14 @@ namespace UltimoBarrio.Content.Weapons
 
 		private TimeSince _lastFired;
 		private TimeUntil _reloadComplete;
+
+		/// <summary>
+		/// Apuntado (botón derecho). Vive aquí porque HandleInput ya corre en esta
+		/// instancia (el world model, la única con WeaponContentHost — el viewmodel
+		/// es puramente visual, sin este componente). UbWeaponCarrier lee este flag
+		/// cada frame para animar el "ironsights" del viewmodel real.
+		/// </summary>
+		public bool IsAiming { get; private set; }
 
 		protected override void OnStart()
 		{
@@ -125,6 +134,10 @@ namespace UltimoBarrio.Content.Weapons
 
 		private void HandleInput()
 		{
+			// Apuntar (ADS): no aplica a melee, y solo mientras el botón está pulsado
+			// (sin toggle) — patrón estándar de IronSightsWeapon.
+			IsAiming = !IsMelee && Input.Down( "attack2" );
+
 			if ( IsReloading ) return;
 
 			bool wantToFire = Definition.IsAutomatic ? Input.Down( "attack1" ) : Input.Pressed( "attack1" );
@@ -161,6 +174,26 @@ namespace UltimoBarrio.Content.Weapons
 			}
 
 			RpcFireEffects();
+			ApplyRecoil();
+		}
+
+		/// <summary>
+		/// Empuja la vista del jugador (patrón sousou63/DarkRP BaseBulletWeapon.ShootBullet:
+		/// Owner.Controller.EyeAngles += recoil). Local-only, instantáneo — no espera al
+		/// host, así el disparo se siente inmediato. Reducido a la mitad apuntando (ADS).
+		/// </summary>
+		private void ApplyRecoil()
+		{
+			if ( IsProxy || Definition.RecoilKick <= 0f ) return;
+
+			var player = GameObject.Root.Components.Get<PlayerController>();
+			if ( !player.IsValid() ) return;
+
+			var scale = IsAiming ? 0.5f : 1f;
+			var pitchKick = -Definition.RecoilKick * scale * Game.Random.Float( 0.7f, 1f );
+			var yawKick = Definition.RecoilKick * scale * 0.3f * Game.Random.Float( -1f, 1f );
+
+			player.EyeAngles += new Angles( pitchKick, yawKick, 0f );
 		}
 
 		public void DryFire()
@@ -182,6 +215,21 @@ namespace UltimoBarrio.Content.Weapons
 			{
 				RpcRequestReload();
 			}
+
+			RpcReloadEffects();
+		}
+
+		[Rpc.Broadcast]
+		private void RpcReloadEffects()
+		{
+			if ( Definition == null ) return;
+
+			if ( !string.IsNullOrEmpty( Definition.ReloadSound ) )
+			{
+				Sound.Play( Definition.ReloadSound, WorldPosition );
+			}
+
+			CombatEffects.PlayReloadAnimation( GameObject );
 		}
 
 		[Rpc.Host]
@@ -318,7 +366,10 @@ namespace UltimoBarrio.Content.Weapons
 					if ( DebugLog ) Log.Info( $"[Content.Weapon] {Definition.Id} impacto en '{target.GetType().Name}' ({Definition.Damage} dmg)" );
 				}
 
-				RpcHitEffects( tr.HitPosition, tr.Normal );
+				// Por la RPC solo viaja la ruta del material; cada cliente resuelve su
+				// propio Surface y de ahí salen partícula + decal + sonido correctos
+				// (incluida la sangre cuando el material impactado es flesh).
+				RpcHitEffects( tr.HitPosition, tr.Normal, tr.Surface?.ResourcePath ?? "" );
 			}
 		}
 
@@ -334,8 +385,11 @@ namespace UltimoBarrio.Content.Weapons
 
 			if ( !string.IsNullOrEmpty( Definition.MuzzleEffect ) )
 			{
-				// TODO(core nuevo): Scene.Particles / ParticleEffect desde MuzzleEffect.
+				CombatEffects.SpawnMuzzleFlash( GameObject, Definition.MuzzleEffect );
 			}
+
+			// Animación de disparo en tercera persona (la ven todos los clientes).
+			CombatEffects.PlayAttackAnimation( GameObject );
 		}
 
 		[Rpc.Broadcast]
@@ -348,9 +402,12 @@ namespace UltimoBarrio.Content.Weapons
 		}
 
 		[Rpc.Broadcast]
-		private void RpcHitEffects( Vector3 position, Vector3 normal )
+		private void RpcHitEffects( Vector3 position, Vector3 normal, string surfacePath )
 		{
-			// TODO(core nuevo): impact particles/sounds desde datos del pack.
+			if ( string.IsNullOrEmpty( surfacePath ) ) return;
+
+			var surface = ResourceLibrary.Get<Surface>( surfacePath );
+			CombatEffects.SpawnBulletImpact( surface, position, normal );
 		}
 	}
 }

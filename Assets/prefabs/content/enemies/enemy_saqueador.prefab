@@ -22,6 +22,18 @@
         "Tint": "1,1,1,1"
       },
       {
+        "__type": "Sandbox.Dresser",
+        "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c07",
+        "__enabled": true,
+        "BodyTarget": {
+          "_type": "component",
+          "component_id": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c02",
+          "go": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c01",
+          "component_type": "SkinnedModelRenderer"
+        },
+        "Clothing": []
+      },
+      {
         "__type": "Sandbox.NavMeshAgent",
         "__guid": "6a1b3c4d-8e5f-4a6b-9c7d-2e3f4a5b6c04",
         "__enabled": true,

@@ -4,6 +4,7 @@ using Sandbox.Citizen;
 using System;
 using System.Collections.Generic;
 using UltimoBarrio.Core;
+using UltimoBarrio.Content.Weapons;
 
 namespace UltimoBarrio.Combat
 {
@@ -93,6 +94,80 @@ namespace UltimoBarrio.Combat
 			{
 				UseActiveConsumable();
 			}
+
+			UpdateViewmodelPresentation();
+		}
+
+		// --- Presentación del viewmodel (sway, bob, apuntado, ocultar en 3ª persona) ---
+		// Patrón adaptado de sousou63/DarkRP (MIT) ViewModel.UpdateAnimation/ApplyInertia
+		// — mismos nombres de parámetro porque el Arms model usa el animgraph estándar
+		// del citizen (ver VerificationNotes de cada arma: "skeleton"=1, arms citizen).
+		// Vive aquí (no en WeaponContentHost) porque _viewmodel es el único sitio que
+		// referencia esa instancia — v_*.prefab no lleva WeaponContentHost, solo w_*.
+		private Vector2 _lastAimAngles;
+		private Vector2 _aimInertia;
+		private bool _swayFirstFrame = true;
+		private const float SwayScale = 2f;
+
+		private void UpdateViewmodelPresentation()
+		{
+			if ( _viewmodel == null || !_viewmodel.IsValid() ) return;
+
+			var weaponRenderer = _viewmodel.Components.Get<SkinnedModelRenderer>();
+			if ( !weaponRenderer.IsValid() ) return;
+
+			var player = Components.Get<PlayerController>();
+			if ( !player.IsValid() ) return;
+
+			// El viewmodel cuelga de la cámara (CreateViewmodel), así que en tercera
+			// persona seguiría pegado al objetivo tapando la vista si no lo ocultamos —
+			// el motor solo aleja la cámara, no sabe nada de nuestro viewmodel. Se ocultan
+			// TODOS los renderers (arma + Arms bonemerged), no solo el del arma, para no
+			// dejar brazos flotando sin cuerpo.
+			bool shouldShow = !player.ThirdPerson;
+			foreach ( var renderer in _viewmodel.Components.GetAll<SkinnedModelRenderer>( FindMode.EverythingInSelfAndDescendants ) )
+			{
+				if ( renderer.Enabled != shouldShow ) renderer.Enabled = shouldShow;
+			}
+			if ( !shouldShow ) return;
+
+			var rot = Scene.Camera.WorldRotation.Angles();
+
+			if ( _swayFirstFrame )
+			{
+				_lastAimAngles = new Vector2( rot.pitch, rot.yaw );
+				_aimInertia = Vector2.Zero;
+				_swayFirstFrame = false;
+			}
+
+			_aimInertia = new Vector2(
+				Angles.NormalizeAngle( rot.pitch - _lastAimAngles.x ),
+				Angles.NormalizeAngle( _lastAimAngles.y - rot.yaw ) );
+			_lastAimAngles = new Vector2( rot.pitch, rot.yaw );
+
+			weaponRenderer.Set( "aim_body_pitch", rot.pitch );
+			weaponRenderer.Set( "aim_pitch_inertia", _aimInertia.x * SwayScale );
+			weaponRenderer.Set( "aim_body_yaw", rot.yaw );
+			weaponRenderer.Set( "aim_yaw_inertia", _aimInertia.y * SwayScale );
+			weaponRenderer.Set( "b_grounded", player.IsOnGround );
+
+			var velocity = player.Velocity;
+			var forward = Scene.Camera.WorldRotation.Forward.Dot( velocity );
+			var sideward = Scene.Camera.WorldRotation.Right.Dot( velocity );
+			var angle = MathF.Atan2( sideward, forward ).RadianToDegree().NormalizeDegrees();
+
+			weaponRenderer.Set( "move_direction", angle );
+			weaponRenderer.Set( "move_speed", velocity.Length );
+			weaponRenderer.Set( "move_groundspeed", velocity.WithZ( 0f ).Length );
+			weaponRenderer.Set( "move_x", forward );
+			weaponRenderer.Set( "move_y", sideward );
+			weaponRenderer.Set( "move_z", velocity.z );
+
+			// Apuntado: el estado real vive en el world model (única instancia con
+			// WeaponContentHost); el viewmodel solo refleja el animgraph.
+			var isAiming = _weapon != null && _weapon.IsValid()
+				&& ( _weapon.Components.Get<WeaponContentHost>()?.IsAiming ?? false );
+			weaponRenderer.Set( "ironsights", isAiming ? 1 : 0 );
 		}
 
 		private GameObject FindCameraHost()

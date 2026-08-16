@@ -64,6 +64,8 @@ namespace UltimoBarrio.Content.Enemies
 			}
 
 			_timeSinceSpawn = 0f;
+			_spawnPosition = WorldPosition;
+			_nextWanderDelay = Game.Random.Float( WanderIntervalMin, WanderIntervalMax );
 		}
 
 		protected override void OnUpdate()
@@ -101,12 +103,49 @@ namespace UltimoBarrio.Content.Enemies
 
 			if ( Perception.CurrentTarget != null && Perception.CurrentTarget.IsValid() )
 			{
+				_isWandering = false;
 				ChaseOrAttack( Perception.CurrentTarget );
 			}
 			else
 			{
-				Agent.Stop();
+				Wander();
 			}
+		}
+
+		// --- Deambular sin objetivo (evita el "maniquí de pie" cuando no hay nadie
+		// cerca): puntos aleatorios alrededor del spawn, vía el mismo Agent.MoveTo
+		// real ya usado para perseguir — nunca teleport. No es un árbol de
+		// comportamiento (schedules/tasks de DarkRP): un wander simple es lo que
+		// pide el hueco real (enemigo estático), no una IA de propósito general. ---
+
+		private Vector3 _spawnPosition;
+		private bool _isWandering;
+		private TimeSince _timeSinceWander;
+		private const float WanderRadius = 400f;
+		private const float WanderIntervalMin = 4f;
+		private const float WanderIntervalMax = 9f;
+		private float _nextWanderDelay;
+
+		private void Wander()
+		{
+			if ( Agent.IsNavigating )
+			{
+				if ( !_isWandering ) Agent.Stop(); // el objetivo se perdió mientras perseguía: frenar, no deambular a mitad de path.
+				return;
+			}
+
+			_isWandering = false;
+
+			if ( _timeSinceWander < _nextWanderDelay ) return;
+
+			var offset = Vector3.Random.WithZ( 0f ).Normal * Game.Random.Float( 0.3f, 1f ) * WanderRadius;
+			var target = _spawnPosition + offset;
+
+			Agent.MoveTo( target );
+			_isWandering = true;
+			_timeSinceWander = 0f;
+			_nextWanderDelay = Game.Random.Float( WanderIntervalMin, WanderIntervalMax );
+			Log.Info( $"[Content.Enemy] Wander: {Definition.Id} desde {WorldPosition} hacia {target}" );
 		}
 
 		private void ApplyDefinition()
