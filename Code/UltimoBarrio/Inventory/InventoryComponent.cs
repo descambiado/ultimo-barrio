@@ -117,6 +117,8 @@ namespace UltimoBarrio
                 int toAdd = Math.Min( stackSize, remaining );
                 slot.ItemId = itemId;
                 slot.Amount = toAdd;
+                if ( definition is not null && definition.IsWeapon )
+                    slot.AmmoInMag = -1;
                 remaining -= toAdd;
             }
 
