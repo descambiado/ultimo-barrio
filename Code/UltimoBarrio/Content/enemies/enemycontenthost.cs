@@ -44,6 +44,9 @@ namespace UltimoBarrio.Content.Enemies
 
 		private TimeSince _timeSinceSpawn;
 		private bool _configApplied;
+		private bool _clothingApplied;
+		private int _clothingAttempts;
+		private TimeSince _timeSinceClothingAttempt;
 		private float _refreshPathTimer;
 
 		protected override void OnStart()
@@ -72,6 +75,24 @@ namespace UltimoBarrio.Content.Enemies
 			if ( !_configApplied )
 			{
 				ApplyDefinition();
+			}
+
+			// ClothingContainer regenera el modelo compuesto del SkinnedModelRenderer;
+			// si se llama el mismo frame en que ApplyDefinitionToRenderer() asigna el
+			// Model, hay condición de carrera y la ropa nunca aparece. Se aplica en el
+			// primer frame tras el retardo de aparición, cuando el modelo ya está firme.
+			if ( !_clothingApplied && _timeSinceSpawn >= 0.4f && _clothingAttempts < 10
+				&& ( _clothingAttempts == 0 || _timeSinceClothingAttempt >= 0.15f ) )
+			{
+				_clothingAttempts++;
+				_timeSinceClothingAttempt = 0f;
+				_clothingApplied = ApplyClothing();
+			}
+
+			if ( !_clothingApplied && _clothingAttempts == 10 )
+			{
+				_clothingAttempts++;
+				Log.Warning( $"[Content.Enemy] ClothingDeferred: no se pudo vestir '{Definition.Id}' tras 10 intentos; se conserva el modelo base" );
 			}
 
 			if ( IsDead || _timeSinceSpawn < 0.4f ) return; // retardo de aparición (el agente se asienta en el navmesh)
@@ -218,6 +239,50 @@ namespace UltimoBarrio.Content.Enemies
 		}
 
 		// --- Renderer ---
+
+		/// <summary>
+		/// Vestuario del Saqueador: el citizen.vmdl base viene desnudo. Dresser.Clothing
+		/// cargado desde JSON de prefab no funcionó (el deserializador no puebla el
+		/// Clothing interno de cada ClothingEntry con solo la ruta como string) — se
+		/// construye aquí en código, vía la misma API que ub_qa_dress_enemy verificó
+		/// funcionando en vivo. Fijo por ahora (un solo arquetipo); si se añaden más
+		/// enemigos, mover a EnemyArchetypeDefinition como campo data-driven.
+		/// </summary>
+		private static readonly string[] SaqueadorClothingPaths =
+		{
+			"models/citizen_clothes/jacket/Hoodie/hoodie_black.clothing",
+			"models/citizen_clothes/trousers/CargoPants/cargo_pants_army.clothing",
+			"models/citizen_clothes/hat/Beanie/beanie.clothing",
+		};
+
+		private bool ApplyClothing()
+		{
+			var dresser = Components.GetInDescendantsOrSelf<Dresser>();
+			var renderer = Components.GetInDescendantsOrSelf<SkinnedModelRenderer>();
+			if ( dresser == null || renderer == null || renderer.Model == null ) return false;
+
+			// El prefab debe serializar esta referencia, pero resolverla otra vez aquí
+			// evita que un clon de red conserve un BodyTarget obsoleto o nulo.
+			dresser.BodyTarget = renderer;
+			dresser.Source = Dresser.ClothingSource.Manual;
+
+			dresser.Clothing.Clear();
+			var resolved = 0;
+			foreach ( var path in SaqueadorClothingPaths )
+			{
+				var clothing = ResourceLibrary.Get<Clothing>( path );
+				if ( clothing != null )
+				{
+					dresser.Clothing.Add( new ClothingContainer.ClothingEntry { Clothing = clothing } );
+					resolved++;
+				}
+			}
+
+			if ( resolved == 0 ) return false;
+			dresser.Apply();
+			Log.Info( $"[Content.Enemy] ClothingApplied: {Definition.Id} ({resolved} prendas)" );
+			return true;
+		}
 
 		private void ApplyDefinitionToRenderer()
 		{
