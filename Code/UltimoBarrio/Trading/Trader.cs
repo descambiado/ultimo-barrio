@@ -49,30 +49,15 @@ namespace UltimoBarrio.Trading
                 return;
             }
 
-            int totalCost = price * amount;
-            if (wallet.CanAfford(totalCost))
+            var result = TradeTransactionService.TryBuy( inventory, wallet, itemId, amount, price );
+            if ( result.Succeeded )
             {
-                if (inventory.CanAdd(itemId, amount) && inventory.TryAdd(itemId, amount))
-                {
-                    if (wallet.TryWithdraw(totalCost))
-                    {
-                        Log.Info($"[Trader] {buyer.Name} bought {amount} {itemId} for {totalCost}. Balance now: ${wallet.Balance}");
-                        Missions.MissionJournal.Local?.NotifyProgress(Missions.ObjectiveType.BuyItem, itemId, amount);
-                    }
-                    else 
-                    {
-                        inventory.TryRemove(itemId, amount);
-                    }
-                }
-                else
-                {
-                    Log.Info($"[Trader] {buyer.Name} has no inventory space for {amount} {itemId}.");
-                }
+                Log.Info($"[Trader] {buyer.Name} bought {result.Amount} {result.ItemId} for {result.Value}. Balance now: ${wallet.Balance}");
+                Missions.MissionJournal.Local?.NotifyProgress(Missions.ObjectiveType.BuyItem, result.ItemId, result.Amount);
+                return;
             }
-            else 
-            {
-                Log.Info($"[Trader] {buyer.Name} cannot afford {totalCost} (Balance: ${wallet.Balance}).");
-            }
+
+            Log.Info($"[Trader] Buy rejected ({result.Code}) for {buyer.Name}: {itemId} x{amount}.");
         }
 
         [Rpc.Host]
@@ -86,25 +71,22 @@ namespace UltimoBarrio.Trading
 
             if (wallet == null || inventory == null) return;
 
-            string targetItem = (itemId == "chatarra" || itemId == "scrap") ? "chatarra" : itemId;
-            int available = inventory.GetCount("chatarra");
-            if (available == 0) available = inventory.GetCount("scrap");
-
-            if (available <= 0)
+            var targetItem = itemId == "scrap" ? "scrap" : itemId == "chatarra" ? "chatarra" : string.Empty;
+			if ( string.IsNullOrEmpty( targetItem ) )
             {
-                Log.Info($"[Trader] {seller.Name} has no scrap to sell.");
+                Log.Info($"[Trader] Invalid sell item: {itemId}");
                 return;
             }
 
-            int actualAmount = Math.Min(amount, available);
-            int totalPrice = ScrapSellPrice * actualAmount;
-
-            if (inventory.TryRemove("chatarra", actualAmount) || inventory.TryRemove("scrap", actualAmount))
+            var result = TradeTransactionService.TrySell( inventory, wallet, targetItem, amount, ScrapSellPrice );
+            if ( result.Succeeded )
             {
-                wallet.Deposit(totalPrice);
-                Log.Info($"[Trader] {seller.Name} sold {actualAmount} scrap for ${totalPrice}. Balance now: ${wallet.Balance}");
-                Missions.MissionJournal.Local?.NotifyProgress(Missions.ObjectiveType.SellToTrader, "chatarra", actualAmount);
+                Log.Info($"[Trader] {seller.Name} sold {result.Amount} {result.ItemId} for ${result.Value}. Balance now: ${wallet.Balance}");
+                Missions.MissionJournal.Local?.NotifyProgress(Missions.ObjectiveType.SellToTrader, "chatarra", result.Amount);
+                return;
             }
+
+            Log.Info($"[Trader] Sell rejected ({result.Code}) for {seller.Name}: {targetItem} x{amount}.");
         }
     }
 }

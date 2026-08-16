@@ -6,6 +6,13 @@ El formato se inspira en Keep a Changelog y el proyecto utiliza versionado semá
 
 ### Added
 
+- Bloque base del framework: transacciones de comercio host-authoritative con
+  rollback, ownership sincronizado de objetos, limpieza temporal configurable,
+  ciclo de sesión de jugador persistible y contratos data-driven de roles de
+  trabajo. La integración de estos componentes en prefabs y UI queda pendiente.
+- Matriz de QA del port de framework con evidencia de compilación/Play Mode y
+  límites explícitos de las pruebas aún no ejecutadas.
+
 - Visión inicial del juego.
 - Arquitectura propuesta.
 - Política de assets.

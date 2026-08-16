@@ -1,4 +1,16 @@
-## Estado Actual: Laptop Content Stack — weapon_lab RUNTIME VALIDATED 4/4
+## Estado actual — Framework port en progreso (2026-08-16)
+
+- **Rama activa:** `feat/darkrp-framework-port` con remoto `origin` configurado.
+- **Último checkpoint estable:** commit actual de `feat/darkrp-framework-port` — comercio transaccional host-only, ownership y limpieza temporal de objetos, contrato de sesión persistible del jugador y asignación de roles de trabajo data-driven.
+- **Editor:** s&box 26.08.05. `barrio_01` se inició y detuvo en Play Mode para este bloque.
+- **Compilación:** `local.ultimo_barrio` y editor, 0 errores y 0 avisos.
+- **Consola:** ninguna entrada de nivel Error del arranque actual.
+- **Escena:** `Assets/scenes/barrio_01.scene` tiene cambios locales anteriores ajenos a este bloque; no se han añadido al commit.
+- **Validado en runtime:** player con `PlayerInteractor`, inventario y carrier; Saqueador con `UbNpcScheduleRunner`, vestuario aplicado y Wander.
+- **No validado todavía:** adopción de `UbCarryableComponent`/`UbWeaponFrameworkComponent` en prefabs reales, drop/re-pickup en dos clientes, transiciones/restauración de fases, `Investigate`/`Engage` de NPC y roles de trabajo montados en el prefab.
+- **Siguientes tres acciones:** montar los componentes base en un arma/pickup real; ejecutar drop/re-pickup host+cliente; cablear `UbPlayerSession` y `WorkRoleAssignmentComponent` al spawn de jugador sin duplicar listeners.
+
+## Estado histórico: Laptop Content Stack — weapon_lab RUNTIME VALIDATED 4/4
 
 - **Rama Actual**: `spike/laptop-content-stack` (base `feat/holy-grail-foundation` @ c9e5664). Sin push.
 - **Último Commit**: `9fd7b32 feat(spike): complete runtime validated weapon content suite` (2026-08-08).
