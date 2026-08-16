@@ -144,8 +144,16 @@ namespace UltimoBarrio.Content.Enemies
 		/// <summary>
 		/// Candidato más cercano visible con tag "enemy_target". Si TargetPriority ==
 		/// Structures, los candidatos con Definition.StructureTag ganan a cualquier
-		/// distancia razonable (score −100000). En el lab solo hay un candidato; el
-		/// core nuevo alimentará objetivos explícitos vía SetTarget.
+		/// distancia razonable (score −100000).
+		///
+		/// Antes iteraba Scene.GetAllComponents&lt;Component&gt;() (la base abstracta) y
+		/// nunca encontraba al jugador — confirmado en vivo con ub_qa_provoke_schedule:
+		/// CanSee(player) directo siempre True, pero el escaneo nunca lo adquiría (bug
+		/// real, no de timing: se probó también parando el NavMeshAgent y fijando la
+		/// rotación en bucle ajustado a 0.15s, sin efecto). Forzar el objetivo vía
+		/// SetTarget (Tick con forcedTarget) sí funcionaba, aislando el fallo a este
+		/// bucle. Iterar directamente sobre IDamageTarget (la interfaz real que
+		/// necesitamos) lo arregla y de paso quita la comprobación redundante.
 		/// </summary>
 		private GameObject FindBestCandidate()
 		{
@@ -153,11 +161,13 @@ namespace UltimoBarrio.Content.Enemies
 			float bestScore = float.MaxValue;
 			bool preferStructures = Definition.TargetPriority == EnemyTargetPriority.Structures;
 
-			foreach ( var component in Scene.GetAllComponents<Component>() )
+			foreach ( var damageTarget in Scene.GetAllComponents<IDamageTarget>() )
 			{
-				var go = component.GameObject;
-				if ( go == GameObject || !go.Tags.Has( "enemy_target" ) ) continue;
-				if ( go.Components.GetInAncestorsOrSelf<IDamageTarget>() == null ) continue;
+				// IDamageTarget es una interfaz plana (sin .GameObject); todo lo que la
+				// implementa hoy es un Component, de ahí el cast.
+				var go = ( damageTarget as Component )?.GameObject;
+				if ( go is null || go == GameObject || !go.Tags.Has( "enemy_target" ) ) continue;
+				if ( damageTarget.IsDead ) continue;
 				if ( !CanSee( go ) ) continue;
 
 				float distance = Vector3.DistanceBetween( WorldPosition, go.WorldPosition );

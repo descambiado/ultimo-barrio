@@ -20,22 +20,28 @@
   quien de verdad posee la instancia — `WeaponContentHost` solo vive en el
   world model), impactos por `Surface` (partícula+decal+sonido, sangre en
   carne), fogonazo, animación de disparo/recarga (`b_attack`/`b_reload`).
-- **NPC:** `EnemyContentHost` + `UbNpcScheduleRunner`. `Wander` verificado en
-  vivo por log (posiciones reales, ciclos sucesivos). `Investigate`/`Engage`
-  revisados por código (usan el mismo `Perception.CurrentTarget` ya probado)
-  pero NO reproducidos en vivo esta pasada — `ub_qa_test_combat` daña
-  directamente sin dar tiempo a que Percepción detecte; falta una prueba QA
-  que simule acercamiento real. Vestuario del Saqueador (`Dresser`) corregido:
-  causa real era condición de carrera con el modelo + falta de
-  `Source=Manual`, no el formato del JSON del prefab.
+- **NPC:** `EnemyContentHost` + `UbNpcScheduleRunner`. `Wander`, `Investigate`
+  y `Engage` (con ataque real y repetido de la IA sobre el jugador) verificados
+  en vivo por log, sin ningún atajo — comando QA nuevo `ub_qa_provoke_schedule
+  noise|sight`.
+  **Bug real encontrado y corregido:** `EnemyPerception.FindBestCandidate()`
+  iteraba `Scene.GetAllComponents<Component>()` (la clase base abstracta) y
+  nunca encontraba al jugador como candidato — `CanSee(player)` llamado
+  directo siempre daba `True`, pero el escaneo real jamás lo adquiría. Sin
+  este fix, ningún Saqueador detectaba nunca a un jugador en partida normal
+  (nada llama `SetTarget` en gameplay orgánico). Se aisló forzando `Target`
+  vía `SetTarget` (si eso funcionaba y el escaneo no, el fallo estaba ahí) y
+  se arregló iterando `Scene.GetAllComponents<IDamageTarget>()` directamente.
+  Vestuario del Saqueador (`Dresser`) corregido antes: causa real era
+  condición de carrera con el modelo + falta de `Source=Manual`, no el
+  formato del JSON del prefab.
 - **Editor:** s&box 26.08.05. Compilación limpia en cada paso de esta pasada.
 - **Escena:** `Assets/scenes/barrio_01.scene` — diff aditivo y verificado
-  (housing/properties/day-night/combat QA, ver commits anteriores), pendiente
-  de commit en esta pasada.
-- **No validado todavía:** `Investigate`/`Engage` en vivo; host+cliente (todo
-  esta sesión fue standalone); transición de fases con reinicio real de
-  sesión; RaidManager dirigido (sigue sin cablear, ver hallazgo previo sobre
-  serialización GameObject→prefab sin referencia).
+  (housing/properties/day-night/combat QA), ya comiteado.
+- **No validado todavía:** host+cliente (toda la sesión fue standalone);
+  transición de fases con reinicio real de sesión; RaidManager dirigido
+  (sigue sin cablear, ver hallazgo previo sobre serialización
+  GameObject→prefab sin referencia).
 - **Siguientes acciones:** prueba QA de acercamiento real para
   Investigate/Engage; decidir si el sistema "Properties" (alquiler/shells)
   recibe contenido de nivel o queda documentado fuera de alcance.

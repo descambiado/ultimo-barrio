@@ -560,6 +560,53 @@ namespace UltimoBarrio.QA
         }
 
         /// <summary>
+        /// Provoca Investigate (ruido sin visión directa) o Engage (visión directa)
+        /// vía los gateways reales: EnemyPerception.ReportNoise (el mismo que usa
+        /// WeaponContentHost.ReportFireNoise al disparar) y el escaneo real de
+        /// candidatos de EnemyPerception.Tick (distancia+ángulo+trace+tag). No fabrica
+        /// el resultado — solo coloca al jugador; el schedule lo decide
+        /// EnemyContentHost.OnUpdate en su siguiente tick real, revisa la consola justo
+        /// después. mode: "noise" = detrás del enemigo (debe dar Investigate).
+        ///       "sight" = delante, mirándose (debe dar Engage y ataque real de la IA).
+        /// </summary>
+        [ConCmd("ub_qa_provoke_schedule")]
+        public static void ProvokeSchedule(string mode = "sight")
+        {
+            var player = Game.ActiveScene.GetAllComponents<PlayerMovementModifier>().FirstOrDefault()?.GameObject;
+            if (player is null) { Log.Error("--- ub_qa_provoke_schedule --- No player found."); return; }
+
+            var enemyHost = Game.ActiveScene.GetAllComponents<EnemyContentHost>()
+                .Where(e => e.GameObject.IsValid() && !e.IsDead)
+                .OrderBy(e => Vector3.DistanceBetween(e.WorldPosition, player.WorldPosition))
+                .FirstOrDefault();
+            if (enemyHost is null) { Log.Error("--- ub_qa_provoke_schedule --- No hay ningún Saqueador vivo."); return; }
+
+            var perception = enemyHost.Components.Get<EnemyPerception>();
+
+            if (mode == "noise")
+            {
+                // Detrás del enemigo (fuera de su cono de visión) pero dentro del
+                // radio de oído real de su definición — sin tocar rotación del
+                // enemigo, así CanSee debe fallar por ángulo y solo el oído aplica.
+                var behind = enemyHost.WorldRotation.Backward;
+                player.WorldPosition = enemyHost.WorldPosition + behind * 300f;
+
+                perception.ReportNoise(player.WorldPosition, 1f);
+
+                Log.Info($"--- ub_qa_provoke_schedule --- noise: jugador a {Vector3.DistanceBetween(player.WorldPosition, enemyHost.WorldPosition):F0}u detrás, CanSee={perception.CanSee(player)}, HasRecentMemory tras ReportNoise={perception.HasRecentMemory}. Revisa consola: debe aparecer Schedule=Investigate en el siguiente tick.");
+            }
+            else
+            {
+                var dir = (player.WorldPosition - enemyHost.WorldPosition);
+                dir = dir.Length > 0.01f ? dir.Normal : Vector3.Forward;
+                player.WorldPosition = enemyHost.WorldPosition + dir * 200f;
+                enemyHost.WorldRotation = Rotation.LookAt(dir);
+
+                Log.Info($"--- ub_qa_provoke_schedule --- sight: jugador a 200u delante, CanSee={perception.CanSee(player)}. Revisa consola: debe aparecer Schedule=Engage y daño real de la IA en los siguientes ticks.");
+            }
+        }
+
+        /// <summary>
         /// Diagnóstico de combate real: localiza al Saqueador vivo más cercano
         /// (EnemyContentHost), teleporta al jugador a su rango de ataque para que
         /// EnemyAttack pueda dispararle en los siguientes frames reales (el ataque
