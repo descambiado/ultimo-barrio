@@ -421,9 +421,57 @@ namespace UltimoBarrio.Combat
 		{
 			if ( string.IsNullOrEmpty( ActiveItemId ) ) return;
 
-			var inv = Components.Get<InventoryComponent>();
-			Log.Info( $"[WeaponCarrier] drop {ActiveItemId}" );
-			inv?.RequestDrop( ActiveItemId, 1 );
+			var itemId = ActiveItemId;
+			var ammoInMag = _weapon?.Components.GetInDescendantsOrSelf<WeaponContentHost>()?.CurrentAmmo ?? 0;
+
+			if ( Networking.IsHost )
+			{
+				DropCurrentOnHost( itemId, ammoInMag );
+			}
+			else
+			{
+				RpcRequestDropCurrent( itemId, ammoInMag );
+			}
+		}
+
+		[Rpc.Host]
+		private void RpcRequestDropCurrent( string itemId, int ammoInMag )
+		{
+			DropCurrentOnHost( itemId, ammoInMag );
+		}
+
+		private void DropCurrentOnHost( string itemId, int ammoInMag )
+		{
+			var inventory = Components.Get<InventoryComponent>();
+			var definition = ItemRegistry.GetDefinition( itemId );
+			if ( inventory == null || definition == null || !definition.Droppable || inventory.GetCount( itemId ) < 1 )
+				return;
+
+			// Crear primero el pickup y retirar después el inventario evita pérdidas si
+			// falla una validación de suelo, prefab o límite de objetos activos.
+			var position = WorldPosition + Vector3.Up * 42f + WorldRotation.Forward * 52f;
+			var velocity = WorldRotation.Forward * 120f + Vector3.Up * 50f;
+			var pickup = ItemPickupFactory.SpawnPickup( Scene, itemId, 1, ammoInMag, position, velocity );
+			if ( pickup == null )
+			{
+				Log.Warning( $"[WeaponCarrier] Drop rechazado para '{itemId}': no se materializó pickup" );
+				return;
+			}
+
+			if ( !inventory.TryRemove( itemId, 1 ) )
+			{
+				pickup.Destroy();
+				return;
+			}
+
+			Log.Info( $"[WeaponCarrier] drop {itemId} ammo={ammoInMag}" );
+			RpcDropConfirmed( GameObject.Id, itemId );
+		}
+
+		[Rpc.Broadcast]
+		private void RpcDropConfirmed( Guid ownerObjectId, string itemId )
+		{
+			if ( GameObject.Id != ownerObjectId || ActiveItemId != itemId ) return;
 			Holster();
 		}
 	}
