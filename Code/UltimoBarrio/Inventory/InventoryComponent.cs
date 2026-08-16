@@ -15,7 +15,11 @@ namespace UltimoBarrio
         /// El inventario es la única fuente de verdad del cargador: sobrevive
         /// al cambio de slot, al drop/re-pickup y al guardado.
         /// </summary>
-        public int AmmoInMag { get; set; }
+        /// <summary>
+        /// -1 means a legacy/new weapon has not established a magazine state yet.
+        /// Zero is a real empty magazine and must never be silently refilled.
+        /// </summary>
+        public int AmmoInMag { get; set; } = -1;
     }
 
     public class InventoryComponent : Component, IInventory
@@ -123,18 +127,20 @@ namespace UltimoBarrio
         /// Añade ítems devolviendo el slot donde terminó (usado por pickups
         /// para transferir el cargador del arma recogida). Devuelve null si falla.
         /// </summary>
-        public InventorySlot AddItem( string itemId, int amount, int ammoInMag = 0 )
+        public InventorySlot AddItem( string itemId, int amount, int ammoInMag = 0, bool preserveMagazineState = false )
         {
             if ( !TryAdd( itemId, amount ) )
                 return null;
 
             // El ítem terminó en el último slot no vacío de ese id.
             var definition = ItemRegistry.GetDefinition( itemId );
-            if ( definition is not null && definition.IsWeapon && ammoInMag > 0 )
+            if ( definition is not null && definition.IsWeapon )
             {
                 var slot = Slots.LastOrDefault( s => s.ItemId == itemId && s.Amount > 0 );
                 if ( slot is not null )
-                    slot.AmmoInMag = Math.Clamp( ammoInMag, 0, Math.Max( 1, definition.MagazineSize ) );
+                    slot.AmmoInMag = preserveMagazineState
+                        ? Math.Clamp( ammoInMag, 0, Math.Max( 1, definition.MagazineSize ) )
+                        : definition.MagazineSize;
             }
 
             return Slots.LastOrDefault( s => s.ItemId == itemId && s.Amount > 0 );
@@ -161,7 +167,7 @@ namespace UltimoBarrio
                 {
                     slot.ItemId = "";
                     slot.Amount = 0;
-                    slot.AmmoInMag = 0;
+                    slot.AmmoInMag = -1;
                 }
             }
 
@@ -244,10 +250,18 @@ namespace UltimoBarrio
         [Rpc.Host]
         public void RequestDrop( string itemId, int amount )
         {
+            var definition = ItemRegistry.GetDefinition( itemId );
+            var magazineSlot = definition is not null && definition.IsWeapon
+                ? Slots.LastOrDefault( slot => slot.ItemId == itemId && slot.Amount > 0 )
+                : null;
+            var preserveMagazineState = magazineSlot is not null && magazineSlot.AmmoInMag >= 0;
+            var ammoInMag = preserveMagazineState ? magazineSlot.AmmoInMag : 0;
+
             if ( TryRemove( itemId, amount ) )
             {
-                var pickup = ItemPickupFactory.SpawnPickup( Scene, itemId, amount, 0,
-                    GameObject.WorldPosition + Vector3.Up * 50f + GameObject.WorldRotation.Forward * 50f );
+                var pickup = ItemPickupFactory.SpawnPickup( Scene, itemId, amount, ammoInMag,
+                    GameObject.WorldPosition + Vector3.Up * 50f + GameObject.WorldRotation.Forward * 50f,
+                    preserveMagazineState: preserveMagazineState );
 
                 if ( pickup is null )
                 {

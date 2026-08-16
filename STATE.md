@@ -2,13 +2,16 @@
 
 - **Rama activa:** `feat/darkrp-framework-port` con remoto `origin` configurado.
 - **Último checkpoint estable:** commit actual de `feat/darkrp-framework-port` — comercio transaccional host-only, ownership y limpieza temporal de objetos, contrato de sesión persistible del jugador y asignación de roles de trabajo data-driven.
+- **Jugador:** `Assets/prefabs/player.prefab` monta `UbPlayerSession`; se comprobó que el componente existe en el player creado por `NetworkHelper` durante Play Mode.
+- **Armas:** `WeaponContentHost` es la única fuente de cargador/recarga/ADS para `UbWeaponCarrier`; los drops no reciben munición desde el cliente y preservan un cargador vacío de forma explícita.
+- **Infraestructura preparada, no activada:** `SaveRequestCoalescer` y `NpcPopulationDirector` son host-only y opt-in; el director no genera NPCs sin configuración de escena.
 - **Editor:** s&box 26.08.05. `barrio_01` se inició y detuvo en Play Mode para este bloque.
 - **Compilación:** `local.ultimo_barrio` y editor, 0 errores y 0 avisos.
 - **Consola:** ninguna entrada de nivel Error del arranque actual.
 - **Escena:** `Assets/scenes/barrio_01.scene` tiene cambios locales anteriores ajenos a este bloque; no se han añadido al commit.
 - **Validado en runtime:** player con `PlayerInteractor`, inventario y carrier; Saqueador con `UbNpcScheduleRunner`, vestuario aplicado y Wander.
-- **No validado todavía:** adopción de `UbCarryableComponent`/`UbWeaponFrameworkComponent` en prefabs reales, drop/re-pickup en dos clientes, transiciones/restauración de fases, `Investigate`/`Engage` de NPC y roles de trabajo montados en el prefab.
-- **Siguientes tres acciones:** montar los componentes base en un arma/pickup real; ejecutar drop/re-pickup host+cliente; cablear `UbPlayerSession` y `WorkRoleAssignmentComponent` al spawn de jugador sin duplicar listeners.
+- **No validado todavía:** disparar → cambiar slot → volver, drop/re-pickup de arma en host y cliente, transiciones/restauración de fases, `Investigate`/`Engage` de NPC y roles de trabajo montados/configurados en el prefab.
+- **Siguientes tres acciones:** ejecutar la prueba de arma con cargador parcial en host+cliente; conectar el coalescer a emisores de guardado sin duplicar escrituras; configurar y validar el director NPC con spawn points/target reales.
 
 ## Estado histórico: Laptop Content Stack — weapon_lab RUNTIME VALIDATED 4/4
 

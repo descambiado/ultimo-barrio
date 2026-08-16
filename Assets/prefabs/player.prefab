@@ -272,6 +272,11 @@
         "__enabled": true
       },
       {
+        "__type": "UltimoBarrio.Players.UbPlayerSession",
+        "__guid": "0e64b3b7-d5c4-4a83-ae41-7c2b8a4d90e6",
+        "__enabled": true
+      },
+      {
         "__type": "UltimoBarrio.Building.PlacementController",
         "__guid": "f4a1c8e2-9b6d-4a3f-8e1c-2d5b7a9f0c34",
         "__enabled": true

@@ -1,4 +1,5 @@
 using Sandbox;
+using System;
 
 namespace UltimoBarrio.Components;
 
@@ -8,7 +9,17 @@ public interface IUbWeaponRuntime
 	bool IsAiming { get; }
 	bool IsReloading { get; }
 	int CurrentAmmo { get; }
+	int MagazineCapacity { get; }
 	bool CanFire { get; }
+
+	/// <summary>
+	/// Raised after a replicated runtime value changes. Consumers can update a
+	/// durable snapshot, but must never invent a second magazine state.
+	/// </summary>
+	event Action RuntimeStateChanged;
+
+	/// <summary>Host-only restoration from the active inventory slot.</summary>
+	void RestoreAmmo( int amount );
 }
 
 /// <summary>
@@ -19,7 +30,7 @@ public interface IUbWeaponRuntime
 /// </summary>
 [Title( "Último Barrio Weapon Framework" )]
 [Category( "Último Barrio — Framework" )]
-public class UbWeaponFrameworkComponent : UbCarryableComponent
+public class UbWeaponFrameworkComponent : UbCarryableComponent, IUbWeaponRuntime
 {
 	[Property] public bool UsesAmmo { get; set; } = true;
 	[Property] public int MagazineSize { get; set; } = 12;
@@ -30,13 +41,21 @@ public class UbWeaponFrameworkComponent : UbCarryableComponent
 	[Sync] public int MagazineAmmo { get; protected set; }
 	[Sync] public bool IsReloading { get; protected set; }
 	[Sync] public bool IsAiming { get; protected set; }
+	public int CurrentAmmo => MagazineAmmo;
+	public int MagazineCapacity => MagazineSize;
+	public bool CanFire => CanPrimaryAttack();
+	public event Action RuntimeStateChanged;
 
 	private TimeUntil _nextShot;
 	private TimeUntil _reloadDone;
 
 	protected override void OnStart()
 	{
-		if ( Networking.IsHost ) MagazineAmmo = MagazineSize;
+		if ( Networking.IsHost )
+		{
+			MagazineAmmo = MagazineSize;
+			NotifyRuntimeStateChanged();
+		}
 	}
 
 	public bool CanPrimaryAttack()
@@ -52,6 +71,7 @@ public class UbWeaponFrameworkComponent : UbCarryableComponent
 		if ( UsesAmmo ) MagazineAmmo--;
 		_nextShot = FireInterval;
 		OnPrimaryAttack();
+		NotifyRuntimeStateChanged();
 		return true;
 	}
 
@@ -62,6 +82,7 @@ public class UbWeaponFrameworkComponent : UbCarryableComponent
 		IsReloading = true;
 		_reloadDone = ReloadDuration;
 		OnReloadStarted();
+		NotifyRuntimeStateChanged();
 		return true;
 	}
 
@@ -72,13 +93,25 @@ public class UbWeaponFrameworkComponent : UbCarryableComponent
 		IsReloading = false;
 		MagazineAmmo = MagazineSize;
 		OnReloadFinished();
+		NotifyRuntimeStateChanged();
 	}
 
 	public void SetAiming( bool aiming )
 	{
 		if ( !IsHeld || !Networking.IsHost ) return;
 		IsAiming = aiming;
+		NotifyRuntimeStateChanged();
 	}
+
+	public void RestoreAmmo( int amount )
+	{
+		if ( !Networking.IsHost ) return;
+
+		MagazineAmmo = Math.Clamp( amount, 0, MagazineSize );
+		NotifyRuntimeStateChanged();
+	}
+
+	private void NotifyRuntimeStateChanged() => RuntimeStateChanged?.Invoke();
 
 	protected virtual void OnPrimaryAttack() { }
 	protected virtual void OnReloadStarted() { }

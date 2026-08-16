@@ -136,9 +136,10 @@ namespace UltimoBarrio.UI
                         if ( def is not null && def.IsWeapon && def.MagazineSize > 0 )
                         {
                             var magLbl = slotPanel.AddChild<Label>();
-                            magLbl.Text = $"{slot.AmmoInMag}/{def.MagazineSize}";
+                            var displayedAmmo = slot.AmmoInMag >= 0 ? slot.AmmoInMag : def.MagazineSize;
+                            magLbl.Text = $"{displayedAmmo}/{def.MagazineSize}";
                             magLbl.Style.FontSize = 10;
-                            magLbl.Style.FontColor = slot.AmmoInMag == 0 ? new Color( 1f, 0.3f, 0.3f ) : new Color( 0.9f, 0.9f, 0.5f );
+                            magLbl.Style.FontColor = displayedAmmo == 0 ? new Color( 1f, 0.3f, 0.3f ) : new Color( 0.9f, 0.9f, 0.5f );
                             magLbl.Style.FontWeight = 700;
                         }
                     }

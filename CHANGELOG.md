@@ -12,6 +12,11 @@ El formato se inspira en Keep a Changelog y el proyecto utiliza versionado semá
   trabajo. La integración de estos componentes en prefabs y UI queda pendiente.
 - Matriz de QA del port de framework con evidencia de compilación/Play Mode y
   límites explícitos de las pruebas aún no ejecutadas.
+- Sesión host-only montada en el prefab real de jugador, frontera única de
+  runtime para armas y preservación explícita de cargadores vacíos en el ciclo
+  drop → pickup → inventario.
+- Director de población NPC y coalescer de solicitudes de guardado, ambos
+  inertes hasta que la escena o los emisores existentes los configuren.
 
 - Visión inicial del juego.
 - Arquitectura propuesta.

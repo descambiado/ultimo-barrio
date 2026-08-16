@@ -14,6 +14,12 @@ namespace UltimoBarrio
         /// <summary>Cargador del arma soltada (persistencia del drop → repickup).</summary>
         [Property] public int AmmoInMag { get; set; }
 
+        /// <summary>
+        /// False identifies a world-authored weapon pickup, which receives its
+        /// definition's initial magazine. True preserves zero as an empty drop.
+        /// </summary>
+        [Property] public bool PreserveMagazineState { get; set; }
+
         /// <summary>Id de intento asignado por PlayerInteractor para instrumentación temporal (UB.Pickup). No persiste, no afecta la lógica.</summary>
         public int DebugAttemptId { get; set; }
 
@@ -106,18 +112,17 @@ namespace UltimoBarrio
             }
 
             var definition = ItemRegistry.GetDefinition( ItemId );
-            int magToRestore = definition is not null && definition.IsWeapon ? AmmoInMag : 0;
+            var preserveMagazineState = definition is not null && definition.IsWeapon && PreserveMagazineState;
+            var magToRestore = definition is not null && definition.IsWeapon
+                ? preserveMagazineState ? AmmoInMag : definition.MagazineSize
+                : 0;
 
-            var slot = inventory.AddItem( ItemId, Amount, magToRestore );
+            var slot = inventory.AddItem( ItemId, Amount, magToRestore, preserveMagazineState );
             if ( attemptId != 0 )
                 Log.Info( $"UB.Pickup Attempt={attemptId} AddItem={(slot is not null ? "Succeeded" : "Failed")}" );
 
             if ( slot is not null )
             {
-                // Si el arma no traía cargador, dejamos el del ítem tal cual.
-                if ( definition is not null && definition.IsWeapon && magToRestore <= 0 )
-                    slot.AmmoInMag = definition.MagazineSize;
-
                 var name = definition?.DisplayName ?? ItemId;
                 NotifyPickup( $"Recogido: {name} x{Amount}" );
 

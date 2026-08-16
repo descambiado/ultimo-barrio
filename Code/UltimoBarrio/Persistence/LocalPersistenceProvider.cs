@@ -376,7 +376,8 @@ public sealed class LocalPersistenceProvider : IPersistenceProvider
 				Slots = i.Slots.Select( s => new InventorySlotSaveData
 				{
 					ItemId = s.ItemId,
-					Amount = s.Amount
+					Amount = s.Amount,
+					AmmoInMag = s.AmmoInMag
 				} ).ToList()
 			} ).ToList() ?? new List<InventorySaveData>(),
 			Clock = source.Clock is null ? null : new ClockSaveData
@@ -481,5 +482,4 @@ public sealed class LocalPersistenceProvider : IPersistenceProvider
 		public static EnvelopeReadResult FutureVersion() => new( EnvelopeReadStatus.FutureVersion, null );
 	}
 }
-
 

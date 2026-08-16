@@ -26,7 +26,9 @@ namespace UltimoBarrio.Content.Weapons
 
 		[Sync] public int CurrentAmmo { get; private set; }
 		[Sync] public bool IsReloading { get; private set; }
+		public int MagazineCapacity => Definition?.MagazineSize ?? 0;
 		public bool CanFire => !IsReloading && ( IsMelee || CurrentAmmo > 0 );
+		public event Action RuntimeStateChanged;
 
 		private bool IsMelee => Definition != null && Definition.Category == WeaponContentCategory.Melee;
 
@@ -41,6 +43,8 @@ namespace UltimoBarrio.Content.Weapons
 		/// </summary>
 		public bool IsAiming { get; private set; }
 
+		private int? _pendingAmmoRestore;
+
 		protected override void OnStart()
 		{
 			Definition = WeaponContentRegistry.Get( DefinitionId );
@@ -54,7 +58,8 @@ namespace UltimoBarrio.Content.Weapons
 
 			if ( Networking.IsHost && !IsMelee )
 			{
-				CurrentAmmo = Definition.MagazineSize;
+				SetCurrentAmmo( _pendingAmmoRestore ?? Definition.MagazineSize );
+				_pendingAmmoRestore = null;
 			}
 		}
 
@@ -137,7 +142,7 @@ namespace UltimoBarrio.Content.Weapons
 		{
 			// Apuntar (ADS): no aplica a melee, y solo mientras el botón está pulsado
 			// (sin toggle) — patrón estándar de IronSightsWeapon.
-			IsAiming = !IsMelee && Input.Down( "attack2" );
+			SetAiming( !IsMelee && Input.Down( "attack2" ) );
 
 			if ( IsReloading ) return;
 
@@ -250,7 +255,7 @@ namespace UltimoBarrio.Content.Weapons
 			if ( !IsMelee )
 			{
 				if ( CurrentAmmo <= 0 ) return;
-				CurrentAmmo--;
+				SetCurrentAmmo( CurrentAmmo - 1 );
 			}
 
 			if ( DebugLog ) Log.Info( $"[Content.Weapon] {Definition.Id} disparo (ammo {CurrentAmmo})" );
@@ -276,14 +281,14 @@ namespace UltimoBarrio.Content.Weapons
 
 		private void StartReload()
 		{
-			IsReloading = true;
+			SetReloading( true );
 			_reloadComplete = Definition.ReloadTime;
 			if ( DebugLog ) Log.Info( $"[Content.Weapon] {Definition.Id} recargando ({Definition.ReloadTime}s)" );
 		}
 
 		private void FinishReload()
 		{
-			IsReloading = false;
+			SetReloading( false );
 
 			int missing = Definition.MagazineSize - CurrentAmmo;
 			if ( missing <= 0 ) return;
@@ -292,7 +297,7 @@ namespace UltimoBarrio.Content.Weapons
 			if ( string.IsNullOrEmpty( ammoId ) )
 			{
 				// Melee/sin tipo: recarga directa (no consume inventario).
-				CurrentAmmo = Definition.MagazineSize;
+				SetCurrentAmmo( Definition.MagazineSize );
 				return;
 			}
 
@@ -304,7 +309,7 @@ namespace UltimoBarrio.Content.Weapons
 			if ( inv == null )
 			{
 				// Sin inventario (escenario dev/sandbox): recarga directa.
-				CurrentAmmo = Definition.MagazineSize;
+				SetCurrentAmmo( Definition.MagazineSize );
 				return;
 			}
 
@@ -317,9 +322,49 @@ namespace UltimoBarrio.Content.Weapons
 			}
 
 			inv.TryRemove( ammoId, toLoad );
-			CurrentAmmo += toLoad;
+			SetCurrentAmmo( CurrentAmmo + toLoad );
 			if ( DebugLog ) Log.Info( $"[Content.Weapon] {Definition.Id} recarga: +{toLoad}x {ammoId} (cargador {CurrentAmmo}/{Definition.MagazineSize}, inventario restante {available - toLoad})" );
 		}
+
+	/// <summary>
+	/// Restores the active weapon from its inventory snapshot. The runtime
+	/// component remains the only mutable magazine while equipped.
+	/// </summary>
+	public void RestoreAmmo( int amount )
+	{
+		if ( !Networking.IsHost ) return;
+
+		if ( Definition == null )
+		{
+			_pendingAmmoRestore = Math.Max( 0, amount );
+			return;
+		}
+
+		SetCurrentAmmo( amount );
+	}
+
+	private void SetCurrentAmmo( int amount )
+	{
+		var capacity = Math.Max( 0, MagazineCapacity );
+		CurrentAmmo = Math.Clamp( amount, 0, capacity );
+		NotifyRuntimeStateChanged();
+	}
+
+	private void SetReloading( bool value )
+	{
+		if ( IsReloading == value ) return;
+		IsReloading = value;
+		NotifyRuntimeStateChanged();
+	}
+
+	private void SetAiming( bool value )
+	{
+		if ( IsAiming == value ) return;
+		IsAiming = value;
+		NotifyRuntimeStateChanged();
+	}
+
+	private void NotifyRuntimeStateChanged() => RuntimeStateChanged?.Invoke();
 
 		private void PerformTrace()
 		{

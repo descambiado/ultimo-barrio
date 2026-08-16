@@ -16,7 +16,8 @@ namespace UltimoBarrio
             int amount,
             int ammoInMag,
             Vector3 position,
-            Vector3? spawnVelocity = null )
+            Vector3? spawnVelocity = null,
+            bool preserveMagazineState = false )
         {
             if ( scene is null || string.IsNullOrEmpty( itemId ) || amount <= 0 )
                 return null;
@@ -82,6 +83,7 @@ namespace UltimoBarrio
             pickupComp.ItemId = itemId;
             pickupComp.Amount = amount;
             pickupComp.AmmoInMag = ammoInMag;
+            pickupComp.PreserveMagazineState = preserveMagazineState;
 
             if ( Networking.IsActive )
                 pickup.NetworkSpawn();

@@ -467,7 +467,7 @@ namespace UltimoBarrio
             if ( definition.MagazineSize > 0 )
                 weapon.MaxAmmo = definition.MagazineSize;
 
-            int mag = slot.AmmoInMag > 0
+            int mag = slot.AmmoInMag >= 0
                 ? Math.Min( slot.AmmoInMag, weapon.MaxAmmo )
                 : weapon.MaxAmmo;
 
@@ -633,7 +633,8 @@ namespace UltimoBarrio
             var pickup = ItemPickupFactory.SpawnPickup(
                 Scene, itemId, 1, mag,
                 GameObject.WorldPosition + Vector3.Up * 50f + WorldRotation.Forward * 50f,
-                spawnVelocity: WorldRotation.Forward * 140f + Vector3.Up * 60f );
+                spawnVelocity: WorldRotation.Forward * 140f + Vector3.Up * 60f,
+                preserveMagazineState: mag >= 0 );
 
             if ( pickup is null )
             {

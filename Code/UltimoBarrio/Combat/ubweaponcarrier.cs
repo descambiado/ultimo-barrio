@@ -50,6 +50,7 @@ namespace UltimoBarrio.Combat
 
 		private GameObject _weapon;
 		private GameObject _viewmodel;
+		private IUbWeaponRuntime _activeWeaponRuntime;
 		private string _pendingItemId;
 		private string _pendingWorld;
 		private string _pendingView;
@@ -166,10 +167,15 @@ namespace UltimoBarrio.Combat
 
 			// Apuntado: el estado real vive en el world model (única instancia con
 			// WeaponContentHost); el viewmodel solo refleja el animgraph.
-			var isAiming = _weapon != null && _weapon.IsValid()
-				&& ( _weapon.Components.GetInDescendantsOrSelf<IUbWeaponRuntime>()?.IsAiming ?? false );
+			var isAiming = ActiveWeaponRuntime?.IsAiming ?? false;
 			weaponRenderer.Set( "ironsights", isAiming ? 1 : 0 );
 		}
+
+		/// <summary>
+		/// Presentation and persistence consume this boundary. The carrier never
+		/// owns a second copy of ammo, reload or aim state.
+		/// </summary>
+		public IUbWeaponRuntime ActiveWeaponRuntime => _activeWeaponRuntime;
 
 		private GameObject FindCameraHost()
 		{
@@ -327,6 +333,7 @@ namespace UltimoBarrio.Combat
 			}
 
 			_weapon.NetworkSpawn( Connection.Local );
+			BindWeaponRuntime( _weapon.Components.GetInDescendantsOrSelf<IUbWeaponRuntime>() );
 		}
 
 		private void Holster()
@@ -408,6 +415,7 @@ namespace UltimoBarrio.Combat
 
 		private void ClearEquipped()
 		{
+			UnbindWeaponRuntime();
 			if ( _weapon != null && _weapon.IsValid() ) _weapon.Destroy();
 			if ( _viewmodel != null && _viewmodel.IsValid() ) _viewmodel.Destroy();
 			_weapon = null;
@@ -422,25 +430,24 @@ namespace UltimoBarrio.Combat
 			if ( string.IsNullOrEmpty( ActiveItemId ) ) return;
 
 			var itemId = ActiveItemId;
-			var ammoInMag = _weapon?.Components.GetInDescendantsOrSelf<WeaponContentHost>()?.CurrentAmmo ?? 0;
 
 			if ( Networking.IsHost )
 			{
-				DropCurrentOnHost( itemId, ammoInMag );
+				DropCurrentOnHost( itemId );
 			}
 			else
 			{
-				RpcRequestDropCurrent( itemId, ammoInMag );
+				RpcRequestDropCurrent( itemId );
 			}
 		}
 
 		[Rpc.Host]
-		private void RpcRequestDropCurrent( string itemId, int ammoInMag )
+		private void RpcRequestDropCurrent( string itemId )
 		{
-			DropCurrentOnHost( itemId, ammoInMag );
+			DropCurrentOnHost( itemId );
 		}
 
-		private void DropCurrentOnHost( string itemId, int ammoInMag )
+		private void DropCurrentOnHost( string itemId )
 		{
 			var inventory = Components.Get<InventoryComponent>();
 			var definition = ItemRegistry.GetDefinition( itemId );
@@ -449,9 +456,10 @@ namespace UltimoBarrio.Combat
 
 			// Crear primero el pickup y retirar después el inventario evita pérdidas si
 			// falla una validación de suelo, prefab o límite de objetos activos.
+			var ammoInMag = ActiveWeaponRuntime?.CurrentAmmo ?? 0;
 			var position = WorldPosition + Vector3.Up * 42f + WorldRotation.Forward * 52f;
 			var velocity = WorldRotation.Forward * 120f + Vector3.Up * 50f;
-			var pickup = ItemPickupFactory.SpawnPickup( Scene, itemId, 1, ammoInMag, position, velocity );
+			var pickup = ItemPickupFactory.SpawnPickup( Scene, itemId, 1, ammoInMag, position, velocity, preserveMagazineState: true );
 			if ( pickup == null )
 			{
 				Log.Warning( $"[WeaponCarrier] Drop rechazado para '{itemId}': no se materializó pickup" );
@@ -466,6 +474,55 @@ namespace UltimoBarrio.Combat
 
 			Log.Info( $"[WeaponCarrier] drop {itemId} ammo={ammoInMag}" );
 			RpcDropConfirmed( GameObject.Id, itemId );
+		}
+
+		private void BindWeaponRuntime( IUbWeaponRuntime runtime )
+		{
+			UnbindWeaponRuntime();
+			_activeWeaponRuntime = runtime;
+			if ( _activeWeaponRuntime == null ) return;
+
+			_activeWeaponRuntime.RuntimeStateChanged += OnWeaponRuntimeStateChanged;
+			RestoreWeaponAmmoFromActiveSlot();
+		}
+
+		private void UnbindWeaponRuntime()
+		{
+			if ( _activeWeaponRuntime != null )
+			{
+				_activeWeaponRuntime.RuntimeStateChanged -= OnWeaponRuntimeStateChanged;
+			}
+
+			_activeWeaponRuntime = null;
+		}
+
+		private void RestoreWeaponAmmoFromActiveSlot()
+		{
+			if ( !Networking.IsHost || _activeWeaponRuntime == null ) return;
+
+			var inventory = Components.Get<InventoryComponent>();
+			if ( inventory == null || SelectedSlot < 0 || SelectedSlot >= inventory.Slots.Count ) return;
+
+			var slot = inventory.Slots[SelectedSlot];
+			if ( slot == null || slot.ItemId != ActiveItemId || slot.Amount <= 0 ) return;
+
+			var restoredAmmo = slot.AmmoInMag >= 0
+				? slot.AmmoInMag
+				: _activeWeaponRuntime.MagazineCapacity;
+			_activeWeaponRuntime.RestoreAmmo( restoredAmmo );
+		}
+
+		private void OnWeaponRuntimeStateChanged()
+		{
+			if ( !Networking.IsHost || _activeWeaponRuntime == null ) return;
+
+			var inventory = Components.Get<InventoryComponent>();
+			if ( inventory == null || SelectedSlot < 0 || SelectedSlot >= inventory.Slots.Count ) return;
+
+			var slot = inventory.Slots[SelectedSlot];
+			if ( slot == null || slot.ItemId != ActiveItemId || slot.Amount <= 0 ) return;
+
+			slot.AmmoInMag = Math.Clamp( _activeWeaponRuntime.CurrentAmmo, 0, _activeWeaponRuntime.MagazineCapacity );
 		}
 
 		[Rpc.Broadcast]
