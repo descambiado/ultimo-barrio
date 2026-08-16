@@ -104,8 +104,7 @@ namespace UltimoBarrio.Content.Enemies
 
 			if ( Perception.CurrentTarget != null && Perception.CurrentTarget.IsValid() )
 			{
-				if ( ScheduleRunner.ActiveSchedule != null ) ScheduleRunner.ClearSchedule();
-				ChaseOrAttack( Perception.CurrentTarget );
+				EnsureEngageSchedule( Perception.CurrentTarget );
 			}
 			else
 			{
@@ -139,6 +138,14 @@ namespace UltimoBarrio.Content.Enemies
 			Log.Info( $"[Content.Enemy] Schedule=Investigate hacia {position}" );
 		}
 
+		private void EnsureEngageSchedule( GameObject target )
+		{
+			if ( ScheduleRunner.ActiveSchedule is EnemyEngageSchedule engage && engage.Target == target ) return;
+
+			ScheduleRunner.SetSchedule( new EnemyEngageSchedule( this, target ) );
+			Log.Info( $"[Content.Enemy] Schedule=Engage objetivo '{target.Name}'" );
+		}
+
 		private void ApplyDefinition()
 		{
 			_configApplied = true;
@@ -152,7 +159,7 @@ namespace UltimoBarrio.Content.Enemies
 			Log.Info( $"[Content.Enemy] {Definition.Id} '{Definition.DisplayName}' | HP {Definition.MaxHealth} | speed {Definition.WalkSpeed} | vision {Definition.VisionRange}u/{Definition.VisionAngle}° | hearing {Definition.HearingRadius}u | dmg {Definition.AttackDamage} | cooldown {Definition.AttackCooldown}s | priority {Definition.TargetPriority} | loot '{Definition.LootTableId}'" );
 		}
 
-		private void ChaseOrAttack( GameObject target )
+		internal void ChaseOrAttack( GameObject target )
 		{
 			float distance = Vector3.DistanceBetween( WorldPosition, target.WorldPosition );
 
@@ -395,5 +402,47 @@ namespace UltimoBarrio.Content.Enemies
 			AddWaitTask( 1.5f );
 			AddActionTask( _onInvestigated );
 		}
+	}
+
+	/// <summary>Schedule persistente que persigue y ataca hasta perder el objetivo.</summary>
+	internal sealed class EnemyEngageSchedule : UbNpcSchedule
+	{
+		private readonly EnemyContentHost _host;
+		public GameObject Target { get; }
+
+		public EnemyEngageSchedule( EnemyContentHost host, GameObject target )
+		{
+			_host = host;
+			Target = target;
+		}
+
+		protected override void BuildTasks()
+		{
+			AddTask( new EnemyEngageTask( _host, Target ) );
+		}
+
+		protected override bool ShouldInterrupt()
+			=> _host == null || _host.IsDead || !Target.IsValid() || _host.Perception.CurrentTarget != Target;
+	}
+
+	internal sealed class EnemyEngageTask : UbNpcTask
+	{
+		private readonly EnemyContentHost _host;
+		private readonly GameObject _target;
+
+		public EnemyEngageTask( EnemyContentHost host, GameObject target )
+		{
+			_host = host;
+			_target = target;
+		}
+
+		protected override UbNpcTaskStatus OnTick()
+		{
+			if ( _host == null || _host.IsDead || !_target.IsValid() ) return UbNpcTaskStatus.Success;
+			_host.ChaseOrAttack( _target );
+			return UbNpcTaskStatus.Running;
+		}
+
+		protected override void OnEnd() => _host?.Agent?.Stop();
 	}
 }
